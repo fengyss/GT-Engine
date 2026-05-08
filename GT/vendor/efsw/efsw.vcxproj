@@ -1,0 +1,198 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Dist|x64">
+      <Configuration>Dist</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{FA32967C-E669-970D-8F56-7D107B6C130F}</ProjectGuid>
+    <IgnoreWarnCompileDuplicatedFilename>true</IgnoreWarnCompileDuplicatedFilename>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>efsw</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>bin\Debug-windows-x86_64\efsw\</OutDir>
+    <IntDir>bin-int\Debug-windows-x86_64\efsw\</IntDir>
+    <TargetName>efsw</TargetName>
+    <TargetExt>.lib</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>bin\Release-windows-x86_64\efsw\</OutDir>
+    <IntDir>bin-int\Release-windows-x86_64\efsw\</IntDir>
+    <TargetName>efsw</TargetName>
+    <TargetExt>.lib</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
+    <OutDir>bin\Dist-windows-x86_64\efsw\</OutDir>
+    <IntDir>bin-int\Dist-windows-x86_64\efsw\</IntDir>
+    <TargetName>efsw</TargetName>
+    <TargetExt>.lib</TargetExt>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <AdditionalIncludeDirectories>include;src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+      <MinimalRebuild>false</MinimalRebuild>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <ExternalWarningLevel>Level3</ExternalWarningLevel>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <AdditionalIncludeDirectories>include;src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <Optimization>Full</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <ExternalWarningLevel>Level3</ExternalWarningLevel>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <AdditionalIncludeDirectories>include;src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <Optimization>Disabled</Optimization>
+      <MinimalRebuild>false</MinimalRebuild>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <ExternalWarningLevel>Level3</ExternalWarningLevel>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="src\efsw\Atomic.hpp" />
+    <ClInclude Include="src\efsw\Debug.hpp" />
+    <ClInclude Include="src\efsw\DirWatcherGeneric.hpp" />
+    <ClInclude Include="src\efsw\DirectorySnapshot.hpp" />
+    <ClInclude Include="src\efsw\DirectorySnapshotDiff.hpp" />
+    <ClInclude Include="src\efsw\FileInfo.hpp" />
+    <ClInclude Include="src\efsw\FileSystem.hpp" />
+    <ClInclude Include="src\efsw\FileWatcherFSEvents.hpp" />
+    <ClInclude Include="src\efsw\FileWatcherGeneric.hpp" />
+    <ClInclude Include="src\efsw\FileWatcherImpl.hpp" />
+    <ClInclude Include="src\efsw\FileWatcherInotify.hpp" />
+    <ClInclude Include="src\efsw\FileWatcherKqueue.hpp" />
+    <ClInclude Include="src\efsw\FileWatcherWin32.hpp" />
+    <ClInclude Include="src\efsw\Lock.hpp" />
+    <ClInclude Include="src\efsw\Mutex.hpp" />
+    <ClInclude Include="src\efsw\String.hpp" />
+    <ClInclude Include="src\efsw\System.hpp" />
+    <ClInclude Include="src\efsw\Thread.hpp" />
+    <ClInclude Include="src\efsw\Utf.hpp" />
+    <ClInclude Include="src\efsw\Watcher.hpp" />
+    <ClInclude Include="src\efsw\WatcherFSEvents.hpp" />
+    <ClInclude Include="src\efsw\WatcherGeneric.hpp" />
+    <ClInclude Include="src\efsw\WatcherInotify.hpp" />
+    <ClInclude Include="src\efsw\WatcherKqueue.hpp" />
+    <ClInclude Include="src\efsw\WatcherWin32.hpp" />
+    <ClInclude Include="src\efsw\base.hpp" />
+    <ClInclude Include="src\efsw\platform\platformimpl.hpp" />
+    <ClInclude Include="src\efsw\platform\posix\FileSystemImpl.hpp" />
+    <ClInclude Include="src\efsw\platform\posix\SystemImpl.hpp" />
+    <ClInclude Include="src\efsw\platform\win\FileSystemImpl.hpp" />
+    <ClInclude Include="src\efsw\platform\win\SystemImpl.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\efsw\Debug.cpp" />
+    <ClCompile Include="src\efsw\DirWatcherGeneric.cpp" />
+    <ClCompile Include="src\efsw\DirectorySnapshot.cpp" />
+    <ClCompile Include="src\efsw\DirectorySnapshotDiff.cpp" />
+    <ClCompile Include="src\efsw\FileInfo.cpp" />
+    <ClCompile Include="src\efsw\FileSystem.cpp" />
+    <ClCompile Include="src\efsw\FileWatcher.cpp" />
+    <ClCompile Include="src\efsw\FileWatcherCWrapper.cpp" />
+    <ClCompile Include="src\efsw\FileWatcherFSEvents.cpp" />
+    <ClCompile Include="src\efsw\FileWatcherGeneric.cpp" />
+    <ClCompile Include="src\efsw\FileWatcherImpl.cpp" />
+    <ClCompile Include="src\efsw\FileWatcherInotify.cpp" />
+    <ClCompile Include="src\efsw\FileWatcherKqueue.cpp" />
+    <ClCompile Include="src\efsw\FileWatcherWin32.cpp" />
+    <ClCompile Include="src\efsw\Log.cpp" />
+    <ClCompile Include="src\efsw\String.cpp" />
+    <ClCompile Include="src\efsw\System.cpp" />
+    <ClCompile Include="src\efsw\Watcher.cpp" />
+    <ClCompile Include="src\efsw\WatcherFSEvents.cpp" />
+    <ClCompile Include="src\efsw\WatcherGeneric.cpp" />
+    <ClCompile Include="src\efsw\WatcherInotify.cpp" />
+    <ClCompile Include="src\efsw\WatcherKqueue.cpp" />
+    <ClCompile Include="src\efsw\WatcherWin32.cpp" />
+    <ClCompile Include="src\efsw\platform\posix\FileSystemImpl.cpp" />
+    <ClCompile Include="src\efsw\platform\posix\SystemImpl.cpp" />
+    <ClCompile Include="src\efsw\platform\win\FileSystemImpl.cpp">
+      <ObjectFileName>$(IntDir)\FileSystemImpl1.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="src\efsw\platform\win\SystemImpl.cpp">
+      <ObjectFileName>$(IntDir)\SystemImpl1.obj</ObjectFileName>
+    </ClCompile>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

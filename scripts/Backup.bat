@@ -2,6 +2,8 @@
 cd ..
 
 xcopy "GT/src" "backup/GT/src" /e /y
+xcopy "GT/vendor" "backup/GT/vendor" /e /y
+
 
 
 xcopy "GTEditor" "backup/GTEditor" /e /y
