@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="..">
+      <UniqueIdentifier>{61705900-4DFC-870B-B6AA-880BA255880B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\Hazel">
+      <UniqueIdentifier>{24146F37-10E1-C942-39FA-B7EA2526FFD0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\Hazel\vendor">
+      <UniqueIdentifier>{011A063F-6DA5-7303-76B6-F6F7E2C0CF03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\Hazel\vendor\Box2D">
+      <UniqueIdentifier>{CF803715-3BED-F20F-04E1-8A6D700C1578}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\Hazel\vendor\GLFW">
+      <UniqueIdentifier>{E03DB63E-CCCC-3F08-75EB-5303615950AE}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\Hazel\vendor\Glad">
+      <UniqueIdentifier>{88C9B63E-7458-4008-1D77-540309E550AE}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\Hazel\vendor\ImGui">
+      <UniqueIdentifier>{EB4BB415-57B8-6F10-20AC-076E8CD79178}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\Hazel\vendor\entt">
+      <UniqueIdentifier>{EB47C73E-D7D6-5008-80F5-64036C6361AE}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\Hazel\vendor\yaml-cpp">
+      <UniqueIdentifier>{D35154DB-BF76-A35B-E8C1-88EBD445A279}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\Hazel-ScriptCore">
+      <UniqueIdentifier>{0F90FBDB-7BF1-D8E9-045F-1F9C70BF0FA9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\HazelEditor">
+      <UniqueIdentifier>{EBB4DFD6-D782-D3DC-C016-4403AC83AF41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\OpenGl_Learning">
+      <UniqueIdentifier>{E401EFC7-D0E5-AF1D-3946-AA7025499A9F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\OpenGl_Learning\vendor">
+      <UniqueIdentifier>{C10F198E-2DD2-4C18-7682-DBA4E28325F6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\OpenGl_Learning\vendor\glew">
+      <UniqueIdentifier>{FFE3DA08-EB09-A56F-D44F-2A3BC014CA3B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\OpenGl_Learning\vendor\stb">
+      <UniqueIdentifier>{99C6C80F-05DF-AF39-CE8B-3FD33A6344D3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\test">
+      <UniqueIdentifier>{90AD9747-FC8C-16E3-05A5-A1B971037D44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="premake_customization">
+      <UniqueIdentifier>{8217B8A9-EE83-73A4-B777-0B0223A3950C}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Dependencies.lua">
+      <Filter>..</Filter>
+    </None>
+    <None Include="..\..\Hazel-ScriptCore\premake5.lua">
+      <Filter>..\Hazel-ScriptCore</Filter>
+    </None>
+    <None Include="..\..\Hazel\premake5.lua">
+      <Filter>..\Hazel</Filter>
+    </None>
+    <None Include="..\..\Hazel\vendor\Box2D\premake5.lua">
+      <Filter>..\Hazel\vendor\Box2D</Filter>
+    </None>
+    <None Include="..\..\Hazel\vendor\GLFW\premake5.lua">
+      <Filter>..\Hazel\vendor\GLFW</Filter>
+    </None>
+    <None Include="..\..\Hazel\vendor\Glad\premake5.lua">
+      <Filter>..\Hazel\vendor\Glad</Filter>
+    </None>
+    <None Include="..\..\Hazel\vendor\ImGui\premake5.lua">
+      <Filter>..\Hazel\vendor\ImGui</Filter>
+    </None>
+    <None Include="..\..\Hazel\vendor\entt\premake5.lua">
+      <Filter>..\Hazel\vendor\entt</Filter>
+    </None>
+    <None Include="..\..\Hazel\vendor\yaml-cpp\premake5.lua">
+      <Filter>..\Hazel\vendor\yaml-cpp</Filter>
+    </None>
+    <None Include="..\..\HazelEditor\premake5.lua">
+      <Filter>..\HazelEditor</Filter>
+    </None>
+    <None Include="..\..\OpenGl_Learning\vendor\glew\premake5.lua">
+      <Filter>..\OpenGl_Learning\vendor\glew</Filter>
+    </None>
+    <None Include="..\..\OpenGl_Learning\vendor\stb\premake5.lua">
+      <Filter>..\OpenGl_Learning\vendor\stb</Filter>
+    </None>
+    <None Include="..\..\premake5.lua">
+      <Filter>..</Filter>
+    </None>
+    <None Include="..\..\test\premake5.lua">
+      <Filter>..\test</Filter>
+    </None>
+    <None Include="premake5.lua" />
+    <None Include="premake_customization\solution_items.lua">
+      <Filter>premake_customization</Filter>
+    </None>
+  </ItemGroup>
+</Project>

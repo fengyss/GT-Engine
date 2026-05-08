@@ -1,0 +1,42 @@
+Scene: cube
+Entities:
+  - Entity: 9055524979973331075
+    TagComponent:
+      Tag: light
+      Type: None
+    TransformComponent:
+      Translation: [0, 329.7, 0]
+      Rotation: [0, -0, 0]
+      Scale: [11, 11, 11]
+    CubeComponent:
+      Color: [1, 1, 1, 1]
+  - Entity: 6656075414192952750
+    TagComponent:
+      Tag: Floor
+      Type: None
+    TransformComponent:
+      Translation: [0, -12.7, 0]
+      Rotation: [1.5707964, 0, 0]
+      Scale: [999, 999, 1]
+    SpriteRendererComponent:
+      Color: [1, 0.9882353, 1, 0.5529412]
+      TexturePath: project\assets\textures\Checkerboard.png
+      TilingFactor: 10
+  - Entity: 5330123923738909701
+    TagComponent:
+      Tag: planet
+      Type: Model
+    TransformComponent:
+      Translation: [0, 0, 1.0039911]
+      Rotation: [0, -0, 0]
+      Scale: [0.9999995, 0.99999917, 0.999998]
+    ModelComponent:
+      ModelPath: project\assets\obj\planet\planet.obj
+  - Entity: 13154135276296640512
+    TagComponent:
+      Tag: camera
+      Type: None
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
