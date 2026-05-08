@@ -2,7 +2,6 @@
 cd ..
 
 xcopy "GT/src" "backup/GT/src" /e /y
-xcopy "GT/vendor" "backup/GT/vendor" /e /y
 
 
 
@@ -17,6 +16,8 @@ copy "GT.sln" "backup"
 
 
 copy "premake5.lua" "backup"
+
+copy "Readme.md" "backup"
 
 
 copy "Dependencies.lua" "backup"
