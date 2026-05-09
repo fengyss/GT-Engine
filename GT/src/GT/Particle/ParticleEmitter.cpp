@@ -1,7 +1,7 @@
 #include "gtpch.h"
 #include "ParticleEmitter.h"
 #include "GT/Math/Random.h"
-
+#include "GT/Utils/PlatformUtils.h"
 namespace GT
 {
 #define BIND_ParticleInit_FN(x) std::bind(&x, this, std::placeholders::_1)
@@ -20,6 +20,7 @@ namespace GT
 
 	void ParticleEmitter::Init()
 	{
+		m_StartTime = Time::GetTime();
 		if (!m_Config.init_func)
 		{
 			switch (m_Config.shape)
@@ -55,6 +56,28 @@ namespace GT
 			m_SpawnAccumulator -= spawnInterval;
 		}
 
+		float currentTime = Time::GetTime() - m_StartTime;
+
+		for (auto it = m_Config.bursts.begin(); it != m_Config.bursts.end(); )
+		{
+			if (currentTime < it->time)
+			{
+				it++;
+				continue;
+			}
+			else
+			{
+				
+				Emit(it->count);
+				it->time += it->interval;
+				if (it->cycles != 0)
+				{
+					it->cycles--;
+					// after erase, it will be next one automatically
+					if (it->cycles == 0) it = m_Config.bursts.erase(it);
+				}
+			}
+		}
 
 		int index = -1;
 		for (auto& particle : m_ParticlePool->GetParticles()) {

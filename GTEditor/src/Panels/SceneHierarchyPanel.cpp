@@ -613,30 +613,32 @@ namespace GT
 					}
 					ImGui::EndCombo();
 				}
-					switch (config.shape)
-					{
-					case EmitterShape::Point:
-						break;
-					case EmitterShape::Box:
-						break;
-					case EmitterShape::Sphere:
-						ImGui::Checkbox("InUnitSphere", &config.InUnitSphere);
-						break;
-					case EmitterShape::Ring:
-						ImGui::DragFloat("Inner Circle", &config.innerRadius, 0.0f, 0.0f, 100.0f);
-						ImGui::DragFloat("Outer Circle", &config.outerRadius, 1.0f, 1.0f, 100.0f);
-						break;
-					case EmitterShape::Cone:
-						ImGui::DragFloat("Cone Angle", &config.coneAngle, 30.0f, 1.0f, 100.0f);
-						break;
-					}
+
+
+				ImGui::Checkbox("ReGenerate Particle", &component.IsRegen);
+
+				switch (config.shape)
+				{
+				case EmitterShape::Point:
+					break;
+				case EmitterShape::Box:
+					break;
+				case EmitterShape::Sphere:
+					ImGui::Checkbox("InUnitSphere", &config.InUnitSphere);
+					break;
+				case EmitterShape::Ring:
+					ImGui::DragFloat("Inner Circle", &config.innerRadius, 0.0f, 0.0f, 100.0f);
+					ImGui::DragFloat("Outer Circle", &config.outerRadius, 1.0f, 1.0f, 100.0f);
+					break;
+				case EmitterShape::Cone:
+					ImGui::DragFloat("Cone Angle", &config.coneAngle, 30.0f, 1.0f, 100.0f);
+					break;
+				}
 				
 				ImGui::DragFloat("Lifetime", &config.lifetime, 1.0f, 0.0f, 100.0f);
 				ImGui::DragFloat("Velocity", &config.velocity, 1.0f, 1.0f, 100.0f);
 				ImGui::DragFloat("Emission Rate", &config.spawnRate, 10.0f, 1.0f, 100.0f);
 				ImGui::DragFloat("Size", &config.sizeStart, 10.0f, 1.0f, 100.0f);
-
-
 
 				ImGui::DragFloat("Size Variance", &config.sizeVariance, 0.0f, 0.1f, 0.5f);
 
@@ -645,8 +647,35 @@ namespace GT
 				DrawVec3Control("Rotation Variance", config.rotationVariance, 1.0f);
 				ImGui::ColorEdit4("Color Variance", glm::value_ptr(config.colorVariance));
 
-				static bool isregen = false;
-				ImGui::Checkbox("ReGenerate Particle", &component.IsRegen);
+
+				ImGui::Separator();
+				ImGui::Text("Burst:");
+				{
+					ImGui::PushID(0);
+					static ParticleBurst burst;
+					ImGui::DragFloat("Start Time", &burst.time, 1.0f, 0.0f, 100.0f);
+					ImGui::DragInt("Count", &(int)burst.count, 5, 20, 100);
+					ImGui::DragInt("Cycles", &(int)burst.cycles, 1, 0, 30);
+					ImGui::DragFloat("Interval", &burst.interval, 1.0f, 1.0f, 10.0f);
+					if (ImGui::Button("Add burst"))
+					{
+						config.bursts.push_back(burst);
+					}
+					ImGui::PopID();
+				}
+				ImGui::Separator();
+				ImGui::Text("Bursts:");
+				int index = 1;
+				for (auto& burst : config.bursts)
+				{
+					ImGui::PushID(index++);
+					ImGui::DragFloat("Start Time", &burst.time, 1.0f, 0.0f, 100.0f);
+					ImGui::DragInt("Count", &(int)burst.count, 5, 20, 100);
+					ImGui::DragInt("Cycles", &(int)burst.cycles, 1, 0, 30);
+					ImGui::DragFloat("Interval", &burst.interval, 1.0f, 1.0f, 10.0f);
+					ImGui::Separator();
+					ImGui::PopID();
+				}
 
 			});
 	}

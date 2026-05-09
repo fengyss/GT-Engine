@@ -39,9 +39,11 @@ namespace GT {
         ParticleEmitterConfig m_Config;
         float m_SpawnAccumulator = 0.0f;
         Ref<ParticlePool> m_ParticlePool;
+        float m_StartTime = 0.0f;
 
         // will called at the end of InitializeParticle
         // and override all it influnced value
+        // default function only decide pos and vel based on shape
         std::function<void(Particle&)> m_InitParticleFunc;
 
         // 随机分布生成

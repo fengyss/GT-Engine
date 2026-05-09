@@ -21,6 +21,14 @@ namespace GT {
         // Total number of shapes
         Count
     };
+
+    struct ParticleBurst {
+        float time = 0.0f;       // 触发时间（秒，相对粒子系统启动）
+        uint32_t count = 10;   // 一次爆发的粒子数
+        uint32_t cycles = 1; // 重复次数（0 = 无限）
+        float interval = 1.0f;   // 每次间隔（秒）
+    };
+
     // 粒子基础数据（紧凑内存布局，32字节对齐）
     struct alignas(32) Particle {
         glm::vec3 position{ 0.0f };      // 12字节
@@ -46,13 +54,14 @@ namespace GT {
         float radius = 1.0f;
         glm::vec3 position{ 0.0f };
 
-        // if not will be OnUnitSphere
+        // if false will be OnUnitSphere
         bool InUnitSphere = false;
 
         std::function<void(Particle&)> init_func;
+        std::vector<ParticleBurst> bursts;
 
         // 发射参数
-        float spawnRate = 100.0f;      // 每秒粒子数
+        float spawnRate = 10.0f;      // 每秒粒子数
         float initialSpeed = 5.0f;
         float lifetime = 2.0f;
 
