@@ -10,6 +10,27 @@ Entities:
       Scale: [11.000085, 11.000001, 11.000136]
     CubeComponent:
       Color: [1, 1, 1, 1]
+    ParticleComponent:
+      IsEmitting: true
+      EmitterShape: 0
+      Direction: [1, 0, 0]
+      Velocity: 1
+      Radius: 1
+      InUnitSphere: false
+      SpawnRate: 10
+      LifeTime: 2
+      InnerRadius: 0
+      OuterRadius: 1
+      ConeAngle: 0.3
+      Bursts:
+        - Time: 0
+          Count: 10
+          Cycles: 1
+          Interval: 1
+        - Time: 0
+          Count: 10
+          Cycles: 1
+          Interval: 1
   - Entity: 6656075414192952750
     TagComponent:
       Tag: Floor

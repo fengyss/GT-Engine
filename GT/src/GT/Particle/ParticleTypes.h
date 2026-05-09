@@ -52,7 +52,6 @@ namespace GT {
         glm::vec3 direction = { 1.0f,0.0f,0.0f };
         float velocity = 0.0f;
         float radius = 1.0f;
-        glm::vec3 position{ 0.0f };
 
         // if false will be OnUnitSphere
         bool InUnitSphere = false;

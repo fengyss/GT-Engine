@@ -5,6 +5,7 @@
 #include <yaml-cpp/yaml.h>
 #include "GT/Project/Project.h"
 #include "GT/Assets/AssetsManager.h"
+#include "GT/Particle/ParticleSystem.h"
 
 
 namespace YAML {
@@ -83,7 +84,26 @@ namespace YAML {
 			return true;
 		}
 	};
+	//template<>
+	//struct convert<GT::EmitterShape>
+	//{
+	//	static Node encode(const GT::EmitterShape& rhs)
+	//	{
+	//		Node node;
+	//		node = (int)rhs;
+	//		node.SetStyle(EmitterStyle::Flow);
+	//		return node;
+	//	}
 
+	//	static bool decode(const Node& node, GT::EmitterShape& rhs)
+	//	{
+	//		if (!node.IsScalar())
+	//			return false;
+
+	//		rhs = static_cast<GT::EmitterShape>(node[0].as<int>());
+	//		return true;
+	//	}
+	//};
 	//template<>
 	//struct convert<GT::UUID>
 	//{
@@ -358,6 +378,42 @@ namespace GT
 					cc2d.RestitutionThreshold = circleCollider2DComponent["RestitutionThreshold"].as<float>();
 				}
 
+				auto particleComponent = entity["ParticleComponent"];
+				if (particleComponent)
+				{
+					auto& pc = deserializedEntity.AddComponent<ParticleComponent>();
+					pc.IsEmitting = particleComponent["IsEmitting"].as<bool>();
+
+					auto& config = pc.Config;
+					config.shape = (EmitterShape)particleComponent["EmitterShape"].as<int>();
+					config.direction = particleComponent["Direction"].as<glm::vec3>();
+					config.velocity = particleComponent["Velocity"].as<float>();
+					config.radius = particleComponent["Radius"].as<float>();
+					config.InUnitSphere = particleComponent["InUnitSphere"].as<bool>();
+
+					config.spawnRate = particleComponent["SpawnRate"].as<float>();
+					config.lifetime = particleComponent["LifeTime"].as<float>();
+					config.innerRadius = particleComponent["InnerRadius"].as<float>();
+					config.outerRadius = particleComponent["OuterRadius"].as<float>();
+					config.coneAngle = particleComponent["ConeAngle"].as<float>();
+
+
+					YAML::Node burstsNode = particleComponent["Bursts"];
+					
+					for (auto& burst : burstsNode)
+					{
+						ParticleBurst b;
+						b.time = burst["Time"].as<float>();
+						b.count = burst["Count"].as<uint32_t>();
+						b.cycles = burst["Cycles"].as<uint32_t>();
+						b.interval = burst["Interval"].as<float>();
+						config.bursts.push_back(b);
+					}
+
+					if (pc.IsEmitting) ParticleSystem::CreateEmitter(deserializedEntity);
+				}
+
+
 				//auto textComponent = entity["TextComponent"];
 				//if (textComponent)
 				//{
@@ -592,6 +648,44 @@ namespace GT
 			out << YAML::Key << "RestitutionThreshold" << YAML::Value << cc2dComponent.RestitutionThreshold;
 
 			out << YAML::EndMap; // CircleCollider2DComponent
+		}
+		if (entity.HasComponent<ParticleComponent>())
+		{
+			out << YAML::Key << "ParticleComponent";
+			out << YAML::BeginMap;
+
+			auto& pc = entity.GetComponent<ParticleComponent>();
+			auto& config = pc.Config;
+			out << YAML::Key << "IsEmitting" << YAML::Value << pc.IsEmitting;
+			out << YAML::Key << "EmitterShape" << YAML::Value << (int)config.shape;
+			out << YAML::Key << "Direction" << YAML::Value << config.direction;
+			out << YAML::Key << "Velocity" << YAML::Value << config.velocity;
+			out << YAML::Key << "Radius" << YAML::Value << config.radius;
+			out << YAML::Key << "InUnitSphere" << YAML::Value << config.InUnitSphere;
+
+			out << YAML::Key << "SpawnRate" << YAML::Value << config.spawnRate;
+			out << YAML::Key << "LifeTime" << YAML::Value << config.lifetime;
+			out << YAML::Key << "InnerRadius" << YAML::Value << config.innerRadius;
+			out << YAML::Key << "OuterRadius" << YAML::Value << config.outerRadius;
+			out << YAML::Key << "ConeAngle" << YAML::Value << config.coneAngle;
+
+			out << YAML::Key << "Bursts";
+
+			out << YAML::BeginSeq;
+			for (const auto& burst : config.bursts)
+			{
+				out << YAML::BeginMap;
+				out << YAML::Key << "Time" << YAML::Value << burst.time;
+				out << YAML::Key << "Count" << YAML::Value << burst.count;
+				out << YAML::Key << "Cycles" << YAML::Value << burst.cycles;
+				out << YAML::Key << "Interval" << YAML::Value << burst.interval;
+				out << YAML::EndMap;
+			}
+			out << YAML::EndSeq;
+
+
+			out << YAML::EndMap;
+
 		}
 		/*
 		if (entity.HasComponent<TextComponent>())
