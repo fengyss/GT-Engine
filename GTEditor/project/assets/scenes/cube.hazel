@@ -1,27 +1,25 @@
 Scene: cube
 Entities:
-  - Entity: 9055524979973331075
+  - Entity: 13154135276296640512
     TagComponent:
-      Tag: light
+      Tag: camera
       Type: None
     TransformComponent:
-      Translation: [0, 329.7, 0]
+      Translation: [-5.4224434, 1.3556285, 0]
       Rotation: [0, -0, 0]
-      Scale: [11, 11, 11]
-    CubeComponent:
-      Color: [1, 1, 1, 1]
-  - Entity: 6656075414192952750
-    TagComponent:
-      Tag: Floor
-      Type: None
-    TransformComponent:
-      Translation: [0, -12.7, 0]
-      Rotation: [1.5707964, 0, 0]
-      Scale: [999, 999, 1]
-    SpriteRendererComponent:
-      Color: [1, 0.9882353, 1, 0.5529412]
-      TexturePath: project\assets\textures\Checkerboard.png
-      TilingFactor: 10
+      Scale: [1, 1, 1]
+    CameraComponent:
+      Camera:
+        ProjectionType: 1
+        PerspectiveFOV: 0.7853982
+        PerspectiveNear: 0.01
+        PerspectiveFar: 1000
+        OrthographicSize: 10
+        OrthographicNear: -1
+        OrthographicFar: 1
+        Offset: [0, 1.5, 0]
+      Primary: true
+      FixedAspectRatio: false
   - Entity: 5330123923738909701
     TagComponent:
       Tag: planet
@@ -32,11 +30,25 @@ Entities:
       Scale: [0.9999995, 0.99999917, 0.999998]
     ModelComponent:
       ModelPath: project\assets\obj\planet\planet.obj
-  - Entity: 13154135276296640512
+  - Entity: 6656075414192952750
     TagComponent:
-      Tag: camera
+      Tag: Floor
       Type: None
     TransformComponent:
-      Translation: [0, 0, 0]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
+      Translation: [0, -12.7, 0]
+      Rotation: [1.5707964, 0, 0]
+      Scale: [999, 999, 1]
+    SpriteRendererComponent:
+      Color: [0.6509804, 0.6509804, 0.6509804, 1]
+      TexturePath: project\assets\textures\Checkerboard.png
+      TilingFactor: 10
+  - Entity: 9055524979973331075
+    TagComponent:
+      Tag: light
+      Type: None
+    TransformComponent:
+      Translation: [0, 329.7, 0]
+      Rotation: [0, -0, 0]
+      Scale: [11, 11, 11]
+    CubeComponent:
+      Color: [1, 1, 1, 1]

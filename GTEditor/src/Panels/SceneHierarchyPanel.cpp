@@ -421,6 +421,8 @@ namespace GT
 					float nearClip = camera.GetPerspectiveNearClip();
 					float farClip = camera.GetPerspectiveFarClip();
 
+					ImGui::DragFloat3("Offset", glm::value_ptr(cameraComponent.Offset),0.05f);
+
 					if (ImGui::DragFloat("Vertical FOV", &verticalFov))
 						camera.SetPerspectiveVerticalFov(glm::radians(verticalFov));
 					if (ImGui::DragFloat("Near Clip", &nearClip))
@@ -434,6 +436,8 @@ namespace GT
 					float orthoSize = camera.GetOrthographicSize();
 					float nearClip = camera.GetOrthographicNearClip();
 					float farClip = camera.GetOrthographicFarClip();
+
+					ImGui::DragFloat3("Offset", glm::value_ptr(cameraComponent.Offset),0.05f);
 
 					if (ImGui::DragFloat("Size", &orthoSize))
 						camera.SetOrthographicSize(orthoSize);

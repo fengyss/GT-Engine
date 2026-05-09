@@ -266,6 +266,7 @@ namespace GT
 					cc.Camera.SetOrthographicNearClip(cameraProps["OrthographicNear"].as<float>());
 					cc.Camera.SetOrthographicFarClip(cameraProps["OrthographicFar"].as<float>());
 
+					cc.Offset = cameraProps["Offset"].as<glm::vec3>();
 					cc.Primary = cameraComponent["Primary"].as<bool>();
 					cc.FixedAspectRatio = cameraComponent["FixedAspectRatio"].as<bool>();
 				}
@@ -432,6 +433,7 @@ namespace GT
 			out << YAML::Key << "OrthographicSize" << YAML::Value << camera.GetOrthographicSize();
 			out << YAML::Key << "OrthographicNear" << YAML::Value << camera.GetOrthographicNearClip();
 			out << YAML::Key << "OrthographicFar" << YAML::Value << camera.GetOrthographicFarClip();
+			out << YAML::Key << "Offset" << YAML::Value << cameraComponent.Offset;
 			out << YAML::EndMap; // Camera
 
 			out << YAML::Key << "Primary" << YAML::Value << cameraComponent.Primary;

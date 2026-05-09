@@ -142,6 +142,7 @@ namespace GT
     {
         const char* name = "Camera";
         SceneCamera Camera;
+        glm::vec3 Offset = { 0.0f, 0.0f, 0.0f };
         bool Primary = true;
         bool FixedAspectRatio = false;
 
