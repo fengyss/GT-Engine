@@ -42,19 +42,34 @@ namespace GT
 	}
 	glm::vec3 Random::InUnitSphere()
 	{
-		// 先生成球面方向
-		glm::vec3 dir = OnUnitSphere();
+		float theta = Range(0.0f, glm::two_pi<float>());
+		float phi = acos(NormalFloat());
+		float r = cbrt(NormalFloat());
 
-		float r = std::pow(Random::Float(), 1.0f / 3.0f);
+		float x = r * sin(phi) * cos(theta);
+		float y = r * sin(phi) * sin(theta);
+		float z = r * cos(phi);
 
-		return dir * r;
+		return glm::normalize(glm::vec3(x, y, z));
 	}
 	glm::vec3 Random::OnUnitSphere()
 	{
-		float x = Random::NormalFloat();
-		float y = Random::NormalFloat();
-		float z = Random::NormalFloat();
+
+		float theta = Range(0.0f, glm::two_pi<float>());
+		float phi = acos(NormalFloat());
+
+		float x = sin(phi) * cos(theta);
+		float y = sin(phi) * sin(theta);
+		float z = cos(phi);
 
 		return glm::normalize(glm::vec3(x, y, z));
+	}
+	glm::vec2 Random::OnUnitCircle()
+	{
+		float angle = Range(0.0f, glm::two_pi<float>());
+
+		float x = cos(angle);
+		float y = sin(angle);
+		return glm::vec2(x, y);
 	}
 }

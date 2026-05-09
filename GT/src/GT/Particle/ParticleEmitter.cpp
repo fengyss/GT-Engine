@@ -4,6 +4,8 @@
 
 namespace GT
 {
+#define BIND_ParticleInit_FN(x) std::bind(&x, this, std::placeholders::_1)
+
 	ParticleEmitter::ParticleEmitter()
 	{
 		m_ParticlePool = CreateRef<ParticlePool>(10000); // 初始池大小
@@ -14,6 +16,35 @@ namespace GT
 			InitializeParticle(particle);
 		}
 	}
+
+
+	void ParticleEmitter::Init()
+	{
+		if (!m_Config.init_func)
+		{
+			switch (m_Config.shape)
+			{
+			case EmitterShape::Point:
+				m_InitParticleFunc = BIND_ParticleInit_FN(ParticleEmitter::InitPointParticle);
+				break;
+			case EmitterShape::Box:
+				m_InitParticleFunc = BIND_ParticleInit_FN(ParticleEmitter::InitBoxParticle);
+				break;
+			case EmitterShape::Sphere:
+				m_InitParticleFunc = BIND_ParticleInit_FN(ParticleEmitter::InitSphereParticle);
+				break;
+			case EmitterShape::Ring:
+				m_InitParticleFunc = BIND_ParticleInit_FN(ParticleEmitter::InitRingParticle);
+				break;
+			case EmitterShape::Cone:
+				m_InitParticleFunc = BIND_ParticleInit_FN(ParticleEmitter::InitConeParticle);
+				break;
+			}
+		}
+		else m_InitParticleFunc = m_Config.init_func;
+		
+	}
+
 	void ParticleEmitter::Update(float deltaTime) {
 
 		m_SpawnAccumulator += deltaTime;
@@ -33,7 +64,7 @@ namespace GT
 			// 位置更新
 			particle.position += particle.velocity * deltaTime;
 
-			particle.position.y -= 9.8f * deltaTime;
+			//particle.position.y -= 9.8f * deltaTime;
 
 			// 旋转更新
 			particle.rotation += particle.Rvelocity * deltaTime;
@@ -104,14 +135,86 @@ namespace GT
 			m_Config.color.a + Random::Range(-m_Config.colorVariance.a, m_Config.colorVariance.a)
 		);
 	}
+
+	glm::vec3 ParticleEmitter::GenerateBoxRandomVec3()
+	{
+		return Random::RangeVec3(-1.0,1.0f);
+	}
+	glm::vec3 ParticleEmitter::GenerateSphereRandomVec3(float radius)
+	{
+		if (m_Config.InUnitSphere) return radius * Random::InUnitSphere();
+		else return radius * Random::OnUnitSphere();
+	}
+
+	glm::vec2 ParticleEmitter::GenerateCircleRandomVec2(float radius)
+	{
+		return radius * Random::OnUnitCircle();
+	}
+
 	void ParticleEmitter::InitializeParticle(Particle& particle)
 	{
+
 		particle.position = GenerateRandomPosition();
 		particle.velocity = GenerateRandomVelocity();
+
 		particle.color = GenerateRandomColor();
 		particle.Rvelocity = GenerateRandomRotationVelocity();
 
 		particle.lifeRemaining = m_Config.lifetime;
-		particle.size = m_Config.sizeStart;
+		particle.size = m_Config.sizeStart + (Random::NormalFloat() * m_Config.sizeVariance);
+
+
+		m_InitParticleFunc(particle);
+
+	}
+	void ParticleEmitter::InitPointParticle(Particle& particle)
+	{
+		particle.position = glm::vec3(0.0f);
+		if (glm::length(m_Config.direction) == 0.0f) GT_CORE_ASSERT(false, "Dirction should not be 0!");
+		particle.velocity = m_Config.velocity * glm::normalize(m_Config.direction);
+	}
+	void ParticleEmitter::InitBoxParticle(Particle& particle)
+	{
+		//particle.position = GenerateRandomPosition();
+		particle.position = glm::vec3(0.0f);
+		particle.velocity = m_Config.velocity * GenerateBoxRandomVec3();
+	}
+	void ParticleEmitter::InitSphereParticle(Particle& particle)
+	{
+		//particle.position = GenerateSphereRandomVec3();
+		particle.position = glm::vec3(0.0f);
+		particle.velocity = m_Config.velocity * GenerateSphereRandomVec3(m_Config.radius);
+	}
+	void ParticleEmitter::InitRingParticle(Particle& particle)
+	{
+		glm::vec2 dirction = GenerateCircleRandomVec2(m_Config.innerRadius);
+		glm::vec2 pos = Random::Range(m_Config.innerRadius, m_Config.outerRadius) * dirction;
+		glm::vec2 vel = m_Config.velocity * dirction;
+		particle.position = glm::vec3(pos.x, 0.0f, pos.y);
+		particle.velocity = glm::vec3(vel.x, 0.0f, vel.y);
+	}
+	void ParticleEmitter::InitConeParticle(Particle& particle)
+	{
+		particle.position = glm::vec3(0.0f);
+
+		float theta = Random::Range(0.0f, glm::two_pi<float>());
+		float coneAngle = glm::radians(m_Config.coneAngle);
+		float cosAngle = cos(coneAngle);
+		float u = Random::Range(cosAngle, 1.0f);
+
+		float sinAngle = sqrt(1.0f - u * u);
+
+		float x = sinAngle * cos(theta);
+		float y = sinAngle * sin(theta);
+		float z = u;
+
+		// 将方向转到发射器朝向
+		glm::mat3 rotation = glm::mat3(
+			glm::normalize(glm::cross(m_Config.direction, glm::vec3(0, 1, 0))),
+			glm::normalize(m_Config.direction),
+			glm::normalize(glm::cross(m_Config.direction, glm::cross(m_Config.direction, glm::vec3(0, 1, 0))))
+		);
+
+		particle.velocity = rotation * glm::vec3(x, y, z);
 	}
 }

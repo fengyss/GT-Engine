@@ -589,26 +589,64 @@ namespace GT
 		DrawComponent<ParticleComponent>("Particle Renderer", e, [](auto& component)
 			{
 				auto& config = component.Config;
+
 				ImGui::Checkbox("Emitting", &component.IsEmitting);
-				ImGui::Checkbox("InUnitSphere", &config.InUnitSphere);
+
+
+				const char* Types[] = { "Point","Box","Sphere","Ring","Cone"};
+				const char* type = Types[int(config.shape)];
+				static int currentType = 0;
+
+				if (ImGui::BeginCombo("##Type", type))
+				{
+					for (int i = 0; i < int(EmitterShape::Count); i++)
+					{
+						bool isSelected = currentType == i;
+						if (ImGui::Selectable(Types[i], isSelected))
+						{
+							currentType = i;
+							type = Types[i];
+							config.shape = EmitterShape(i);
+						}
+						if (isSelected)
+							ImGui::SetItemDefaultFocus();
+					}
+					ImGui::EndCombo();
+				}
+					switch (config.shape)
+					{
+					case EmitterShape::Point:
+						break;
+					case EmitterShape::Box:
+						break;
+					case EmitterShape::Sphere:
+						ImGui::Checkbox("InUnitSphere", &config.InUnitSphere);
+						break;
+					case EmitterShape::Ring:
+						ImGui::DragFloat("Inner Circle", &config.innerRadius, 0.0f, 0.0f, 100.0f);
+						ImGui::DragFloat("Outer Circle", &config.outerRadius, 1.0f, 1.0f, 100.0f);
+						break;
+					case EmitterShape::Cone:
+						ImGui::DragFloat("Cone Angle", &config.coneAngle, 30.0f, 1.0f, 100.0f);
+						break;
+					}
+				
 				ImGui::DragFloat("Lifetime", &config.lifetime, 1.0f, 0.0f, 100.0f);
+				ImGui::DragFloat("Velocity", &config.velocity, 1.0f, 1.0f, 100.0f);
 				ImGui::DragFloat("Emission Rate", &config.spawnRate, 10.0f, 1.0f, 100.0f);
 				ImGui::DragFloat("Size", &config.sizeStart, 10.0f, 1.0f, 100.0f);
 
 
+
+				ImGui::DragFloat("Size Variance", &config.sizeVariance, 0.0f, 0.1f, 0.5f);
+
 				DrawVec3Control("Position Variance", config.positionVariance,1.0f);
 				DrawVec3Control("Velocity Variance", config.velocityVariance,1.0f);
 				DrawVec3Control("Rotation Variance", config.rotationVariance, 1.0f);
-				
-
 				ImGui::ColorEdit4("Color Variance", glm::value_ptr(config.colorVariance));
+
 				static bool isregen = false;
 				ImGui::Checkbox("ReGenerate Particle", &component.IsRegen);
-				/*if(isregen)
-				{
-					component.IsRegen = true;
-					isregen = false;
-				}*/
 
 			});
 	}
