@@ -421,7 +421,7 @@ namespace GT
 					float nearClip = camera.GetPerspectiveNearClip();
 					float farClip = camera.GetPerspectiveFarClip();
 
-					ImGui::DragFloat3("Offset", glm::value_ptr(cameraComponent.Offset),0.05f);
+					DrawVec3Control("Offset", cameraComponent.Offset);
 
 					if (ImGui::DragFloat("Vertical FOV", &verticalFov))
 						camera.SetPerspectiveVerticalFov(glm::radians(verticalFov));
@@ -437,7 +437,7 @@ namespace GT
 					float nearClip = camera.GetOrthographicNearClip();
 					float farClip = camera.GetOrthographicFarClip();
 
-					ImGui::DragFloat3("Offset", glm::value_ptr(cameraComponent.Offset),0.05f);
+					DrawVec3Control("Offset", cameraComponent.Offset);
 
 					if (ImGui::DragFloat("Size", &orthoSize))
 						camera.SetOrthographicSize(orthoSize);
@@ -595,8 +595,12 @@ namespace GT
 				ImGui::DragFloat("Emission Rate", &config.spawnRate, 10.0f, 1.0f, 100.0f);
 				ImGui::DragFloat("Size", &config.sizeStart, 10.0f, 1.0f, 100.0f);
 
-				ImGui::DragFloat3("Position Variance", glm::value_ptr(config.positionVariance));
-				ImGui::DragFloat3("Velocity Variance", glm::value_ptr(config.velocityVariance));
+
+				DrawVec3Control("Position Variance", config.positionVariance,1.0f);
+				DrawVec3Control("Velocity Variance", config.velocityVariance,1.0f);
+				DrawVec3Control("Rotation Variance", config.rotationVariance, 1.0f);
+				
+
 				ImGui::ColorEdit4("Color Variance", glm::value_ptr(config.colorVariance));
 				static bool isregen = false;
 				ImGui::Checkbox("ReGenerate Particle", &component.IsRegen);

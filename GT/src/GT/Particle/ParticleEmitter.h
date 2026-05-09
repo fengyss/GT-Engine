@@ -37,6 +37,7 @@ namespace GT {
         // 随机分布生成
         glm::vec3 GenerateRandomPosition();
         glm::vec3 GenerateRandomVelocity();
+        glm::vec3 GenerateRandomRotationVelocity();
         glm::vec4 GenerateRandomColor();
 
         // 粒子初始化

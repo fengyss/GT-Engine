@@ -19,7 +19,7 @@ namespace GT {
         }
     }
 
-    int32_t ParticlePool::GetAvailableParticle()
+    int32_t ParticlePool::GetAvailableParticleIndex()
     {
         std::lock_guard<std::mutex> lock(m_Mutex);
 
@@ -30,9 +30,6 @@ namespace GT {
         uint32_t index = m_AvailableIndices.front();
         m_AvailableIndices.pop();
         ++m_ActiveCount;
-
-        // 重置粒子状态
-        Particle& particle = m_Particles[index];
 
         return index;
     }
@@ -56,7 +53,7 @@ namespace GT {
 
     Particle& ParticlePool::GetNext()
     {
-        int32_t index = GetAvailableParticle();
+        int32_t index = GetAvailableParticleIndex();
         if (index == -1) {
             // 池满时返回第一个粒子（循环使用）
             // 不在生成新粒子
@@ -68,36 +65,11 @@ namespace GT {
 
     void ParticlePool::UpdateAll(float deltaTime)
     {
-        std::lock_guard<std::mutex> lock(m_Mutex);
 
-
-        for (size_t i = 0; i < m_MaxParticles; ++i) {
-            Particle& particle = m_Particles[i];
-            if (particle.lifeRemaining == 0.0f) continue;
-
-            // 位置更新
-            particle.position += particle.velocity * deltaTime;
-
-            particle.position.y -= 9.8f * deltaTime;
-
-            // 旋转更新
-            //particle.rotation += particle.angularVelocity * deltaTime;
-
-            // 颜色衰减
-            //particle.color.a = std::max(0.0f, 1.0f - (particle.age / particle.life));
-
-            // 大小衰减
-            //particle.size = std::max(0.0f, std::min(particle.lifeRemaining,1.0f));
-
-            // 速度衰减
-            particle.velocity *= std::min(particle.lifeRemaining, 1.0f);
-
-            // 生命周期检查
-            particle.lifeRemaining -= deltaTime;
-            if (particle.lifeRemaining <= 0.0f) {
+        for (auto& particle : GetParticles()) {
+            if (particle.lifeRemaining <= 0.0f)
+            {
                 particle.lifeRemaining = 0.0f;
-                m_AvailableIndices.push(i);
-                --m_ActiveCount;
             }
         }
     }

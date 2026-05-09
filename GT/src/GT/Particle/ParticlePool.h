@@ -8,10 +8,11 @@ namespace GT {
 
     class ParticlePool {
     public:
-        ParticlePool(size_t maxParticles = 10000);
+        ParticlePool(size_t maxParticles = 1000);
 
         // 获取可用粒子索引，-1表示池满
-        int32_t GetAvailableParticle();
+        int32_t GetAvailableParticleIndex();
+        std::queue<int32_t>& GetAvailableParticleIndices() { return m_AvailableIndices; }
 
         // 回收粒子
         void ReturnParticle(int32_t index);

@@ -15,6 +15,10 @@ namespace GT {
     struct alignas(32) Particle {
         glm::vec3 position{ 0.0f };      // 12字节
         glm::vec3 velocity{ 0.0f };     // 12字节
+
+        glm::vec3 rotation{ 0.0f };      // 12字节
+        glm::vec3 Rvelocity{ 0.0f };      // 12字节
+
         glm::vec4 color{ 1.0f };         // 16字节
         float lifeRemaining{ 1.0f };    // 4字节
         float size{ 1.0f };             // 4字节
@@ -37,6 +41,7 @@ namespace GT {
         // 随机化范围
         glm::vec3 positionVariance{ 1.0f };
         glm::vec3 velocityVariance{ 1.0f };
+        glm::vec3 rotationVariance{ 1.0f };
         glm::vec4 colorVariance{ 0.1f };
 
         glm::vec4 color{ 1.0f };
