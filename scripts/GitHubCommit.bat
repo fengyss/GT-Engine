@@ -5,7 +5,7 @@ pause
 git add .
 pause
 
-git commit -m "fix: if sprite don't have .json, will temporarily disable Animation2DComponent."
+git commit -m "misc: Refactor some particle render function."
 pause
 
 git push -u origin main

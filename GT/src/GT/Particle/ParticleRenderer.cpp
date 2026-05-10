@@ -11,14 +11,14 @@
 
 namespace GT {
 
-    void ParticleRenderer::RenderParticles(const std::vector<Particle>& particles, const glm::vec3& position)
+    void ParticleRenderer::RenderParticles(const std::vector<Particle>& particles)
     {
         if (particles.empty()) return;
 
         for (const Particle& particle : particles) {
             if (particle.lifeRemaining == 0.0f) continue;
 
-            glm::vec3 pos = particle.position + position ;
+            glm::vec3 pos = particle.position;
             glm::vec2 size = glm::vec2(particle.size);
 
 

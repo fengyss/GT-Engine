@@ -2,6 +2,10 @@
 #include "ParticleEmitter.h"
 #include "GT/Math/Random.h"
 #include "GT/Utils/PlatformUtils.h"
+
+#define GLM_ENABLE_EXPERIMENTAL
+#include "glm/gtx/quaternion.hpp"
+
 namespace GT
 {
 #define BIND_ParticleInit_FN(x) std::bind(&x, this, std::placeholders::_1)
@@ -189,12 +193,20 @@ namespace GT
 
 		m_InitParticleFunc(particle);
 
+		particle.position += m_Postion;
+		particle.size *= m_Scalar.x;
+
+	}
+	void ParticleEmitter::SetRotation(const glm::vec3& roattion) {
+		m_Rotation = roattion;
+		glm::mat4 rotation = glm::toMat4(glm::quat(m_Rotation));
+		m_Direction = rotation * glm::vec4(m_Config.direction, 1.0f);
 	}
 	void ParticleEmitter::InitPointParticle(Particle& particle)
 	{
 		particle.position = glm::vec3(0.0f);
-		if (glm::length(m_Config.direction) == 0.0f) GT_CORE_ASSERT(false, "Dirction should not be 0!");
-		particle.velocity = m_Config.velocity * glm::normalize(m_Config.direction);
+		if (glm::length(m_Direction) == 0.0f) GT_CORE_ASSERT(false, "Dirction should not be 0!");
+		particle.velocity = m_Config.velocity * glm::normalize(m_Direction);
 	}
 	void ParticleEmitter::InitBoxParticle(Particle& particle)
 	{
@@ -233,9 +245,9 @@ namespace GT
 
 		// 将方向转到发射器朝向
 		glm::mat3 rotation = glm::mat3(
-			glm::normalize(glm::cross(m_Config.direction, glm::vec3(0, 1, 0))),
-			glm::normalize(m_Config.direction),
-			glm::normalize(glm::cross(m_Config.direction, glm::cross(m_Config.direction, glm::vec3(0, 1, 0))))
+			glm::normalize(glm::cross(m_Direction, glm::vec3(0, 1, 0))),
+			glm::normalize(m_Direction),
+			glm::normalize(glm::cross(m_Direction, glm::cross(m_Direction, glm::vec3(0, 1, 0))))
 		);
 
 		particle.velocity = rotation * glm::vec3(x, y, z);

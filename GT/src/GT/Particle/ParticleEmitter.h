@@ -29,6 +29,9 @@ namespace GT {
         // ECS集成
         void OnUpdate(Timestep dt) ;
         void OnRender() ;
+        void SetPostion(const glm::vec3& postion) { m_Postion = postion; }
+        void SetRotation(const glm::vec3& roattion);
+        void SetSaclar(const glm::vec2& scalar) { m_Scalar = scalar; }
 
         // 编辑器支持
 #ifdef GT_DEBUG
@@ -40,6 +43,11 @@ namespace GT {
         float m_SpawnAccumulator = 0.0f;
         Ref<ParticlePool> m_ParticlePool;
         float m_StartTime = 0.0f;
+
+        glm::vec3 m_Postion;
+        glm::vec3 m_Rotation;
+        glm::vec3 m_Direction;
+        glm::vec2 m_Scalar;
 
         // will called at the end of InitializeParticle
         // and override all it influnced value

@@ -14,6 +14,11 @@ namespace GT {
 			return;
 		}
 		for (const auto& [entity, emitter] : m_Emitters) {
+			Entity e = { entity, m_activeScene.get() };
+			auto trans = e.GetComponent<TransformComponent>();
+			emitter->SetPostion(trans.Translation);
+			emitter->SetRotation(trans.Rotation);
+			emitter->SetSaclar(trans.Scale);
 			emitter->OnUpdate(dt);
 			//m_TotalParticles += emitter->GetParticles().size();
 			//GT_CORE_INFO("Total Particles: {0}", m_TotalParticles);
@@ -33,8 +38,7 @@ namespace GT {
 			auto particle = e.GetComponent<ParticleComponent>();
 			if (particle.IsEmitting == false) continue;
 
-			auto transform = e.GetComponent<TransformComponent>();
-			ParticleRenderer::RenderParticles(emitter->GetParticles(), transform.Translation);
+			ParticleRenderer::RenderParticles(emitter->GetParticles());
 		}
 		//m_Renderer->EndScene();
 	}
