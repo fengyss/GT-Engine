@@ -33,8 +33,8 @@ namespace GT {
 			auto particle = e.GetComponent<ParticleComponent>();
 			if (particle.IsEmitting == false) continue;
 
-			auto transform = e.GetComponent<TransformComponent>().GetTransform();
-			ParticleRenderer::RenderParticles(emitter->GetParticles(), transform);
+			auto transform = e.GetComponent<TransformComponent>();
+			ParticleRenderer::RenderParticles(emitter->GetParticles(), transform.Translation);
 		}
 		//m_Renderer->EndScene();
 	}

@@ -11,22 +11,19 @@
 
 namespace GT {
 
-    void ParticleRenderer::RenderParticles(const std::vector<Particle>& particles, const glm::mat4& transform)
+    void ParticleRenderer::RenderParticles(const std::vector<Particle>& particles, const glm::vec3& position)
     {
         if (particles.empty()) return;
 
         for (const Particle& particle : particles) {
             if (particle.lifeRemaining == 0.0f) continue;
 
-
-            glm::mat4 rotation = glm::toMat4(glm::quat(particle.rotation));
-
-            glm::mat4 model = glm::translate(transform, particle.position) *
-                rotation *
-                glm::scale(glm::mat4(1.0f), glm::vec3(particle.size));
+            glm::vec3 pos = particle.position + position ;
+            glm::vec2 size = glm::vec2(particle.size);
 
 
-			Renderer2D::DrawQuad(model, particle.color);
+
+			Renderer2D::DrawParticleQuad(pos,size, particle.color);
             //Renderer2D::DrawCircle(model, particle.color);
         }
     }

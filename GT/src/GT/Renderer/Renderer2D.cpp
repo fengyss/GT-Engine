@@ -360,7 +360,7 @@ namespace GT
 			s_Data.Stats.DrawCalls++;
 		}
 	}
-
+	glm::vec3 cameraright, cameraup;
 	void Renderer2D::SetViewProjection(const glm::mat4& viewProjection)
 	{
 		s_Data.QuadShader->Get()->Bind();
@@ -369,6 +369,9 @@ namespace GT
 		s_Data.CircleShader->Get()->SetUniformMat4("u_ViewProjection", viewProjection);
 		s_Data.LineShader->Get()->Bind();
 		s_Data.LineShader->Get()->SetUniformMat4("u_ViewProjection", viewProjection);
+
+		cameraright = viewProjection[0];
+		cameraup = viewProjection[1];
 
 	}
 
@@ -445,6 +448,26 @@ namespace GT
 	{
 		for (size_t i = 0; i < 4; i++)
 			quadState.Position[i] = transform * s_Data.QuadVertexPositions[i];
+		quadState.Color = color;
+		quadState.TextureIndex = 0.0f;
+		quadState.TilingFactor = 1.0f;
+		quadState.EntityID = s_CurrentEntityID;
+		SetTextureCoords();
+
+		Draw(quadState);
+	}
+
+	void Renderer2D::DrawParticleQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color)
+	{
+		glm::vec3 center = position;
+		glm::vec3 right = cameraright * size.x;
+		glm::vec3 up = cameraup * size.y;
+		// Quad
+		quadState.Position[0] = center - right - up; // TL
+		quadState.Position[1] = center + right - up; // TR
+		quadState.Position[2] = center + right + up; // BR
+		quadState.Position[3] = center - right + up; // BL
+
 		quadState.Color = color;
 		quadState.TextureIndex = 0.0f;
 		quadState.TilingFactor = 1.0f;

@@ -57,6 +57,7 @@ namespace GT
 		static void SetCurrentEntityID(int entityID);
 
 		static void DrawQuad(const glm::mat4& transform, const glm::vec4& color);
+		static void DrawParticleQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color);
 		static void DrawQuad(const glm::mat4& transform, const glm::vec4& color, const Ref<Texture2D>& texture, int tilingfactor = 1);
 		static void DrawQuad(const glm::mat4& transform, const SpriteRendererComponent& sprite);
 		static void DrawCube(const glm::mat4& transform, const glm::vec4& color);

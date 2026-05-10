@@ -62,9 +62,9 @@ namespace GT {
                 const SpriteRegion& selected = m_Regions[m_SelectedIndex];
 
                 // 计算预览 UV (需要翻转 Y 轴以符合 ImGui 的纹理坐标系)
-                ImVec2 uv0(selected.UVOffset.x, 1.0f - selected.UVOffset.y - selected.UVSize.y);
-                ImVec2 uv1(uv0.x + selected.UVSize.x, 1.0f - selected.UVOffset.y);
-                ImGui::Image((void*)(intptr_t)m_Texture->GetRendererID(), ImVec2(64, 64), uv0, uv1);
+                ImVec2 uv0(selected.UVOffset.x, selected.UVOffset.y);
+                ImVec2 uv1(uv0.x + selected.UVSize.x, uv0.y + selected.UVSize.y);
+                ImGui::Image((void*)(intptr_t)m_Texture->GetRendererID(), ImVec2(64, 64), uv1, uv0);
             }
 
             // 4. 导出 JSON

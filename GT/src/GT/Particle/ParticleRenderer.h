@@ -7,7 +7,7 @@ namespace GT {
         ParticleRenderer();
         ~ParticleRenderer();
 
-        static void RenderParticles(const std::vector<Particle>& particles, const glm::mat4& transform);
+        static void RenderParticles(const std::vector<Particle>& particles, const glm::vec3& postion);
     private:
     };
 } 
