@@ -1,0 +1,18 @@
+name: Count Lines of Code
+on: [push, pull_request]
+jobs:
+  loc_job:
+    runs-on: ubuntu-latest
+    name: A job to count lines of code and generate a badge
+    steps:
+      - uses: actions/checkout@v4
+      - id: counting
+        uses: MikhailEpatko/loc-badge-action@v4.0.0
+        with:
+          output-filename: loc-badge.svg
+          color: blue # 可选：设置徽章颜色
+      - name: Commit and push badge
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          file_pattern: loc-badge.svg
+          commit_message: "chore: update loc badge"
