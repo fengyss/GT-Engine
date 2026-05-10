@@ -1,11 +1,13 @@
 #include "gtpch.h"
 #include "SpriteSheetCropper.h"
-#include "nlohmann/json.hpp"
 #include <algorithm>
 #include <iostream>
 #include <queue>
 #include "stb_image.h"
 #include "GT/Core/Log.h"
+
+#define JSON_USE_IMPLICIT_CONVERSIONS 0
+#include "nlohmann/json.hpp"
 
 namespace GT {
 

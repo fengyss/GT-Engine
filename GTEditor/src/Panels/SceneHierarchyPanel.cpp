@@ -363,6 +363,7 @@ namespace GT
 			AddComponentButton<LightRendererComponent>("Light Renderer", e);
 			AddComponentButton<ModelComponent>("Model Renderer", e);
 			AddComponentButton<ParticleComponent>("Particle Renderer", e);
+			AddComponentButton<Animator2DComponent>("Animator 2D", e);
 
 			ImGui::EndPopup();
 		}
@@ -590,6 +591,14 @@ namespace GT
 					ImGui::EndDragDropTarget();
 				}
 			});
+
+			DrawComponent<Animator2DComponent>("Animator 2D", e, [](auto& component)
+				{
+					ImGui::Text("Name: %s", &component.name);
+					ImGui::DragFloat("Duration", &component.duration, 0.5f, 1.0f, 20.0f);
+					//ImGui::PushItemWidth(-1);
+
+				});
 
 		DrawComponent<ParticleComponent>("Particle Renderer", e, [](auto& component)
 			{

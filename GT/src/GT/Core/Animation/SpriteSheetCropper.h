@@ -2,20 +2,14 @@
 
 #include "GT/Core/Base.h"
 #include "GT/Renderer/Texture.h"
+#include "AnimationTypes.h"
 
 //#include <vector>
 //#include <string>
 
 namespace GT {
 
-    // 描述切割出的单个精灵的区域
-    struct SpriteRegion
-    {
-        glm::vec2 UVOffset; // 左下角 UV
-        glm::vec2 UVSize;   // UV 宽高
-        glm::vec2 PixelOffset; // 像素偏移 (用于 9-patch 或精确碰撞)
-        glm::vec2 PixelSize;
-    };
+    
 
     class SpriteSheetCropper
     {

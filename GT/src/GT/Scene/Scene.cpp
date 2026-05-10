@@ -11,6 +11,7 @@
 #include "ScriptableEntity.h"
 
 #include "GT/Particle/ParticleSystem.h"
+#include "GT/Core/Animation/AnimationSystem.h"
 
 // Box2D
 #include "box2d/box2d.h"
@@ -306,6 +307,9 @@ namespace GT
             }
         }
         ParticleSystem::OnUpdate(ts);
+
+        Animation2DSystem::OnUpdate(this, ts);
+
         RenderScene(ts, camera);
     }
 
@@ -546,7 +550,14 @@ namespace GT
 		ParticleSystem::CreateEmitter(entity);
     }
 
-
+    template<>
+    void Scene::OnComponentAdded<Animator2DComponent>(Entity entity, Animator2DComponent& component)
+    {
+        component.CurrentAnimation = CreateRef<AnimationClip>(component.name, component.duration);
+        auto& path = entity.GetComponent<SpriteRendererComponent>().texture->GetPath();
+        component.CurrentAnimation->ImportSpriteSheet(path);
+    }
+    
 
 
 
@@ -620,4 +631,11 @@ namespace GT
     {
         ParticleSystem::DestroyEmitter(entity);
     }
+
+    template<>
+    void Scene::OnComponentRemoved<Animator2DComponent>(Entity entity, Animator2DComponent& component)
+    {
+    }
+
+    
 }

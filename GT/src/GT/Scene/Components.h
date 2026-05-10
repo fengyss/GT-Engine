@@ -15,6 +15,8 @@
 
 #include "GT/Particle/ParticleTypes.h"
 
+#include "GT/Core/Animation/AnimationTypes.h"
+
 namespace GT
 {
     
@@ -241,7 +243,6 @@ namespace GT
     };
 
     class SkeletalMesh;
-    class AnimationClip;
 
     struct AnimatorComponent
     {
@@ -278,6 +279,9 @@ namespace GT
         // 当前播放的动画
         Ref<AnimationClip> CurrentAnimation;
 
+        std::string name = "None";
+        float duration = 10.0f;
+        bool isEnable = false;
         // 运行时状态
         float CurrentTime = 0.0f;
         uint32_t CurrentFrameIndex = 0;
@@ -288,7 +292,7 @@ namespace GT
 
         // 构造函数
         Animator2DComponent() = default;
-        Animator2DComponent(Ref< AnimationClip> anim)
+        Animator2DComponent(Ref<AnimationClip> anim)
             : CurrentAnimation(anim) {
         }
     };

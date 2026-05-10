@@ -23,5 +23,4 @@ copy "Readme.md" "backup"
 
 copy "Dependencies.lua" "backup"
 
-cloc . --exclude-dir=vendor --match-f='\.(cpp|h)$'
 pause

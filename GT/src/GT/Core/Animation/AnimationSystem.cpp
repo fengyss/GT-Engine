@@ -15,6 +15,8 @@ namespace GT {
         {
             auto [animator, sprite] = view.get<Animator2DComponent, SpriteRendererComponent>(entity);
 
+            //if (!animator.isEnable) continue;
+
             Ref<AnimationClip> clip = animator.CurrentAnimation;
             if (!clip || clip->GetFrames().empty())
                 continue;
@@ -52,10 +54,9 @@ namespace GT {
             if (newFrameIndex != animator.CurrentFrameIndex)
             {
                 animator.CurrentFrameIndex = newFrameIndex;
-                const SpriteFrame& frame = frames[newFrameIndex];
+                const SpriteRegion& frame = frames[newFrameIndex];
 //
                 // 更新纹理和 UV
-                sprite.texture = frame.TextureHandle;
                 sprite.UVOffset = frame.UVOffset;
                 sprite.UVSize = frame.UVSize;
             }
