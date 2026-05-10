@@ -37,8 +37,10 @@ namespace GT {
         // 骨骼动画接口 (可选)
         //void SetSkeletonData(RefHandle<> skeletonHandle) { m_SkeletonHandle = skeletonHandle; }
 
-        float GetTotalDuration() const { return m_Duration; }
+        const std::vector<float>& GetFrameDurations() const { return m_FrameDurations; }
         const std::vector<SpriteFrame>& GetFrames() const { return m_Frames; }
+        float GetTotalDuration() const { return m_Duration; }
+        bool IsLooping() { return m_Loop; }
 
     private:
         std::string m_Name;

@@ -658,7 +658,7 @@ namespace GT
 		Entity selectedEntity = m_SceneHierarchyPanel->GetSelectedEntity();
 		if (selectedEntity
 			&&!(selectedEntity.HasComponent<ModelComponent>() ||
-				selectedEntity.HasComponent<CubeRendererComponent>()))
+				selectedEntity.HasComponent<LightRendererComponent>()))
 		{
 			
 			TransformComponent& transform = selectedEntity.GetComponent<TransformComponent>();

@@ -449,6 +449,7 @@ namespace GT
 		quadState.TextureIndex = 0.0f;
 		quadState.TilingFactor = 1.0f;
 		quadState.EntityID = s_CurrentEntityID;
+		SetTextureCoords();
 
 		Draw(quadState);
 	}
@@ -456,16 +457,45 @@ namespace GT
 	void Renderer2D::DrawQuad(const glm::mat4& transform, const glm::vec4& color, const Ref<Texture2D>& texture, int tilingfactor)
 	{
 		for (size_t i = 0; i < 4; i++)
+		{
 			quadState.Position[i] = transform * s_Data.QuadVertexPositions[i];
+		}
 
-		//quadState.TexCoords[0] = { texcoords.x, texcoords.y };
-		//quadState.TexCoords[1] = { texcoords.z, texcoords.y };
-		//quadState.TexCoords[2] = { texcoords.z, texcoords.w };
-		//quadState.TexCoords[3] = { texcoords.x, texcoords.w };
+		SetTextureCoords();
 
 		quadState.Color = color;
 		quadState.TextureIndex = GetTextureSlotIndex(texture);
 		quadState.TilingFactor = tilingfactor;
+
+
+		quadState.EntityID = s_CurrentEntityID;
+		Draw(quadState);
+	}
+
+	void Renderer2D::DrawQuad(const glm::mat4& transform, const SpriteRendererComponent& sprite)
+	{
+		for (size_t i = 0; i < 4; i++)
+		{
+			quadState.Position[i] = transform * s_Data.QuadVertexPositions[i];
+		}
+
+		
+
+		quadState.Color = sprite.Color;
+
+
+		if (sprite.texture)
+		{
+			SetTextureCoords(sprite.UVOffset, sprite.UVSize);
+			quadState.TextureIndex = GetTextureSlotIndex(sprite.texture->Get());
+			quadState.TilingFactor = sprite.TilingFactor;
+		}
+		else 
+		{
+			SetTextureCoords();
+			quadState.TextureIndex = 0.0f;
+			quadState.TilingFactor = 1.0f;
+		}
 
 		quadState.EntityID = s_CurrentEntityID;
 		Draw(quadState);
@@ -477,7 +507,7 @@ namespace GT
 		quadState.TilingFactor = 1.0f;
 		quadState.EntityID = s_CurrentEntityID;
 		quadState.Color = color;
-
+		SetTextureCoords();
 		for (size_t i = 0; i < 6; i++)
 		{
 			for (size_t j = 0; j < 4; j++)
@@ -503,7 +533,7 @@ namespace GT
 		quadState.TilingFactor = 1.0f;
 		quadState.EntityID = s_CurrentEntityID;
 		quadState.Color = color;
-
+		SetTextureCoords();
 		for (size_t i = 0; i < 6; i++)
 		{
 			for (size_t j = 0; j < 4; j++)
@@ -553,7 +583,7 @@ namespace GT
 			s_Data.QuadVertexBufferPtr->Position = state.Position[i];
 			s_Data.QuadVertexBufferPtr->Color = state.Color;
 
-			s_Data.QuadVertexBufferPtr->TexCoord = s_Data.QuadTexCoords[i];
+			s_Data.QuadVertexBufferPtr->TexCoord = state.TexCoords[i];
 				//state.TexCoords[i];
 
 			s_Data.QuadVertexBufferPtr->TexIndex = state.TextureIndex;
@@ -617,6 +647,16 @@ namespace GT
 		}
 		//std::cout << textureIndex << '\n';
 		return textureIndex;
+	}
+
+	void Renderer2D::SetTextureCoords(glm::vec2 offset, glm::vec2 size)
+	{
+		auto TopLeft = offset;
+		auto BottomRight = offset + size;
+		quadState.TexCoords[0] = { TopLeft.x,TopLeft.y };
+		quadState.TexCoords[1] = { BottomRight.x,TopLeft.y };
+		quadState.TexCoords[2] = { BottomRight.x,BottomRight.y };
+		quadState.TexCoords[3] = { TopLeft.x,BottomRight.y };
 	}
 
 

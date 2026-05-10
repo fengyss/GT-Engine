@@ -151,7 +151,9 @@ namespace GT {
         }
 
         // 写入文件（4空格缩进，更易读）
-        std::filesystem::path path = filepath.parent_path() / filepath.stem() += std::filesystem::path(".json");
+        std::filesystem::path path = filepath;
+        path.replace_extension(".json");
+
         std::ofstream file(path);
         if (!file.is_open()) return false;
 

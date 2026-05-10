@@ -2,6 +2,7 @@
 #include "Camera.h"
 #include "EditorCamera.h"
 #include "OrthographicCamera.h"
+#include "GT/Scene/Components.h"
 
 #include "Shader.h"
 #include "Texture.h"
@@ -57,6 +58,7 @@ namespace GT
 
 		static void DrawQuad(const glm::mat4& transform, const glm::vec4& color);
 		static void DrawQuad(const glm::mat4& transform, const glm::vec4& color, const Ref<Texture2D>& texture, int tilingfactor = 1);
+		static void DrawQuad(const glm::mat4& transform, const SpriteRendererComponent& sprite);
 		static void DrawCube(const glm::mat4& transform, const glm::vec4& color);
 		static void DrawCube(const glm::mat4& transform, const glm::vec4& color, const Ref<Texture2D>& texture);
 		static void DrawCircle(const glm::mat4& transform, const glm::vec4& color, float thickness = 1.0f, float fade = 0.005f);
@@ -66,6 +68,7 @@ namespace GT
 
 
 		static float GetTextureSlotIndex(const Ref<Texture2D>& texture);
+		static void SetTextureCoords(glm::vec2 offset = {0.0f,0.0f}, glm::vec2 size = {1.0f,1.0f});
 
 		static void DrawLine(const glm::vec3& p0, glm::vec3& p1, const glm::vec4& color);
 

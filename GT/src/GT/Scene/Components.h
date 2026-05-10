@@ -92,12 +92,15 @@ namespace GT
         operator const glm::vec4& () const { return Color; }
     };
 
-    // 粒子发射器组件（纯数据）
     struct ParticleComponent {
 		bool IsEmitting = true;
         bool IsRegen = false;
 
 		ParticleEmitterConfig Config;
+
+        // 待用
+        std::function<void(Particle&)> init_func;
+        std::function<void(Particle&)> update_func;
 
         ParticleComponent() = default;
 		ParticleComponent(const ParticleComponent&) = default;
@@ -106,15 +109,15 @@ namespace GT
         };
     };
 
-    struct CubeRendererComponent
+    struct LightRendererComponent
     {
-        const char* name = "Cube Renderer";
+        const char* name = "Light Renderer";
         glm::vec4 Color = { 1.0f, 1.0f, 1.0f, 1.0f };
         RefHandle<Texture2D> texture;
 
-        CubeRendererComponent() = default;
-        CubeRendererComponent(const CubeRendererComponent&) = default;
-        CubeRendererComponent(const glm::vec4 color)
+        LightRendererComponent() = default;
+        LightRendererComponent(const LightRendererComponent&) = default;
+        LightRendererComponent(const glm::vec4 color)
             :Color(color) {
         }
 
@@ -273,7 +276,7 @@ namespace GT
     struct Animator2DComponent
     {
         // 当前播放的动画
-        RefHandle<AnimationClip> CurrentAnimationHandle;
+        Ref<AnimationClip> CurrentAnimation;
 
         // 运行时状态
         float CurrentTime = 0.0f;
@@ -285,8 +288,8 @@ namespace GT
 
         // 构造函数
         Animator2DComponent() = default;
-        Animator2DComponent(RefHandle< AnimationClip> animHandle)
-            : CurrentAnimationHandle(animHandle) {
+        Animator2DComponent(Ref< AnimationClip> anim)
+            : CurrentAnimation(anim) {
         }
     };
 

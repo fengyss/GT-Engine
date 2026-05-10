@@ -321,14 +321,14 @@ namespace GT
 						else src.model = CreateRef<Model>(modelPath);
 				}
 
-				auto cubeComponent = entity["CubeComponent"];
-				if (cubeComponent)
+				auto lightComponent = entity["LightComponent"];
+				if (lightComponent)
 				{
-					auto& src = deserializedEntity.AddComponent<CubeRendererComponent>();
-					src.Color = cubeComponent["Color"].as<glm::vec4>();
-					if (cubeComponent["TexturePath"])
+					auto& src = deserializedEntity.AddComponent<LightRendererComponent>();
+					src.Color = lightComponent["Color"].as<glm::vec4>();
+					if (lightComponent["TexturePath"])
 					{
-						std::filesystem::path texturePath = cubeComponent["TexturePath"].as<std::string>();
+						std::filesystem::path texturePath = lightComponent["TexturePath"].as<std::string>();
 						//auto path = Project::GetAssetFileSystemPath(texturePath);
 						if (!std::filesystem::exists(texturePath))
 							GT_CORE_ERROR("Texture file '{0}' does not exist", texturePath.string());
@@ -579,15 +579,15 @@ namespace GT
 			out << YAML::EndMap; 
 		}
 
-		if (entity.HasComponent<CubeRendererComponent>())
+		if (entity.HasComponent<LightRendererComponent>())
 		{
-			out << YAML::Key << "CubeComponent";
+			out << YAML::Key << "LightComponent";
 			out << YAML::BeginMap; // CubeComponent
 
-			auto& cubeComponent = entity.GetComponent<CubeRendererComponent>();
-			out << YAML::Key << "Color" << YAML::Value << cubeComponent.Color;
-			if (cubeComponent.texture)
-				out << YAML::Key << "TexturePath" << YAML::Value << cubeComponent.texture->GetPath().string();
+			auto& lightComponent = entity.GetComponent<LightRendererComponent>();
+			out << YAML::Key << "Color" << YAML::Value << lightComponent.Color;
+			if (lightComponent.texture)
+				out << YAML::Key << "TexturePath" << YAML::Value << lightComponent.texture->GetPath().string();
 
 			out << YAML::EndMap; // CubeComponent
 		}

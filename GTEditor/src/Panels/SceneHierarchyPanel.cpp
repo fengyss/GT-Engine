@@ -360,7 +360,7 @@ namespace GT
 			AddComponentButton<Rigidbody2DComponent>("Rigidbody 2D", e);
 			AddComponentButton<BoxCollider2DComponent>("Box Collider 2D", e);
 			AddComponentButton<CircleCollider2DComponent>("Circle Collider 2D", e);
-			AddComponentButton<CubeRendererComponent>("Cube Renderer", e);
+			AddComponentButton<LightRendererComponent>("Light Renderer", e);
 			AddComponentButton<ModelComponent>("Model Renderer", e);
 			AddComponentButton<ParticleComponent>("Particle Renderer", e);
 
@@ -480,6 +480,11 @@ namespace GT
 					ImGui::EndDragDropTarget();
 				}
 
+				if (component.texture)
+				{
+					ImGui::DragFloat2("Offset", glm::value_ptr(component.UVOffset), 0.01f, 0.0f, 1.0f);
+					ImGui::DragFloat2("Size", glm::value_ptr(component.UVSize), 0.1f, 0.0f, 1.0f);
+				}
 
 				ImGui::SliderInt("Tiling Factor", &component.TilingFactor, 1, 10);
 			});
@@ -536,7 +541,7 @@ namespace GT
 				ImGui::DragFloat("Restitution Threshold", &component.RestitutionThreshold, 0.01f, 0.0f);
 			});
 
-		DrawComponent<CubeRendererComponent>("Cube Renderer", e, [](auto& component)
+		DrawComponent<LightRendererComponent>("Light Renderer", e, [](auto& component)
 			{
 				ImGui::ColorEdit4("Render Color", glm::value_ptr(component.Color));
 				const char* name = "None";

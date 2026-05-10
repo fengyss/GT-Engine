@@ -227,8 +227,7 @@ namespace GT
                 Renderer2D::SetCurrentEntityID(int(entity));
                 auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
 
-                if (sprite.texture) Renderer2D::DrawQuad(transform.GetTransform(), sprite.Color, sprite.texture->Get(), sprite.TilingFactor);
-                else Renderer2D::DrawQuad(transform.GetTransform(), sprite.Color);
+                Renderer2D::DrawQuad(transform.GetTransform(), sprite);
                 Renderer2D::SetCurrentEntityID(-1);
             }
         }
@@ -245,17 +244,17 @@ namespace GT
         }
         // Render all cubes
         {
-            auto view = m_Registry.view<TransformComponent, CubeRendererComponent>();
+            auto view = m_Registry.view<TransformComponent, LightRendererComponent>();
             for (auto entity : view)
             {
                 Renderer2D::SetCurrentEntityID(int(entity));
-                auto [transform, cube] = view.get<TransformComponent, CubeRendererComponent>(entity);
+                auto [transform, light] = view.get<TransformComponent, LightRendererComponent>(entity);
 
-                if (cube.texture) Renderer2D::DrawCube(transform.GetTransform(), cube.Color, cube.texture->Get());
-                else Renderer2D::DrawCube(transform.GetTransform(), cube.Color);
+                if (light.texture) Renderer2D::DrawCube(transform.GetTransform(), light.Color, light.texture->Get());
+                else Renderer2D::DrawCube(transform.GetTransform(), light.Color);
                 Renderer2D::SetCurrentEntityID(-1);
 
-				Renderer3D::SetLight(transform.Translation, glm::vec3(cube.Color.r, cube.Color.g, cube.Color.b));
+				Renderer3D::SetLight(transform.Translation, glm::vec3(light.Color.r, light.Color.g, light.Color.b));
             }
         }
         // Render all particles
@@ -435,6 +434,7 @@ namespace GT
     }
     void Scene::DestroyEntity(Entity e)
     {
+        if (e.HasComponent<ParticleComponent>()) e.RemoveComponent<ParticleComponent>();
         m_Registry.destroy(e);
     }
 
@@ -531,7 +531,7 @@ namespace GT
     }
 
     template<>
-    void Scene::OnComponentAdded<CubeRendererComponent>(Entity entity, CubeRendererComponent& component)
+    void Scene::OnComponentAdded<LightRendererComponent>(Entity entity, LightRendererComponent& component)
     {
     }
 
@@ -606,7 +606,7 @@ namespace GT
     }
 
     template<>
-    void Scene::OnComponentRemoved<CubeRendererComponent>(Entity entity, CubeRendererComponent& component)
+    void Scene::OnComponentRemoved<LightRendererComponent>(Entity entity, LightRendererComponent& component)
     {
     }
 
