@@ -7,7 +7,9 @@
 
     3. 将 CubeComponent 改名为 LightComponent。
 
-    3. 添加2D动画系统，根据SpritRendererComponent纹理地址获取 描述动画的json文件。
+    4. 添加2D动画系统，根据SpritRendererComponent纹理地址获取 描述动画的json文件。
+
+    5. 为粒子添加 Billboard 功能。
 
 25.5.9 ： 
 
