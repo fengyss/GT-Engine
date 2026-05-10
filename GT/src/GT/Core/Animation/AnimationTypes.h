@@ -33,7 +33,7 @@ namespace GT {
         AnimationClip(const std::string& name, float duration)
             : m_Name(name), m_Duration(duration), m_Loop(true) {
         }
-        void ImportSpriteSheet(const std::filesystem::path& texPath);
+        bool ImportSpriteSheet(const std::filesystem::path& texPath);
 
         // 帧动画接口
         //void AddFrame(const SpriteFrame& frame, float duration)
@@ -41,12 +41,7 @@ namespace GT {
         //    m_Frames.push_back(frame);
         //    m_FrameDurations.push_back(duration);
         //}
-        void AddFrame(const SpriteRegion& frame, float duration=0.0f)
-        {
-            count++;
-            m_Frames.push_back(frame);
-            m_FrameDurations.push_back(duration);
-        }
+        void AddFrame(const SpriteRegion& frame, float duration = 0.0f);
 
         // 骨骼动画接口 (可选)
         //void SetSkeletonData(RefHandle<> skeletonHandle) { m_SkeletonHandle = skeletonHandle; }

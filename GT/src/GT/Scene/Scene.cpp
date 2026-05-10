@@ -555,7 +555,7 @@ namespace GT
     {
         component.CurrentAnimation = CreateRef<AnimationClip>(component.name, component.duration);
         auto& path = entity.GetComponent<SpriteRendererComponent>().texture->GetPath();
-        component.CurrentAnimation->ImportSpriteSheet(path);
+        component.isEnable = component.CurrentAnimation->ImportSpriteSheet(path);
     }
     
 

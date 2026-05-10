@@ -15,7 +15,7 @@ namespace GT {
         {
             auto [animator, sprite] = view.get<Animator2DComponent, SpriteRendererComponent>(entity);
 
-            //if (!animator.isEnable) continue;
+            if (!animator.isEnable) continue;
 
             Ref<AnimationClip> clip = animator.CurrentAnimation;
             if (!clip || clip->GetFrames().empty())
