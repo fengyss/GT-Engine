@@ -4,6 +4,7 @@
 
 > **GT Engine** (Game Toolkit) 是一个基于 **[The Cherno 的 Hazel 引擎](https://github.com/TheCherno/Hazel)** 进行修改与重构的 **学习研究型项目**。
 
+![Lines of Code](./loc-badge.svg)
 
 ## 📖 项目介绍
 
