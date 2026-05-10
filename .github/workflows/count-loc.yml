@@ -1,18 +1,16 @@
 name: Generate LOC Badge
 on:
   push:
-    branches: [main, master] # 推送到主分支时触发
-  workflow_dispatch: # 允许在 GitHub 网页端手动触发
+    branches: [main, master]
+  workflow_dispatch:
 
-# 关键：显式赋予 Action 向仓库写入文件的权限
 permissions:
   contents: write
 
 jobs:
   loc_job:
     runs-on: ubuntu-latest
-    timeout-minutes: 10 # 关键：如果 10 分钟内没跑完直接终止，防止卡死
-    name: Count lines of code and generate badge
+    timeout-minutes: 5
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -23,20 +21,18 @@ jobs:
         with:
           output-filename: loc-badge.svg
           color: blue
-          # 关键：只统计你关心的代码文件，避免统计图片、视频等二进制文件导致脚本卡死
-          patterns: |
-            *.cpp
-            *.h
-          # 关键：排除不需要的目录
+          # 关键修正：使用 scan-directories 而不是 patterns
+          # 默认是扫描根目录，通常不需要改
+          scan-directories: "." 
           exclude-directories: |
-            vendor
-            docs
-            .github
+            node_modules
+            dist
+            build
             .git
+            .github
 
       - name: Commit and push badge
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           file_pattern: loc-badge.svg
           commit_message: "chore: update loc badge [skip ci]"
-          skip_fetch: true # 加速推送过程
