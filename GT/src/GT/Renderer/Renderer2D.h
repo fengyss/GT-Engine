@@ -4,7 +4,7 @@
 #include "OrthographicCamera.h"
 
 #include "Shader.h"
-#include "Texture2D.h"
+#include "Texture.h"
 namespace GT
 {
 

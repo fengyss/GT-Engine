@@ -20,6 +20,8 @@ project "GTEditor"
 
 	includedirs
 	{
+		
+		"%{wks.location}/GTEditor/src",
 		"%{wks.location}/GT/vendor/spdlog/include",
 		"%{wks.location}/GT/src",
 		"%{wks.location}/GT/vendor",

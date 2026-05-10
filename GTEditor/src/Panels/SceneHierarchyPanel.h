@@ -9,7 +9,7 @@ namespace GT
 	class SceneHierarchyPanel
 	{
 	public:
-		SceneHierarchyPanel() {};
+		SceneHierarchyPanel() = default;
 		SceneHierarchyPanel(const Ref<Scene>& context);
 
 		void SetContext(const Ref<Scene>& context);

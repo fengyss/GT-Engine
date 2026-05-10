@@ -1,5 +1,5 @@
 #pragma once
-#include "GT/Renderer/Texture2D.h"
+#include "GT/Renderer/Texture.h"
 
 namespace GT
 {

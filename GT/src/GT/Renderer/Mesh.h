@@ -2,7 +2,7 @@
 
 #include "Shader.h"
 
-#include "Texture2D.h"
+#include "Texture.h"
 #include "VertexArray.h"
 
 #include <string>

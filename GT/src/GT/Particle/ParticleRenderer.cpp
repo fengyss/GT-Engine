@@ -2,7 +2,7 @@
 #include "ParticleRenderer.h"
 #include "GT/Renderer/Renderer.h"
 #include "GT/Renderer/Shader.h"
-#include "GT/Renderer/Texture2D.h"
+#include "GT/Renderer/Texture.h"
 #include "GT/Renderer/Buffer.h"
 #include <glm/gtc/matrix_transform.hpp>
 #define GLM_ENABLE_EXPERIMENTAL

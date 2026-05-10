@@ -1,6 +1,7 @@
 #include "GT.h"
-#include"Panels/SceneHierarchyPanel.h"
+#include "Panels/SceneHierarchyPanel.h"
 #include "Panels/ContentBrowserPanel.h"
+#include "Panels/SpriteSheetPanel.h"
 #include "GT/Project/Project.h"
 #include "GT/Renderer/Model.h"
 #include "imgui/imgui.h"
@@ -26,6 +27,9 @@ namespace GT
 		void OnToolbarRender();
 		void OnViewportRender();
 		void OnImGuizmoRender();
+
+		void OnSceneHierarchyPanelRender();
+		void OnSpriteSheetPanelRender();
 
 		void OnScenePlay();
 		void OnSceneSimulate();
@@ -96,8 +100,9 @@ namespace GT
 
 		int m_GizmoType = ImGuizmo::OPERATION::TRANSLATE; 
 
-		SceneHierarchyPanel m_SceneHierarchyPanel;
+		Scope<SceneHierarchyPanel> m_SceneHierarchyPanel;
 		Scope<ContentBrowserPanel> m_ContentBrowserPanel;
+		Scope<SpriteSheetPanel> m_SpriteSheetPanel;
 
 		Ref<Project> m_Project;
 

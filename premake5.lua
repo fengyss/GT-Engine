@@ -33,6 +33,7 @@ group "Dependencies"
 	include "GT/vendor/ImGui"
 	include "GT/vendor/yaml-cpp"
 	include "GT/vendor/efsw"
+	include "GT/vendor/json"
 group ""
 
 group "Core"

@@ -56,6 +56,8 @@ namespace GT
 
 		return std::string();
 	}
+
+	
 	
 	float Time::GetTime()
 	{

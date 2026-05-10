@@ -8,6 +8,8 @@
 #include "GT/Renderer/Renderer3D.h"
 #include "GT/Particle/ParticleSystem.h"
 
+#include "Panels/SpriteSheetPanel.h"
+
 namespace GT
 {
 	EditorLayer::EditorLayer()
@@ -38,11 +40,13 @@ namespace GT
 		m_ViewportSize = { fbSpec.Width,fbSpec.Height };
 
 
+		m_SceneHierarchyPanel = CreateScope<SceneHierarchyPanel>();
 
 		CreateNewEditorScene();
 
 		SetActiveScene(m_EditorScene);
-		m_SceneHierarchyPanel.SetContexts(m_SceneHistory);
+
+		m_SceneHierarchyPanel->SetContexts(m_SceneHistory);
 
 		OpenProject("project/default.hproj");
 
@@ -60,6 +64,7 @@ namespace GT
 			serializer.Deserialize(std::filesystem::path(sceneFilePath));
 		}
 
+		m_SpriteSheetPanel = CreateScope<SpriteSheetPanel>();
 
 	}
 
@@ -216,33 +221,14 @@ namespace GT
 			ImGui::End();
 		}
 
-		m_SceneHierarchyPanel.OnImGuiRender();
-		if (m_SceneHierarchyPanel.IsDeletedActiveContext())
-		{
-			m_SceneHistory.erase(std::remove(m_SceneHistory.begin(), m_SceneHistory.end(), m_ActiveScene), m_SceneHistory.end());
-
-			if (m_SceneHistory.size() != 0)
-			{
-				m_EditorScene = m_SceneHistory.back();
-				SetActiveScene(m_EditorScene);
-			}
-			else
-			{
-				CreateNewEditorScene();
-				SetActiveScene(m_EditorScene);
-			}
-		}
-		else m_SceneHistory.erase(std::remove(m_SceneHistory.begin(), m_SceneHistory.end(), m_SceneHierarchyPanel.GetDeletedContext()), m_SceneHistory.end());
-
-		if(m_SceneHierarchyPanel.IsSetNewActiveContext())
-		{
-			m_EditorScene = m_SceneHierarchyPanel.GetActiveContext();
-			SetActiveScene(m_EditorScene);
-		}
+		
+		OnSceneHierarchyPanelRender();
 
 		m_ContentBrowserPanel->OnImGuiRender();
 
 		OnStatusBarRender();
+
+		OnSpriteSheetPanelRender();
 
 		if (dockspaceOpen)
 		{
@@ -254,7 +240,7 @@ namespace GT
 
 	void EditorLayer::OnMenuBarRender()
 	{
-		if (ImGui::BeginMenuBar())
+		if (ImGui::BeginMainMenuBar())
 		{
 			if (ImGui::BeginMenu("File"))
 			{
@@ -291,7 +277,18 @@ namespace GT
 				ImGui::EndMenu();
 			}
 
-			ImGui::EndMenuBar();
+			if (ImGui::BeginMenu("Tools"))
+			{
+				// µã»÷²Ëµ¥ÏîÇÐ»»ÏÔÊ¾×´Ì¬
+				if (ImGui::MenuItem("Sprite Sheet Cropper", "..."))
+				{
+					m_SpriteSheetPanel->Open();
+				}
+				ImGui::EndMenu();
+			}
+
+
+			ImGui::EndMainMenuBar();
 		}
 	}
 	float dis = 10.0f;
@@ -399,6 +396,7 @@ namespace GT
 
 		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 
+
 		ImGui::End();
 	}
 	void EditorLayer::OnToolbarRender()
@@ -438,7 +436,7 @@ namespace GT
 				else if (m_SceneState == SceneState::Play)
 					OnSceneStop();
 
-				m_SceneHierarchyPanel.SetSelectedEntity({});
+				m_SceneHierarchyPanel->SetSelectedEntity({});
 			}
 		}
 
@@ -556,7 +554,7 @@ namespace GT
 	{
 		//m_GizmoType = ImGuizmo::OPERATION::ROTATE;
 			// Gizmo
-		Entity selectedEntity = m_SceneHierarchyPanel.GetSelectedEntity();
+		Entity selectedEntity = m_SceneHierarchyPanel->GetSelectedEntity();
 		if (selectedEntity)
 		{
 			ImGuizmo::SetOrthographic(false);
@@ -607,6 +605,41 @@ namespace GT
 		}
 	}
 
+	void EditorLayer::OnSceneHierarchyPanelRender()
+	{
+		m_SceneHierarchyPanel->OnImGuiRender();
+		if (m_SceneHierarchyPanel->IsDeletedActiveContext())
+		{
+			m_SceneHistory.erase(std::remove(m_SceneHistory.begin(), m_SceneHistory.end(), m_ActiveScene), m_SceneHistory.end());
+
+			if (m_SceneHistory.size() != 0)
+			{
+				m_EditorScene = m_SceneHistory.back();
+				SetActiveScene(m_EditorScene);
+			}
+			else
+			{
+				CreateNewEditorScene();
+				SetActiveScene(m_EditorScene);
+			}
+		}
+		else m_SceneHistory.erase(std::remove(m_SceneHistory.begin(), m_SceneHistory.end(), m_SceneHierarchyPanel->GetDeletedContext()), m_SceneHistory.end());
+
+		if (m_SceneHierarchyPanel->IsSetNewActiveContext())
+		{
+			m_EditorScene = m_SceneHierarchyPanel->GetActiveContext();
+			SetActiveScene(m_EditorScene);
+		}
+	}
+
+	void EditorLayer::OnSpriteSheetPanelRender()
+	{
+		if (m_SpriteSheetPanel->IsOpen())
+		{
+			m_SpriteSheetPanel->OnImGuiRender();
+		}
+	}
+
 	void EditorLayer::OnOverlayRender()
 	{
 		if (m_SceneState == SceneState::Play)
@@ -622,7 +655,7 @@ namespace GT
 		}
 
 		// Draw selected entity outline 
-		Entity selectedEntity = m_SceneHierarchyPanel.GetSelectedEntity();
+		Entity selectedEntity = m_SceneHierarchyPanel->GetSelectedEntity();
 		if (selectedEntity
 			&&!(selectedEntity.HasComponent<ModelComponent>() ||
 				selectedEntity.HasComponent<CubeRendererComponent>()))
@@ -681,7 +714,7 @@ namespace GT
 		m_ActiveScene = scene;
 		m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
 		m_HoveredEntity = Entity();
-		m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+		m_SceneHierarchyPanel->SetContext(m_ActiveScene);
 		ParticleSystem::SetActiveScene(m_ActiveScene);
 	}
 
@@ -791,8 +824,8 @@ namespace GT
 				
 				if (Input::IsKeyPressed(Key::LeftControl))
 				{
-					if (!m_HoveredEntity) m_SceneHierarchyPanel.SetSelectedEntity(Entity());
-					else m_SceneHierarchyPanel.SetSelectedEntity(m_HoveredEntity);
+					if (!m_HoveredEntity) m_SceneHierarchyPanel->SetSelectedEntity(Entity());
+					else m_SceneHierarchyPanel->SetSelectedEntity(m_HoveredEntity);
 				}
 				//GT_CORE_INFO("Mouse Button Left Pressed");
 				break;
@@ -817,7 +850,7 @@ namespace GT
 		m_Project = Project::Load(filepath);
 		m_SceneHistory.clear();
 		OpenScene(m_Project->GetAssetDirectory() / m_Project->GetConfig().StartScene);
-		m_SceneHierarchyPanel.SetContexts(m_SceneHistory);
+		m_SceneHierarchyPanel->SetContexts(m_SceneHistory);
 	}
 
 

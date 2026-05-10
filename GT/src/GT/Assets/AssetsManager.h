@@ -2,7 +2,7 @@
 #include "GT/Core/FileWatcher.h"
 #include "GT/Math/Math.h"
 #include "GT/Renderer/Shader.h"
-#include "GT/Renderer/Texture2D.h"
+#include "GT/Renderer/Texture.h"
 namespace GT
 {
 	class AssetsManager

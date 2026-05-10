@@ -29,7 +29,7 @@
 #include "GT/Renderer/VertexArray.h"
 #include "GT/Renderer/Buffer.h"
 #include "GT/Renderer/Shader.h"
-#include "GT/Renderer/Texture2D.h"
+#include "GT/Renderer/Texture.h"
 #include "GT/Renderer/Framebuffer.h"
 
 #include "GT/Renderer/EditorCamera.h"

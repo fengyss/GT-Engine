@@ -1,0 +1,56 @@
+#pragma once
+
+#include "GT/Core/Base.h"
+#include "GT/Assets/AssetsHandle.h"
+
+#include <string>
+#include <vector>
+#include <map>
+
+namespace GT {
+
+    // 2D 动画帧 (用于帧动画)
+    struct SpriteFrame
+    {
+        RefHandle<Texture2D> TextureHandle; // 指向 Texture2D 的句柄
+        glm::vec2   UVOffset;      // 纹理偏移 (如果是图集)
+        glm::vec2   UVSize;        // 纹理尺寸
+        glm::vec2   Pivot;         // 轴心点 (用于旋转)
+    };
+
+    // 动画剪辑 (Animation Clip)
+    // 可以是帧动画，也可以是骨骼动画的引用
+    class AnimationClip
+    {
+    public:
+        AnimationClip(const std::string& name, float duration)
+            : m_Name(name), m_Duration(duration), m_Loop(true) {
+        }
+
+        // 帧动画接口
+        void AddFrame(const SpriteFrame& frame, float duration)
+        {
+            m_Frames.push_back(frame);
+            m_FrameDurations.push_back(duration);
+        }
+
+        // 骨骼动画接口 (可选)
+        //void SetSkeletonData(RefHandle<> skeletonHandle) { m_SkeletonHandle = skeletonHandle; }
+
+        float GetTotalDuration() const { return m_Duration; }
+        const std::vector<SpriteFrame>& GetFrames() const { return m_Frames; }
+
+    private:
+        std::string m_Name;
+        float m_Duration;
+        bool  m_Loop;
+
+        // 帧动画数据
+        std::vector<SpriteFrame> m_Frames;
+        std::vector<float>       m_FrameDurations;
+
+        // 骨骼动画数据 (2D)
+        //RefHandle<> m_SkeletonHandle;
+    };
+
+}
