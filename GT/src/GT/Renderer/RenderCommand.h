@@ -36,6 +36,11 @@ namespace GT
 		{
 			s_RendererAPI->SetViewport(x, y, width, height);
 		}
+
+		inline static void SetBlendMode(BlendMode mode)
+		{
+			s_RendererAPI->SetBlendMode(mode);
+		}
 	private:
 		static RendererAPI* s_RendererAPI;
 	};

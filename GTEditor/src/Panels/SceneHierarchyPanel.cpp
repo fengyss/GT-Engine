@@ -621,6 +621,29 @@ namespace GT
 							currentType = i;
 							type = Types[i];
 							config.shape = EmitterShape(i);
+							component.IsRegen = true;
+						}
+						if (isSelected)
+							ImGui::SetItemDefaultFocus();
+					}
+					ImGui::EndCombo();
+				}
+
+				const char* Modes[] = { "None","Alpha","Additive","Multiply" };
+				const char* mode = Modes[int(config.blendMode)];
+				static int currentMode = 0;
+
+				if (ImGui::BeginCombo("##BlendMode", mode))
+				{
+					for (int i = 0; i < int(BlendMode::Count); i++)
+					{
+						bool isSelected = currentMode == i;
+						if (ImGui::Selectable(Modes[i], isSelected))
+						{
+							currentMode = i;
+							mode = Modes[i];
+							config.blendMode = BlendMode(i);
+							component.IsRegen = true;
 						}
 						if (isSelected)
 							ImGui::SetItemDefaultFocus();
@@ -630,6 +653,22 @@ namespace GT
 
 
 				ImGui::Checkbox("ReGenerate Particle", &component.IsRegen);
+
+				ImGui::Button("Texture");  //Target for drag and drop
+				if (ImGui::BeginDragDropTarget())
+				{
+					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
+					{
+						const wchar_t* path = (const wchar_t*)payload->Data;
+						std::filesystem::path filepath(path);
+						RefHandle<Texture2D> texture = CreateHandle<Texture2D>(filepath);
+
+						if (texture->Get()) component.texture = texture;
+						else GT_CORE_WARN("Could not load texture {0}", filepath.string());
+					}
+					ImGui::EndDragDropTarget();
+				}
+
 
 				switch (config.shape)
 				{

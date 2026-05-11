@@ -12,6 +12,7 @@ namespace GT {
     {
         m_Particles.resize(m_MaxParticles);
         //m_AvailableIndices.reserve(m_MaxParticles);
+        for (int i = 0;i < m_MaxParticles;i++) m_Particles[i] = CreateRef<Particle>();
 
         // 初始化可用索引队列（反向填充以提高缓存友好性）
         for (int32_t i = static_cast<int32_t>(m_MaxParticles) - 1; i >= 0; --i) {
@@ -42,22 +43,22 @@ namespace GT {
 
         std::lock_guard<std::mutex> lock(m_Mutex);
 
-        Particle& particle = m_Particles[index];
-        if (particle.lifeRemaining == 0.0f) {
+        Ref<Particle> particle = m_Particles[index];
+        if (particle->lifeRemaining == 0.0f) {
             return; // 已经回收
         }
-		particle.lifeRemaining = 0.0f; // 标记为无效
+		particle->lifeRemaining = 0.0f; // 标记为无效
         m_AvailableIndices.push(index);
         --m_ActiveCount;
     }
 
-    Particle& ParticlePool::GetNext()
+    Ref<Particle> ParticlePool::GetNext()
     {
         int32_t index = GetAvailableParticleIndex();
         if (index == -1) {
             // 池满时返回第一个粒子（循环使用）
             // 不在生成新粒子
-            static Particle dummy;
+            static Ref<Particle> dummy = CreateRef<Particle>();
             return dummy;
         }
         return m_Particles[index];
@@ -67,9 +68,9 @@ namespace GT {
     {
 
         for (auto& particle : GetParticles()) {
-            if (particle.lifeRemaining <= 0.0f)
+            if (particle->lifeRemaining <= 0.0f)
             {
-                particle.lifeRemaining = 0.0f;
+                particle->lifeRemaining = 0.0f;
             }
         }
     }
@@ -82,7 +83,7 @@ namespace GT {
         m_AvailableIndices = std::queue<int32_t>();
 
         for (int32_t i = static_cast<int32_t>(m_MaxParticles) - 1; i >= 0; --i) {
-            m_Particles[i].lifeRemaining = 0.0f;
+            m_Particles[i]->lifeRemaining = 0.0f;
             m_AvailableIndices.push(i);
         }
     }

@@ -477,6 +477,26 @@ namespace GT
 		Draw(quadState);
 	}
 
+	void Renderer2D::DrawParticleQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color, const Ref<Texture2D>& texture)
+	{
+		glm::vec3 center = position;
+		glm::vec3 right = cameraright * size.x;
+		glm::vec3 up = cameraup * size.y;
+		// Quad
+		quadState.Position[0] = center - right - up; // TL
+		quadState.Position[1] = center + right - up; // TR
+		quadState.Position[2] = center + right + up; // BR
+		quadState.Position[3] = center - right + up; // BL
+
+		quadState.Color = color;
+		quadState.TextureIndex = GetTextureSlotIndex(texture);
+		quadState.TilingFactor = 1.0f;
+		quadState.EntityID = s_CurrentEntityID;
+		SetTextureCoords();
+
+		Draw(quadState);
+	}
+
 	void Renderer2D::DrawQuad(const glm::mat4& transform, const glm::vec4& color, const Ref<Texture2D>& texture, int tilingfactor)
 	{
 		for (size_t i = 0; i < 4; i++)

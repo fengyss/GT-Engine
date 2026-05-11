@@ -98,6 +98,8 @@ namespace GT
 		bool IsEmitting = true;
         bool IsRegen = false;
 
+        RefHandle<Texture2D> texture;
+
 		ParticleEmitterConfig Config;
 
         // ´ıÓÃ

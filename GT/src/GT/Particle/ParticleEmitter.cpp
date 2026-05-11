@@ -16,7 +16,7 @@ namespace GT
 	}
 	void ParticleEmitter::Emit(uint32_t count) {
 		for (uint32_t i = 0; i < count; ++i) {
-			Particle& particle = m_ParticlePool->GetNext();
+			Ref<Particle> particle = m_ParticlePool->GetNext();
 			InitializeParticle(particle);
 		}
 	}
@@ -86,29 +86,29 @@ namespace GT
 		int index = -1;
 		for (auto& particle : m_ParticlePool->GetParticles()) {
 			index++;
-			if (particle.lifeRemaining <= 0.0f) continue;
+			if (particle->lifeRemaining <= 0.0f) continue;
 
 			// 位置更新
-			particle.position += particle.velocity * deltaTime;
+			particle->position += particle->velocity * deltaTime;
 
-			//particle.position.y -= 9.8f * deltaTime;
+			//particle->position.y -= 9.8f * deltaTime;
 
 			// 旋转更新
-			particle.rotation += particle.Rvelocity * deltaTime;
+			particle->rotation += particle->Rvelocity * deltaTime;
 
 			// 颜色衰减
-			//particle.color.a = std::max(0.0f, 1.0f - (particle.age / particle.life));
+			//particle->color.a = std::max(0.0f, 1.0f - (particle->age / particle->life));
 
 			// 大小衰减
-			particle.size = std::max(0.0f, std::min(particle.lifeRemaining,1.0f)) * m_Config.sizeStart;
+			particle->size = std::max(0.0f, std::min(particle->lifeRemaining,1.0f)) * m_Config.sizeStart;
 
 			// 速度衰减
-			particle.velocity *= std::min(particle.lifeRemaining, 1.0f);
+			particle->velocity *= std::min(particle->lifeRemaining, 1.0f);
 
 			// 生命周期检查
-			particle.lifeRemaining -= deltaTime;
+			particle->lifeRemaining -= deltaTime;
 
-			if (particle.lifeRemaining <= 0.0f)
+			if (particle->lifeRemaining <= 0.0f)
 			{
 				m_ParticlePool->ReturnParticle(index);
 			}
@@ -178,23 +178,23 @@ namespace GT
 		return radius * Random::OnUnitCircle();
 	}
 
-	void ParticleEmitter::InitializeParticle(Particle& particle)
+	void ParticleEmitter::InitializeParticle(Ref<Particle> particle)
 	{
 
-		particle.position = GenerateRandomPosition();
-		particle.velocity = GenerateRandomVelocity();
+		particle->position = GenerateRandomPosition();
+		particle->velocity = GenerateRandomVelocity();
 
-		particle.color = GenerateRandomColor();
-		particle.Rvelocity = GenerateRandomRotationVelocity();
+		particle->color = GenerateRandomColor();
+		particle->Rvelocity = GenerateRandomRotationVelocity();
 
-		particle.lifeRemaining = m_Config.lifetime;
-		particle.size = m_Config.sizeStart + (Random::NormalFloat() * m_Config.sizeVariance);
+		particle->lifeRemaining = m_Config.lifetime;
+		particle->size = m_Config.sizeStart + (Random::NormalFloat() * m_Config.sizeVariance);
 
 
 		m_InitParticleFunc(particle);
 
-		particle.position += m_Postion;
-		particle.size *= m_Scalar.x;
+		particle->position += m_Postion;
+		//particle->startsize *= m_Scalar.x;
 
 	}
 	void ParticleEmitter::SetRotation(const glm::vec3& roattion) {
@@ -202,35 +202,35 @@ namespace GT
 		glm::mat4 rotation = glm::toMat4(glm::quat(m_Rotation));
 		m_Direction = rotation * glm::vec4(m_Config.direction, 1.0f);
 	}
-	void ParticleEmitter::InitPointParticle(Particle& particle)
+	void ParticleEmitter::InitPointParticle(Ref<Particle> particle)
 	{
-		particle.position = glm::vec3(0.0f);
+		particle->position = glm::vec3(0.0f);
 		if (glm::length(m_Direction) == 0.0f) GT_CORE_ASSERT(false, "Dirction should not be 0!");
-		particle.velocity = m_Config.velocity * glm::normalize(m_Direction);
+		particle->velocity = m_Config.velocity * glm::normalize(m_Direction);
 	}
-	void ParticleEmitter::InitBoxParticle(Particle& particle)
+	void ParticleEmitter::InitBoxParticle(Ref<Particle> particle)
 	{
-		//particle.position = GenerateRandomPosition();
-		particle.position = glm::vec3(0.0f);
-		particle.velocity = m_Config.velocity * GenerateBoxRandomVec3();
+		//particle->position = GenerateRandomPosition();
+		particle->position = glm::vec3(0.0f);
+		particle->velocity = m_Config.velocity * GenerateBoxRandomVec3();
 	}
-	void ParticleEmitter::InitSphereParticle(Particle& particle)
+	void ParticleEmitter::InitSphereParticle(Ref<Particle> particle)
 	{
-		//particle.position = GenerateSphereRandomVec3();
-		particle.position = glm::vec3(0.0f);
-		particle.velocity = m_Config.velocity * GenerateSphereRandomVec3(m_Config.radius);
+		//particle->position = GenerateSphereRandomVec3();
+		particle->position = glm::vec3(0.0f);
+		particle->velocity = m_Config.velocity * GenerateSphereRandomVec3(m_Config.radius);
 	}
-	void ParticleEmitter::InitRingParticle(Particle& particle)
+	void ParticleEmitter::InitRingParticle(Ref<Particle> particle)
 	{
 		glm::vec2 dirction = GenerateCircleRandomVec2(m_Config.innerRadius);
 		glm::vec2 pos = Random::Range(m_Config.innerRadius, m_Config.outerRadius) * dirction;
 		glm::vec2 vel = m_Config.velocity * dirction;
-		particle.position = glm::vec3(pos.x, 0.0f, pos.y);
-		particle.velocity = glm::vec3(vel.x, 0.0f, vel.y);
+		particle->position = glm::vec3(pos.x, 0.0f, pos.y);
+		particle->velocity = glm::vec3(vel.x, 0.0f, vel.y);
 	}
-	void ParticleEmitter::InitConeParticle(Particle& particle)
+	void ParticleEmitter::InitConeParticle(Ref<Particle> particle)
 	{
-		particle.position = glm::vec3(0.0f);
+		particle->position = glm::vec3(0.0f);
 
 		float theta = Random::Range(0.0f, glm::two_pi<float>());
 		float coneAngle = glm::radians(m_Config.coneAngle);
@@ -250,6 +250,6 @@ namespace GT
 			glm::normalize(glm::cross(m_Direction, glm::cross(m_Direction, glm::vec3(0, 1, 0))))
 		);
 
-		particle.velocity = rotation * glm::vec3(x, y, z);
+		particle->velocity = glm::normalize(rotation * glm::vec3(x, y, z))*m_Config.velocity;
 	}
 }

@@ -13,7 +13,7 @@ namespace GT {
         ~ParticleSystem() = default;
 
         // 系统接口
-        static void OnUpdate(Timestep dt);
+        static void OnUpdate(Timestep dt, const glm::vec3& cameraPos);
         static void OnRender();
 
 		static void SetActiveScene(const Ref<Scene>& scene) { m_activeScene = scene; }
@@ -32,6 +32,7 @@ namespace GT {
 
     private:
         static std::unordered_map<uint32_t, Ref<ParticleEmitter>> m_Emitters;
+        static std::vector<Ref<Particle>> m_Particles;
 		static Ref<Scene> m_activeScene;
         static void ParallelUpdate(float deltaTime);
         static void SortParticlesByDistance(const glm::vec3& cameraPos);

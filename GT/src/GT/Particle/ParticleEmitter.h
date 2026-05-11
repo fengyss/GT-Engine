@@ -19,12 +19,12 @@ namespace GT {
         // 配置接口
         void SetConfig(const ParticleEmitterConfig& config) { m_Config = config; Init(); }
         const ParticleEmitterConfig& GetConfig() const { return m_Config; }
-		std::vector<Particle>& GetParticles() const { return m_ParticlePool->GetParticles(); }
+		std::vector<Ref<Particle>>& GetParticles() const { return m_ParticlePool->GetParticles(); }
 
         // Normally should not be called
         // if you need special init function for particle
         // you shouled set it to  ParticleEmitterConfig.init_func
-        void SetInitParticleFunc(std::function<void(Particle&)>& func) { m_InitParticleFunc = func; }
+        void SetInitParticleFunc(std::function<void(Ref<Particle>)>& func) { m_InitParticleFunc = func; }
 
         // ECS集成
         void OnUpdate(Timestep dt) ;
@@ -52,7 +52,7 @@ namespace GT {
         // will called at the end of InitializeParticle
         // and override all it influnced value
         // default function only decide pos and vel based on shape
-        std::function<void(Particle&)> m_InitParticleFunc;
+        std::function<void(Ref<Particle>)> m_InitParticleFunc;
 
         // 随机分布生成
         glm::vec3 GenerateRandomPosition();
@@ -65,11 +65,11 @@ namespace GT {
         glm::vec2 GenerateCircleRandomVec2(float radius);
 
         // 粒子初始化
-        void InitializeParticle(Particle& particle);
-        void InitPointParticle(Particle& particle);
-        void InitBoxParticle(Particle& particle);
-        void InitSphereParticle(Particle& particle);
-        void InitRingParticle(Particle& particle);
-        void InitConeParticle(Particle& particle);
+        void InitializeParticle(Ref<Particle> particle);
+        void InitPointParticle(Ref<Particle> particle);
+        void InitBoxParticle(Ref<Particle> particle);
+        void InitSphereParticle(Ref<Particle> particle);
+        void InitRingParticle(Ref<Particle> particle);
+        void InitConeParticle(Ref<Particle> particle);
     };
 } // namespace GT

@@ -1,5 +1,81 @@
 Scene: cube
 Entities:
+  - Entity: 4000559102581627405
+    TagComponent:
+      Tag: test
+      Type: None
+    TransformComponent:
+      Translation: [-57.01318, -68.68704, -45.666534]
+      Rotation: [1.8256145, -0, 0]
+      Scale: [9, 9.000001, 0.99999905]
+    SpriteRendererComponent:
+      Color: [1, 1, 1, 0.19215687]
+      TilingFactor: 1
+  - Entity: 10103489676936779165
+    TagComponent:
+      Tag: " Sheet"
+      Type: None
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [2, 2, 1]
+    SpriteRendererComponent:
+      Color: [1, 1, 1, 1]
+      TexturePath: project\assets\textures\Premium Charakter Spritesheet.png
+      TilingFactor: 1
+  - Entity: 9055524979973331075
+    TagComponent:
+      Tag: light
+      Type: None
+    TransformComponent:
+      Translation: [30.450457, 1.7886885, -23.798065]
+      Rotation: [-1.3776478, 0.94729185, -0.952516]
+      Scale: [1.0000026, 1, 1.0000001]
+    LightComponent:
+      Color: [1, 1, 1, 1]
+    ParticleComponent:
+      IsEmitting: true
+      EmitterShape: 4
+      Direction: [1, 0, 0]
+      Velocity: 4
+      Radius: 1
+      InUnitSphere: false
+      SpawnRate: 10
+      LifeTime: 10
+      InnerRadius: 0
+      OuterRadius: 1
+      ConeAngle: 31
+      Bursts:
+        - Time: 0
+          Count: 10
+          Cycles: 1
+          Interval: 1
+        - Time: 0
+          Count: 65
+          Cycles: 0
+          Interval: 1
+  - Entity: 6656075414192952750
+    TagComponent:
+      Tag: Floor
+      Type: None
+    TransformComponent:
+      Translation: [0, -153.8, 0]
+      Rotation: [1.5707964, 0, 0]
+      Scale: [999, 999, 1]
+    SpriteRendererComponent:
+      Color: [0.6509804, 0.6509804, 0.6509804, 1]
+      TexturePath: project\assets\textures\Checkerboard.png
+      TilingFactor: 10
+  - Entity: 5330123923738909701
+    TagComponent:
+      Tag: planet
+      Type: Model
+    TransformComponent:
+      Translation: [10.304332, -13.214531, -34.693516]
+      Rotation: [0, -0, 0]
+      Scale: [0.9999995, 0.99999917, 0.999998]
+    ModelComponent:
+      ModelPath: project\assets\obj\planet\planet.obj
   - Entity: 13154135276296640512
     TagComponent:
       Tag: camera
@@ -20,68 +96,3 @@ Entities:
         Offset: [0, 1.5, 0]
       Primary: true
       FixedAspectRatio: false
-  - Entity: 5330123923738909701
-    TagComponent:
-      Tag: planet
-      Type: Model
-    TransformComponent:
-      Translation: [10.304332, -13.214531, -34.693516]
-      Rotation: [0, -0, 0]
-      Scale: [0.9999995, 0.99999917, 0.999998]
-    ModelComponent:
-      ModelPath: project\assets\obj\planet\planet.obj
-  - Entity: 6656075414192952750
-    TagComponent:
-      Tag: Floor
-      Type: None
-    TransformComponent:
-      Translation: [0, -153.8, 0]
-      Rotation: [1.5707964, 0, 0]
-      Scale: [999, 999, 1]
-    SpriteRendererComponent:
-      Color: [0.6509804, 0.6509804, 0.6509804, 1]
-      TexturePath: project\assets\textures\Checkerboard.png
-      TilingFactor: 10
-  - Entity: 9055524979973331075
-    TagComponent:
-      Tag: light
-      Type: None
-    TransformComponent:
-      Translation: [-1.7919204, -17.775492, -44.805702]
-      Rotation: [0.94247776, 3.1363566, 0.7470009]
-      Scale: [0.9999748, 0.9999999, 0.99996686]
-    LightComponent:
-      Color: [1, 1, 1, 1]
-    ParticleComponent:
-      IsEmitting: true
-      EmitterShape: 0
-      Direction: [1, 0, 0]
-      Velocity: 34
-      Radius: 1
-      InUnitSphere: false
-      SpawnRate: 10
-      LifeTime: 5
-      InnerRadius: 0
-      OuterRadius: 1
-      ConeAngle: 0.3
-      Bursts:
-        - Time: 0
-          Count: 10
-          Cycles: 1
-          Interval: 1
-        - Time: 0
-          Count: 10
-          Cycles: 1
-          Interval: 1
-  - Entity: 10103489676936779165
-    TagComponent:
-      Tag: " Sheet"
-      Type: None
-    TransformComponent:
-      Translation: [0, 0, 0]
-      Rotation: [0, -0, 0]
-      Scale: [2, 2, 1]
-    SpriteRendererComponent:
-      Color: [1, 1, 1, 1]
-      TexturePath: project\assets\textures\Premium Charakter Spritesheet.png
-      TilingFactor: 1

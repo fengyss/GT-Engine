@@ -5,8 +5,9 @@
 namespace GT {
 	std::unordered_map<uint32_t, Ref<ParticleEmitter>> ParticleSystem::m_Emitters;
 	Ref<Scene> ParticleSystem::m_activeScene = nullptr;
+	std::vector<Ref<Particle>> ParticleSystem::m_Particles;
 
-	void ParticleSystem::OnUpdate(Timestep dt) {
+	void ParticleSystem::OnUpdate(Timestep dt, const glm::vec3& cameraPos) {
 		//ParallelUpdate(dt);
 		if (m_activeScene == nullptr) 
 		{
@@ -14,8 +15,14 @@ namespace GT {
 			return;
 		}
 		for (const auto& [entity, emitter] : m_Emitters) {
+
 			Entity e = { entity, m_activeScene.get() };
+
+			auto particle = e.GetComponent<ParticleComponent>();
+			if (particle.IsEmitting == false) continue;
+
 			auto trans = e.GetComponent<TransformComponent>();
+
 			emitter->SetPostion(trans.Translation);
 			emitter->SetRotation(trans.Rotation);
 			emitter->SetSaclar(trans.Scale);
@@ -23,6 +30,7 @@ namespace GT {
 			//m_TotalParticles += emitter->GetParticles().size();
 			//GT_CORE_INFO("Total Particles: {0}", m_TotalParticles);
 		}
+		//SortParticlesByDistance(cameraPos);
 
 	}
 	void ParticleSystem::OnRender() {
@@ -31,16 +39,20 @@ namespace GT {
 			GT_CORE_ERROR("Particle System didn't set current active scene!");
 			return;
 		}
-		//m_Renderer->BeginScene();
+
 		for (const auto& [entity, emitter] : m_Emitters) {
 			Entity e = { entity, m_activeScene.get() };
 
 			auto particle = e.GetComponent<ParticleComponent>();
 			if (particle.IsEmitting == false) continue;
 
-			ParticleRenderer::RenderParticles(emitter->GetParticles());
+			if(particle.texture) ParticleRenderer::RenderParticles(emitter->GetParticles(),particle.texture);
+			else ParticleRenderer::RenderParticles(emitter->GetParticles());
 		}
-		//m_Renderer->EndScene();
+
+		//for (auto p : m_Particles) {
+		//	ParticleRenderer::RenderParticle(p);
+		//}
 	}
 	Ref<ParticleEmitter> ParticleSystem::CreateEmitter(Entity& entity) {
 		
@@ -63,7 +75,26 @@ namespace GT {
 	void ParticleSystem::ParallelUpdate(float deltaTime) {
 		// 多线程更新粒子逻辑
 	}
-	void ParticleSystem::SortParticlesByDistance(const glm::vec3& cameraPos) {
-		// 根据摄像机位置排序粒子以正确渲染透明度
+	void ParticleSystem::SortParticlesByDistance(const glm::vec3& cameraPos) 
+	{
+		m_Particles.clear();
+		for (const auto& [entity, emitter] : m_Emitters)
+		{
+			Entity e = { entity, m_activeScene.get() };
+
+			auto particle = e.GetComponent<ParticleComponent>();
+			if (particle.IsEmitting == false) continue;
+
+			auto& particles = emitter->GetParticles();
+			for (auto& p : particles)
+			{
+				p->distanceToCamera = glm::length(cameraPos - p->position);
+			}
+			m_Particles.insert(m_Particles.end(), particles.begin(), particles.end());
+		}
+		std::sort(m_Particles.begin(), m_Particles.end(),
+			[](Ref<Particle> a, Ref<Particle> b) {
+				return a->distanceToCamera > b->distanceToCamera;
+			});
 	}
 } // namespace GT

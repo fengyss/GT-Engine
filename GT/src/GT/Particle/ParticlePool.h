@@ -17,20 +17,20 @@ namespace GT {
         // 回收粒子
         void ReturnParticle(int32_t index);
 
-        Particle& GetNext();
+        Ref<Particle> GetNext();
 
         // 批量操作
         void UpdateAll(float deltaTime);
         void Clear();
 
         // 直接访问粒子数据（用于GPU上传）
-        const std::vector<Particle>& GetParticles() const { return m_Particles; }
-        std::vector<Particle>& GetParticles() { return m_Particles; }
+        const std::vector<Ref<Particle>>& GetParticles() const { return m_Particles; }
+        std::vector<Ref<Particle>>& GetParticles() { return m_Particles; }
 
         size_t GetActiveCount() const { return m_ActiveCount; }
 
     private:
-        std::vector<Particle> m_Particles;
+        std::vector<Ref<Particle>> m_Particles;
         std::queue<int32_t> m_AvailableIndices;
         size_t m_MaxParticles;
         size_t m_ActiveCount = 0;

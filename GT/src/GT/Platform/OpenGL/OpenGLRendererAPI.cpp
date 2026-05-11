@@ -76,5 +76,41 @@ namespace GT
 	{
 		glLineWidth(width);
 	}
+
+
+	enum class BlendMode
+	{
+		None,
+		Alpha,
+		Additive,
+		Multiply
+	};
+	void OpenGLRendererAPI::SetBlendMode(BlendMode mode)
+	{
+		glEnable(GL_BLEND);
+		switch (mode)
+		{
+		case BlendMode::None:
+			glDisable(GL_BLEND);
+			break;
+		case BlendMode::Alpha:
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			break;
+
+		case BlendMode::Additive:
+			//glEnable(GL_BLEND);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE); // 
+			break;
+
+		case BlendMode::Multiply:
+			//glEnable(GL_BLEND);
+			glBlendFunc(GL_DST_COLOR, GL_ZERO);
+			break;
+
+		default:
+			glDisable(GL_BLEND);
+			break;
+		}
+	}
 }
 

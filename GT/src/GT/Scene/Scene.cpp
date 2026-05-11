@@ -306,7 +306,7 @@ namespace GT
 
             }
         }
-        ParticleSystem::OnUpdate(ts);
+        ParticleSystem::OnUpdate(ts,camera.GetPosition());
 
         Animation2DSystem::OnUpdate(this, ts);
 

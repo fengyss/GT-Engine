@@ -8,7 +8,8 @@ namespace GT {
         None,
         Alpha,          // SrcAlpha / OneMinusSrcAlpha
         Additive,       // One / One
-        Premultiplied   // One / OneMinusSrcAlpha
+        Multiply,
+        Count
     };
 
     enum class  EmitterShape
@@ -42,6 +43,8 @@ namespace GT {
         float size{ 1.0f };             // 4字节
         uint32_t textureIndex{ 0 };     // 4字节
         // 总计48字节，适合GPU缓冲区
+
+        float distanceToCamera = 0.0f;
     };
 
     // 发射器配置
@@ -56,7 +59,7 @@ namespace GT {
         // if false will be OnUnitSphere
         bool InUnitSphere = false;
 
-        std::function<void(Particle&)> init_func;
+        std::function<void(Ref<Particle>)> init_func;
         std::vector<ParticleBurst> bursts;
 
         // 发射参数
@@ -94,6 +97,6 @@ namespace GT {
 
         // 渲染参数
         std::string texturePath = "assets/textures/particle.png";
-        BlendMode blendMode = BlendMode::Additive;
+        BlendMode blendMode = BlendMode::None;
     };
 }

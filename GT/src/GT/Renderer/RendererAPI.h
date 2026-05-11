@@ -4,6 +4,8 @@
 
 namespace GT
 {
+	enum class BlendMode;
+
 	class RendererAPI
 	{
 	public:
@@ -24,6 +26,8 @@ namespace GT
 		virtual void DrawLines(const Ref<VertexArray>& vertexArray, uint32_t vertexCount) = 0;
 
 		virtual void SetLineWidth(float width) = 0;
+
+		virtual void SetBlendMode(BlendMode mode) = 0;
 		
 		
 		inline static API GetAPI() { return s_API; }
