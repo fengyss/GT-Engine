@@ -1,18 +1,38 @@
-name: Count Lines of Code
-on: [push, pull_request]
+name: Generate LOC Badge
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
 jobs:
   loc_job:
     runs-on: ubuntu-latest
-    name: A job to count lines of code and generate a badge
+    timeout-minutes: 5
     steps:
-      - uses: actions/checkout@v4
-      - id: counting
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Count lines and generate badge
+        id: counting
         uses: MikhailEpatko/loc-badge-action@v4.0.0
         with:
           output-filename: loc-badge.svg
-          color: blue # 可选：设置徽章颜色
+          color: blue
+          # 关键修正：使用 scan-directories 而不是 patterns
+          # 默认是扫描根目录，通常不需要改
+          scan-directories: "." 
+          exclude-directories: |
+            node_modules
+            dist
+            build
+            .git
+            .github
+
       - name: Commit and push badge
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           file_pattern: loc-badge.svg
-          commit_message: "chore: update loc badge"
+          commit_message: "chore: update loc badge [skip ci]"
