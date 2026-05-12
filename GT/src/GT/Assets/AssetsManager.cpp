@@ -2,7 +2,7 @@
 #include <filesystem>
 
 #include "AssetsManager.h"
-
+#include "GT/Renderer/Model.h"
 namespace GT
 {
 	Scope<FileWatcher> AssetsManager::s_FileWatcher;
@@ -14,6 +14,10 @@ namespace GT
 
     ShaderLibrary AssetsManager::m_ShaderLibrary;
     std::unordered_map<std::string, uint32_t> AssetsManager::m_ShadersCache;
+
+
+    ModelLibrary AssetsManager::m_ModelLibrary;
+    std::unordered_map<std::string, uint32_t> AssetsManager::m_ModelsCache;
 
     std::unordered_map<std::filesystem::path, std::vector<std::function<void()>>> AssetsManager::s_ReloadCallbacks;
 
@@ -109,6 +113,14 @@ namespace GT
         m_Paths.emplace(ID, path);
         return shader;
     }
+    Ref<Model> AssetsManager::LoadModel(const std::filesystem::path& path)
+    {
+        uint32_t ID = Math::fnv1a(path.string().c_str());
+        auto model = m_ModelLibrary.Load(ID, path);
+        m_ModelsCache.emplace(model->GetName(), ID);
+        m_Paths.emplace(ID, path);
+        return model;
+    }
     Ref<Shader> AssetsManager::LoadShader(const std::string& name, const std::filesystem::path& path)
     {
         uint32_t ID = Math::fnv1a(path.string().c_str());
@@ -118,10 +130,25 @@ namespace GT
         return shader;
     }
 
+    Ref<Model> AssetsManager::LoadModel(const std::string& name, const std::filesystem::path& path)
+    {
+        uint32_t ID = Math::fnv1a(path.string().c_str());
+        auto model = m_ModelLibrary.Load(ID, path);
+        m_ShadersCache.emplace(name, ID);
+        m_Paths.emplace(ID, path);
+        return model;
+    }
+
     Ref<Shader> AssetsManager::ReloadShader(const std::filesystem::path& path)
     {
         uint32_t ID = Math::fnv1a(path.string().c_str());
 		return m_ShaderLibrary.Reload(ID, path);
+    }
+
+    Ref<Model> AssetsManager::ReloadModel(const std::filesystem::path& path)
+    {
+        uint32_t ID = Math::fnv1a(path.string().c_str());
+        return m_ModelLibrary.Reload(ID, path);
     }
 
     Ref<Shader> AssetsManager::GetShader(const std::string& name)
@@ -130,6 +157,20 @@ namespace GT
         {
             uint32_t ID = m_ShadersCache[name];
             return m_ShaderLibrary.Get(ID);
+        }
+        else
+        {
+            GT_CORE_ERROR("Shader with name {0} not found!", name);
+            return nullptr;
+        }
+    }
+
+    Ref<Model> AssetsManager::GetModel(const std::string& name)
+    {
+        if (m_ShadersCache.find(name) != m_ShadersCache.end())
+        {
+            uint32_t ID = m_ModelsCache[name];
+            return m_ModelLibrary.Get(ID);
         }
         else
         {

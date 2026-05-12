@@ -571,7 +571,7 @@ namespace GT
 		DrawComponent<ModelComponent>("Model Renderer", e, [](auto& component)
 			{
 				if (!component.model) ImGui::Text("Model: %s", component.name);
-				else ImGui::Text("Model: %s", component.model->name.c_str());
+				else ImGui::Text("Model: %s", component.model->Get()->name.c_str());
 				ImGui::SameLine();
 				ImGui::Columns(1);
 				//ImGui::PushItemWidth(-1);
@@ -583,10 +583,10 @@ namespace GT
 					{
 						const wchar_t* path = (const wchar_t*)payload->Data;
 						std::filesystem::path filepath(path);
-						Ref<Model> model = CreateRef<Model>(filepath);
+						RefHandle<Model> model = CreateHandle<Model>(filepath);
 
-						if (model->isLoaded) component.model = model;
-						else GT_CORE_WARN("Could not load Model {0}", filepath.string());
+						component.model = model;
+						//GT_CORE_WARN("Could not load Model {0}", filepath.string());
 					}
 					ImGui::EndDragDropTarget();
 				}
@@ -654,20 +654,20 @@ namespace GT
 
 				ImGui::Checkbox("ReGenerate Particle", &component.IsRegen);
 
-				ImGui::Button("Texture");  //Target for drag and drop
-				if (ImGui::BeginDragDropTarget())
-				{
-					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
-					{
-						const wchar_t* path = (const wchar_t*)payload->Data;
-						std::filesystem::path filepath(path);
-						RefHandle<Texture2D> texture = CreateHandle<Texture2D>(filepath);
+				//ImGui::Button("Texture");  //Target for drag and drop
+				//if (ImGui::BeginDragDropTarget())
+				//{
+				//	if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
+				//	{
+				//		const wchar_t* path = (const wchar_t*)payload->Data;
+				//		std::filesystem::path filepath(path);
+				//		RefHandle<Texture2D> texture = CreateHandle<Texture2D>(filepath);
 
-						if (texture->Get()) component.texture = texture;
-						else GT_CORE_WARN("Could not load texture {0}", filepath.string());
-					}
-					ImGui::EndDragDropTarget();
-				}
+				//		if (texture->Get()) component.texture = texture;
+				//		else GT_CORE_WARN("Could not load texture {0}", filepath.string());
+				//	}
+				//	ImGui::EndDragDropTarget();
+				//}
 
 
 				switch (config.shape)

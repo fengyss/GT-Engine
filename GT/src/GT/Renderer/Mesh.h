@@ -7,9 +7,7 @@
 
 #include <string>
 #include <vector>
-#include "GT/Assets/AssetsManager.h"
 #include "GT/Assets/AssetsHandle.h"
-
 #define MAX_BONE_INFLUENCE 4
 
 struct Vertex {
@@ -39,12 +37,12 @@ namespace GT
         std::vector<Vertex>       vertices;
         std::vector<unsigned int> indices;
 
-        std::vector<Ref<AssetsHandle<Texture2D>>>    textures;
+        std::vector<RefHandle<Texture2D>>    textures;
         unsigned int VAO;
 
         // constructor
         Mesh() {};
-        Mesh(std::vector<Vertex> _vertices, std::vector<unsigned int> _indices, std::vector<Ref<AssetsHandle<Texture2D>>> _textures);
+        Mesh(std::vector<Vertex> _vertices, std::vector<unsigned int> _indices, std::vector<RefHandle<Texture2D>> _textures);
 
         // render the mesh
         void Draw(Ref<Shader> shader);

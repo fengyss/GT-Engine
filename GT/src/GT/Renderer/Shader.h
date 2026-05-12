@@ -1,10 +1,11 @@
 #pragma once
 #include <string>
 #include "glm/glm.hpp"
+#include "GT/Core/Asset/Asset.h"
 
 namespace GT
 {
-	class Shader
+	class Shader 
 	{
 	public:
 		virtual ~Shader() = default;

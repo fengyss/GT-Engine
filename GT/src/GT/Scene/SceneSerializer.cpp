@@ -318,7 +318,7 @@ namespace GT
 
 						if (!std::filesystem::exists(modelPath))
 							GT_CORE_ERROR("Model file '{0}' does not exist", modelPath);
-						else src.model = CreateRef<Model>(modelPath);
+						else src.model = CreateHandle<Model>(modelPath);
 				}
 
 				auto lightComponent = entity["LightComponent"];
@@ -574,7 +574,7 @@ namespace GT
 			out << YAML::BeginMap; 
 
 			auto& modelComponent = entity.GetComponent<ModelComponent>();
-				out << YAML::Key << "ModelPath" << YAML::Value << modelComponent.model->filepath.string();
+				out << YAML::Key << "ModelPath" << YAML::Value << modelComponent.model->Get()->filepath.string();
 
 			out << YAML::EndMap; 
 		}

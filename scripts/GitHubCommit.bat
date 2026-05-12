@@ -5,7 +5,7 @@ pause
 git add .
 pause
 
-git commit -m "misc: Test for line count."
+git commit -m "feat: Add Texture for Particle."
 pause
 
 git push -u origin main

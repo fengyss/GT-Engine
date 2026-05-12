@@ -279,7 +279,7 @@ namespace GT
 		s_Data.TextureSlotIndex = 1;
 		StartNewBatch();
 	}
-
+	glm::vec3 camerapos;
 	void Renderer2D::BeginScene(EditorCamera& camera)
 	{
 		GT_PROFILE_FUNCTION();
@@ -288,7 +288,7 @@ namespace GT
 		state = RendererState::BeginScene;
 
 		SetViewProjection(camera.GetViewProjection());
-
+		camerapos = camera.GetPosition();
 		
 		s_Data.TextureSlotIndex = 1;
 		StartNewBatch();
@@ -460,8 +460,14 @@ namespace GT
 	void Renderer2D::DrawParticleQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color)
 	{
 		glm::vec3 center = position;
-		glm::vec3 right = cameraright * size.x;
-		glm::vec3 up = cameraup * size.y;
+		//glm::vec3 right = cameraright * size.x;
+		//glm::vec3 up = cameraup * size.y;
+
+		glm::vec3 lookDir = glm::normalize(camerapos - position);
+
+		glm::vec3 right = glm::normalize(glm::cross(glm::vec3(0, 1, 0), lookDir));
+		glm::vec3 up = glm::normalize(glm::cross(lookDir, right));
+
 		// Quad
 		quadState.Position[0] = center - right - up; // TL
 		quadState.Position[1] = center + right - up; // TR

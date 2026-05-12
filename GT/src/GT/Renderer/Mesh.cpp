@@ -8,7 +8,7 @@ namespace GT
 {
 
     // constructor
-    Mesh::Mesh(std::vector<Vertex> _vertices, std::vector<unsigned int> _indices, std::vector<Ref<AssetsHandle<Texture2D>>> _textures)
+    Mesh::Mesh(std::vector<Vertex> _vertices, std::vector<unsigned int> _indices, std::vector<RefHandle<Texture2D>> _textures)
 		:vertices(_vertices), indices(_indices), textures(_textures)
     {
         setupMesh();

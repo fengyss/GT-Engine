@@ -45,8 +45,12 @@ namespace GT {
 
 			auto particle = e.GetComponent<ParticleComponent>();
 			if (particle.IsEmitting == false) continue;
-
-			if(particle.texture) ParticleRenderer::RenderParticles(emitter->GetParticles(),particle.texture);
+			if (e.HasComponent<SpriteRendererComponent>())
+			{
+				auto sprite = e.GetComponent<SpriteRendererComponent>();
+				if (sprite.texture) ParticleRenderer::RenderParticles(emitter->GetParticles(), sprite.texture);
+				else ParticleRenderer::RenderParticles(emitter->GetParticles());
+			}
 			else ParticleRenderer::RenderParticles(emitter->GetParticles());
 		}
 

@@ -5,6 +5,9 @@
 #include "GT/Renderer/Texture.h"
 namespace GT
 {
+	class Model;
+	class ModelLibrary;
+
 	class AssetsManager
 	{
 		public:
@@ -28,6 +31,11 @@ namespace GT
 				return LoadShader(path);
 			}
 
+			if constexpr (std::is_same_v<T, Model>)
+			{
+				return LoadModel(path);
+			}
+
 			GT_CORE_ASSERT(false, "Unsupported asset type");
 			return nullptr;
 		}
@@ -41,6 +49,9 @@ namespace GT
 
 			if constexpr (std::is_same_v<T, Shader>)
 				return ReloadShader(path);
+
+			if constexpr (std::is_same_v<T, Model>)
+				return ReloadModel(path);
 
 			GT_CORE_ASSERT(false, "Unsupported asset type");
 			return Ref<T>();
@@ -58,6 +69,8 @@ namespace GT
 				return GetTexture(name);
 			if constexpr (std::is_same_v<T, Shader>)
 				return GetShader(name);
+			if constexpr (std::is_same_v<T, Model>)
+				return GetModel(name);
 			GT_CORE_ASSERT(false, "Unsupported asset type");
 			return nullptr;
 		}
@@ -69,6 +82,8 @@ namespace GT
 				return m_Paths[m_TexturesCache[name]];
 			if constexpr (std::is_same_v<T, Shader>)
 				return m_Paths[m_ShadersCache[name]];
+			if constexpr (std::is_same_v<T, Model>)
+				return m_Paths[m_ModelsCache[name]];
 			GT_CORE_ASSERT(false, "Unsupported asset type");
 			return std::filesystem::path();
 		}
@@ -76,15 +91,19 @@ namespace GT
 	public:
 		static Ref<Texture2D> LoadTexture(const std::filesystem::path& path);
 		static Ref<Shader> LoadShader(const std::filesystem::path& path);
+		static Ref<Model> LoadModel(const std::filesystem::path& path);
 
 		static Ref<Texture2D> LoadTexture(const std::string& name, const std::filesystem::path& path);
 		static Ref<Shader> LoadShader(const std::string& name, const std::filesystem::path& path);
+		static Ref<Model> LoadModel(const std::string& name, const std::filesystem::path& path);
 
 		static Ref<Texture2D> ReloadTexture(const std::filesystem::path& path);
 		static Ref<Shader> ReloadShader(const std::filesystem::path& path);
+		static Ref<Model> ReloadModel(const std::filesystem::path& path);
 
 		static Ref<Texture2D> GetTexture(const std::string& name);
 		static Ref<Shader> GetShader(const std::string& name);
+		static Ref<Model> GetModel(const std::string& name);
 
 	private:
 
@@ -95,6 +114,10 @@ namespace GT
 
 		static TextureLibrary m_TextureLibrary;
 		static std::unordered_map<std::string, uint32_t> m_TexturesCache;
+
+
+		static ModelLibrary m_ModelLibrary;
+		static std::unordered_map<std::string, uint32_t> m_ModelsCache;
 
 		static ShaderLibrary m_ShaderLibrary;
 		static std::unordered_map<std::string, uint32_t> m_ShadersCache;

@@ -98,7 +98,6 @@ namespace GT
 		bool IsEmitting = true;
         bool IsRegen = false;
 
-        RefHandle<Texture2D> texture;
 
 		ParticleEmitterConfig Config;
 
@@ -132,7 +131,7 @@ namespace GT
     struct ModelComponent
     {
         const char* name = "Model Renderer";
-        Ref<Model> model;
+        RefHandle<Model> model;
 
         ModelComponent() = default;
         ModelComponent(const ModelComponent&) = default;

@@ -2,7 +2,7 @@
 #include "glm/glm.hpp"
 #include "GT/Core/Log.h"
 #include <string>
-
+#include "GT/Core/Asset/Asset.h"
 namespace GT
 {
 	struct TexCoords
@@ -85,6 +85,8 @@ namespace GT
 		static Ref<Texture2D> Create(const std::filesystem::path& path);
 		static Ref<Texture2D> Create(const int width,const int height);
 	};
+
+
 	class TextureLibrary
 	{
 	public:

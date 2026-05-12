@@ -84,7 +84,7 @@ namespace GT
 		}
 
 		int index = -1;
-		for (auto& particle : m_ParticlePool->GetParticles()) {
+		for (auto particle : m_ParticlePool->GetParticles()) {
 			index++;
 			if (particle->lifeRemaining <= 0.0f) continue;
 
@@ -103,7 +103,7 @@ namespace GT
 			particle->size = std::max(0.0f, std::min(particle->lifeRemaining,1.0f)) * m_Config.sizeStart;
 
 			// 速度衰减
-			particle->velocity *= std::min(particle->lifeRemaining, 1.0f);
+			particle->velocity = particle->velocity * std::max(0.1f,std::min(particle->lifeRemaining, 1.0f));
 
 			// 生命周期检查
 			particle->lifeRemaining -= deltaTime;

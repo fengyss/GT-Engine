@@ -280,7 +280,7 @@ namespace GT
                 if (!model.model) continue;
 
                 Renderer3D::SetCurrentEntityID(int(entity));
-				Renderer3D::DrawModel(transform.GetTransform(), model.model);
+				Renderer3D::DrawModel(transform.GetTransform(), model.model->Get());
                 Renderer3D::SetCurrentEntityID(-1);
 
             }

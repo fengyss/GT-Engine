@@ -154,7 +154,7 @@ namespace GT
             {   
                 std::filesystem::path texturePath = filepath.parent_path() / std::filesystem::path(std::string(path.C_Str()));
 
-                Ref<AssetsHandle<Texture2D>> handle = CreateRef<AssetsHandle<Texture2D>>(texturePath);
+                RefHandle<Texture2D> handle = CreateHandle<Texture2D>(texturePath);
                 textures.push_back(handle);
 
                 auto tex = handle->Get();
@@ -162,4 +162,41 @@ namespace GT
             }
         }
     }
+
+
+    void ModelLibrary::Add(uint32_t ID, const Ref<Model>& model)
+    {
+        m_Models[ID] = model;
+    }
+
+    Ref<Model> ModelLibrary::Load(uint32_t ID, const std::filesystem::path& filepath)
+    {
+        if (Exists(ID))
+        {
+            GT_CORE_INFO("Model {1} with ID {0} already loaded!", ID, filepath.filename().string());
+            return m_Models[ID];
+        }
+        else {
+            auto model = CreateRef<Model>(filepath);
+            Add(ID, model);
+            return model;
+        }
+    }
+    Ref<Model> ModelLibrary::Reload(uint32_t ID, const std::filesystem::path& filepath)
+    {
+        GT_CORE_WARN("Model {1} with ID {0} reloaded!", ID, filepath.filename().string());
+        m_Models[ID] = CreateRef<Model>(filepath);
+        return m_Models[ID];
+    }
+    Ref<Model> ModelLibrary::Get(uint32_t ID)
+    {
+        if (Exists(ID)) return m_Models[ID];
+        else
+        {
+            GT_CORE_ERROR("Model ID:{0} not found in library!", ID);
+            return nullptr;
+        }
+    }
+
+    
 }

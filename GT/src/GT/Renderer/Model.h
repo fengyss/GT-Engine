@@ -10,13 +10,6 @@
 
 #include "GT/Assets/AssetsHandle.h"
 
-//#include <string>
-//#include <fstream>
-//#include <sstream>
-//#include <iostream>
-//#include <map>
-//#include <vector>
-
 
 namespace GT
 {
@@ -24,8 +17,8 @@ namespace GT
     {
     public:
         // model data 
-        std::vector<Ref<AssetsHandle<Texture2D>>> textures;
-		Ref<AssetsHandle<Shader>> shader;
+        std::vector<RefHandle<Texture2D>> textures;
+		RefHandle<Shader> shader;
 
         
         std::vector<Mesh>    meshes;
@@ -50,7 +43,7 @@ namespace GT
 
         // draws the model, and thus all its meshes
         void Draw(const glm::mat4& transform);
-        void SetShader(Ref<AssetsHandle<Shader>> shader) {
+        void SetShader(RefHandle<Shader> shader) {
             this->shader = shader; 
             hasShader = true;
         }
@@ -65,6 +58,7 @@ namespace GT
         {
             return VertexCount;
 		}
+        const std::string& GetName() { return name; }
 
     private:
         // loads a model with supported ASSIMP extensions from file and stores the resulting meshes in the meshes vector.
@@ -79,6 +73,24 @@ namespace GT
         // the required info is returned as a Texture struct.
         std::vector<Ref<Texture>> loadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName);
         void Model::LoadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName);
+    };
+
+    class ModelLibrary
+    {
+    public:
+
+        Ref<Model> Load(uint32_t ID, const std::filesystem::path& filepath);
+        Ref<Model> Reload(uint32_t ID, const std::filesystem::path& filepath);
+        void Clear() { m_Models.clear(); }
+        Ref<Model> Get(uint32_t ID);
+
+        bool Exists(uint32_t ID) const
+        {
+            return m_Models.find(ID) != m_Models.end();
+        }
+    private:
+        void Add(uint32_t ID, const Ref<Model>& model);
+        std::unordered_map<uint32_t, Ref<Model>> m_Models;
     };
 
 }
