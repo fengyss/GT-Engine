@@ -127,5 +127,16 @@ namespace GT
 		static Ref<IndexBuffer> Create(uint32_t* vertices, uint32_t count);
 	private:
 	};
+
+	class StorageBuffer
+	{
+	public:
+		virtual ~StorageBuffer() = default;
+
+		virtual void SetData(const void* data, uint32_t size) = 0;
+		virtual void Bind(uint32_t slot = 0) = 0;
+
+		static Ref<StorageBuffer> Create(uint32_t size, const void* data);
+	};
 }
 

@@ -2,6 +2,7 @@
 #include "Model.h"
 #include "GT/Project/Project.h"
 #include "GT/Assets/AssetsHandle.h"
+
 namespace GT
 {
     TextureType GetTypeFromAssimpType(aiTextureType type)
@@ -19,10 +20,43 @@ namespace GT
         }
 	}
 
+    bool IsAABBInsidePlane(glm::vec4 plane, GPUAABB aabb)
+    {
+        glm::vec3 positive = aabb.Min;
+        if (plane.x >= 0) positive.x = aabb.Max.x;
+        if (plane.y >= 0) positive.y = aabb.Max.y;
+        if (plane.z >= 0) positive.z = aabb.Max.z;
+
+        return glm::dot(glm::vec3(plane), positive) + plane.w >= 0.0;
+    }
+
     void Model::Draw(const glm::mat4& transform)
     {
         for (unsigned int i = 0; i < meshes.size(); i++)
-            meshes[i].Draw(transform,shader->Get());
+        {
+            meshes[i].Draw(transform, shader->Get());
+        }
+    }
+
+    void Model::Draw(const glm::mat4& transform, const Frustum& frustum)
+    {
+        for (unsigned int i = 0; i < meshes.size(); i++)
+        {
+            bool visible = true;
+            GPUAABB aabb = { meshes[i].GetMin() ,meshes[i].GetMax() };
+            for (int p = 0;p < 6;p++)
+            {
+                glm::vec4 plane = {frustum.Planes[p].Normal, frustum.Planes[p].Distance};
+                if (!IsAABBInsidePlane(plane, aabb))
+                {
+                    visible = false;
+                    break;
+                }
+
+            }
+            if(visible)
+                meshes[i].Draw(transform, shader->Get());
+        }
     }
 
     // loads a model with supported ASSIMP extensions from file and stores the resulting meshes in the meshes vector.

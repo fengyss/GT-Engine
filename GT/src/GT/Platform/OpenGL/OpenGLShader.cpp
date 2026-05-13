@@ -49,24 +49,32 @@ namespace GT
 
 	// read file as binary
 	
-	OpenGLShader::OpenGLShader(std::filesystem::path& filepath)
+	OpenGLShader::OpenGLShader(const std::filesystem::path& filepath, ShaderType type)
 		:m_FilePath(filepath)
 	{
 		GT_PROFILE_FUNCTION();
 		std::string source = ReadFile(filepath);
-		auto shaderSources = PreProcessShader(source);
-		Compile(shaderSources);
+		
+		switch (type)
+		{
+		case ShaderType::Normal:
+		{
+			auto shaderSources = PreProcessShader(source);
+			Compile(shaderSources);
+		}
+			break;
+		case ShaderType::Compute:
+			CompileCompute(source);
+			break;
+		default:
+			GT_CORE_ASSERT(false, "Unknow ShaderType!");
+		};
+		
 
-		// assets/shaders/texture.glsl
-		/*auto lastSlash = filepath.find_last_of("/\\");
-		lastSlash = lastSlash == std::string::npos ? 0: lastSlash + 1;
-		auto lastDot = filepath.rfind('.');
-		auto count = lastDot == std::string::npos ? filepath.size() - lastSlash : lastDot - lastSlash;
-		m_Name = filepath.substr(lastSlash, count);*/
 		m_Name = filepath.stem().string();
 	}
 	
-	std::string OpenGLShader::ReadFile(std::filesystem::path& filepath)
+	std::string OpenGLShader::ReadFile(const std::filesystem::path& filepath)
 	{
 		GT_PROFILE_FUNCTION();
 		std::string result;
@@ -183,6 +191,49 @@ namespace GT
 	//	ShaderProgramSource source = ParseShader(filepath);
 	//	m_RendererID = CreateShader(source.VertexSource, source.FragmentSource);
 	//}
+
+	void OpenGLShader::CompileCompute(const std::string& source)
+	{
+		m_RendererID = glCreateProgram();
+		uint32_t compute = glCreateShader(GL_COMPUTE_SHADER);
+
+		const char* src = source.c_str();
+		glShaderSource(compute, 1, &src, nullptr);
+		glCompileShader(compute);
+
+		CheckCompileErrors(compute, "COMPUTE");
+
+		glAttachShader(m_RendererID, compute);
+		glLinkProgram(m_RendererID);
+		CheckCompileErrors(m_RendererID, "PROGRAM");
+
+		glDeleteShader(compute);
+	}
+
+	void OpenGLShader::CheckCompileErrors(uint32_t shader, const std::string& type)
+	{
+		int success;
+		char infoLog[1024];
+
+		if (type != "PROGRAM")
+		{
+			glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
+			if (!success)
+			{
+				glGetShaderInfoLog(shader, 1024, nullptr, infoLog);
+				GT_CORE_ERROR("Shader compilation error ({0}): {1}", type, infoLog);
+			}
+		}
+		else
+		{
+			glGetProgramiv(shader, GL_LINK_STATUS, &success);
+			if (!success)
+			{
+				glGetProgramInfoLog(shader, 1024, nullptr, infoLog);
+				GT_CORE_ERROR("Shader linking error ({0}): {1}", type, infoLog);
+			}
+		}
+	}
 
 	ShaderProgramSource OpenGLShader::ParseShader(std::filesystem::path& filepath)
 	{

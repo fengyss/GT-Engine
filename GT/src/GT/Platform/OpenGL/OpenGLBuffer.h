@@ -36,6 +36,20 @@ namespace GT
 		uint32_t m_RendererID;
 		uint32_t m_count;
 	};
+
+	class OpenGLStorageBuffer : public StorageBuffer
+	{
+	public:
+		OpenGLStorageBuffer(uint32_t size, const void* data);
+		~OpenGLStorageBuffer() = default;
+
+		void SetData(const void* data, uint32_t size) override;
+		void Bind(uint32_t slot = 0) override;
+
+	private:
+		uint32_t m_RendererID;
+		uint32_t m_Size;
+	};
 }
 
 

@@ -17,7 +17,11 @@ namespace GT {
 		for (const auto& [entity, emitter] : m_Emitters) {
 
 			Entity e = { entity, m_activeScene.get() };
-
+			if (!e.HasComponent<ParticleComponent>())
+			{
+				DestroyEmitter(e);
+				break;
+			}
 			auto particle = e.GetComponent<ParticleComponent>();
 			if (particle.IsEmitting == false) continue;
 

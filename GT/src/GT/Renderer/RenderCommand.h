@@ -41,6 +41,14 @@ namespace GT
 		{
 			s_RendererAPI->SetBlendMode(mode);
 		}
+		inline static void DispatchCompute(uint32_t groupsX, uint32_t groupsY, uint32_t groupsZ)
+		{
+			s_RendererAPI->DispatchCompute(groupsX, groupsY, groupsZ);
+		}
+		inline static void SetMemoryBarrier(MemoryBarrierType barrier)
+		{
+			s_RendererAPI->SetMemoryBarrier(barrier);
+		}
 	private:
 		static RendererAPI* s_RendererAPI;
 	};

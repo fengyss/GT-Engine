@@ -18,6 +18,9 @@ namespace GT
 		virtual void SetLineWidth(float width) override;
 
 		virtual void SetBlendMode(BlendMode mode) override;
+
+		virtual void DispatchCompute(uint32_t groupsX, uint32_t groupsY, uint32_t groupsZ) override;
+		virtual void SetMemoryBarrier(MemoryBarrierType barrier) override;
 	private:
 	};
 }

@@ -116,6 +116,10 @@ namespace GT
 		static std::unordered_map<std::string, uint32_t> m_TexturesCache;
 
 
+		//static AssetLibrary m_AssetLibrary;
+		//static std::unordered_map<std::string, uint32_t> m_AssetsCache;
+
+
 		static ModelLibrary m_ModelLibrary;
 		static std::unordered_map<std::string, uint32_t> m_ModelsCache;
 

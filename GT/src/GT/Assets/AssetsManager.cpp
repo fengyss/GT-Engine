@@ -21,6 +21,10 @@ namespace GT
 
     std::unordered_map<std::filesystem::path, std::vector<std::function<void()>>> AssetsManager::s_ReloadCallbacks;
 
+
+    //AssetLibrary AssetsManager::m_AssetLibrary;
+    //std::unordered_map<std::string, uint32_t> AssetsManager::m_AssetsCache;
+
     void AssetsManager::Init()
     {
 		s_FileWatcher = CreateScope<FileWatcher>(); 

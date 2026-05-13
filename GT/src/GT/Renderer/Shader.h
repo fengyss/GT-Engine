@@ -1,11 +1,17 @@
 #pragma once
 #include <string>
 #include "glm/glm.hpp"
-#include "GT/Core/Asset/Asset.h"
 
 namespace GT
 {
-	class Shader 
+	enum class ShaderType
+	{
+		Normal,
+		Compute,
+		Count
+	};
+
+	class Shader
 	{
 	public:
 		virtual ~Shader() = default;
@@ -31,8 +37,9 @@ namespace GT
 		virtual const std::string& GetName() const = 0;
 		virtual const std::filesystem::path& GetPath() const = 0;
 
-		static Ref<Shader> Create(std::filesystem::path filepath);
+		static Ref<Shader> Create(const std::filesystem::path& filepath);
 		static Ref<Shader> Create(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc);
+		static Ref<Shader> CreateCompute(const std::filesystem::path& filepath);
 
 	private:
 		uint32_t m_RendererID;

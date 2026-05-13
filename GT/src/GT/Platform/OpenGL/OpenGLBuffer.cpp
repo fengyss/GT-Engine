@@ -44,6 +44,8 @@ namespace GT
 		glBufferSubData(GL_ARRAY_BUFFER, 0, size, data);
 	}
 
+	
+
 	//// Index Buffer ////
 	OpenGLIndexBuffer::OpenGLIndexBuffer(float* vertices, uint32_t count)
 		:m_count(count)
@@ -75,5 +77,25 @@ namespace GT
 	{
 		GT_PROFILE_FUNCTION();
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	}
+
+
+	OpenGLStorageBuffer::OpenGLStorageBuffer(uint32_t size, const void* data)
+		: m_Size(size)
+	{
+		GLCall(glGenBuffers(1, &m_RendererID));
+		GLCall(glBindBuffer(GL_SHADER_STORAGE_BUFFER, m_RendererID));
+		GLCall(glBufferData(GL_SHADER_STORAGE_BUFFER, size, data, GL_DYNAMIC_DRAW));
+	}
+
+	void OpenGLStorageBuffer::SetData(const void* data, uint32_t size)
+	{
+		GLCall(glBindBuffer(GL_SHADER_STORAGE_BUFFER, m_RendererID));
+		GLCall(glBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, size, data));
+	}
+
+	void OpenGLStorageBuffer::Bind(uint32_t slot)
+	{
+		GLCall(glBindBufferBase(GL_SHADER_STORAGE_BUFFER, slot, m_RendererID));
 	}
 }

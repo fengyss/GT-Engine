@@ -2,7 +2,6 @@
 #include "glm/glm.hpp"
 #include "GT/Core/Log.h"
 #include <string>
-#include "GT/Core/Asset/Asset.h"
 namespace GT
 {
 	struct TexCoords
@@ -74,6 +73,7 @@ namespace GT
 		virtual void SetData(void* data, unsigned int size) = 0;
 
 		virtual bool operator==(const Texture& other) const = 0;
+
 
 	};
 	class Texture2D : public Texture

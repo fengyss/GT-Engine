@@ -20,7 +20,7 @@ namespace GT
 		std::unordered_map<std::string, int> m_UniformLocationCache;
 	public:
 		OpenGLShader(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc);
-		OpenGLShader(std::filesystem::path& filepath);
+		OpenGLShader(const std::filesystem::path& filepath,ShaderType type = ShaderType::Normal);
 		virtual ~OpenGLShader();
 
 		virtual void Bind() const;
@@ -50,9 +50,12 @@ namespace GT
 		unsigned int GetUniformLocation(const std::string& name);
 
 		// read file as binary
-		std::string ReadFile(std::filesystem::path& filepath);
+		std::string ReadFile(const std::filesystem::path& filepath);
 		std::unordered_map<GLenum,std::string> PreProcessShader(const std::string& source);
 		void Compile(std::unordered_map<GLenum, std::string>& shaderSources);
+
+		void CompileCompute(const std::string& source);
+		void CheckCompileErrors(uint32_t shader, const std::string& type);
 
 		// read file as string
 		ShaderProgramSource ParseShader(std::filesystem::path& filepath);

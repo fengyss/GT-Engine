@@ -12,6 +12,7 @@ namespace GT
 		:vertices(_vertices), indices(_indices), textures(_textures)
     {
         setupMesh();
+        ComputeAABB(_vertices);
     }
     // render the mesh
     void Mesh::Draw(const glm::mat4& transform, Ref<Shader> shader)
@@ -32,6 +33,18 @@ namespace GT
         shader->SetUniform1ui("u_TexSlot", texslot);
         shader->SetUniformMat4("u_Transform", transform);
         RenderCommand::DrawIndexed(m_VertexArray, indices.size());
+    }
+
+    void Mesh::ComputeAABB(const std::vector<Vertex>& vertices)
+    {
+        m_Min = glm::vec3(std::numeric_limits<float>::max());
+        m_Max = glm::vec3(std::numeric_limits<float>::lowest());
+
+        for (const auto& v : vertices)
+        {
+            m_Min = glm::min(m_Min, v.Position);
+            m_Max = glm::max(m_Max, v.Position);
+        }
     }
 
 

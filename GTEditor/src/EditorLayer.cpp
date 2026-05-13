@@ -16,6 +16,7 @@ namespace GT
 		: Layer("EditorLayer"), m_CameraController(16.0f / 9.0f, true)
 	{
 		GT_CORE_INFO("EditorLayer Layer Constructed!");
+
 	}
 
 	void EditorLayer::OnAttach()

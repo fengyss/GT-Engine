@@ -1,0 +1,54 @@
+#version 450 core
+
+layout (local_size_x = 64) in;
+
+struct AABB
+{
+    vec3 Min;
+    vec3 Max;
+};
+
+layout (std140, binding = 0) uniform FrustumData
+{
+    vec4 Planes[6]; // xyz = normal, w = distance
+};
+
+layout (std430, binding = 1) buffer EntityBuffer
+{
+    AABB aabbs[];
+};
+
+layout (std430, binding = 2) buffer VisibilityBuffer
+{
+    int visible[];
+};
+
+
+
+bool IsAABBInsidePlane(vec4 plane, AABB aabb)
+{
+    vec3 positive = aabb.Min;
+    if (plane.x >= 0) positive.x = aabb.Max.x;
+    if (plane.y >= 0) positive.y = aabb.Max.y;
+    if (plane.z >= 0) positive.z = aabb.Max.z;
+
+    return dot(plane.xyz, positive) + plane.w >= 0.0;
+}
+
+void main()
+{
+    uint idx = gl_GlobalInvocationID.x;
+    AABB aabb = aabbs[idx];
+
+    bool inside = true;
+    for (int i = 0; i < 6; i++)
+    {
+        if (!IsAABBInsidePlane(Planes[i], aabb))
+        {
+            inside = false;
+            break;
+        }
+    }
+
+    visible[idx] = inside ? 1 : 0;
+}

@@ -9,7 +9,7 @@
 #include "Shader.h"
 
 #include "GT/Assets/AssetsHandle.h"
-
+#include "GT/Renderer/Frustum.h"
 
 namespace GT
 {
@@ -43,10 +43,12 @@ namespace GT
 
         // draws the model, and thus all its meshes
         void Draw(const glm::mat4& transform);
+        void Draw(const glm::mat4& transform,const Frustum& frustum);
         void SetShader(RefHandle<Shader> shader) {
             this->shader = shader; 
             hasShader = true;
         }
+        const std::vector<Mesh> GetMeshes() { return meshes; }
 		uint32_t GetMeshCount() const { return meshes.size(); }
         void CalculateVertexCount() 
         {

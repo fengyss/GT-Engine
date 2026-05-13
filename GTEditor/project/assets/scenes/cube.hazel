@@ -1,138 +1,47 @@
 Scene: cube
 Entities:
-  - Entity: 1225869993265248080
+  - Entity: 13154135276296640512
     TagComponent:
-      Tag: planet
+      Tag: camera
       Type: None
     TransformComponent:
-      Translation: [-17.57, -39.74, -18.692356]
-      Rotation: [0.015707962, 0.96167636, 0]
+      Translation: [-5.4224434, 1.3556285, 0]
+      Rotation: [0, -0, 0]
       Scale: [1, 1, 1]
-    ModelComponent:
-      ModelPath: project\assets\obj\nanosuit\nanosuit.obj
-  - Entity: 2897304029953093304
+    CameraComponent:
+      Camera:
+        ProjectionType: 1
+        PerspectiveFOV: 0.7853982
+        PerspectiveNear: 0.01
+        PerspectiveFar: 1000
+        OrthographicSize: 10
+        OrthographicNear: -1
+        OrthographicFar: 1
+        Offset: [0, 1.5, 0]
+      Primary: true
+      FixedAspectRatio: false
+  - Entity: 5330123923738909701
     TagComponent:
       Tag: planet
-      Type: None
+      Type: Model
     TransformComponent:
-      Translation: [-28.36542, -28.14, -18.692356]
-      Rotation: [0.015707962, 0.96167636, 0]
-      Scale: [1, 1, 1]
-    ModelComponent:
-      ModelPath: project\assets\obj\backpack\backpack.obj
-  - Entity: 13594971643825494416
-    TagComponent:
-      Tag: planet
-      Type: None
-    TransformComponent:
-      Translation: [-28.36542, -18.6365, -18.692356]
-      Rotation: [0.015707962, 0.96167636, 0]
-      Scale: [0.1, 0.1, 0.1]
-    ModelComponent:
-      ModelPath: project\assets\obj\vampire\dancing_vampire.dae
-  - Entity: 2633991787766315740
-    TagComponent:
-      Tag: planet
-      Type: None
-    TransformComponent:
-      Translation: [-42.47, -40.04, -18.692356]
-      Rotation: [0.015707962, 0.96167636, 0]
-      Scale: [0.1, 0.1, 0.1]
-    ModelComponent:
-      ModelPath: project\assets\obj\vampire\dancing_vampire.dae
-  - Entity: 3361556885442087422
-    TagComponent:
-      Tag: planet
-      Type: None
-    TransformComponent:
-      Translation: [-59.67, -40.44, -18.692356]
-      Rotation: [0.015707962, 0.96167636, 0]
-      Scale: [0.1, 0.1, 0.1]
-    ModelComponent:
-      ModelPath: project\assets\obj\vampire\dancing_vampire.dae
-  - Entity: 10107815480453981978
-    TagComponent:
-      Tag: planet
-      Type: None
-    TransformComponent:
-      Translation: [-59.67, -18.6365, -18.692356]
-      Rotation: [0.015707962, 0.96167636, 0]
-      Scale: [0.1, 0.1, 0.1]
-    ModelComponent:
-      ModelPath: project\assets\obj\vampire\dancing_vampire.dae
-  - Entity: 2243991878501598488
-    TagComponent:
-      Tag: planet
-      Type: None
-    TransformComponent:
-      Translation: [-42.47, -18.6365, -18.692356]
-      Rotation: [0.015707962, 0.96167636, 0]
-      Scale: [0.1, 0.1, 0.1]
-    ModelComponent:
-      ModelPath: project\assets\obj\vampire\dancing_vampire.dae
-  - Entity: 17730303753498419171
-    TagComponent:
-      Tag: planet
-      Type: None
-    TransformComponent:
-      Translation: [-28.36542, -18.6365, -18.692356]
-      Rotation: [0.015707962, 0.96167636, 0]
-      Scale: [0.1, 0.1, 0.1]
-    ModelComponent:
-      ModelPath: project\assets\obj\vampire\dancing_vampire.dae
-  - Entity: 3261710710681515584
-    TagComponent:
-      Tag: planet
-      Type: None
-    TransformComponent:
-      Translation: [-8.347415, -16.849146, -26.239414]
+      Translation: [-2.1718876, -13.617119, -33.571262]
       Rotation: [0, -0, 0]
       Scale: [0.9999995, 0.99999917, 0.999998]
     ModelComponent:
-      ModelPath: project\assets\obj\backpack\backpack.obj
-  - Entity: 8280909786156363804
+      ModelPath: project\assets\obj\planet\planet.obj
+  - Entity: 6656075414192952750
     TagComponent:
-      Tag: planet
+      Tag: Floor
       Type: None
     TransformComponent:
-      Translation: [-15.410923, -11.904138, -25.143589]
-      Rotation: [0, -0, 0]
-      Scale: [0.9999995, 0.99999917, 0.999998]
-    ModelComponent:
-      ModelPath: project\assets\obj\nanosuit\nanosuit.obj
-  - Entity: 17802577414025041807
-    TagComponent:
-      Tag: planet
-      Type: None
-    TransformComponent:
-      Translation: [-22.099064, -12.473869, -22.225132]
-      Rotation: [0, -0, 0]
-      Scale: [0.9999995, 0.99999917, 0.999998]
-    ModelComponent:
-      ModelPath: project\assets\obj\cyborg\cyborg.obj
-  - Entity: 4000559102581627405
-    TagComponent:
-      Tag: test
-      Type: None
-    TransformComponent:
-      Translation: [-57.01318, -68.68704, -45.666534]
-      Rotation: [1.8256145, -0, 0]
-      Scale: [9, 9.000001, 0.99999905]
+      Translation: [0, -153.8, 0]
+      Rotation: [-1.5707964, 0, 0]
+      Scale: [999, 999, 1]
     SpriteRendererComponent:
-      Color: [1, 1, 1, 0.19215687]
-      TilingFactor: 1
-  - Entity: 10103489676936779165
-    TagComponent:
-      Tag: " Sheet"
-      Type: None
-    TransformComponent:
-      Translation: [0, 0, 0]
-      Rotation: [0, -0, 0]
-      Scale: [2, 2, 1]
-    SpriteRendererComponent:
-      Color: [1, 1, 1, 1]
-      TexturePath: project\assets\textures\Premium Charakter Spritesheet.png
-      TilingFactor: 1
+      Color: [0.6509804, 0.6509804, 0.6509804, 1]
+      TexturePath: project\assets\textures\Checkerboard.png
+      TilingFactor: 10
   - Entity: 9055524979973331075
     TagComponent:
       Tag: light
@@ -169,45 +78,15 @@ Entities:
           Count: 65
           Cycles: 0
           Interval: 1
-  - Entity: 6656075414192952750
+  - Entity: 10103489676936779165
     TagComponent:
-      Tag: Floor
+      Tag: " Sheet"
       Type: None
     TransformComponent:
-      Translation: [0, -153.8, 0]
-      Rotation: [-1.5707964, 0, 0]
-      Scale: [999, 999, 1]
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [2, 2, 1]
     SpriteRendererComponent:
-      Color: [0.6509804, 0.6509804, 0.6509804, 1]
-      TexturePath: project\assets\textures\Checkerboard.png
-      TilingFactor: 10
-  - Entity: 5330123923738909701
-    TagComponent:
-      Tag: planet
-      Type: Model
-    TransformComponent:
-      Translation: [-2.1718876, -13.617119, -33.571262]
-      Rotation: [0, -0, 0]
-      Scale: [0.9999995, 0.99999917, 0.999998]
-    ModelComponent:
-      ModelPath: project\assets\obj\planet\planet.obj
-  - Entity: 13154135276296640512
-    TagComponent:
-      Tag: camera
-      Type: None
-    TransformComponent:
-      Translation: [-5.4224434, 1.3556285, 0]
-      Rotation: [0, -0, 0]
-      Scale: [1, 1, 1]
-    CameraComponent:
-      Camera:
-        ProjectionType: 1
-        PerspectiveFOV: 0.7853982
-        PerspectiveNear: 0.01
-        PerspectiveFar: 1000
-        OrthographicSize: 10
-        OrthographicNear: -1
-        OrthographicFar: 1
-        Offset: [0, 1.5, 0]
-      Primary: true
-      FixedAspectRatio: false
+      Color: [1, 1, 1, 1]
+      TexturePath: project\assets\textures\Premium Charakter Spritesheet.png
+      TilingFactor: 1

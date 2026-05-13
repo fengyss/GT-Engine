@@ -112,5 +112,21 @@ namespace GT
 			break;
 		}
 	}
+	void OpenGLRendererAPI::DispatchCompute(uint32_t groupsX, uint32_t groupsY, uint32_t groupsZ)
+	{
+		glDispatchCompute(groupsX, groupsY, groupsZ);
+	}
+	void OpenGLRendererAPI::SetMemoryBarrier(MemoryBarrierType barrier)
+	{
+		switch (barrier)
+		{
+		case MemoryBarrierType::ShaderStorage:
+			glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
+			break;
+		default:
+			GT_CORE_WARN("Unknown memory barrier type");
+			break;
+		}
+	}
 }
 

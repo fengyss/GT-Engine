@@ -1,6 +1,7 @@
 #include "gtpch.h"
 #include "Renderer3D.h"
 #include "GT/Assets/AssetsHandle.h"
+#include"GT/Renderer/Frustum.h"
 
 namespace GT
 {
@@ -87,7 +88,7 @@ namespace GT
 			model->shader->Get()->SetUniform1i("u_EntityID", s_CurrentEntityID);
 			model->shader->Get()->SetUniformMat4("u_ViewProjection", s_ViewProjectionMatrix);
 		}
-		model->Draw(transform);
+		model->Draw(transform,ExtractFrustum(s_ViewProjectionMatrix));
 		s_stats.DrawCalls++;
 		s_stats.Meshes += model->GetMeshCount();
 		s_stats.VerticiesCount += model->GetVertexCount();
