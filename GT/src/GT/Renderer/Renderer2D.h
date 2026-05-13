@@ -87,8 +87,8 @@ namespace GT
 
 			uint32_t QuadCount = 0;
 			uint32_t CircleCount = 0;
-
 			uint32_t LineCount = 0;
+
 			uint32_t GetTotalVertexCount() const { return QuadCount * 4; }
 			uint32_t GetTotalIndexCount() const { return QuadCount * 6; }
 		};

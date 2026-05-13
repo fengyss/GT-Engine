@@ -35,7 +35,7 @@ namespace GT
 
 		static void SetCurrentEntityID(int entityID);
 
-
+		static void ShowAABB(bool show);
 
 
 		struct Statistics
@@ -50,11 +50,12 @@ namespace GT
 
 
 
-		static Statistics GetStats();
+		static Statistics& GetStats();
 		static void ResetStats();
 
 		static void OnWindowResize(unsigned int width, unsigned int height);
 	private:
+		static bool IsShowAABB;
 		static Renderer3DState state;
 		static int s_CurrentEntityID;
 		static glm::mat4 s_ViewProjectionMatrix;

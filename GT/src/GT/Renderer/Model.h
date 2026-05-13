@@ -61,8 +61,9 @@ namespace GT
             return VertexCount;
 		}
         const std::string& GetName() { return name; }
-
+        GPUAABB GetAABB() { return aabb; }
     private:
+        GPUAABB aabb = { glm::vec3(std::numeric_limits<float>::max()), glm::vec3(std::numeric_limits<float>::lowest()) };
         // loads a model with supported ASSIMP extensions from file and stores the resulting meshes in the meshes vector.
         void loadModel(const std::filesystem::path& path);
 

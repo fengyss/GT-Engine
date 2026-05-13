@@ -207,15 +207,19 @@ namespace GT
 
     void Scene::RenderScene(Timestep ts, EditorCamera& camera)
     {
+        //float time = Time::GetTime();
         // Render 2D
         Renderer2D::BeginScene(camera);
         RenderScene2D();
-        Renderer2D::EndScene();
 
         // Render 3D
         Renderer3D::BeginScene(camera);
         RenderScene3D();
         Renderer3D::EndScene();
+
+        Renderer2D::EndScene();
+        //time = Time::GetTime() - time;
+        //GT_CORE_CRITICAL("GPU time : {0} ms!", time);
     }
 
     void Scene::RenderScene2D()

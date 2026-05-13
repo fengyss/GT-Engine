@@ -3,6 +3,10 @@
 #include "GT/Project/Project.h"
 #include "GT/Assets/AssetsHandle.h"
 
+#include "GT/Renderer/RenderCommand.h"
+#include "GT/Renderer/Renderer2D.h"
+#include "GT/Renderer/Renderer3D.h"
+
 namespace GT
 {
     TextureType GetTypeFromAssimpType(aiTextureType type)
@@ -40,10 +44,17 @@ namespace GT
 
     void Model::Draw(const glm::mat4& transform, const Frustum& frustum)
     {
+        RenderCommand::SetLineWidth(0.3f);
+        
         for (unsigned int i = 0; i < meshes.size(); i++)
         {
             bool visible = true;
-            GPUAABB aabb = { meshes[i].GetMin() ,meshes[i].GetMax() };
+            glm::vec3 min = meshes[i].GetMin();
+            glm::vec3 max = meshes[i].GetMax();
+
+            min = transform * glm::vec4(min, 1.0f);
+            max = transform * glm::vec4(max, 1.0f);
+            GPUAABB aabb = { min ,max };
             for (int p = 0;p < 6;p++)
             {
                 glm::vec4 plane = {frustum.Planes[p].Normal, frustum.Planes[p].Distance};
@@ -54,8 +65,16 @@ namespace GT
                 }
 
             }
+
+           
+
             if(visible)
+            {
                 meshes[i].Draw(transform, shader->Get());
+                Renderer3D::GetStats().DrawCalls++;
+                Renderer3D::GetStats().Meshes++;
+                Renderer3D::GetStats().VerticiesCount += meshes[i].GetVertexCount();
+            }
         }
     }
 
@@ -77,6 +96,12 @@ namespace GT
 
         // process ASSIMP's root node recursively
         processNode(scene->mRootNode, scene);
+
+        for (auto& mesh : meshes)
+        {
+            aabb.Min = min(aabb.Min, mesh.GetMin());
+            aabb.Max = max(aabb.Max, mesh.GetMax());
+        }
 
     }
 

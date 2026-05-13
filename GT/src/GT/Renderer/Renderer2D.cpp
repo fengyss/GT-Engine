@@ -326,6 +326,7 @@ namespace GT
 		// For Quad
 		if(s_Data.QuadIndexCount)
 		{
+			s_Data.QuadShader->Get()->Bind();
 			uint32_t dataSize = (uint32_t)((uint8_t*)s_Data.QuadVertexBufferPtr - (uint8_t*)s_Data.QuadVertexBufferBase);
 			s_Data.QuadVertexBuffer->SetData(s_Data.QuadVertexBufferBase, dataSize);
 
@@ -333,7 +334,6 @@ namespace GT
 			{
 				s_Data.TextureSlots[i]->Bind(i);
 			}
-			s_Data.QuadShader->Get()->Bind();
 			RenderCommand::DrawIndexed(s_Data.QuadVertexArray, s_Data.QuadIndexCount);
 			s_Data.Stats.DrawCalls++;
 		}
@@ -341,9 +341,9 @@ namespace GT
 		// For Circle
 		if(s_Data.CircleIndexCount)
 		{
+			s_Data.CircleShader->Get()->Bind();
 			uint32_t dataSize = (uint32_t)((uint8_t*)s_Data.CircleVertexBufferPtr - (uint8_t*)s_Data.CircleVertexBufferBase);
 			s_Data.CircleVertexBuffer->SetData(s_Data.CircleVertexBufferBase, dataSize);
-			s_Data.CircleShader->Get()->Bind();
 			RenderCommand::DrawIndexed(s_Data.CircleVertexArray, s_Data.CircleIndexCount);
 			s_Data.Stats.DrawCalls++;
 		}
@@ -351,10 +351,10 @@ namespace GT
 		// For Line
 		if (s_Data.LineVertexCount)
 		{
+			s_Data.LineShader->Get()->Bind();
 			uint32_t dataSize = (uint32_t)((uint8_t*)s_Data.LineVertexBufferPtr - (uint8_t*)s_Data.LineVertexBufferBase);
 			s_Data.LineVertexBuffer->SetData(s_Data.LineVertexBufferBase, dataSize);
 
-			s_Data.LineShader->Get()->Bind();
 			RenderCommand::SetLineWidth(s_Data.LineWidth);
 			RenderCommand::DrawLines(s_Data.LineVertexArray, s_Data.LineVertexCount);
 			s_Data.Stats.DrawCalls++;
@@ -388,6 +388,8 @@ namespace GT
 		s_Data.LineVertexBufferPtr++;
 
 		s_Data.LineVertexCount += 2;
+
+		s_Data.Stats.LineCount++;
 	}
 
 	void Renderer2D::DrawRect(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color)
@@ -667,7 +669,7 @@ namespace GT
 
 		s_Data.CircleIndexCount += 6;
 
-		s_Data.Stats.QuadCount++;
+		s_Data.Stats.CircleCount++;
 
 		if (s_Data.QuadIndexCount >= s_Data.MaxIndices)
 		{

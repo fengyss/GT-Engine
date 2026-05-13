@@ -19,6 +19,7 @@ namespace GT
     {
 
         unsigned int texslot = 0;
+        shader->Bind();
         for (unsigned int i = 0; i < textures.size(); i++)
         {
 			auto tex = textures[i]->Get();
@@ -45,6 +46,7 @@ namespace GT
             m_Min = glm::min(m_Min, v.Position);
             m_Max = glm::max(m_Max, v.Position);
         }
+        aabb = { m_Min,m_Max };
     }
 
 

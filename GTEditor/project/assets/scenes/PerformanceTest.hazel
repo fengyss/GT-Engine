@@ -1,177 +1,55 @@
-Scene: cube
+Scene: PerformanceTest
 Entities:
-  - Entity: 7107611590676616333
+  - Entity: 954647951593730077
     TagComponent:
       Tag: Empty Entity
       Type: None
     TransformComponent:
-      Translation: [0, 0, 0]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
-    ModelComponent:
-      ModelPath: project\assets\obj\nanosuit\nanosuit.obj
-  - Entity: 16419870050863788694
-    TagComponent:
-      Tag: Empty Entity
-      Type: None
-    TransformComponent:
-      Translation: [0, -0.2, 0]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
-    ModelComponent:
-      ModelPath: project\assets\obj\cyborg\cyborg.obj
-  - Entity: 8072819640009353082
-    TagComponent:
-      Tag: Empty Entity
-      Type: None
-    TransformComponent:
-      Translation: [3.3, -4.1, 0]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
-    ModelComponent:
-      ModelPath: project\assets\obj\cyborg\cyborg.obj
-  - Entity: 5883207165261761105
-    TagComponent:
-      Tag: Empty Entity
-      Type: None
-    TransformComponent:
-      Translation: [-6.6, -8.2, 0]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
-    ModelComponent:
-      ModelPath: project\assets\obj\cyborg\cyborg.obj
-  - Entity: 11990231720704603337
-    TagComponent:
-      Tag: Empty Entity
-      Type: None
-    TransformComponent:
-      Translation: [-6.4, -4.1, 0]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
-    ModelComponent:
-      ModelPath: project\assets\obj\cyborg\cyborg.obj
-  - Entity: 6723157125871163201
-    TagComponent:
-      Tag: Empty Entity
-      Type: None
-    TransformComponent:
-      Translation: [-3.1, -7.9, 0]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
-    ModelComponent:
-      ModelPath: project\assets\obj\cyborg\cyborg.obj
-  - Entity: 7073405190430502576
-    TagComponent:
-      Tag: Empty Entity
-      Type: None
-    TransformComponent:
-      Translation: [-3.1, -4.1, 0]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
-    ModelComponent:
-      ModelPath: project\assets\obj\cyborg\cyborg.obj
-  - Entity: 7092497398630239117
-    TagComponent:
-      Tag: Empty Entity
-      Type: None
-    TransformComponent:
-      Translation: [0, -12, 0]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
-    ModelComponent:
-      ModelPath: project\assets\obj\cyborg\cyborg.obj
-  - Entity: 861694303150920616
-    TagComponent:
-      Tag: Empty Entity
-      Type: None
-    TransformComponent:
-      Translation: [0, -8, 0]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
-    ModelComponent:
-      ModelPath: project\assets\obj\cyborg\cyborg.obj
-  - Entity: 18390860964889775012
-    TagComponent:
-      Tag: Empty Entity
-      Type: None
-    TransformComponent:
-      Translation: [0, -4.1, 0]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
-    ModelComponent:
-      ModelPath: project\assets\obj\cyborg\cyborg.obj
-  - Entity: 7299428247134547575
-    TagComponent:
-      Tag: Empty Entity
-      Type: None
-    TransformComponent:
-      Translation: [-6.1, 0, 0]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
-    ModelComponent:
-      ModelPath: project\assets\obj\cyborg\cyborg.obj
-  - Entity: 3989315502321948355
-    TagComponent:
-      Tag: Empty Entity
-      Type: None
-    TransformComponent:
-      Translation: [-3, 0, 0]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
-    ModelComponent:
-      ModelPath: project\assets\obj\cyborg\cyborg.obj
-  - Entity: 16282292005559750687
-    TagComponent:
-      Tag: Empty Entity
-      Type: None
-    TransformComponent:
-      Translation: [9.1, 0, 0]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
-    ModelComponent:
-      ModelPath: project\assets\obj\cyborg\cyborg.obj
-  - Entity: 17566281434837052129
-    TagComponent:
-      Tag: Empty Entity
-      Type: None
-    TransformComponent:
-      Translation: [6.2, 0, 0]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
-    ModelComponent:
-      ModelPath: project\assets\obj\cyborg\cyborg.obj
-  - Entity: 16059456707141595546
-    TagComponent:
-      Tag: Empty Entity
-      Type: None
-    TransformComponent:
-      Translation: [3, 0, 0]
-      Rotation: [0, 0, 0]
-      Scale: [1, 1, 1]
-    ModelComponent:
-      ModelPath: project\assets\obj\cyborg\cyborg.obj
-  - Entity: 6656075414192952750
-    TagComponent:
-      Tag: Floor
-      Type: None
-    TransformComponent:
-      Translation: [0, -153.8, 0]
-      Rotation: [-1.5707964, 0, 0]
-      Scale: [999, 999, 1]
-    SpriteRendererComponent:
-      Color: [0.6509804, 0.6509804, 0.6509804, 1]
-      TexturePath: project\assets\textures\Checkerboard.png
-      TilingFactor: 10
-  - Entity: 5330123923738909701
-    TagComponent:
-      Tag: planet
-      Type: Model
-    TransformComponent:
-      Translation: [-2.1718876, -13.617119, -33.571262]
+      Translation: [-17.87507, 1.8464, -7.2759576e-11]
       Rotation: [0, -0, 0]
-      Scale: [0.9999995, 0.99999917, 0.999998]
+      Scale: [1, 1, 1]
     ModelComponent:
-      ModelPath: project\assets\obj\planet\planet.obj
+      ModelPath: project\assets\obj\backpack\backpack.obj
+  - Entity: 7012825272994060675
+    TagComponent:
+      Tag: Empty Entity
+      Type: None
+    TransformComponent:
+      Translation: [-22.010416, 2.002883, 6.1035156e-05]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    ModelComponent:
+      ModelPath: project\assets\obj\backpack\backpack.obj
+  - Entity: 12969496873658966754
+    TagComponent:
+      Tag: Empty Entity
+      Type: None
+    TransformComponent:
+      Translation: [-26.596323, 2.002883, 6.1035156e-05]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    ModelComponent:
+      ModelPath: project\assets\obj\backpack\backpack.obj
+  - Entity: 13340422863024382296
+    TagComponent:
+      Tag: Empty Entity
+      Type: None
+    TransformComponent:
+      Translation: [-14.128092, -6.1636076, 0.38623056]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    ModelComponent:
+      ModelPath: project\assets\obj\backpack\backpack.obj
+  - Entity: 2324220125436971089
+    TagComponent:
+      Tag: Empty Entity
+      Type: None
+    TransformComponent:
+      Translation: [-0.054466344, -7.9820805, 0.2744141]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    ModelComponent:
+      ModelPath: project\assets\obj\cyborg\cyborg.obj
   - Entity: 9055524979973331075
     TagComponent:
       Tag: light
@@ -208,3 +86,175 @@ Entities:
           Count: 65
           Cycles: 0
           Interval: 1
+  - Entity: 5330123923738909701
+    TagComponent:
+      Tag: planet
+      Type: Model
+    TransformComponent:
+      Translation: [-3.2913692, -26.606804, -32.90256]
+      Rotation: [0, -0, 0]
+      Scale: [0.9999995, 0.99999917, 0.999998]
+    ModelComponent:
+      ModelPath: project\assets\obj\planet\planet.obj
+  - Entity: 6656075414192952750
+    TagComponent:
+      Tag: Floor
+      Type: None
+    TransformComponent:
+      Translation: [0, -153.8, 0]
+      Rotation: [-1.5707964, 0, 0]
+      Scale: [999, 999, 1]
+    SpriteRendererComponent:
+      Color: [0.6509804, 0.6509804, 0.6509804, 1]
+      TexturePath: project\assets\textures\Checkerboard.png
+      TilingFactor: 10
+  - Entity: 16059456707141595546
+    TagComponent:
+      Tag: Empty Entity
+      Type: None
+    TransformComponent:
+      Translation: [-22.282085, -2.1125364, -6.1035156e-05]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    ModelComponent:
+      ModelPath: project\assets\obj\backpack\backpack.obj
+  - Entity: 17566281434837052129
+    TagComponent:
+      Tag: Empty Entity
+      Type: None
+    TransformComponent:
+      Translation: [-17.850004, -2.057438, 0.39239502]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    ModelComponent:
+      ModelPath: project\assets\obj\backpack\backpack.obj
+  - Entity: 16282292005559750687
+    TagComponent:
+      Tag: Empty Entity
+      Type: None
+    TransformComponent:
+      Translation: [-13.945303, -1.973864, 0.37609866]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    ModelComponent:
+      ModelPath: project\assets\obj\backpack\backpack.obj
+  - Entity: 3989315502321948355
+    TagComponent:
+      Tag: Empty Entity
+      Type: None
+    TransformComponent:
+      Translation: [-27.42738, -6.5234222, 0.6312255]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    ModelComponent:
+      ModelPath: project\assets\obj\backpack\backpack.obj
+  - Entity: 7299428247134547575
+    TagComponent:
+      Tag: Empty Entity
+      Type: None
+    TransformComponent:
+      Translation: [-13.806818, 1.7995684, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    ModelComponent:
+      ModelPath: project\assets\obj\backpack\backpack.obj
+  - Entity: 18390860964889775012
+    TagComponent:
+      Tag: Empty Entity
+      Type: None
+    TransformComponent:
+      Translation: [0, -4.1, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    ModelComponent:
+      ModelPath: project\assets\obj\cyborg\cyborg.obj
+  - Entity: 861694303150920616
+    TagComponent:
+      Tag: Empty Entity
+      Type: None
+    TransformComponent:
+      Translation: [-18.1716, -6.339813, 0.13427734]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    ModelComponent:
+      ModelPath: project\assets\obj\backpack\backpack.obj
+  - Entity: 7092497398630239117
+    TagComponent:
+      Tag: Empty Entity
+      Type: None
+    TransformComponent:
+      Translation: [-22.849571, -6.584152, 0.00091553293]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    ModelComponent:
+      ModelPath: project\assets\obj\backpack\backpack.obj
+  - Entity: 7073405190430502576
+    TagComponent:
+      Tag: Empty Entity
+      Type: None
+    TransformComponent:
+      Translation: [-3.1, -4.1, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    ModelComponent:
+      ModelPath: project\assets\obj\cyborg\cyborg.obj
+  - Entity: 6723157125871163201
+    TagComponent:
+      Tag: Empty Entity
+      Type: None
+    TransformComponent:
+      Translation: [-3.1, -7.9, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    ModelComponent:
+      ModelPath: project\assets\obj\cyborg\cyborg.obj
+  - Entity: 11990231720704603337
+    TagComponent:
+      Tag: Empty Entity
+      Type: None
+    TransformComponent:
+      Translation: [-6.4, -4.1, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    ModelComponent:
+      ModelPath: project\assets\obj\cyborg\cyborg.obj
+  - Entity: 5883207165261761105
+    TagComponent:
+      Tag: Empty Entity
+      Type: None
+    TransformComponent:
+      Translation: [-6.6, -8.2, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    ModelComponent:
+      ModelPath: project\assets\obj\cyborg\cyborg.obj
+  - Entity: 8072819640009353082
+    TagComponent:
+      Tag: Empty Entity
+      Type: None
+    TransformComponent:
+      Translation: [9.961529, -5.587846, -0.0048217885]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    ModelComponent:
+      ModelPath: project\assets\obj\cyborg\cyborg.obj
+  - Entity: 16419870050863788694
+    TagComponent:
+      Tag: Empty Entity
+      Type: None
+    TransformComponent:
+      Translation: [-27.161772, -2.0778108, 0]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    ModelComponent:
+      ModelPath: project\assets\obj\backpack\backpack.obj
+  - Entity: 7107611590676616333
+    TagComponent:
+      Tag: Empty Entity
+      Type: None
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    ModelComponent:
+      ModelPath: project\assets\obj\nanosuit\nanosuit.obj

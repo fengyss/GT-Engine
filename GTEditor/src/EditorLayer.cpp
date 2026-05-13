@@ -294,7 +294,8 @@ namespace GT
 	}
 	float dis = 10.0f;
 	bool isregen = false;
-	bool ismousefollow = false;;
+	bool ismousefollow = false;
+	bool isshowaabb = false;
 	void EditorLayer::OnStatusBarRender()
 	{
 
@@ -306,6 +307,10 @@ namespace GT
 		ImGui::Separator();
 
 		ImGui::Checkbox("Show physics colliders", &m_ShowPhysicsColliders);
+		if (ImGui::Checkbox("Show 3D AABB", &isshowaabb))
+		{
+			Renderer3D::ShowAABB(isshowaabb);
+		}
 		if (ImGui::Checkbox("Enbale MouseFollow", &ismousefollow))
 		{
 			m_EditorCamera.FlipMouseFollow();
@@ -369,9 +374,11 @@ namespace GT
 			if(open)
 			{
 				ImGui::Text("Draw Calls: %d", stats.DrawCalls);
-				ImGui::Text("Quads: %d", stats.QuadCount);
 				ImGui::Text("Vertices: %d", stats.GetTotalVertexCount());
 				ImGui::Text("Indices: %d", stats.GetTotalIndexCount());
+				ImGui::Text("Quad Count: %d", stats.QuadCount);
+				ImGui::Text("Circle Count: %d", stats.CircleCount);
+				ImGui::Text("Line Count: %d", stats.LineCount);
 				ImGui::TreePop();
 			}
 		}

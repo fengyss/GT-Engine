@@ -8,6 +8,7 @@
 #include <string>
 #include <vector>
 #include "GT/Assets/AssetsHandle.h"
+#include "GT/Renderer/Frustum.h"
 #define MAX_BONE_INFLUENCE 4
 
 struct Vertex {
@@ -51,9 +52,11 @@ namespace GT
 
         const glm::vec3& GetMin() const { return m_Min; }
         const glm::vec3& GetMax() const { return m_Max; }
+        GPUAABB GetAABB() { return aabb; }
 
     private:
         void ComputeAABB(const std::vector<Vertex>& vertices);
+        GPUAABB aabb;
         glm::vec3 m_Min;
         glm::vec3 m_Max;
     private:
