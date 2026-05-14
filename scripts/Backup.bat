@@ -1,3 +1,5 @@
+call CalculateGTLine.bat
+popd
 
 cd ..
 

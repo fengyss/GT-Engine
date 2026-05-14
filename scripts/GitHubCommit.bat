@@ -5,7 +5,7 @@ pause
 git add .
 pause
 
-git commit -m "fix: fix some bug of light source."
+git commit -m "docx: update ChangeLog and Readme."
 pause
 
 git push -u origin main
