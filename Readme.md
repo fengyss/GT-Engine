@@ -16,9 +16,9 @@
 
 ## 项目规划
 
-1. 完善粒子系统。 （扩充基础功能）
-2. 完善 3D 渲染。 （增加多光源，背面剔除， 视锥裁剪 ...）
-3. 加入多线程， 实现 Job System
+1. 完善粒子系统。 （添加动画效果）
+2. 完善 3D 渲染。 （实现PBR）
+3. 完善动画系统
 
 
 ## 项目架构
@@ -34,7 +34,7 @@ scripts       存放方案生成脚本
 
 ### 构建与运行
 
-如果是使用 Windows vs2022 打开 GT.sln，自行构建即可。
+如果是使用 Windows vs2022 打开 GT.sln，自行构建即可（assimp-vc143-mt.dll 在 GT/vendor/assimp/lib中，拷贝到 GTEditor.exe 的位置 ）。
 
 如果使用其他 IDE 需要修改 scripts/Win-GenerateProject.bat 用 premake5 重新生成。
 

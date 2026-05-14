@@ -1,4 +1,25 @@
 
+26.5.14：
+    
+    1. 为模型渲染 添加 Point,Directional,Spot light source 
+    2. 重构渲染逻辑，使shader在EndScene()中调用，减少资源浪费
+
+26.5.13：
+
+    1. 在cpu端添加视锥体剔除
+
+    2. 添加模型AABB渲染
+
+26.5.12：
+
+    1. 添加ModelCache，不会再重复导入相同模型
+
+26.5.11:
+
+    1. 给粒子添加纹理
+
+    2. 重构粒子渲染
+
 26.5.10 ：
 
     1. 添加工具 SpriteSheetCropper, 分割纹理，并导出为 json 格式。

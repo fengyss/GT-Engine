@@ -5,7 +5,7 @@ pause
 git add .
 pause
 
-git commit -m "feat: Add Point,Directional,Spot Light source. \n misc: Refactor Render order,shader called at endscene."
+git commit -m "fix: fix some bug of light source."
 pause
 
 git push -u origin main
