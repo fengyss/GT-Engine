@@ -592,20 +592,26 @@ namespace GT
 				case LightType::Ambient:
 					break;
 				case LightType::Point:
-					DrawVec3Control("Pos", light.pos);
 
-					ImGui::DragFloat("Constant", &light.constant);
-					ImGui::DragFloat("Linear", &light.linear);
-					ImGui::DragFloat("Quadratic", &light.quadratic);
+					ImGui::DragFloat("Constant", &light.constant, 0.01f, 0.01f, 2.0f);
+					ImGui::DragFloat("Linear", &light.linear, 0.001f, 0.0f, 0.5f);
+					ImGui::DragFloat("Quadratic", &light.quadratic, 0.0001f, 0.0f, 0.1f);
 					break;
 				case LightType::Directional:
-					DrawVec3Control("Dir", light.direction);
 					break;
 				case LightType::Spot:
-					DrawVec3Control("Pos", light.pos);
+					DrawVec3Control("Dir", light.direction);
 
-					ImGui::DragFloat("cutOff", &light.cutOff);
-					ImGui::DragFloat("QuadouterCutOffratic", &light.outerCutOff);
+					float cutOff = glm::degrees(glm::acos(light.cutOff));
+					float outerCutOff = glm::degrees(glm::acos(light.outerCutOff));
+					if (ImGui::DragFloat("cutOffAngle", &cutOff, 1.0f, 0.0f, 90.0f))
+					{
+						light.cutOff = glm::cos(glm::radians(cutOff));
+					}
+					if (ImGui::DragFloat("outerCutOffAngle", &outerCutOff, 1.0f, 0.01f, 175.0f))
+					{
+						light.outerCutOff = glm::cos(glm::radians(outerCutOff));
+					}
 					break;
 				}
 
@@ -639,13 +645,13 @@ namespace GT
 				}
 			});
 
-			DrawComponent<Animator2DComponent>("Animator 2D", e, [](auto& component)
-				{
-					ImGui::Text("Name: %s", &component.name);
-					ImGui::DragFloat("Duration", &component.duration, 0.5f, 1.0f, 20.0f);
-					//ImGui::PushItemWidth(-1);
+		DrawComponent<Animator2DComponent>("Animator 2D", e, [](auto& component)
+			{
+				ImGui::Text("Name: %s", &component.name);
+				ImGui::DragFloat("Duration", &component.duration, 0.5f, 1.0f, 20.0f);
+				//ImGui::PushItemWidth(-1);
 
-				});
+			});
 
 		DrawComponent<ParticleComponent>("Particle Renderer", e, [](auto& component)
 			{

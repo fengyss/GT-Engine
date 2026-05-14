@@ -181,7 +181,7 @@ void main()
 /* ---------- 方向光 ---------- */
 vec3 CalcDirectionalLight(DirectionalLight light, vec3 normal, vec3 viewDir)
 {
-    vec3 lightDir = normalize(-light.direction);
+    vec3 lightDir = normalize(light.direction);
 
     float diff = max(dot(normal, lightDir), 0.0);
 
@@ -222,18 +222,21 @@ vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
 {
     vec3 lightDir = normalize(light.position - fragPos);
 
+    // 漫反射
     float diff = max(dot(normal, lightDir), 0.0);
 
-    vec3 reflectDir = reflect(-lightDir, normal);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
+    vec3 halfwayDir = normalize(lightDir + viewDir);
+    float spec = pow(max(dot(normal, halfwayDir), 0.0), material.shininess);
 
-    float theta     = dot(lightDir, normalize(-light.direction));
-    float epsilon   = light.cutOff - light.outerCutOff;
-    float intensity = clamp((theta - light.outerCutOff) / epsilon, 0.0, 1.0);
+    float theta = dot(lightDir, normalize(-light.direction));
+    
+    float intensity = smoothstep(light.outerCutOff, light.cutOff, theta);
+
 
     vec3 ambient  = light.ambient  * material.ambient.rgb;
     vec3 diffuse  = light.diffuse  * diff * material.diffuse.rgb;
     vec3 specular = light.specular * spec * material.specular.rgb;
+
 
     return (ambient + diffuse + specular) * intensity;
 }

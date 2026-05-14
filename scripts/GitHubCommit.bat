@@ -5,7 +5,7 @@ pause
 git add .
 pause
 
-git commit -m "fix: fix uncorrect frustum culling, Add 3D model AABB render."
+git commit -m "feat: Add Point,Directional,Spot Light source. \n misc: Refactor Render order,shader called at endscene."
 pause
 
 git push -u origin main

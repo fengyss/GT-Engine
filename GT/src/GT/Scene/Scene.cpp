@@ -261,6 +261,20 @@ namespace GT
                 Renderer2D::SetCurrentEntityID(-1);
 
                 Renderer3D::AddLight(light.light);
+
+                switch (light.light.type)
+                {
+                case LightType::Ambient:
+                    break;
+                case LightType::Point:
+                    break;
+                case LightType::Directional:
+                    Renderer2D::DrawLine(glm::vec3(0.0f), transform.Translation,glm::vec4(1.0f));
+                    break;
+                case LightType::Spot:
+                    Renderer2D::DrawLine(transform.Translation, transform.Translation+light.light.direction, glm::vec4(1.0f));
+                    break;
+                }
             }
         }
         // Render all particles
@@ -314,6 +328,19 @@ namespace GT
         ParticleSystem::OnUpdate(ts,camera.GetPosition());
 
         Animation2DSystem::OnUpdate(this, ts);
+
+        {
+            auto view = m_Registry.view<TransformComponent, LightRendererComponent>();
+            for (auto entity : view)
+            {
+                Renderer2D::SetCurrentEntityID(int(entity));
+                auto& [transform, light] = view.get<TransformComponent, LightRendererComponent>(entity);
+
+                light.light.pos = transform.Translation;
+                if (light.light.type == LightType::Directional) 
+                    light.light.direction = transform.Translation;
+            }
+        }
 
         RenderScene(ts, camera);
     }
