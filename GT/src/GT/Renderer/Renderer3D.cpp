@@ -11,8 +11,18 @@ namespace GT
 	Ref<AssetsHandle<Shader>> Renderer3D::s_ModelShader;
 	glm::mat4 Renderer3D::s_ViewProjectionMatrix = glm::mat4(1.0f);
 	bool Renderer3D::IsShowAABB=false;
-
+	glm::vec3& Renderer3D::s_viewPos = glm::vec3(0.0f);
+	std::vector<Light> Renderer3D::s_Lights;
 	static Renderer3D::Statistics s_stats;
+
+	struct Trans_model
+	{
+		glm::mat4 transform;
+		Ref<Model> model;
+		int entityID;
+	};
+	std::vector<Trans_model> models;
+
 	void Renderer3D::Init()
 	{
 		s_ModelShader = CreateHandle<Shader>("Model");
@@ -34,7 +44,7 @@ namespace GT
 
 		glm::mat4 viewProj = camera.GetProjection() * glm::inverse(transform);
 
-		SetViewProjection(viewProj);
+		SetViewProjection(viewProj,glm::vec3(transform[3][0],transform[3][1],transform[3][2]));
 
 	}
 
@@ -45,9 +55,7 @@ namespace GT
 		GT_CORE_ASSERT(state != Renderer3DState::BeginScene, "Renderer3D::BeginScene is already Called!");
 		state = Renderer3DState::BeginScene;
 
-		s_ModelShader->Get()->Bind();
-		s_ModelShader->Get()->SetUniform3f("u_ViewPos", camera.GetPosition());
-		SetViewProjection(camera.GetViewProjection());
+		SetViewProjection(camera.GetViewProjection(), camera.GetPosition());
 	}
 
 	void Renderer3D::BeginScene(OrthographicCamera& camera)
@@ -57,19 +65,23 @@ namespace GT
 		GT_CORE_ASSERT(state != Renderer3DState::BeginScene, "Renderer3D::BeginScene is already Called!");
 		state = Renderer3DState::BeginScene;
 
-		SetViewProjection(camera.GetViewProjectionMatrix());
+		SetViewProjection(camera.GetViewProjectionMatrix(),camera.GetPosition());
 	}
-	void Renderer3D::SetViewProjection(const glm::mat4& viewProjection)
+	void Renderer3D::SetViewProjection(const glm::mat4& viewProjection, const glm::vec3& viewPos)
 	{
-		s_ModelShader->Get()->Bind();
-		s_ModelShader->Get()->SetUniformMat4("u_ViewProjection", viewProjection);
 		s_ViewProjectionMatrix = viewProjection;
+		s_viewPos = viewPos;
+		models.clear();
 	}
 	void Renderer3D::SetLight(const glm::vec3& lightpos, const glm::vec3& lightcolor)
 	{
 		s_ModelShader->Get()->Bind();
 		s_ModelShader->Get()->SetUniform3f("u_LightPos", lightpos);
 		s_ModelShader->Get()->SetUniform3f("u_LightColor", lightcolor);
+	}
+	void Renderer3D::AddLight(Light& light)
+	{
+		s_Lights.push_back(light);
 	}
 	void  Renderer3D::EndScene()
 	{
@@ -78,9 +90,57 @@ namespace GT
 		GT_CORE_ASSERT(state != Renderer3DState::EndScene, "You Should Call BeginScene First!");
 		state = Renderer3DState::EndScene;
 
+		Flush();
 
+		s_Lights.clear();
 	}
-	void DrawAABB(const glm::mat4& transform, GPUAABB aabb, glm::vec4 color = {0.0f,1.0f,0.5f,1.0f})
+	void Renderer3D::Flush()
+	{
+
+		Ref<Shader> shader = s_ModelShader->Get();
+		shader->Bind();
+		shader->SetUniformMat4("u_ViewProjection", s_ViewProjectionMatrix);
+		shader->SetUniform3f("u_ViewPos", s_viewPos);
+		unsigned int lightslots = 0;
+		for (auto& light : s_Lights)
+		{
+			switch (light.type)
+			{
+			case LightType::Ambient:
+				break;
+			case LightType::Point:
+				lightslots |= 1u;
+				PointLight plight = light.GetPointLight();
+				shader->SetUniformPointLight("u_pointLight", plight);
+				break;
+			case LightType::Directional:
+				lightslots |= 2u;
+				DirectionalLight dlight = light.GetDirectionalLight();
+				shader->SetUniformDirectionalLight("u_dirLight", dlight);
+				break;
+			case LightType::Spot:
+				lightslots |= 4u;
+				SpotLight slight = light.GetSpotLight();
+				shader->SetUniformSpotLight("u_spotLight", slight);
+				break;
+			}
+		}
+		shader->SetUniform1ui("u_LightSlots", lightslots);
+		for (auto& [transform, model,ID] : models)
+		{
+			shader->SetUniform1i("u_EntityID", ID);
+			shader->SetUniformMat4("u_ViewProjection", s_ViewProjectionMatrix);
+
+			model->Draw(transform, ExtractFrustum(s_ViewProjectionMatrix));
+
+			if (IsShowAABB)
+			{
+				GPUAABB aabb = model->GetAABB();
+				DrawAABB(transform, aabb);
+			}
+		}
+	}
+	void Renderer3D::DrawAABB(const glm::mat4& transform, GPUAABB aabb, glm::vec4 color)
 	{
 		glm::vec3 min = aabb.Min;
 		glm::vec3 max = aabb.Max;
@@ -110,20 +170,7 @@ namespace GT
 	void Renderer3D::DrawModel(const glm::mat4& transform, Ref<Model>& model)
 	{
 		if (!model->hasShader) model->SetShader(s_ModelShader);
-		else 
-		{
-			model->shader->Get()->Bind();
-			model->shader->Get()->SetUniform1i("u_EntityID", s_CurrentEntityID);
-			model->shader->Get()->SetUniformMat4("u_ViewProjection", s_ViewProjectionMatrix);
-		}
-		model->Draw(transform, ExtractFrustum(s_ViewProjectionMatrix));
-
-		if(IsShowAABB)
-		{
-			GPUAABB aabb = model->GetAABB();
-			DrawAABB(transform, aabb);
-		}
-
+		models.push_back({ transform, model,s_CurrentEntityID });
 	}
 	void Renderer3D::SetCurrentEntityID(int entityID)
 	{

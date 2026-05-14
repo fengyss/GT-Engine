@@ -46,6 +46,12 @@ namespace GT
 
 		virtual void SetUniformMat3(const std::string& name, const glm::mat3& matrix) override;
 		virtual void SetUniformMat4(const std::string& name, const glm::mat4& matrix) override;
+
+
+		virtual void SetUniformPointLight(const std::string& name, const PointLight& light) override;
+		virtual void SetUniformDirectionalLight(const std::string& name, const DirectionalLight& light) override;
+		virtual void SetUniformSpotLight(const std::string& name, const SpotLight& light) override;
+
 	private:
 		unsigned int GetUniformLocation(const std::string& name);
 

@@ -5,7 +5,7 @@ pause
 git add .
 pause
 
-git commit -m "feat: Add Cpu Frustum Culling."
+git commit -m "fix: fix uncorrect frustum culling, Add 3D model AABB render."
 pause
 
 git push -u origin main

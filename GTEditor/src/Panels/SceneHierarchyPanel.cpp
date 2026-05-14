@@ -544,7 +544,6 @@ namespace GT
 
 		DrawComponent<LightRendererComponent>("Light Renderer", e, [](auto& component)
 			{
-				ImGui::ColorEdit4("Render Color", glm::value_ptr(component.Color));
 				const char* name = "None";
 				if (component.texture) name = component.texture->Get()->GetName().c_str();
 				ImGui::Text("Texture: %s", name);
@@ -566,6 +565,54 @@ namespace GT
 					}
 					ImGui::EndDragDropTarget();
 				}
+				auto& light = component.light;
+				static int currentType = int(light.type);
+				const char* Types[] = { "Ambient","Point","Directional","Spot" };
+				const char* type = Types[currentType];
+
+				if (ImGui::BeginCombo("##Type", type))
+				{
+					for (int i = 0; i < int(LightType::Count); i++)
+					{
+						bool isSelected = currentType == i;
+						if (ImGui::Selectable(Types[i], isSelected))
+						{
+							currentType = i;
+							type = Types[i];
+							light.type = LightType(i);
+						}
+						if (isSelected)
+							ImGui::SetItemDefaultFocus();
+					}
+					ImGui::EndCombo();
+				}
+
+				switch (light.type)
+				{
+				case LightType::Ambient:
+					break;
+				case LightType::Point:
+					DrawVec3Control("Pos", light.pos);
+
+					ImGui::DragFloat("Constant", &light.constant);
+					ImGui::DragFloat("Linear", &light.linear);
+					ImGui::DragFloat("Quadratic", &light.quadratic);
+					break;
+				case LightType::Directional:
+					DrawVec3Control("Dir", light.direction);
+					break;
+				case LightType::Spot:
+					DrawVec3Control("Pos", light.pos);
+
+					ImGui::DragFloat("cutOff", &light.cutOff);
+					ImGui::DragFloat("QuadouterCutOffratic", &light.outerCutOff);
+					break;
+				}
+
+				ImGui::ColorEdit3("ambient", glm::value_ptr(light.ambient));
+				ImGui::ColorEdit3("diffuse", glm::value_ptr(light.diffuse));
+				ImGui::ColorEdit3("specular", glm::value_ptr(light.specular));
+
 			});
 
 		DrawComponent<ModelComponent>("Model Renderer", e, [](auto& component)

@@ -69,14 +69,55 @@ uniform uint u_TexSlot;
 uniform int u_EntityID;
 uniform vec3 u_ViewPos;
 
-// 视差映射函数
-vec2 ParallaxMapping(vec2 texCoords, vec3 viewDir)
-{
-    // 简单视差映射（也可以替换为陡峭视差映射或视差遮挡映射）
-    float height = texture(texture_height, texCoords).r;
-    vec2 p = viewDir.xy * (height * 0.1); // 0.1 是高度缩放因子，可以调整
-    return texCoords - p;
-}
+struct Material {
+    vec4  ambient;
+    vec4  diffuse;
+    vec4  specular;
+    float shininess;
+};
+
+/* ---------- 光源 ---------- */
+struct DirectionalLight {
+    vec3 direction;
+    vec3 ambient;
+    vec3 diffuse;
+    vec3 specular;
+};
+
+struct PointLight {
+    vec3 position;
+    vec3 ambient;
+    vec3 diffuse;
+    vec3 specular;
+
+    float constant;
+    float linear;
+    float quadratic;
+};
+
+struct SpotLight {
+    vec3 position;
+    vec3 direction;
+    vec3 ambient;
+    vec3 diffuse;
+    vec3 specular;
+
+    float cutOff;       // 内锥角
+    float outerCutOff;  // 外锥角
+};
+
+/* ---------- Uniforms ---------- */
+uniform Material u_material;
+uniform DirectionalLight u_dirLight;
+uniform PointLight u_pointLight;
+uniform SpotLight u_spotLight;
+uniform uint u_LightSlots = 0;
+
+Material material;
+
+vec3 CalcDirectionalLight(DirectionalLight light, vec3 normal, vec3 viewDir);
+vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir);
+vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir);
 
 void main()
 {
@@ -95,17 +136,15 @@ void main()
     if(((u_TexSlot >> 27u) & 1u) > 0)
         emissionColor = texture(texture_emission, v_TexCoord);
    
+    material.ambient = vec4(0.2f);
+    material.diffuse = diffuseColor;
+    material.specular = specularColor;
+    material.shininess = 0.2f;
+
 
     // 3. 简单光照计算（Blinn-Phong）
     vec3 viewDir = normalize(u_ViewPos - v_FragPos);
-    vec3 lightDir = normalize(u_LightPos - v_FragPos);
-    vec3 halfwayDir = normalize(lightDir + viewDir);
 
-    vec2 parallaxTexCoords = ParallaxMapping(v_TexCoord, viewDir);
-    // 边界检查：防止纹理坐标超出范围
-    //if(parallaxTexCoords.x > 1.0 || parallaxTexCoords.y > 1.0 || 
-      // parallaxTexCoords.x < -1.0 || parallaxTexCoords.y < -1.0)
-        //discard;
 
 
      // 2. 处理法线贴图（关键部分）
@@ -126,6 +165,119 @@ void main()
     }
    
 
+    vec4 result = emissionColor;
+    
+    if((u_LightSlots & 1u)>0)
+        result += vec4(CalcPointLight(u_pointLight, worldNormal, v_FragPos, viewDir),0.0f);
+    if((u_LightSlots & 2u)>0)
+        result += vec4(CalcDirectionalLight(u_dirLight, worldNormal, viewDir),0.0f);
+    if((u_LightSlots & 4u)>0)
+        result += vec4(CalcSpotLight(u_spotLight, worldNormal, v_FragPos, viewDir),0.0f);
+
+    result.a = diffuseColor.a;
+    o_Color = result;
+}
+
+/* ---------- 方向光 ---------- */
+vec3 CalcDirectionalLight(DirectionalLight light, vec3 normal, vec3 viewDir)
+{
+    vec3 lightDir = normalize(-light.direction);
+
+    float diff = max(dot(normal, lightDir), 0.0);
+
+    vec3 reflectDir = reflect(-lightDir, normal);
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
+
+    vec3 ambient  = light.ambient  * material.ambient.rgb;
+    vec3 diffuse  = light.diffuse  * diff * material.diffuse.rgb;
+    vec3 specular = light.specular * spec * material.specular.rgb;
+
+    return (ambient + diffuse + specular);
+}
+
+/* ---------- 点光源 ---------- */
+vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
+{
+    vec3 lightDir = normalize(light.position - fragPos);
+
+    float diff = max(dot(normal, lightDir), 0.0);
+
+    vec3 reflectDir = reflect(-lightDir, normal);
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
+
+    float distance    = length(light.position - fragPos);
+    float attenuation  = 1.0 /
+        (light.constant + light.linear * distance +
+         light.quadratic * (distance * distance));
+
+    vec3 ambient  = light.ambient  * material.ambient.rgb;
+    vec3 diffuse  = light.diffuse  * diff * material.diffuse.rgb;
+    vec3 specular = light.specular * spec * material.specular.rgb;
+
+    return (ambient + diffuse + specular) * attenuation;
+}
+
+/* ---------- 聚光灯 ---------- */
+vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
+{
+    vec3 lightDir = normalize(light.position - fragPos);
+
+    float diff = max(dot(normal, lightDir), 0.0);
+
+    vec3 reflectDir = reflect(-lightDir, normal);
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
+
+    float theta     = dot(lightDir, normalize(-light.direction));
+    float epsilon   = light.cutOff - light.outerCutOff;
+    float intensity = clamp((theta - light.outerCutOff) / epsilon, 0.0, 1.0);
+
+    vec3 ambient  = light.ambient  * material.ambient.rgb;
+    vec3 diffuse  = light.diffuse  * diff * material.diffuse.rgb;
+    vec3 specular = light.specular * spec * material.specular.rgb;
+
+    return (ambient + diffuse + specular) * intensity;
+}
+// point light 
+void save()
+{
+    o_EntityID = u_EntityID;
+
+    vec4 diffuseColor = vec4(1.0f);
+    vec4 specularColor = vec4(0.0f);
+    vec4 emissionColor = vec4(0.0f);
+
+         // 1. 采样基础纹理
+    if(((u_TexSlot >> 31u) & 1u) > 0)
+        diffuseColor = texture(texture_diffuse, v_TexCoord);
+    if(((u_TexSlot >> 30u) & 1u) > 0)
+        specularColor = texture(texture_specular, v_TexCoord);
+    if(((u_TexSlot >> 27u) & 1u) > 0)
+        emissionColor = texture(texture_emission, v_TexCoord);
+
+
+     // 3. 简单光照计算（Blinn-Phong）
+    vec3 viewDir = normalize(u_ViewPos - v_FragPos);
+    vec3 lightDir = normalize(u_LightPos - v_FragPos);
+    vec3 halfwayDir = normalize(lightDir + viewDir);
+
+
+
+     // 2. 处理法线贴图（关键部分）
+    vec3 worldNormal = normalize(v_Normal);
+    //worldNormal = v_Normal;
+    
+    if(((u_TexSlot >> 29u) & 1u) > 0)
+    {
+        worldNormal = texture(texture_normal, v_TexCoord).rgb;
+        worldNormal = worldNormal*2.0-1.0;
+
+        mat3 TBN = mat3(
+        normalize(v_Tangent),
+        normalize(v_Bitangent),
+        normalize(v_Normal));
+
+        worldNormal = normalize(TBN * worldNormal);
+    }
 
     // 环境光
     float ambientStrength = 0.2;
@@ -144,5 +296,7 @@ void main()
     // 确保 Alpha 不低于某个阈值
     float alpha = diffuseColor.a;
     if (alpha < 0.1) alpha = 1.0;  // 低于 0.1 的设为不透明
+
+
     o_Color = vec4(result, alpha);
 }

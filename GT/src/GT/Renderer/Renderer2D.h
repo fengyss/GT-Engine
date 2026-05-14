@@ -100,6 +100,7 @@ namespace GT
 
 		static void OnWindowResize(unsigned int width, unsigned int height);
 	private:
+		static glm::mat4 m_viewProjection;
 		static RendererState state;
 		static int s_CurrentEntityID;
 		static void StartNewBatch();

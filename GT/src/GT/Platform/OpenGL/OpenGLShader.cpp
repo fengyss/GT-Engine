@@ -414,4 +414,36 @@ namespace GT
 		GLCall(glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, glm::value_ptr(matrix)));
 	}
 
+	void OpenGLShader::SetUniformPointLight(const std::string& name, const PointLight& light)
+	{
+		SetUniform3f(name + ".position", light.position);
+		SetUniform3f(name + ".ambient", light.ambient);
+		SetUniform3f(name + ".diffuse", light.diffuse);
+		SetUniform3f(name + ".specular", light.specular);
+
+		SetUniform1f(name + ".constant", light.constant);
+		SetUniform1f(name + ".linear", light.linear);
+		SetUniform1f(name + ".quadratic", light.quadratic);
+	}
+
+	void OpenGLShader::SetUniformDirectionalLight(const std::string& name, const DirectionalLight& light)
+	{
+		SetUniform3f(name + ".direction", light.direction);
+		SetUniform3f(name + ".ambient", light.ambient);
+		SetUniform3f(name + ".diffuse", light.diffuse);
+		SetUniform3f(name + ".specular", light.specular);
+	}
+
+	void OpenGLShader::SetUniformSpotLight(const std::string& name, const SpotLight& light)
+	{
+		SetUniform3f(name + ".position", light.position);
+		SetUniform3f(name + ".direction", light.direction);
+		SetUniform3f(name + ".ambient", light.ambient);
+		SetUniform3f(name + ".diffuse", light.diffuse);
+		SetUniform3f(name + ".specular", light.specular);
+
+		SetUniform1f(name + ".cutOff", light.cutOff);
+		SetUniform1f(name + ".outerCutOff", light.outerCutOff);
+	}
+
 }

@@ -115,17 +115,16 @@ namespace GT
     struct LightRendererComponent
     {
         const char* name = "Light Renderer";
-        glm::vec4 Color = { 1.0f, 1.0f, 1.0f, 1.0f };
         RefHandle<Texture2D> texture;
+
+        Light light;
 
         LightRendererComponent() = default;
         LightRendererComponent(const LightRendererComponent&) = default;
-        LightRendererComponent(const glm::vec4 color)
-            :Color(color) {
+        LightRendererComponent(Light _light)
+            :light(_light) {
         }
 
-        operator glm::vec4() { return Color; }
-        operator const glm::vec4& () const { return Color; }
     };
 
     struct ModelComponent

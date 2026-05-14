@@ -10,7 +10,100 @@ namespace GT
 		Compute,
 		Count
 	};
+	enum class LightType
+	{
+		Ambient,
+		Point,
+		Directional,
+		Spot,
+		Count
+	
+	};
+	struct DirectionalLight {
+		glm::vec3 direction;
+		glm::vec3 ambient;
+		glm::vec3 diffuse;
+		glm::vec3 specular;
+	};
 
+	struct PointLight {
+		glm::vec3 position;
+		glm::vec3 ambient;
+		glm::vec3 diffuse;
+		glm::vec3 specular;
+
+		float constant;
+		float linear;
+		float quadratic;
+	};
+
+	struct SpotLight {
+		glm::vec3 position;
+		glm::vec3 direction;
+		glm::vec3 ambient;
+		glm::vec3 diffuse;
+		glm::vec3 specular;
+
+		float cutOff;       // 内锥角
+		float outerCutOff;  // 外锥角
+	};
+	struct Light
+	{
+		/* ===== 几何 ===== */
+		glm::vec3 pos = glm::vec3(0.0f);
+		glm::vec3 direction = glm::vec3(0.0f, -1.0f, 0.0f); // 向下
+
+		/* ===== 颜色（强度） ===== */
+		glm::vec3 ambient = glm::vec3(0.05f);   // 很暗
+		glm::vec3 diffuse = glm::vec3(0.8f);    // 主光
+		glm::vec3 specular = glm::vec3(1.0f);    // 高光偏白
+
+		/* ===== 点光源衰减 ===== */
+		float constant = 1.0f;
+		float linear = 0.09f;
+		float quadratic = 0.032f;
+
+		/* ===== 聚光灯 ===== */
+		float cutOff = glm::cos(glm::radians(12.5f));
+		float outerCutOff = glm::cos(glm::radians(17.5f));
+
+		/* ===== 类型 ===== */
+		LightType type = LightType::Point;
+
+
+		PointLight GetPointLight() const {
+			PointLight light;
+			light.position = pos;
+			light.ambient = ambient;
+			light.diffuse = diffuse;
+			light.specular = specular;
+			light.constant = constant;
+			light.linear = linear;
+			light.quadratic = quadratic;
+			return light;
+		}
+
+		DirectionalLight GetDirectionalLight() const {
+			DirectionalLight light;
+			light.direction = direction;
+			light.ambient = ambient;
+			light.diffuse = diffuse;
+			light.specular = specular;
+			return light;
+		}
+
+		SpotLight GetSpotLight() const {
+			SpotLight light;
+			light.position = pos;
+			light.direction = direction;
+			light.ambient = ambient;
+			light.diffuse = diffuse;
+			light.specular = specular;
+			light.cutOff = cutOff;
+			light.outerCutOff = outerCutOff;
+			return light;
+		}
+	};
 	class Shader
 	{
 	public:
@@ -32,6 +125,11 @@ namespace GT
 
 		virtual void SetUniformMat3(const std::string& name, const glm::mat3& matrix) = 0;
 		virtual void SetUniformMat4(const std::string& name, const glm::mat4& matrix) = 0;
+
+
+		virtual void SetUniformPointLight(const std::string& name, const PointLight& light) = 0;
+		virtual void SetUniformDirectionalLight(const std::string& name, const DirectionalLight& light) = 0;
+		virtual void SetUniformSpotLight(const std::string& name, const SpotLight& light) = 0;
 
 		virtual uint32_t GetRendererID() const = 0;
 		virtual const std::string& GetName() const = 0;

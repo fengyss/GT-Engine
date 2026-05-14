@@ -256,11 +256,11 @@ namespace GT
                 Renderer2D::SetCurrentEntityID(int(entity));
                 auto [transform, light] = view.get<TransformComponent, LightRendererComponent>(entity);
 
-                if (light.texture) Renderer2D::DrawCube(transform.GetTransform(), light.Color, light.texture->Get());
-                else Renderer2D::DrawCube(transform.GetTransform(), light.Color);
+                if (light.texture) Renderer2D::DrawCube(transform.GetTransform(), glm::vec4(1.0f), light.texture->Get());
+                else Renderer2D::DrawCube(transform.GetTransform(), glm::vec4(1.0f));
                 Renderer2D::SetCurrentEntityID(-1);
 
-				Renderer3D::SetLight(transform.Translation, glm::vec3(light.Color.r, light.Color.g, light.Color.b));
+                Renderer3D::AddLight(light.light);
             }
         }
         // Render all particles

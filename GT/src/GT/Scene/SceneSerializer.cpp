@@ -325,7 +325,6 @@ namespace GT
 				if (lightComponent)
 				{
 					auto& src = deserializedEntity.AddComponent<LightRendererComponent>();
-					src.Color = lightComponent["Color"].as<glm::vec4>();
 					if (lightComponent["TexturePath"])
 					{
 						std::filesystem::path texturePath = lightComponent["TexturePath"].as<std::string>();
@@ -585,7 +584,6 @@ namespace GT
 			out << YAML::BeginMap; // CubeComponent
 
 			auto& lightComponent = entity.GetComponent<LightRendererComponent>();
-			out << YAML::Key << "Color" << YAML::Value << lightComponent.Color;
 			if (lightComponent.texture)
 				out << YAML::Key << "TexturePath" << YAML::Value << lightComponent.texture->GetPath().string();
 

@@ -10,7 +10,7 @@ namespace GT
 	int Renderer2D::s_CurrentEntityID = -1;
 
 	RendererState Renderer2D::state = RendererState::None;
-
+	glm::mat4 Renderer2D::m_viewProjection;
 	struct QuadVertex
 	{
 		glm::vec3 Position;
@@ -327,6 +327,7 @@ namespace GT
 		if(s_Data.QuadIndexCount)
 		{
 			s_Data.QuadShader->Get()->Bind();
+			s_Data.QuadShader->Get()->SetUniformMat4("u_ViewProjection", m_viewProjection);
 			uint32_t dataSize = (uint32_t)((uint8_t*)s_Data.QuadVertexBufferPtr - (uint8_t*)s_Data.QuadVertexBufferBase);
 			s_Data.QuadVertexBuffer->SetData(s_Data.QuadVertexBufferBase, dataSize);
 
@@ -342,6 +343,7 @@ namespace GT
 		if(s_Data.CircleIndexCount)
 		{
 			s_Data.CircleShader->Get()->Bind();
+			s_Data.CircleShader->Get()->SetUniformMat4("u_ViewProjection", m_viewProjection);
 			uint32_t dataSize = (uint32_t)((uint8_t*)s_Data.CircleVertexBufferPtr - (uint8_t*)s_Data.CircleVertexBufferBase);
 			s_Data.CircleVertexBuffer->SetData(s_Data.CircleVertexBufferBase, dataSize);
 			RenderCommand::DrawIndexed(s_Data.CircleVertexArray, s_Data.CircleIndexCount);
@@ -352,6 +354,7 @@ namespace GT
 		if (s_Data.LineVertexCount)
 		{
 			s_Data.LineShader->Get()->Bind();
+			s_Data.LineShader->Get()->SetUniformMat4("u_ViewProjection", m_viewProjection);
 			uint32_t dataSize = (uint32_t)((uint8_t*)s_Data.LineVertexBufferPtr - (uint8_t*)s_Data.LineVertexBufferBase);
 			s_Data.LineVertexBuffer->SetData(s_Data.LineVertexBufferBase, dataSize);
 
@@ -363,13 +366,8 @@ namespace GT
 	glm::vec3 cameraright, cameraup;
 	void Renderer2D::SetViewProjection(const glm::mat4& viewProjection)
 	{
-		s_Data.QuadShader->Get()->Bind();
-		s_Data.QuadShader->Get()->SetUniformMat4("u_ViewProjection", viewProjection);
-		s_Data.CircleShader->Get()->Bind();
-		s_Data.CircleShader->Get()->SetUniformMat4("u_ViewProjection", viewProjection);
-		s_Data.LineShader->Get()->Bind();
-		s_Data.LineShader->Get()->SetUniformMat4("u_ViewProjection", viewProjection);
 
+		m_viewProjection = viewProjection;
 		cameraright = viewProjection[0];
 		cameraup = viewProjection[1];
 
