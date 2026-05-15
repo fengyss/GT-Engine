@@ -737,11 +737,11 @@ namespace GT
 					ImGui::DragFloat("Outer Circle", &config.outerRadius, 1.0f, 1.0f, 100.0f);
 					break;
 				case EmitterShape::Cone:
-					ImGui::DragFloat("Cone Angle", &config.coneAngle, 30.0f, 1.0f, 100.0f);
+					ImGui::DragFloat("Cone Angle", &config.coneAngle, 1.0f, 1.0f, 100.0f);
 					break;
 				}
 				
-				ImGui::DragFloat("Lifetime", &config.lifetime, 1.0f, 0.0f, 100.0f);
+				ImGui::DragFloat("Lifetime", &config.lifetime, 0.3f, 0.01f, 100.0f);
 				ImGui::DragFloat("Velocity", &config.velocity, 1.0f, 1.0f, 100.0f);
 				ImGui::DragFloat("Emission Rate", &config.spawnRate, 10.0f, 1.0f, 100.0f);
 				ImGui::DragFloat("Size", &config.sizeStart, 10.0f, 1.0f, 100.0f);

@@ -202,6 +202,7 @@ namespace GT
 		m_Rotation = roattion;
 		glm::mat4 rotation = glm::toMat4(glm::quat(m_Rotation));
 		m_Direction = rotation * glm::vec4(m_Config.direction, 1.0f);
+		//m_Direction = m_Rotation;
 	}
 	void ParticleEmitter::InitPointParticle(Ref<Particle> particle)
 	{
@@ -246,9 +247,9 @@ namespace GT
 
 		// 将方向转到发射器朝向
 		glm::mat3 rotation = glm::mat3(
-			glm::normalize(glm::cross(m_Direction, glm::vec3(0, 1, 0))),
+			glm::normalize(glm::cross(m_Direction, glm::vec3(0, -1, 0))),
 			glm::normalize(m_Direction),
-			glm::normalize(glm::cross(m_Direction, glm::cross(m_Direction, glm::vec3(0, 1, 0))))
+			glm::normalize(glm::cross(m_Direction, glm::cross(m_Direction, glm::vec3(0, -1, 0))))
 		);
 
 		particle->velocity = glm::normalize(rotation * glm::vec3(x, y, z))*m_Config.velocity;

@@ -29,7 +29,7 @@ in float v_TexIndex[];
 
 out vec4 fColor;
 out vec2 fUV;
-out float f_TexIndex;
+out flat float f_TexIndex;
 
 uniform mat4 u_ViewProjection;
 uniform mat4 u_View;
@@ -69,16 +69,16 @@ void main()
 #version 460 core
 in vec4 fColor;
 in vec2 fUV;
-in float f_TexIndex;
+in flat float f_TexIndex;
 
-uniform sampler2D u_Texture[32];
+uniform sampler2D u_Textures[32];
 
 out vec4 outColor;
 layout(location = 1) out int o_EntityID;
 
 void main()
 {
-    vec4 tex = texture(u_Texture[int(f_TexIndex)], fUV);
+    vec4 tex = texture(u_Textures[int(f_TexIndex)], fUV);
     outColor = tex * fColor;
 
     if (outColor.a == 0.0)

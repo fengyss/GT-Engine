@@ -52,7 +52,7 @@ namespace GT {
 
         EmitterShape shape = EmitterShape::Point;
 
-        glm::vec3 direction = { 1.0f,0.0f,0.0f };
+        glm::vec3 direction = { 1.0f,1.0f,1.0f };
         float velocity = 0.0f;
         float radius = 1.0f;
 

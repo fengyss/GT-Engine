@@ -30,6 +30,7 @@ namespace GT {
         {
             samplers[i] = i;
         }
+        ParticleShader->Get()->Bind();
         ParticleShader->Get()->SetUniformiv("u_Textures", samplers, 32);
 
         vertexArray = VertexArray::Create();
@@ -68,13 +69,14 @@ namespace GT {
         Ref<Shader> shader = ParticleShader->Get();
         shader->Bind();
         shader->SetUniformMat4("u_ViewProjection", s_viewProjection);
-        
+
+        for (int i = 0;i < TextureSlotIndex;i++)
+        {
+            TextureSlots[i]->Bind(i);
+        }
+
         if (!Vertices.empty())
         {
-            for (int i = 0;i < TextureSlotIndex;i++)
-            {
-                TextureSlots[i]->Bind(i);
-            }
             Flush(BlendMode::None);
             uint32_t count = Vertices.size();
             vbo->SetData(Vertices.data(), count * sizeof(ParticleGPUVertex));
@@ -83,10 +85,6 @@ namespace GT {
         }
         if (!Alp_Vertices.empty())
         {
-            for (int i = 0;i < TextureSlotIndex;i++)
-            {
-                TextureSlots[i]->Bind(i);
-            }
             Flush(BlendMode::Alpha);
             uint32_t count = Alp_Vertices.size();
             vbo->SetData(Alp_Vertices.data(), count * sizeof(ParticleGPUVertex));
@@ -95,10 +93,6 @@ namespace GT {
         }
         if (!Mul_Vertices.empty())
         {
-            for (int i = 0;i < TextureSlotIndex;i++)
-            {
-                TextureSlots[i]->Bind(i);
-            }
             Flush(BlendMode::Multiply);
             uint32_t count = Mul_Vertices.size();
             vbo->SetData(Mul_Vertices.data(), count * sizeof(ParticleGPUVertex));
@@ -107,10 +101,6 @@ namespace GT {
         }
         if (!Add_Vertices.empty())
         {
-            for (int i = 0;i < TextureSlotIndex;i++)
-            {
-                TextureSlots[i]->Bind(i);
-            }
             Flush(BlendMode::Additive);
             uint32_t count = Add_Vertices.size();
             vbo->SetData(Add_Vertices.data(), count * sizeof(ParticleGPUVertex));
