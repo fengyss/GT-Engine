@@ -157,10 +157,10 @@ namespace GT
 	glm::vec4 ParticleEmitter::GenerateRandomColor()
 	{
 		return glm::vec4(
-			m_Config.color.r + Random::Range(-m_Config.colorVariance.r, m_Config.colorVariance.r),
-			m_Config.color.g + Random::Range(-m_Config.colorVariance.g, m_Config.colorVariance.g),
-			m_Config.color.b + Random::Range(-m_Config.colorVariance.b, m_Config.colorVariance.b),
-			m_Config.color.a + Random::Range(-m_Config.colorVariance.a, m_Config.colorVariance.a)
+			m_Config.color.r * Random::Range(-m_Config.colorVariance.r, m_Config.colorVariance.r),
+			m_Config.color.g * Random::Range(-m_Config.colorVariance.g, m_Config.colorVariance.g),
+			m_Config.color.b * Random::Range(-m_Config.colorVariance.b, m_Config.colorVariance.b),
+			m_Config.color.a * Random::Range(-m_Config.colorVariance.a, m_Config.colorVariance.a)
 		);
 	}
 
@@ -185,7 +185,8 @@ namespace GT
 		particle->position = GenerateRandomPosition();
 		particle->velocity = GenerateRandomVelocity();
 
-		particle->color = GenerateRandomColor();
+		//particle->color = GenerateRandomColor();
+		particle->color = m_Config.colorVariance;
 		particle->Rvelocity = GenerateRandomRotationVelocity();
 
 		particle->lifeRemaining = m_Config.lifetime;

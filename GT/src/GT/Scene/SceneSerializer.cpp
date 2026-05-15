@@ -333,7 +333,18 @@ namespace GT
 							GT_CORE_ERROR("Texture file '{0}' does not exist", texturePath.string());
 						else src.texture = CreateHandle<Texture2D>(texturePath);
 					}
-
+					auto& light = src.light;
+					light.type = (LightType)lightComponent["Type"].as<int>();
+					light.ambient= lightComponent["Ambient"].as<glm::vec3>();
+					light.constant= lightComponent["Constant"].as<float>();
+					light.cutOff= lightComponent["cutOff"].as<float>();
+					light.outerCutOff= lightComponent["outerCutOff"].as<float>();
+					light.diffuse= lightComponent["Diffuse"].as<glm::vec3>();
+					light.direction= lightComponent["Direction"].as<glm::vec3>();
+					light.linear= lightComponent["Linear"].as<float>();
+					light.pos = lightComponent["Position"].as<glm::vec3>();
+					light.quadratic= lightComponent["Quadratic"].as<float>();
+					light.specular = lightComponent["Specular"].as<glm::vec3>();
 				}
 
 				auto circleRendererComponent = entity["CircleRendererComponent"];
@@ -385,7 +396,9 @@ namespace GT
 
 					auto& config = pc.Config;
 					config.shape = (EmitterShape)particleComponent["EmitterShape"].as<int>();
+					config.blendMode = (BlendMode)particleComponent["BlendMode"].as<int>();
 					config.direction = particleComponent["Direction"].as<glm::vec3>();
+					config.colorVariance = particleComponent["Color"].as<glm::vec4>();
 					config.velocity = particleComponent["Velocity"].as<float>();
 					config.radius = particleComponent["Radius"].as<float>();
 					config.InUnitSphere = particleComponent["InUnitSphere"].as<bool>();
@@ -587,6 +600,20 @@ namespace GT
 			if (lightComponent.texture)
 				out << YAML::Key << "TexturePath" << YAML::Value << lightComponent.texture->GetPath().string();
 
+			auto& light = lightComponent.light;
+			out << YAML::Key << "Type" << YAML::Value << (int)light.type;
+			out << YAML::Key << "Ambient" << YAML::Value << light.ambient;
+			out << YAML::Key << "Constant" << YAML::Value << light.constant;
+			out << YAML::Key << "cutOff" << YAML::Value << light.cutOff;
+			out << YAML::Key << "outerCutOff" << YAML::Value << light.outerCutOff;
+			out << YAML::Key << "Diffuse" << YAML::Value << light.diffuse;
+			out << YAML::Key << "Direction" << YAML::Value << light.direction;
+			out << YAML::Key << "Linear" << YAML::Value << light.linear;
+			out << YAML::Key << "Position" << YAML::Value << light.pos;
+			out << YAML::Key << "Quadratic" << YAML::Value << light.quadratic;
+			out << YAML::Key << "Specular" << YAML::Value << light.specular;
+
+
 			out << YAML::EndMap; // CubeComponent
 		}
 		
@@ -656,7 +683,9 @@ namespace GT
 			auto& config = pc.Config;
 			out << YAML::Key << "IsEmitting" << YAML::Value << pc.IsEmitting;
 			out << YAML::Key << "EmitterShape" << YAML::Value << (int)config.shape;
+			out << YAML::Key << "BlendMode" << YAML::Value << (int)config.blendMode;
 			out << YAML::Key << "Direction" << YAML::Value << config.direction;
+			out << YAML::Key << "Color" << YAML::Value << config.colorVariance;
 			out << YAML::Key << "Velocity" << YAML::Value << config.velocity;
 			out << YAML::Key << "Radius" << YAML::Value << config.radius;
 			out << YAML::Key << "InUnitSphere" << YAML::Value << config.InUnitSphere;

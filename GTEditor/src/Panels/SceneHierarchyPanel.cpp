@@ -772,15 +772,22 @@ namespace GT
 				ImGui::Separator();
 				ImGui::Text("Bursts:");
 				int index = 1;
-				for (auto& burst : config.bursts)
+				for (auto it = config.bursts.begin();it!=config.bursts.end();)
 				{
 					ImGui::PushID(index++);
+					if (ImGui::Button("-"))
+					{
+						it = config.bursts.erase(it);
+						continue;
+					}
+					auto& burst = *it;
 					ImGui::DragFloat("Start Time", &burst.time, 1.0f, 0.0f, 100.0f);
 					ImGui::DragInt("Count", &(int)burst.count, 5, 20, 100);
 					ImGui::DragInt("Cycles", &(int)burst.cycles, 1, 0, 30);
 					ImGui::DragFloat("Interval", &burst.interval, 1.0f, 1.0f, 10.0f);
 					ImGui::Separator();
 					ImGui::PopID();
+					it++;
 				}
 
 			});

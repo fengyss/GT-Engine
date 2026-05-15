@@ -25,7 +25,7 @@ Entities:
       Tag: planet
       Type: Model
     TransformComponent:
-      Translation: [-2.1718876, -13.617119, -33.571262]
+      Translation: [0, 0, 0]
       Rotation: [0, -0, 0]
       Scale: [0.9999995, 0.99999917, 0.999998]
     ModelComponent:
@@ -47,37 +47,42 @@ Entities:
       Tag: light
       Type: None
     TransformComponent:
-      Translation: [30.450457, 1.7886885, -23.798065]
-      Rotation: [-1.3776478, 0.94729185, -0.952516]
-      Scale: [1.0000026, 1, 1.0000001]
+      Translation: [-8.006513, 0.36696124, 4.5673156]
+      Rotation: [-1.378136, 0.94729185, -0.9525159]
+      Scale: [1.0000026, 0.9999999, 1.0000001]
     SpriteRendererComponent:
       Color: [1, 1, 1, 1]
-      TexturePath: project\assets\textures\Checkerboard.png
+      TexturePath: project\assets\textures\ChernoLogo.png
       TilingFactor: 1
     LightComponent:
-      Color: [1, 1, 1, 1]
       TexturePath: project\assets\textures\Checkerboard.png
+      Type: 2
+      Ambient: [0.05, 0.05, 0.05]
+      Constant: 0.01
+      cutOff: 0.976296
+      outerCutOff: 0.95371693
+      Diffuse: [0.8, 0.8, 0.8]
+      Direction: [-8.006513, 0.36696124, 4.5673156]
+      Linear: 0
+      Position: [-8.006513, 0.36696124, 4.5673156]
+      Quadratic: 0.001
+      Specular: [1, 1, 1]
     ParticleComponent:
-      IsEmitting: false
+      IsEmitting: true
       EmitterShape: 4
+      BlendMode: 2
       Direction: [1, 0, 0]
-      Velocity: 4
+      Color: [1, 0.49019608, 0, 1]
+      Velocity: 10
       Radius: 1
       InUnitSphere: false
-      SpawnRate: 10
-      LifeTime: 10
+      SpawnRate: 100
+      LifeTime: 1.3
       InnerRadius: 0
       OuterRadius: 1
-      ConeAngle: 31
+      ConeAngle: 18
       Bursts:
-        - Time: 0
-          Count: 10
-          Cycles: 1
-          Interval: 1
-        - Time: 0
-          Count: 65
-          Cycles: 0
-          Interval: 1
+        []
   - Entity: 10103489676936779165
     TagComponent:
       Tag: " Sheet"
