@@ -199,15 +199,6 @@ namespace GT
 		// Set texture slot0 to white texture
 		s_Data.TextureSlots[0] = s_Data.WhiteTexture;
 
-		if (0) 
-		{
-			// top left
-			s_Data.QuadVertexPositions[0] = { 0.0f, -1.0f, 0.0f, 1.0f };
-			s_Data.QuadVertexPositions[1] = { 1.0f, -1.0f, 0.0f, 1.0f };
-			s_Data.QuadVertexPositions[2] = { 1.0f, 0.0f, 0.0f, 1.0f };
-			s_Data.QuadVertexPositions[3] = { 0.0f, 0.0f, 0.0f, 1.0f };
-		}
-		else 
 		{
 			// center
 			s_Data.QuadVertexPositions[0] = { -0.5f, -0.5f, 0.0f, 1.0f };
@@ -215,36 +206,36 @@ namespace GT
 			s_Data.QuadVertexPositions[2] = { 0.5f, 0.5f, 0.0f, 1.0f };
 			s_Data.QuadVertexPositions[3] = { -0.5f, 0.5f, 0.0f, 1.0f };
 
-			// front
-			s_Data.CubeVertexPositions[0][0] = { -0.5f, -0.5f, 0.5f, 1.0f };
-			s_Data.CubeVertexPositions[0][1] = { 0.5f, -0.5f, 0.5f, 1.0f };
-			s_Data.CubeVertexPositions[0][2] = { 0.5f, 0.5f, 0.5f, 1.0f };
-			s_Data.CubeVertexPositions[0][3] = { -0.5f, 0.5f, 0.5f, 1.0f };
-			// back
-			s_Data.CubeVertexPositions[1][0] = { -0.5f, -0.5f, -0.5f, 1.0f };
-			s_Data.CubeVertexPositions[1][1] = { 0.5f, -0.5f, -0.5f, 1.0f };
-			s_Data.CubeVertexPositions[1][2] = { 0.5f, 0.5f, -0.5f, 1.0f };
-			s_Data.CubeVertexPositions[1][3] = { -0.5f, 0.5f, -0.5f, 1.0f };
-			// left
-			s_Data.CubeVertexPositions[2][0] = { -0.5f, -0.5f, 0.5f, 1.0f };
-			s_Data.CubeVertexPositions[2][1] = { -0.5f, -0.5f, -0.5f, 1.0f };
-			s_Data.CubeVertexPositions[2][2] = { -0.5f, 0.5f, -0.5f, 1.0f };
-			s_Data.CubeVertexPositions[2][3] = { -0.5f, 0.5f, 0.5f, 1.0f };
-			// right
-			s_Data.CubeVertexPositions[3][0] = { 0.5f, -0.5f, 0.5f, 1.0f };
-			s_Data.CubeVertexPositions[3][1] = { 0.5f, -0.5f, -0.5f, 1.0f };
-			s_Data.CubeVertexPositions[3][2] = { 0.5f, 0.5f, -0.5f, 1.0f };
-			s_Data.CubeVertexPositions[3][3] = { 0.5f, 0.5f, 0.5f, 1.0f };
-			// bottom
-			s_Data.CubeVertexPositions[4][0] = { -0.5f, -0.5f, 0.5f, 1.0f };
-			s_Data.CubeVertexPositions[4][1] = { 0.5f, -0.5f, 0.5f, 1.0f };
-			s_Data.CubeVertexPositions[4][2] = { 0.5f, -0.5f, -0.5f, 1.0f };
-			s_Data.CubeVertexPositions[4][3] = { -0.5f, -0.5f, -0.5f, 1.0f };
-			// top
-			s_Data.CubeVertexPositions[5][0] = { -0.5f, 0.5f, 0.5f, 1.0f };
-			s_Data.CubeVertexPositions[5][1] = { 0.5f, 0.5f, 0.5f, 1.0f };
-			s_Data.CubeVertexPositions[5][2] = { 0.5f, 0.5f, -0.5f, 1.0f };
-			s_Data.CubeVertexPositions[5][3] = { -0.5f, 0.5f, -0.5f, 1.0f };
+
+			s_Data.CubeVertexPositions[0][0] = { -0.5f, -0.5f,  0.5f, 1.0f }; 
+			s_Data.CubeVertexPositions[0][1] = { 0.5f, -0.5f,  0.5f, 1.0f }; 
+			s_Data.CubeVertexPositions[0][2] = { 0.5f,  0.5f,  0.5f, 1.0f }; 
+			s_Data.CubeVertexPositions[0][3] = { -0.5f,  0.5f,  0.5f, 1.0f }; 
+
+			s_Data.CubeVertexPositions[1][0] = { 0.5f, -0.5f, -0.5f, 1.0f }; 
+			s_Data.CubeVertexPositions[1][1] = { -0.5f, -0.5f, -0.5f, 1.0f }; 
+			s_Data.CubeVertexPositions[1][2] = { -0.5f,  0.5f, -0.5f, 1.0f }; 
+			s_Data.CubeVertexPositions[1][3] = { 0.5f,  0.5f, -0.5f, 1.0f }; 
+
+			s_Data.CubeVertexPositions[2][0] = { -0.5f, -0.5f, -0.5f, 1.0f }; 
+			s_Data.CubeVertexPositions[2][1] = { -0.5f, -0.5f,  0.5f, 1.0f }; 
+			s_Data.CubeVertexPositions[2][2] = { -0.5f,  0.5f,  0.5f, 1.0f }; 
+			s_Data.CubeVertexPositions[2][3] = { -0.5f,  0.5f, -0.5f, 1.0f }; 
+
+			s_Data.CubeVertexPositions[3][0] = { 0.5f, -0.5f,  0.5f, 1.0f }; 
+			s_Data.CubeVertexPositions[3][1] = { 0.5f, -0.5f, -0.5f, 1.0f }; 
+			s_Data.CubeVertexPositions[3][2] = { 0.5f,  0.5f, -0.5f, 1.0f }; 
+			s_Data.CubeVertexPositions[3][3] = { 0.5f,  0.5f,  0.5f, 1.0f }; 
+
+			s_Data.CubeVertexPositions[4][0] = { -0.5f, -0.5f, -0.5f, 1.0f };
+			s_Data.CubeVertexPositions[4][1] = { 0.5f, -0.5f, -0.5f, 1.0f };
+			s_Data.CubeVertexPositions[4][2] = { 0.5f, -0.5f,  0.5f, 1.0f };
+			s_Data.CubeVertexPositions[4][3] = { -0.5f, -0.5f,  0.5f, 1.0f }; 
+
+			s_Data.CubeVertexPositions[5][0] = { -0.5f,  0.5f,  0.5f, 1.0f };
+			s_Data.CubeVertexPositions[5][1] = { 0.5f,  0.5f,  0.5f, 1.0f };
+			s_Data.CubeVertexPositions[5][2] = { 0.5f,  0.5f, -0.5f, 1.0f };
+			s_Data.CubeVertexPositions[5][3] = { -0.5f,  0.5f, -0.5f, 1.0f }; 
 
 		}
 		s_Data.QuadTexCoords[0] = { 0.0f, 0.0f };
@@ -450,52 +441,6 @@ namespace GT
 			quadState.Position[i] = transform * s_Data.QuadVertexPositions[i];
 		quadState.Color = color;
 		quadState.TextureIndex = 0.0f;
-		quadState.TilingFactor = 1.0f;
-		quadState.EntityID = s_CurrentEntityID;
-		SetTextureCoords();
-
-		Draw(quadState);
-	}
-
-	void Renderer2D::DrawParticleQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color)
-	{
-		glm::vec3 center = position;
-		//glm::vec3 right = cameraright * size.x;
-		//glm::vec3 up = cameraup * size.y;
-
-		glm::vec3 lookDir = glm::normalize(camerapos - position);
-
-		glm::vec3 right = glm::normalize(glm::cross(glm::vec3(0, 1, 0), lookDir));
-		glm::vec3 up = glm::normalize(glm::cross(lookDir, right));
-
-		// Quad
-		quadState.Position[0] = center - right - up; // TL
-		quadState.Position[1] = center + right - up; // TR
-		quadState.Position[2] = center + right + up; // BR
-		quadState.Position[3] = center - right + up; // BL
-
-		quadState.Color = color;
-		quadState.TextureIndex = 0.0f;
-		quadState.TilingFactor = 1.0f;
-		quadState.EntityID = s_CurrentEntityID;
-		SetTextureCoords();
-
-		Draw(quadState);
-	}
-
-	void Renderer2D::DrawParticleQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color, const Ref<Texture2D>& texture)
-	{
-		glm::vec3 center = position;
-		glm::vec3 right = cameraright * size.x;
-		glm::vec3 up = cameraup * size.y;
-		// Quad
-		quadState.Position[0] = center - right - up; // TL
-		quadState.Position[1] = center + right - up; // TR
-		quadState.Position[2] = center + right + up; // BR
-		quadState.Position[3] = center - right + up; // BL
-
-		quadState.Color = color;
-		quadState.TextureIndex = GetTextureSlotIndex(texture);
 		quadState.TilingFactor = 1.0f;
 		quadState.EntityID = s_CurrentEntityID;
 		SetTextureCoords();

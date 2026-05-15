@@ -22,7 +22,6 @@ namespace GT {
 
     int32_t ParticlePool::GetAvailableParticleIndex()
     {
-        std::lock_guard<std::mutex> lock(m_Mutex);
 
         if (m_AvailableIndices.empty()) {
             return -1; // ³ØÂú
@@ -41,7 +40,6 @@ namespace GT {
             return;
         }
 
-        std::lock_guard<std::mutex> lock(m_Mutex);
 
         Ref<Particle> particle = m_Particles[index];
         if (particle->lifeRemaining == 0.0f) {

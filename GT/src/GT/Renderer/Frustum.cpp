@@ -6,9 +6,9 @@ namespace GT
 {
 	FrustumCullingPass::FrustumCullingPass()
 	{
-        m_ComputeShader = Shader::CreateCompute(
+      /*  m_ComputeShader = Shader::CreateCompute(
             "assets/shaders/FrustumCulling.comp"
-        );
+        );*/
 
         m_FrustumBuffer = StorageBuffer::Create(
             sizeof(glm::vec4) * 6,

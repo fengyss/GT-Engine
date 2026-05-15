@@ -93,13 +93,14 @@ namespace GT
         operator glm::vec4 () { return Color; }
         operator const glm::vec4& () const { return Color; }
     };
-
+    class ParticleEmitter;
     struct ParticleComponent {
 		bool IsEmitting = true;
         bool IsRegen = false;
 
 
 		ParticleEmitterConfig Config;
+        Ref<ParticleEmitter> Emitter;
 
         // ´ýÓÃ
         std::function<void(Particle&)> init_func;

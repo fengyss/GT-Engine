@@ -114,60 +114,6 @@ namespace GT {
         s_viewProjection = viewProjection;
     }
 
-    void ParticleRenderer::RenderParticles(const std::vector<Ref<Particle>> particles)
-    {
-        //if (particles.empty()) return;
-
-        for (const auto particle : particles) {
-            if (particle->lifeRemaining == 0.0f) continue;
-
-            glm::vec3 pos = particle->position;
-            glm::vec2 size = glm::vec2(particle->size);
-
-			Renderer2D::DrawParticleQuad(pos,size, particle->color);
-            //Renderer2D::DrawCircle(model, particle.color);
-        }
-    }
-
-    void ParticleRenderer::RenderParticles(const std::vector<Ref<Particle>> particles, BlendMode mode)
-    {
-        ParticleGPUVertex vertex;
-        switch (mode)
-        {
-        case BlendMode::None:
-            for (auto& p : particles)
-            {
-                if (p->lifeRemaining == 0.0f) continue;
-                vertex = { p->position,p->color,p->size };
-                Vertices.emplace_back(vertex);
-            }
-            break;
-        case BlendMode::Alpha:
-            for (auto& p : particles)
-            {
-                if (p->lifeRemaining == 0.0f) continue;
-                vertex = { p->position,p->color,p->size };
-                Alp_Vertices.emplace_back(vertex);
-            }
-            break;
-        case BlendMode::Additive:
-            for (auto& p : particles)
-            {
-                if (p->lifeRemaining == 0.0f) continue;
-                vertex = { p->position,p->color,p->size };
-                Add_Vertices.emplace_back(vertex);
-            }
-            break;
-        case BlendMode::Multiply:
-            for (auto& p : particles)
-            {
-                if (p->lifeRemaining == 0.0f) continue;
-                vertex = { p->position,p->color,p->size };
-                Mul_Vertices.emplace_back(vertex);
-            }
-            break;
-        }
-    }
     float ParticleRenderer::GetTextureSlotIndex(const Ref<Texture2D>& texture)
     {
         float textureIndex = 0.0f;
@@ -234,28 +180,6 @@ namespace GT {
     }
 
 
-    void ParticleRenderer::RenderParticles(const std::vector<Ref<Particle>> particles, const RefHandle<Texture2D> tex)
-    {
-        for (const auto particle : particles) {
-            if (particle->lifeRemaining == 0.0f) continue;
-
-            glm::vec3 pos = particle->position;
-            glm::vec2 size = glm::vec2(particle->size);
-
-            Renderer2D::DrawParticleQuad(pos, size, particle->color,tex->Get());
-            //Renderer2D::DrawCircle(model, particle.color);
-        }
-    }
-
-    void ParticleRenderer::RenderParticle(const Ref<Particle> particle)
-    {
-        if (particle->lifeRemaining == 0.0f) return;
-
-        glm::vec3 pos = particle->position;
-        glm::vec2 size = glm::vec2(particle->size);
-
-        Renderer2D::DrawParticleQuad(pos, size, particle->color);
-    }
 
     void ParticleRenderer::Flush(BlendMode mode)
     {

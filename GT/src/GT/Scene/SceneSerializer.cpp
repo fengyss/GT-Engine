@@ -421,8 +421,7 @@ namespace GT
 						b.interval = burst["Interval"].as<float>();
 						config.bursts.push_back(b);
 					}
-
-					if (pc.IsEmitting) ParticleSystem::CreateEmitter(deserializedEntity);
+					pc.IsRegen = true;
 				}
 
 

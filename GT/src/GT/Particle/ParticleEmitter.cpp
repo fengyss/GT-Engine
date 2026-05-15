@@ -12,8 +12,14 @@ namespace GT
 
 	ParticleEmitter::ParticleEmitter()
 	{
-		m_ParticlePool = CreateRef<ParticlePool>(3000); // ≥ı º≥ÿ¥Û–°
+		m_ParticlePool = CreateRef<ParticlePool>(3000);
 	}
+	ParticleEmitter::ParticleEmitter(const ParticleEmitterConfig& config)
+		: m_Config(config) 
+	{
+		m_ParticlePool = CreateRef<ParticlePool>(3000);
+		Init();
+	};
 	void ParticleEmitter::Emit(uint32_t count) {
 		for (uint32_t i = 0; i < count; ++i) {
 			Ref<Particle> particle = m_ParticlePool->GetNext();

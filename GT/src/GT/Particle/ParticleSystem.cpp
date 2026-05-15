@@ -3,81 +3,33 @@
 #include "GT/Scene/Entity.h"
 
 namespace GT {
-	std::unordered_map<uint32_t, Ref<ParticleEmitter>> ParticleSystem::m_Emitters;
-	Ref<Scene> ParticleSystem::m_activeScene = nullptr;
-	std::vector<Ref<Particle>> ParticleSystem::m_Particles;
 
-	void ParticleSystem::OnUpdate(Timestep dt, const glm::vec3& cameraPos) {
-		//ParallelUpdate(dt);
-		if (m_activeScene == nullptr) 
-		{
-			GT_CORE_ERROR("Particle System didn't set current active scene!");
-			return;
-		}
-		for (const auto& [entity, emitter] : m_Emitters) {
-
-			Entity e = { entity, m_activeScene.get() };
-			if (!e.HasComponent<ParticleComponent>())
-			{
-				DestroyEmitter(e);
-				break;
-			}
-			auto particle = e.GetComponent<ParticleComponent>();
-			if (particle.IsEmitting == false) continue;
-
-			auto trans = e.GetComponent<TransformComponent>();
-
-			emitter->SetPostion(trans.Translation);
-			emitter->SetRotation(trans.Rotation);
-			emitter->SetSaclar(trans.Scale);
-			emitter->OnUpdate(dt);
-			//m_TotalParticles += emitter->GetParticles().size();
-			//GT_CORE_INFO("Total Particles: {0}", m_TotalParticles);
-		}
-		//SortParticlesByDistance(cameraPos);
-
-	}
-	void ParticleSystem::OnRender() {
-		if (m_activeScene == nullptr)
-		{
-			GT_CORE_ERROR("Particle System didn't set current active scene!");
-			return;
-		}
-
-		for (const auto& [entity, emitter] : m_Emitters) {
-			Entity e = { entity, m_activeScene.get() };
-
-			auto particle = e.GetComponent<ParticleComponent>();
-			if (particle.IsEmitting == false) continue;
-			RefHandle<Texture2D> tex = nullptr;
-			if (e.HasComponent<SpriteRendererComponent>())
-			{
-				auto sprite = e.GetComponent<SpriteRendererComponent>();
-				tex = sprite.texture;
-			}
-
-			ParticleRenderer::RenderParticles(particle.Config.blendMode, emitter->GetParticles(),tex);
-		}
-
-		//for (auto p : m_Particles) {
-		//	ParticleRenderer::RenderParticle(p);
-		//}
-	}
-	Ref<ParticleEmitter> ParticleSystem::CreateEmitter(Entity& entity) {
-		
-		auto& particle = entity.GetComponent<ParticleComponent>();
-		auto emitter = CreateEmitter(particle.Config);
-		m_Emitters[entity] = emitter;
-		return emitter;
-	}
-	Ref<ParticleEmitter> ParticleSystem::CreateEmitter(ParticleEmitterConfig& config)
+	void ParticleSystem::OnUpdate(Scene* scene, Timestep dt)
 	{
-		auto emitter = CreateRef<ParticleEmitter>();
-		emitter->SetConfig(config);
-		return emitter;
+		auto view = scene->Reg().view<TransformComponent, ParticleComponent>();
+		for (auto e : view)
+		{
+			auto& [trans, p] = view.get<TransformComponent, ParticleComponent>(e);
+
+			if (p.IsEmitting == false) continue;
+
+			p.Emitter->SetPostion(trans.Translation);
+			p.Emitter->SetRotation(trans.Rotation);
+			p.Emitter->SetSaclar(trans.Scale);
+			p.Emitter->OnUpdate(dt);
+		}
 	}
-	void ParticleSystem::DestroyEmitter(Entity& entity) {
-		m_Emitters.erase(entity);
+	void ParticleSystem::OnRender(Scene* scene)
+	{
+		auto view = scene->Reg().view<SpriteRendererComponent, ParticleComponent>();
+		for (auto e : view)
+		{
+			auto& [sprite,p] = view.get<SpriteRendererComponent, ParticleComponent>(e);
+
+			if (p.IsEmitting == false) continue;
+			RefHandle<Texture2D> tex = sprite.texture;
+			ParticleRenderer::RenderParticles(p.Config.blendMode, p.Emitter->GetParticles(), tex);
+		}
 	}
 	void ParticleSystem::SetMaxParticles(uint32_t maxParticles) {
 	}
@@ -86,24 +38,5 @@ namespace GT {
 	}
 	void ParticleSystem::SortParticlesByDistance(const glm::vec3& cameraPos) 
 	{
-		m_Particles.clear();
-		for (const auto& [entity, emitter] : m_Emitters)
-		{
-			Entity e = { entity, m_activeScene.get() };
-
-			auto particle = e.GetComponent<ParticleComponent>();
-			if (particle.IsEmitting == false) continue;
-
-			auto& particles = emitter->GetParticles();
-			for (auto& p : particles)
-			{
-				p->distanceToCamera = glm::length(cameraPos - p->position);
-			}
-			m_Particles.insert(m_Particles.end(), particles.begin(), particles.end());
-		}
-		std::sort(m_Particles.begin(), m_Particles.end(),
-			[](Ref<Particle> a, Ref<Particle> b) {
-				return a->distanceToCamera > b->distanceToCamera;
-			});
 	}
 } // namespace GT

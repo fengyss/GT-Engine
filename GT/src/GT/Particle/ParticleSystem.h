@@ -12,16 +12,10 @@ namespace GT {
         ParticleSystem();
         ~ParticleSystem() = default;
 
-        // 系统接口
-        static void OnUpdate(Timestep dt, const glm::vec3& cameraPos);
-        static void OnRender();
 
-		static void SetActiveScene(const Ref<Scene>& scene) { m_activeScene = scene; }
 
-        // 发射器管理
-        static Ref<ParticleEmitter> CreateEmitter(Entity& entity);
-        static Ref<ParticleEmitter> CreateEmitter(ParticleEmitterConfig& config);
-        static void DestroyEmitter(Entity& entity);
+        static void OnUpdate(Scene* scene,Timestep dt);
+        static void OnRender(Scene* scene);
 
         // 全局设置
         static void SetMaxParticles(uint32_t maxParticles);
@@ -31,9 +25,6 @@ namespace GT {
         static uint32_t GetDrawCalls();
 
     private:
-        static std::unordered_map<uint32_t, Ref<ParticleEmitter>> m_Emitters;
-        static std::vector<Ref<Particle>> m_Particles;
-		static Ref<Scene> m_activeScene;
         static void ParallelUpdate(float deltaTime);
         static void SortParticlesByDistance(const glm::vec3& cameraPos);
     };

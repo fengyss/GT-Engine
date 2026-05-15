@@ -96,6 +96,10 @@ namespace GT
         CopyComponent<BoxCollider2DComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
         CopyComponent<CircleCollider2DComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
 
+        CopyComponent<ParticleComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
+        CopyComponent<LightRendererComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
+        CopyComponent<ModelComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
+
         return newScene;
     }
     void Scene::DuplicateEntity(Entity entity)
@@ -213,7 +217,8 @@ namespace GT
         RenderScene2D();
 
         ParticleRenderer::BeginScene(camera);
-        ParticleSystem::OnRender();
+
+        ParticleSystem::OnRender(this);
 
         // Render 3D
         Renderer3D::BeginScene(camera);
@@ -324,14 +329,12 @@ namespace GT
                 if (particle.IsRegen)
                 {
                     particle.IsRegen = false;
-                    Entity e = { entity,this };
-                    ParticleSystem::DestroyEmitter(e);
-                    ParticleSystem::CreateEmitter(e);
+                    particle.Emitter->SetConfig(particle.Config);
                 }
 
             }
         }
-        ParticleSystem::OnUpdate(ts,camera.GetPosition());
+        ParticleSystem::OnUpdate(this,ts);
 
         Animation2DSystem::OnUpdate(this, ts);
 
@@ -432,13 +435,23 @@ namespace GT
                 }
                 });
         }
-
+        ParticleSystem::OnUpdate(this, ts);
         if (mainCamera)
         {
             // Render
             Renderer2D::BeginScene(*mainCamera, cameraTransform);
+            Renderer3D::BeginScene(*mainCamera, cameraTransform);
+            ParticleRenderer::BeginScene(*mainCamera, cameraTransform);
+
 			RenderScene2D();
+            RenderScene3D();
+            ParticleSystem::OnRender(this);
+
+            ParticleRenderer::EndScene();
+            
+            ParticleRenderer::Flush(BlendMode::Alpha);
             Renderer2D::EndScene();
+            Renderer3D::EndScene();
         }
     }
 
@@ -585,7 +598,7 @@ namespace GT
     template<>
     void Scene::OnComponentAdded<ParticleComponent>(Entity entity, ParticleComponent& component)
     {
-		ParticleSystem::CreateEmitter(entity);
+        component.Emitter = CreateRef<ParticleEmitter>(component.Config);
     }
 
     template<>
@@ -667,7 +680,6 @@ namespace GT
     template<>
     void Scene::OnComponentRemoved<ParticleComponent>(Entity entity, ParticleComponent& component)
     {
-        ParticleSystem::DestroyEmitter(entity);
     }
 
     template<>

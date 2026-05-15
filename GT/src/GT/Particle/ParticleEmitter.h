@@ -8,6 +8,7 @@ namespace GT {
     class ParticleEmitter {
     public:
         ParticleEmitter();
+        ParticleEmitter(const ParticleEmitterConfig& config);
         ~ParticleEmitter() = default;
 
         void Init();

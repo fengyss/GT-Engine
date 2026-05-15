@@ -23,12 +23,7 @@ namespace GT {
         static void EndScene();
         static void SetViewProjection(const glm::mat4& viewProjection);
 
-        static void RenderParticles(const std::vector<Ref<Particle>> particles);
-        static void RenderParticles(const std::vector<Ref<Particle>> particles,BlendMode mode);
         static void RenderParticles(BlendMode mode, const std::vector<Ref<Particle>> particles, const RefHandle<Texture2D> tex = nullptr);
-        static void RenderParticles(const std::vector<Ref<Particle>> particles, const RefHandle<Texture2D> tex);
-        static void RenderParticle(const Ref < Particle> particle);
-
 
         static float GetTextureSlotIndex(const Ref<Texture2D>& texture);
 
