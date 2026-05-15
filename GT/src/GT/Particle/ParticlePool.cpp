@@ -56,10 +56,7 @@ namespace GT {
     {
         int32_t index = GetAvailableParticleIndex();
         if (index == -1) {
-            // 池满时返回第一个粒子（循环使用）
-            // 不在生成新粒子
-            static Ref<Particle> dummy = CreateRef<Particle>();
-            return dummy;
+            return nullptr;
         }
         return m_Particles[index];
     }

@@ -54,6 +54,22 @@ namespace GT
 		
 	}
 
+	Ref<Shader> Shader::CreateGeometry(const std::filesystem::path& filepath)
+	{
+		GT_CORE_TRACE("Loading [Geometry Shader] from path: {0}", filepath.string());
+		switch (Renderer::GetAPI())
+		{
+		case RendererAPI::API::None:
+			GT_CORE_ASSERT(false, "RendererAPI::None is currently not supported!");
+			return nullptr;
+
+		case RendererAPI::API::OpenGL:
+			return CreateRef<OpenGLShader>(filepath, ShaderType::Geometry);
+		}
+		GT_CORE_ASSERT(false, "Unknown RendererAPI!");
+		return nullptr;
+	}
+
 
 
 	void ShaderLibrary::Add(uint32_t ID, const Ref<Shader>& shader)

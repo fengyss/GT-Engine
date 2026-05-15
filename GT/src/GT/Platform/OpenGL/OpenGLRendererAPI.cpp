@@ -66,6 +66,12 @@ namespace GT
 		// glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
+	void OpenGLRendererAPI::DrawArrays(const Ref<VertexArray>& vertexArray, uint32_t count)
+	{
+		vertexArray->Bind();
+		glDrawArrays(GL_POINTS, 0, count);
+	}
+
 	void OpenGLRendererAPI::DrawLines(const Ref<VertexArray>& vertexArray, uint32_t vertexCount)
 	{
 		vertexArray->Bind();

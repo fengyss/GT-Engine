@@ -5,7 +5,7 @@ pause
 git add .
 pause
 
-git commit -m "docx: when backup automaticly calculate GT code line."
+git commit -m "fix: Add a overlooked premake5.lua."
 pause
 
 git push -u origin main

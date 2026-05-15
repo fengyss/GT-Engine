@@ -12,12 +12,13 @@ namespace GT
 
 	ParticleEmitter::ParticleEmitter()
 	{
-		m_ParticlePool = CreateRef<ParticlePool>(10000); // 初始池大小
+		m_ParticlePool = CreateRef<ParticlePool>(3000); // 初始池大小
 	}
 	void ParticleEmitter::Emit(uint32_t count) {
 		for (uint32_t i = 0; i < count; ++i) {
 			Ref<Particle> particle = m_ParticlePool->GetNext();
-			InitializeParticle(particle);
+			if (particle) InitializeParticle(particle);
+			else break;
 		}
 	}
 

@@ -8,6 +8,7 @@ namespace GT
 	{
 		Normal,
 		Compute,
+		Geometry,
 		Count
 	};
 	enum class LightType
@@ -138,6 +139,7 @@ namespace GT
 		static Ref<Shader> Create(const std::filesystem::path& filepath);
 		static Ref<Shader> Create(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc);
 		static Ref<Shader> CreateCompute(const std::filesystem::path& filepath);
+		static Ref<Shader> CreateGeometry(const std::filesystem::path& filepath);
 
 	private:
 		uint32_t m_RendererID;

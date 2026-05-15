@@ -14,6 +14,8 @@ namespace GT
 			return GL_VERTEX_SHADER;
 		if (type == "fragment" || type == "pixel")
 			return GL_FRAGMENT_SHADER;
+		if (type == "geometry")
+			return GL_GEOMETRY_SHADER;
 		GT_CORE_ASSERT(false, "Unknown shader type!");
 		return 0;
 	}
@@ -65,6 +67,12 @@ namespace GT
 			break;
 		case ShaderType::Compute:
 			CompileCompute(source);
+			break;
+		case ShaderType::Geometry:
+		{
+			auto shaderSources = PreProcessShader(source);
+			Compile(shaderSources);
+		}
 			break;
 		default:
 			GT_CORE_ASSERT(false, "Unknow ShaderType!");
@@ -120,8 +128,10 @@ namespace GT
 	void  OpenGLShader::Compile(std::unordered_map<GLenum, std::string>& shaderSources)
 	{
 		GT_PROFILE_FUNCTION();
-		GT_CORE_ASSERT(shaderSources.size() <= 2, "We only support 2 shaders for now");
-		std::array<GLenum, 2> shaderIDs;
+		GT_CORE_ASSERT(shaderSources.size() <= 3, "We only support 2 shaders for now");
+		std::vector<GLuint> shaderIDs;
+		shaderIDs.reserve(shaderSources.size());
+
 		int glShaderIDindex = 0;
 
 		GLuint program = glCreateProgram();
@@ -151,7 +161,8 @@ namespace GT
 				break;
 			}
 			glAttachShader(program, shader);
-			shaderIDs[glShaderIDindex++] = shader;
+			shaderIDs.emplace_back(shader);
+			//shaderIDs[glShaderIDindex] = shader;
 		}
 
 

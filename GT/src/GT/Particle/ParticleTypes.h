@@ -39,7 +39,7 @@ namespace GT {
         glm::vec3 Rvelocity{ 0.0f };      // 12字节
 
         glm::vec4 color{ 1.0f };         // 16字节
-        float lifeRemaining{ 1.0f };    // 4字节
+        float lifeRemaining{ 0.0f };    // 4字节
         float size{ 1.0f };             // 4字节
         uint32_t textureIndex{ 0 };     // 4字节
         // 总计48字节，适合GPU缓冲区

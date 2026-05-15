@@ -212,11 +212,19 @@ namespace GT
         Renderer2D::BeginScene(camera);
         RenderScene2D();
 
+        ParticleRenderer::BeginScene(camera);
+        ParticleSystem::OnRender();
+
         // Render 3D
         Renderer3D::BeginScene(camera);
         RenderScene3D();
+
+        ParticleRenderer::Flush(BlendMode::None);
         Renderer3D::EndScene();
 
+        ParticleRenderer::EndScene();
+
+        ParticleRenderer::Flush(BlendMode::None);
         Renderer2D::EndScene();
         //time = Time::GetTime() - time;
         //GT_CORE_CRITICAL("GPU time : {0} ms!", time);
@@ -224,7 +232,6 @@ namespace GT
 
     void Scene::RenderScene2D()
     {
-
          //Render all quads
         {
             auto group = m_Registry.group<TransformComponent, SpriteRendererComponent>();
@@ -279,7 +286,7 @@ namespace GT
         }
         // Render all particles
         {
-            ParticleSystem::OnRender();
+            
         }
 
        //Renderer2D::DrawLine(glm::vec3(2.0f), glm::vec3(5.0f), glm::vec4(1.0f));
@@ -288,7 +295,6 @@ namespace GT
     }
     void Scene::RenderScene3D()
     {
-        
         // Render all models
         {
             auto view = m_Registry.view<TransformComponent, ModelComponent>();

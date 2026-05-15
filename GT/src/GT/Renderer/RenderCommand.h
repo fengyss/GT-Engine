@@ -49,6 +49,11 @@ namespace GT
 		{
 			s_RendererAPI->SetMemoryBarrier(barrier);
 		}
+
+		inline static void DrawArrays(const Ref<VertexArray>& vertexArray, uint32_t count)
+		{
+			s_RendererAPI->DrawArrays(vertexArray, count);
+		}
 	private:
 		static RendererAPI* s_RendererAPI;
 	};

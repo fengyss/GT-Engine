@@ -3,6 +3,7 @@
 #include "GT/Platform/OpenGL/OpenGLShader.h"
 #include "Renderer2D.h"
 #include "Renderer3D.h"
+#include "GT/Particle/ParticleRenderer.h"
 namespace GT
 {
 	Renderer::SceneData* Renderer::m_SceneData = new Renderer::SceneData;
@@ -13,6 +14,7 @@ namespace GT
 		RenderCommand::Init();
 		Renderer2D::Init();
 		Renderer3D::Init();
+		ParticleRenderer::Init();
 	}
 	void Renderer::BeginScene(OrthographicCamera& camera)
 	{
