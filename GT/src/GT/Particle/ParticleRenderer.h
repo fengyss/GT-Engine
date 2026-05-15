@@ -10,6 +10,7 @@ namespace GT {
         glm::vec3 position; // ÊÀ½ç×ø±ê
         glm::vec4 color;
         float size;
+        float texIndex = 0.0f;
     };
 
     class ParticleRenderer {
@@ -24,8 +25,13 @@ namespace GT {
 
         static void RenderParticles(const std::vector<Ref<Particle>> particles);
         static void RenderParticles(const std::vector<Ref<Particle>> particles,BlendMode mode);
+        static void RenderParticles(BlendMode mode, const std::vector<Ref<Particle>> particles, const RefHandle<Texture2D> tex = nullptr);
         static void RenderParticles(const std::vector<Ref<Particle>> particles, const RefHandle<Texture2D> tex);
         static void RenderParticle(const Ref < Particle> particle);
+
+
+        static float GetTextureSlotIndex(const Ref<Texture2D>& texture);
+
         static void Flush(BlendMode mode);
     private:
     };

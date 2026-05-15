@@ -219,12 +219,12 @@ namespace GT
         Renderer3D::BeginScene(camera);
         RenderScene3D();
 
-        ParticleRenderer::Flush(BlendMode::None);
+        ParticleRenderer::Flush(BlendMode::Alpha);
         Renderer3D::EndScene();
 
         ParticleRenderer::EndScene();
 
-        ParticleRenderer::Flush(BlendMode::None);
+        ParticleRenderer::Flush(BlendMode::Alpha);
         Renderer2D::EndScene();
         //time = Time::GetTime() - time;
         //GT_CORE_CRITICAL("GPU time : {0} ms!", time);

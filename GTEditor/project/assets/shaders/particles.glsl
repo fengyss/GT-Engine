@@ -1,30 +1,35 @@
 #type vertex
-#version 330 core
+#version 460 core
 layout (location = 0) in vec3 aPos;
 layout (location = 1) in vec4 aColor;
 layout (location = 2) in float aSize;
+layout (location = 3) in float a_TexIndex;
 
 out vec4 vColor;
 out float vSize;
+out float v_TexIndex;
 
 void main()
 {
     gl_Position = vec4(aPos, 1.0); // 世界坐标
     vColor = aColor;
     vSize = aSize;
+    v_TexIndex = a_TexIndex;
 }
 
 #type geometry
-#version 330 core
+#version 460 core
 layout (points) in;
 layout (triangle_strip) out;
 layout (max_vertices = 4) out;
 
 in vec4 vColor[];
 in float vSize[];
+in float v_TexIndex[];
 
 out vec4 fColor;
 out vec2 fUV;
+out float f_TexIndex;
 
 uniform mat4 u_ViewProjection;
 uniform mat4 u_View;
@@ -49,6 +54,7 @@ void main()
      
 
     fColor = color;
+    f_TexIndex = v_TexIndex[0];
 
     gl_Position = u_ViewProjection * vec4(p0,1.0); fUV = vec2(0,0); EmitVertex();
     gl_Position = u_ViewProjection * vec4(p1,1.0); fUV = vec2(1,0); EmitVertex();
@@ -60,19 +66,23 @@ void main()
 
 
 #type fragment
-#version 330 core
+#version 460 core
 in vec4 fColor;
 in vec2 fUV;
+in float f_TexIndex;
 
-uniform sampler2D u_Texture;
+uniform sampler2D u_Texture[32];
 
 out vec4 outColor;
 layout(location = 1) out int o_EntityID;
 
 void main()
 {
-    vec4 tex = texture(u_Texture, fUV);
-    tex=vec4(1.0f);
+    vec4 tex = texture(u_Texture[int(f_TexIndex)], fUV);
     outColor = tex * fColor;
-    o_EntityID=-1; 
+
+    if (outColor.a == 0.0)
+		discard; 
+
+    o_EntityID = -1; 
 }

@@ -5,7 +5,7 @@ pause
 git add .
 pause
 
-git commit -m "fix: Add a overlooked premake5.lua."
+git commit -m "feat: Add multiple texture render for particle."
 pause
 
 git push -u origin main
