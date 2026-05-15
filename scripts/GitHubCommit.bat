@@ -5,7 +5,7 @@ pause
 git add .
 pause
 
-git commit -m "docx: update ChangeLog and Readme."
+git commit -m "docx: when backup automaticly calculate GT code line."
 pause
 
 git push -u origin main
