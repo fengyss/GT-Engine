@@ -32,6 +32,7 @@ namespace GT
 
 		// Editor-only
 		int EntityID;
+		int TexIndex = 0;
 	};
 	struct LineVertex
 	{
@@ -152,7 +153,8 @@ namespace GT
 			{ ShaderDataType::Float4, "a_Color"         },
 			{ ShaderDataType::Float,  "a_Thickness"     },
 			{ ShaderDataType::Float,  "a_Fade"          },
-			{ ShaderDataType::Int,    "a_EntityID"      }
+			{ ShaderDataType::Int,    "a_EntityID"      },
+			{ ShaderDataType::Int,    "a_TexIndex"      },
 			});
 		s_Data.CircleVertexArray->AddVertexBuffer(s_Data.CircleVertexBuffer);
 		s_Data.CircleVertexArray->SetIndexBuffer(squareIB); // Use quad IB
@@ -192,6 +194,8 @@ namespace GT
 		s_Data.QuadShader->Get()->Bind();
 		s_Data.QuadShader->Get()->SetUniformiv("u_Textures", samplers, s_Data.MaxTextureSlots);
 
+		s_Data.CircleShader->Get()->Bind();
+		s_Data.CircleShader->Get()->SetUniformiv("u_Textures", samplers, s_Data.MaxTextureSlots);
 
 
 
@@ -335,6 +339,10 @@ namespace GT
 		{
 			s_Data.CircleShader->Get()->Bind();
 			s_Data.CircleShader->Get()->SetUniformMat4("u_ViewProjection", m_viewProjection);
+			for (uint32_t i = 0; i < s_Data.TextureSlotIndex; i++)
+			{
+				s_Data.TextureSlots[i]->Bind(i);
+			}
 			uint32_t dataSize = (uint32_t)((uint8_t*)s_Data.CircleVertexBufferPtr - (uint8_t*)s_Data.CircleVertexBufferBase);
 			s_Data.CircleVertexBuffer->SetData(s_Data.CircleVertexBufferBase, dataSize);
 			RenderCommand::DrawIndexed(s_Data.CircleVertexArray, s_Data.CircleIndexCount);
@@ -556,16 +564,30 @@ namespace GT
 		{
 			circleState.WorldPosition[i] = transform * s_Data.QuadVertexPositions[i];
 			circleState.LocalPosition[i] = s_Data.QuadVertexPositions[i] * 2.0f;
-			 // *2.0f because the circle shader uses the local position to calculate the distance to the center of the circle, and the quad vertex positions are from -0.5 to 0.5
-			 // so we need to multiply by 2 to get the distance from -1 to 1
-			 // which is the range of the local position in the circle shader
-			 // if we don't multiply by 2, the distance will be from -0.5 to 0.5, and the circle will be smaller than it should be
-			 // and the thickness and fade will not work correctly
 		}
 		circleState.color = color;
 		circleState.Thickness = thickness;
 		circleState.Fade = fade;
 		circleState.EntityID = s_CurrentEntityID;
+
+		Draw(circleState);
+	}
+
+	void Renderer2D::DrawCircle(const glm::mat4& transform, const glm::vec4& color, const Ref<Texture2D>& texture, float thickness, float fade)
+	{
+		GT_PROFILE_FUNCTION();
+
+
+		for (size_t i = 0; i < 4; i++)
+		{
+			circleState.WorldPosition[i] = transform * s_Data.QuadVertexPositions[i];
+			circleState.LocalPosition[i] = s_Data.QuadVertexPositions[i] * 2.0f;
+		}
+		circleState.color = color;
+		circleState.Thickness = thickness;
+		circleState.Fade = fade;
+		circleState.EntityID = s_CurrentEntityID;
+		circleState.TexIndex = GetTextureSlotIndex(texture);
 
 		Draw(circleState);
 	}
@@ -607,6 +629,7 @@ namespace GT
 			s_Data.CircleVertexBufferPtr->Thickness = state.Thickness;
 			s_Data.CircleVertexBufferPtr->Fade = state.Fade;
 			s_Data.CircleVertexBufferPtr->EntityID = state.EntityID;
+			s_Data.CircleVertexBufferPtr->TexIndex = state.TexIndex;
 			s_Data.CircleVertexBufferPtr++;
 		}
 

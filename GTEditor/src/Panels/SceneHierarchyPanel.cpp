@@ -495,6 +495,25 @@ namespace GT
 				ImGui::ColorEdit4("Color", glm::value_ptr(component.Color));
 				ImGui::DragFloat("Thickness", &component.Thickness, 0.025f, 0.0f, 1.0f);
 				ImGui::DragFloat("Fade", &component.Fade, 0.00025f, 0.0f, 1.0f);
+
+
+				const char* name = "None";
+				if (component.texture) name = component.texture->Get()->GetName().c_str();
+				ImGui::Text("Texture: %s", name);
+				ImGui::Button("Texture");  //Target for drag and drop
+				if (ImGui::BeginDragDropTarget())
+				{
+					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
+					{
+						const wchar_t* path = (const wchar_t*)payload->Data;
+						std::filesystem::path filepath(path);
+						RefHandle<Texture2D> texture = CreateHandle<Texture2D>(filepath);
+
+						if (texture->Get()) component.texture = texture;
+						else GT_CORE_WARN("Could not load texture {0}", filepath.string());
+					}
+					ImGui::EndDragDropTarget();
+				}
 			});
 
 		DrawComponent<Rigidbody2DComponent>("Rigidbody 2D", e, [](auto& component)

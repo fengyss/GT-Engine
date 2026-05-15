@@ -354,6 +354,15 @@ namespace GT
 					crc.Color = circleRendererComponent["Color"].as<glm::vec4>();
 					crc.Thickness = circleRendererComponent["Thickness"].as<float>();
 					crc.Fade = circleRendererComponent["Fade"].as<float>();
+
+					if (circleRendererComponent["TexturePath"])
+					{
+						std::filesystem::path texturePath = circleRendererComponent["TexturePath"].as<std::string>();
+						//auto path = Project::GetAssetFileSystemPath(texturePath);
+						if (!std::filesystem::exists(texturePath))
+							GT_CORE_ERROR("Texture file '{0}' does not exist", texturePath.string());
+						else crc.texture = CreateHandle<Texture2D>(texturePath);
+					}
 				}
 
 				auto rigidbody2DComponent = entity["Rigidbody2DComponent"];
@@ -625,6 +634,9 @@ namespace GT
 			out << YAML::Key << "Color" << YAML::Value << circleRendererComponent.Color;
 			out << YAML::Key << "Thickness" << YAML::Value << circleRendererComponent.Thickness;
 			out << YAML::Key << "Fade" << YAML::Value << circleRendererComponent.Fade;
+
+			if (circleRendererComponent.texture)
+				out << YAML::Key << "TexturePath" << YAML::Value << circleRendererComponent.texture->GetPath().string();
 
 			out << YAML::EndMap; // CircleRendererComponent
 		}

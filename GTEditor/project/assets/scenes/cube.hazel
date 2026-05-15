@@ -1,17 +1,52 @@
 Scene: cube
 Entities:
-  - Entity: 10103489676936779165
+  - Entity: 13154135276296640512
     TagComponent:
-      Tag: " Sheet"
+      Tag: camera
       Type: None
+    TransformComponent:
+      Translation: [-5.4224434, 1.3556285, 14.8]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    CameraComponent:
+      Camera:
+        ProjectionType: 0
+        PerspectiveFOV: 0.7853982
+        PerspectiveNear: 0.01
+        PerspectiveFar: 1000
+        OrthographicSize: 10
+        OrthographicNear: -1
+        OrthographicFar: 1
+        Offset: [0, 1.5, 0]
+      Primary: true
+      FixedAspectRatio: false
+    CircleRendererComponent:
+      Color: [1, 1, 0.3372549, 1]
+      Thickness: 0.5
+      Fade: 0.278
+      TexturePath: project\assets\textures\Checkerboard.png
+  - Entity: 5330123923738909701
+    TagComponent:
+      Tag: planet
+      Type: Model
     TransformComponent:
       Translation: [0, 0, 0]
       Rotation: [0, -0, 0]
-      Scale: [2, 2, 1]
+      Scale: [0.9999995, 0.99999917, 0.999998]
+    ModelComponent:
+      ModelPath: project\assets\obj\planet\planet.obj
+  - Entity: 6656075414192952750
+    TagComponent:
+      Tag: Floor
+      Type: None
+    TransformComponent:
+      Translation: [0, -153.8, 0]
+      Rotation: [-1.5707964, 0, 0]
+      Scale: [999, 999, 1]
     SpriteRendererComponent:
-      Color: [1, 1, 1, 1]
-      TexturePath: project\assets\textures\Premium Charakter Spritesheet.png
-      TilingFactor: 1
+      Color: [0.6509804, 0.6509804, 0.6509804, 1]
+      TexturePath: project\assets\textures\Checkerboard.png
+      TilingFactor: 10
   - Entity: 9055524979973331075
     TagComponent:
       Tag: light
@@ -53,49 +88,15 @@ Entities:
       ConeAngle: 18
       Bursts:
         []
-  - Entity: 6656075414192952750
+  - Entity: 10103489676936779165
     TagComponent:
-      Tag: Floor
+      Tag: " Sheet"
       Type: None
-    TransformComponent:
-      Translation: [0, -153.8, 0]
-      Rotation: [-1.5707964, 0, 0]
-      Scale: [999, 999, 1]
-    SpriteRendererComponent:
-      Color: [0.6509804, 0.6509804, 0.6509804, 1]
-      TexturePath: project\assets\textures\Checkerboard.png
-      TilingFactor: 10
-  - Entity: 5330123923738909701
-    TagComponent:
-      Tag: planet
-      Type: Model
     TransformComponent:
       Translation: [0, 0, 0]
       Rotation: [0, -0, 0]
-      Scale: [0.9999995, 0.99999917, 0.999998]
-    ModelComponent:
-      ModelPath: project\assets\obj\planet\planet.obj
-  - Entity: 13154135276296640512
-    TagComponent:
-      Tag: camera
-      Type: None
-    TransformComponent:
-      Translation: [-5.4224434, 1.3556285, 14.8]
-      Rotation: [0, -0, 0]
-      Scale: [1, 1, 1]
-    CameraComponent:
-      Camera:
-        ProjectionType: 0
-        PerspectiveFOV: 0.7853982
-        PerspectiveNear: 0.01
-        PerspectiveFar: 1000
-        OrthographicSize: 10
-        OrthographicNear: -1
-        OrthographicFar: 1
-        Offset: [0, 1.5, 0]
-      Primary: true
-      FixedAspectRatio: false
-    CircleRendererComponent:
+      Scale: [2, 2, 1]
+    SpriteRendererComponent:
       Color: [1, 1, 1, 1]
-      Thickness: 1
-      Fade: 0.005
+      TexturePath: project\assets\textures\Premium Charakter Spritesheet.png
+      TilingFactor: 1

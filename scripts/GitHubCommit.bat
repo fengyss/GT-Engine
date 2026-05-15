@@ -5,7 +5,7 @@ pause
 git add .
 pause
 
-git commit -m "fix: Fix Light/Particle Component (De)Serialize function."
+git commit -m "fix: Refactor particle render,fix uncorrectly emitter called."
 pause
 
 git push -u origin main

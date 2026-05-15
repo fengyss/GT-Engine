@@ -33,6 +33,7 @@ namespace GT
 		float Thickness = 1.0f;
 		float Fade = 0.005f;
 		int EntityID = -1;
+		int TexIndex = 0;
 
 	};
 	enum struct RendererState
@@ -61,7 +62,9 @@ namespace GT
 		static void DrawQuad(const glm::mat4& transform, const SpriteRendererComponent& sprite);
 		static void DrawCube(const glm::mat4& transform, const glm::vec4& color);
 		static void DrawCube(const glm::mat4& transform, const glm::vec4& color, const Ref<Texture2D>& texture);
+
 		static void DrawCircle(const glm::mat4& transform, const glm::vec4& color, float thickness = 1.0f, float fade = 0.005f);
+		static void DrawCircle(const glm::mat4& transform, const glm::vec4& color, const Ref<Texture2D>& texture, float thickness = 1.0f, float fade = 0.005f);
 
 		static void Draw(const QuadState& state);
 		static void Draw(const CircleState& state);

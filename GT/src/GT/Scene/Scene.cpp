@@ -256,7 +256,10 @@ namespace GT
             {
                 Renderer2D::SetCurrentEntityID(int(entity));
                 auto [transform, circle] = view.get<TransformComponent, CircleRendererComponent>(entity);
-                Renderer2D::DrawCircle(transform.GetTransform(), circle.Color, circle.Thickness, circle.Fade);
+                if(circle.texture) 
+                    Renderer2D::DrawCircle(transform.GetTransform(), circle.Color, circle.texture->Get(), circle.Thickness, circle.Fade);
+                else
+                    Renderer2D::DrawCircle(transform.GetTransform(), circle.Color, circle.Thickness, circle.Fade);
                 Renderer2D::SetCurrentEntityID(-1);
             }
         }

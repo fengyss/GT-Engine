@@ -12,6 +12,7 @@ layout(location = 2) in vec4 a_Color;
 layout(location = 3) in float a_Thickness;
 layout(location = 4) in float a_Fade;
 layout(location = 5) in int a_EntityID;
+layout(location = 6) in int a_TexIndex;
 
 
 uniform mat4 u_ViewProjection;
@@ -22,6 +23,7 @@ layout (location = 1) out vec4 Color;
 layout (location = 2) out float Thickness;
 layout (location = 3) out float Fade;
 layout (location = 4) out flat int v_EntityID;
+layout (location = 5) out flat int v_TexIndex;
 
 void main()
 {
@@ -31,6 +33,7 @@ void main()
 	Fade = a_Fade;
 
 	v_EntityID = a_EntityID;
+	v_TexIndex = a_TexIndex;
 
 	gl_Position = u_ViewProjection * vec4(a_WorldPosition, 1.0);
 }
@@ -47,6 +50,9 @@ layout (location = 1) in vec4 Color;
 layout (location = 2) in float Thickness;
 layout (location = 3) in float Fade;
 layout (location = 4) in flat int v_EntityID;
+layout (location = 5) in flat int v_TexIndex;
+
+uniform sampler2D u_Textures[32];
 
 void main()
 {
@@ -57,10 +63,13 @@ void main()
 
 	if (circle == 0.0)
 		discard;
-
+		 
     // Set output color
+	vec2 uv = LocalPosition.xy / 2.0f + 1.0f;
     o_Color = Color;
 	o_Color.a *= circle;
+
+	o_Color = o_Color * texture(u_Textures[v_TexIndex], uv);
 
 	o_EntityID = v_EntityID;
 }

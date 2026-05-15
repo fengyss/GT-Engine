@@ -144,6 +144,8 @@ namespace GT
         float Thickness = 1.0f;
         float Fade = 0.005f;
 
+        RefHandle<Texture2D> texture;
+
         CircleRendererComponent() = default;
         CircleRendererComponent(const CircleRendererComponent&) = default;
     };
