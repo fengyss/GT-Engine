@@ -119,7 +119,8 @@ namespace GT
 				case SceneState::Edit:
 				{
 
-					m_EditorCamera.OnUpdate(ts);
+					if(m_ViewportActived)
+						m_EditorCamera.OnUpdate(ts);
 
 					m_ActiveScene->OnUpdateEditor(ts, m_EditorCamera);
 
@@ -128,7 +129,8 @@ namespace GT
 				}
 				case SceneState::Simulate:
 				{
-					m_EditorCamera.OnUpdate(ts);
+					if (m_ViewportActived)
+						m_EditorCamera.OnUpdate(ts);
 
 					m_ActiveScene->OnUpdateSimulation(ts, m_EditorCamera);
 					break;
@@ -505,7 +507,7 @@ namespace GT
 		ImGui::Begin("Viewport", NULL);
 
 
-		m_ViewportActived = ImGui::IsWindowFocused() || ImGui::IsWindowHovered();
+		m_ViewportActived = ImGui::IsWindowFocused() && ImGui::IsWindowHovered();
 
 		Application::Get().GetImGuiLayer()->BlockEvents(!m_ViewportActived);
 

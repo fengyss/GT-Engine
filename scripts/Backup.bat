@@ -19,7 +19,7 @@ copy "GT.sln" "backup"
 
 
 copy "premake5.lua" "backup"
-copy "GT/src/premake5.lua" "backupGT/src"
+copy "GT/premake5.lua" "backup/GT"
 
 copy "Readme.md" "backup"
 

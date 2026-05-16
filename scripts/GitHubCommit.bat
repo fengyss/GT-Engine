@@ -5,7 +5,7 @@ pause
 git add .
 pause
 
-git commit -m "fix: Refactor particle render,fix uncorrectly emitter called."
+git commit -m "feat: Add texture for circle render."
 pause
 
 git push -u origin main

@@ -227,10 +227,10 @@ namespace GT
         ParticleRenderer::Flush(BlendMode::Alpha);
         Renderer3D::EndScene();
 
+        Renderer2D::EndScene();
+
         ParticleRenderer::EndScene();
 
-        ParticleRenderer::Flush(BlendMode::Alpha);
-        Renderer2D::EndScene();
         //time = Time::GetTime() - time;
         //GT_CORE_CRITICAL("GPU time : {0} ms!", time);
     }
