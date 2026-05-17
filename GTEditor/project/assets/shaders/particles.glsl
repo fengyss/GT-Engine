@@ -26,7 +26,7 @@ layout (max_vertices = 4) out;
 in vec4 vColor[];
 in float vSize[];
 in float v_TexIndex[];
-
+ 
 out vec4 fColor;
 out vec2 fUV;
 out flat float f_TexIndex;
@@ -41,25 +41,27 @@ void main()
     vec4 color = vColor[0];
 
     // 从 View 矩阵取 right / up
-    vec3 right = vec3(u_ViewProjection[0][0], u_ViewProjection[1][0], u_ViewProjection[2][0]);
-    vec3 up    = vec3(u_ViewProjection[0][1], u_ViewProjection[1][1], u_ViewProjection[2][1]);
+    vec3 right = normalize(vec3(u_ViewProjection[0][0], u_ViewProjection[1][0], u_ViewProjection[2][0]));
+    vec3 up    = normalize(vec3(u_ViewProjection[0][1], u_ViewProjection[1][1], u_ViewProjection[2][1]));
 
     right *= s;
     up *= s;
+    
+    fColor = color;
+    f_TexIndex = v_TexIndex[0];
 
     vec3 p0 = center - right - up;
     vec3 p1 = center + right - up;
     vec3 p2 = center - right + up;
     vec3 p3 = center + right + up;
      
-
-    fColor = color;
-    f_TexIndex = v_TexIndex[0];
-
     gl_Position = u_ViewProjection * vec4(p0,1.0); fUV = vec2(0,0); EmitVertex();
     gl_Position = u_ViewProjection * vec4(p1,1.0); fUV = vec2(1,0); EmitVertex();
     gl_Position = u_ViewProjection * vec4(p2,1.0); fUV = vec2(0,1); EmitVertex();
     gl_Position = u_ViewProjection * vec4(p3,1.0); fUV = vec2(1,1); EmitVertex();
+
+
+    
 
     EndPrimitive();
 }

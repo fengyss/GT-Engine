@@ -1,5 +1,4 @@
-#pragma once
-
+ï»¿#pragma once
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 
@@ -49,7 +48,7 @@ namespace GT
     {
 		const char* name = "Transform";
 		glm::vec3 Translation = glm::vec3(0.0f);
-		glm::vec3 Rotation = glm::vec3(0.0f);  //radians or »¡¶ÈÖÆ
+		glm::vec3 Rotation = glm::vec3(0.0f);  //radians or å¼§åº¦åˆ¶
 		glm::vec3 Scale = glm::vec3(1.0f);
 
         TransformComponent() = default;
@@ -82,7 +81,7 @@ namespace GT
 
         glm::vec2 UVOffset = { 0.0f, 0.0f };
         glm::vec2 UVSize = { 1.0f, 1.0f };
-        float SortingOrder = 0.0f; // 2D ²ã¼¶
+        float SortingOrder = 0.0f; // 2D å±‚çº§
 
         SpriteRendererComponent() = default;
         SpriteRendererComponent(const SpriteRendererComponent&) = default;
@@ -102,7 +101,7 @@ namespace GT
 		ParticleEmitterConfig Config;
         Ref<ParticleEmitter> Emitter;
 
-        // ´ıÓÃ
+        // å¾…ç”¨
         std::function<void(Particle&)> init_func;
         std::function<void(Particle&)> update_func;
 
@@ -249,51 +248,51 @@ namespace GT
 
     struct AnimatorComponent
     {
-        // ÒıÓÃµÄ¹Ç÷ÀÍø¸ñÌå×ÊÔ´
+        // å¼•ç”¨çš„éª¨éª¼ç½‘æ ¼ä½“èµ„æº
         RefHandle<SkeletalMesh> SkeletalMeshHandle;
 
-        // µ±Ç°²¥·ÅµÄ¶¯»­
+        // å½“å‰æ’­æ”¾çš„åŠ¨ç”»
         RefHandle<AnimationClip> CurrentAnimationHandle;
 
-        // ÔËĞĞÊ±Êı¾İ£ºµ±Ç°Ê±¼ä
+        // è¿è¡Œæ—¶æ•°æ®ï¼šå½“å‰æ—¶é—´
         float CurrentTime = 0.0f;
 
-        // ¹Ç÷À×îÖÕ±ä»»¾ØÕó (ÓÃÓÚ´«Èë Shader)
-        // ×¢Òâ£ºÕâÀïÊ¹ÓÃ Vector ¶ø²»ÊÇ Map£¬ÒòÎª Shader ĞèÒªÁ¬ĞøÊı×é
+        // éª¨éª¼æœ€ç»ˆå˜æ¢çŸ©é˜µ (ç”¨äºä¼ å…¥ Shader)
+        // æ³¨æ„ï¼šè¿™é‡Œä½¿ç”¨ Vector è€Œä¸æ˜¯ Mapï¼Œå› ä¸º Shader éœ€è¦è¿ç»­æ•°ç»„
         std::vector<glm::mat4> FinalBoneMatrices;
 
-        // ¹Ç÷ÀÃû³Æµ½Ë÷ÒıµÄÓ³Éä (ÓÃÓÚ²éÕÒ)
+        // éª¨éª¼åç§°åˆ°ç´¢å¼•çš„æ˜ å°„ (ç”¨äºæŸ¥æ‰¾)
         std::unordered_map<std::string, uint32_t> BoneNameToIndexMap;
 
-        // ¹¹Ôìº¯Êı
+        // æ„é€ å‡½æ•°
         AnimatorComponent() = default;
         AnimatorComponent(RefHandle<SkeletalMesh> meshHandle)
             : SkeletalMeshHandle(meshHandle)
         {
-            FinalBoneMatrices.resize(100); // Ô¤Áô¿Õ¼ä£¬Êµ¼ÊÓ¦¸ù¾İ¹Ç÷ÀÊıÁ¿µ÷Õû
+            FinalBoneMatrices.resize(100); // é¢„ç•™ç©ºé—´ï¼Œå®é™…åº”æ ¹æ®éª¨éª¼æ•°é‡è°ƒæ•´
         }
 
-        // »ñÈ¡¹Ç÷À¾ØÕóÊı×éÖ¸Õë (¹© Renderer Ê¹ÓÃ)
+        // è·å–éª¨éª¼çŸ©é˜µæ•°ç»„æŒ‡é’ˆ (ä¾› Renderer ä½¿ç”¨)
         const std::vector<glm::mat4>& GetFinalBoneMatrices() const { return FinalBoneMatrices; }
     };
 
     struct Animator2DComponent
     {
-        // µ±Ç°²¥·ÅµÄ¶¯»­
+        // å½“å‰æ’­æ”¾çš„åŠ¨ç”»
         Ref<AnimationClip> CurrentAnimation;
 
         std::string name = "None";
         float duration = 10.0f;
         bool isEnable = false;
-        // ÔËĞĞÊ±×´Ì¬
+        // è¿è¡Œæ—¶çŠ¶æ€
         float CurrentTime = 0.0f;
         uint32_t CurrentFrameIndex = 0;
 
-        // ¶¯»­×´Ì¬»ú²ÎÊı (ÓÃÓÚÂß¼­ÇĞ»»)
+        // åŠ¨ç”»çŠ¶æ€æœºå‚æ•° (ç”¨äºé€»è¾‘åˆ‡æ¢)
         std::unordered_map<std::string, float> FloatParameters;
         std::unordered_map<std::string, bool>  BoolParameters;
 
-        // ¹¹Ôìº¯Êı
+        // æ„é€ å‡½æ•°
         Animator2DComponent() = default;
         Animator2DComponent(Ref<AnimationClip> anim)
             : CurrentAnimation(anim) {

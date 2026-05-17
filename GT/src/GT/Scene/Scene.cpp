@@ -35,7 +35,6 @@ namespace GT
     Scene::Scene()
     {
 
-        Ref<Shader> shader =  Shader::CreateCompute("project/assets/shaders/FrustumCulling.comp");
     }
     Scene::~Scene()
     {

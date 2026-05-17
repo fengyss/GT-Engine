@@ -21,13 +21,18 @@ namespace GT {
 	}
 	void ParticleSystem::OnRender(Scene* scene)
 	{
-		auto view = scene->Reg().view<SpriteRendererComponent, ParticleComponent>();
+		auto view = scene->Reg().view<ParticleComponent>();
 		for (auto e : view)
 		{
-			auto& [sprite,p] = view.get<SpriteRendererComponent, ParticleComponent>(e);
-
+			auto& p = view.get<ParticleComponent>(e);
 			if (p.IsEmitting == false) continue;
-			RefHandle<Texture2D> tex = sprite.texture;
+			RefHandle<Texture2D> tex = nullptr;
+			Entity entity = { e,scene };
+			if (entity.HasComponent<SpriteRendererComponent>())
+			{
+				auto& sprite = entity.GetComponent<SpriteRendererComponent>();
+				tex = sprite.texture;
+			}
 			ParticleRenderer::RenderParticles(p.Config.blendMode, p.Emitter->GetParticles(), tex);
 		}
 	}

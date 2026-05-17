@@ -1,4 +1,4 @@
-#include "gtpch.h"
+﻿#include "gtpch.h"
 #include <filesystem>
 
 #include "AssetsManager.h"
@@ -30,7 +30,7 @@ namespace GT
 		s_FileWatcher = CreateScope<FileWatcher>(); 
         s_FileWatcher->Start();
 
-        // ��� assets Ŀ¼
+        // 监控 assets 目录
         s_FileWatcher->Watch("project\\assets", [](const std::filesystem::path& path, FileAction action) {
             switch (action)
             {
@@ -205,11 +205,6 @@ namespace GT
     {
         s_ReloadCallbacks[path].push_back(callback);
     }
-
-
-
-
-    
 
 }
 

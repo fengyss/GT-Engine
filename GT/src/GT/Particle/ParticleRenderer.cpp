@@ -51,6 +51,7 @@ namespace GT {
 		glm::mat4 viewProj = camera.GetProjection() * glm::inverse(transform);
 
 		SetViewProjection(viewProj);
+      
 
 	}
 	void ParticleRenderer::BeginScene(EditorCamera& camera)

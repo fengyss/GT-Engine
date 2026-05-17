@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "GT/Core/FileWatcher.h"
 #include "GT/Math/Math.h"
 #include "GT/Renderer/Shader.h"

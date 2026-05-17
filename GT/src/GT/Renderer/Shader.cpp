@@ -94,6 +94,10 @@ namespace GT
 	{
 		GT_CORE_WARN("Shader {1} with ID {0} reloaded!", ID, filepath.filename().string());
 		m_Shaders[ID] = Shader::Create(filepath);
+		int samplers[32];
+		for (int i = 0;i < 32;i++) samplers[i] = i;
+		m_Shaders[ID]->Bind();
+		m_Shaders[ID]->SetUniformiv("u_Textures", samplers, 32);
 		return m_Shaders[ID];
 	}
 	Ref<Shader> ShaderLibrary::Get(uint32_t ID)
