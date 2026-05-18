@@ -5,7 +5,7 @@ pause
 git add .
 pause
 
-git commit -m "feat: Add shadow for model render"
+git commit -m "feat: Refactor EditorCamera to prepare Editor2D and Editor3D."
 
 pause
 
