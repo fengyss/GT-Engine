@@ -16,7 +16,6 @@
     <ClInclude Include="src\Panels\SpriteSheetPanel.h">
       <Filter>Panels</Filter>
     </ClInclude>
-    <ClInclude Include="src\TestLayer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\EditorLayer.cpp" />
@@ -30,6 +29,5 @@
     <ClCompile Include="src\Panels\SpriteSheetPanel.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
-    <ClCompile Include="src\TestLayer.cpp" />
   </ItemGroup>
 </Project>

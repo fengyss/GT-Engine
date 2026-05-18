@@ -5,7 +5,7 @@ pause
 git add .
 pause
 
-git commit -m "feat: Refactor EditorCamera to prepare Editor2D and Editor3D."
+git commit -m "fix: Remove unnecessary file."
 
 pause
 
