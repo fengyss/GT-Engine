@@ -126,8 +126,8 @@ namespace GT
 
 
         float perspectiveFov = glm::radians(90.0f);
-        float perspectiveNear = 0.1f;
-        float perspectiveFar = 50.0f;
+        float perspectiveNear = 1.0f;
+        float perspectiveFar = 500.0f;
         float aspectRatio = 0.7f;
 
         LightRendererComponent() = default;

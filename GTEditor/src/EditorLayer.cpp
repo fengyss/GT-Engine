@@ -37,7 +37,7 @@ namespace GT
 
 		
 
-		m_EditorCamera = EditorCamera(45.0f, 16.0f / 9.0f, 0.1f, 1000.0f);
+		m_EditorCamera = EditorCamera(45.0f,16.0f/9.0f, 0.1f, 1000.0f);
 
 		m_ViewportSize = { fbSpec.Width,fbSpec.Height };
 
@@ -340,7 +340,7 @@ namespace GT
 		}
 
 		ImGui::SliderInt("Physics Substeps", &m_ActiveScene->substepcount, 4, 10);
-
+		dis = m_EditorCamera.GetDistance();
 		if (ImGui::SliderFloat("Distance", &dis, 1.0f, 100.0f))
 		{
 			m_EditorCamera.SetDistance(dis);
@@ -476,6 +476,8 @@ namespace GT
 					OnSceneStop();
 			}
 		}
+
+
 		//if (hasPauseButton)
 		//{
 		//	bool isPaused = m_ActiveScene->IsPaused();
@@ -502,6 +504,21 @@ namespace GT
 		//		}
 		//	}
 		//}
+
+		ImGui::SameLine();
+		if (ImGui::Button("2D", ImVec2(size, size)))
+		{
+			m_EditorCamera.ChangeProjectionType(Camera::ProjectionType::Orthographic);
+		}
+
+		ImGui::SameLine();
+
+		if (ImGui::Button("3D", ImVec2(size, size)))
+		{
+			m_EditorCamera.ChangeProjectionType(Camera::ProjectionType::Perspective);
+		}
+
+
 		ImGui::PopStyleVar(2);
 		ImGui::PopStyleColor(3);
 		ImGui::End();
@@ -896,7 +913,6 @@ namespace GT
 
 			SceneSerializer serializer(m_ActiveScene);
 			serializer.Deserialize(filepath);
-			m_EditorCamera = EditorCamera(45.0f, 16.0f / 9.0f, 0.1f, 1000.0f);
 		}
 		else GT_CORE_WARN("Filepath {0} is empty!",filepath.string());
 	}
@@ -908,7 +924,6 @@ namespace GT
 		SetActiveScene(m_EditorScene);
 		
 
-		m_EditorCamera = EditorCamera(45.0f, 16.0f / 9.0f, 0.1f, 1000.0f);
 	}
 	void EditorLayer::SaveScene()
 	{

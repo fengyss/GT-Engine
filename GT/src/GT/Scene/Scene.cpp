@@ -379,6 +379,8 @@ namespace GT
 
     }
 
+
+
     void Scene::OnUpdateRuntime(Timestep ts)
     {
         // Update Scripts

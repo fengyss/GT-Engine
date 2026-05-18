@@ -65,6 +65,7 @@ namespace GT {
 	{
         SetViewProjection(camera.GetViewProjectionMatrix());
 	}
+
 	void  ParticleRenderer::EndScene()
     {
         Ref<Shader> shader = ParticleShader->Get();

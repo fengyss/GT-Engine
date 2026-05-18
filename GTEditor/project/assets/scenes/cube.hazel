@@ -1,5 +1,16 @@
 Scene: cube
 Entities:
+  - Entity: 13207694141389359021
+    TagComponent:
+      Tag: Empty Entity
+      Type: None
+    TransformComponent:
+      Translation: [0, -3.5, -1.2]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SpriteRendererComponent:
+      Color: [1, 1, 1, 1]
+      TilingFactor: 1
   - Entity: 14229560489946383135
     TagComponent:
       Tag: Rock
@@ -27,9 +38,9 @@ Entities:
       Tag: light
       Type: None
     TransformComponent:
-      Translation: [-3.1419024, 2.7833807, 0.46130294]
-      Rotation: [0, -0, 0]
-      Scale: [1.0000026, 0.9999999, 1.0000001]
+      Translation: [-4.2160735, 3.4097483, 0.18585123]
+      Rotation: [0, -0, -1.1730077]
+      Scale: [1, 1, 1.0000001]
     SpriteRendererComponent:
       Color: [1, 1, 1, 1]
       TexturePath: project\assets\textures\ChernoLogo.png
@@ -44,7 +55,7 @@ Entities:
       Diffuse: [0.8, 0.8, 0.8]
       Direction: [24.985672, -25.436571, -10.388269]
       Linear: 0.01
-      Position: [-3.1419024, 2.7833807, 0.46130294]
+      Position: [-4.2160735, 3.4097483, 0.18585123]
       Quadratic: 0
       Specular: [1, 1, 1]
     ParticleComponent:

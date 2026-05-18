@@ -1,39 +1,31 @@
 #pragma once
-
 #include "GT/Scene/SceneCamera.h"
+
 #include "GT/Core/Timestep.h"
 #include "GT/Events/Event.h"
 #include "GT/Events/MouseEvent.h"
-
-#include <glm/glm.hpp>
-
-namespace GT {
-
-	class EditorCamera : public SceneCamera
+namespace GT
+{
+	class TestCamera : public SceneCamera
 	{
 	public:
-		EditorCamera() = default;
-		EditorCamera(float fov, float aspectRatio, float nearClip, float farClip);
-		EditorCamera(float size, float nearClip, float farClip);
+		TestCamera() = default;
+		~TestCamera() = default;
 
 		void OnUpdate(Timestep ts);
 		void OnEvent(Event& e);
 
 		inline float GetDistance() const { return m_Distance; }
 		inline void SetDistance(float distance) { m_Distance = distance; }
-		
+
+		float GetAspectRatio() { return GetAspectRatio(); }
 
 		const glm::mat4& GetViewMatrix() const { return m_ViewMatrix; }
 		glm::mat4 GetViewProjection() const { return m_Projection * m_ViewMatrix; }
 
-
 		glm::vec3 GetUpDirection() const;
 		glm::vec3 GetRightDirection() const;
 		glm::vec3 GetForwardDirection() const;
-
-		void ChangeProjectionType(ProjectionType type);
-
-
 		const glm::vec3& GetPosition() const { return m_Position; }
 		glm::quat GetOrientation() const;
 
@@ -42,6 +34,7 @@ namespace GT {
 
 		void FlipMouseFollow() { IsEnableMouseFollow ^= true; }
 	private:
+		void UpdateProjection();
 		void UpdateView();
 
 		bool OnMouseScroll(MouseScrolledEvent& e);
@@ -61,6 +54,7 @@ namespace GT {
 		glm::vec3 m_Offets = { 0.0f, 0.0f, 0.0f };
 
 		glm::mat4 m_ViewMatrix;
+
 		glm::vec3 m_Position = { 0.0f, 0.0f, 0.0f };
 		glm::vec3 m_FocalPoint = { 0.0f, 0.0f, 0.0f };
 
@@ -75,3 +69,4 @@ namespace GT {
 	};
 
 }
+

@@ -7,7 +7,7 @@
 #include "GT/Core/KeyCodes.h"
 #include "GT/Core/MouseButtonCodes.h"
 
-#include <glfw/glfw3.h>
+//#include <glfw/glfw3.h>
 
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/quaternion.hpp>
@@ -15,15 +15,13 @@
 namespace GT {
 
 	EditorCamera::EditorCamera(float fov, float aspectRatio, float nearClip, float farClip)
-		: m_FOV(fov), m_AspectRatio(aspectRatio), m_NearClip(nearClip), m_FarClip(farClip), Camera(glm::perspective(glm::radians(fov), aspectRatio, nearClip, farClip))
 	{
-		UpdateView();
+		SetPerspective(fov, aspectRatio, nearClip, farClip);
 	}
 
-	void EditorCamera::UpdateProjection()
+	EditorCamera::EditorCamera(float size, float nearClip, float farClip)
 	{
-		m_AspectRatio = m_ViewportWidth / m_ViewportHeight;
-		m_Projection = glm::perspective(glm::radians(m_FOV), m_AspectRatio, m_NearClip, m_FarClip);
+		SetOrthographic(size, nearClip, farClip);
 	}
 
 	void EditorCamera::UpdateView()
@@ -65,6 +63,7 @@ namespace GT {
 	int EnableInfinite = 0;
 
 
+
 	void EditorCamera::OnUpdate(Timestep ts)
 	{
 		const glm::vec2& mouse{ Input::GetMouseX(), Input::GetMouseY() };
@@ -80,6 +79,7 @@ namespace GT {
 			else if (Input::IsMouseButtonPressed(Mouse::ButtonRight))
 				MouseZoom(delta.y);
 		}
+
 		if(IsEnableMouseFollow) RotateView(delta);
 		
 
@@ -91,16 +91,31 @@ namespace GT {
 			EnableInfinite ^= 1;
 
 		float speed = 40.f;
-		if (Input::IsKeyPressed(Key::W))
+
+		switch (m_ProjectionType)
 		{
-			m_Offets += (GetForwardDirection() * float(ts) * speed);
+		case ProjectionType::Perspective:
+			if (Input::IsKeyPressed(Key::W))
+				m_Offets += (GetForwardDirection() * float(ts) * speed);
+			if (Input::IsKeyPressed(Key::S))
+				m_Offets -= GetForwardDirection() * float(ts) * speed;
+			if (Input::IsKeyPressed(Key::A))
+				m_Offets -= GetRightDirection() * float(ts) * speed;
+			if (Input::IsKeyPressed(Key::D))
+				m_Offets += GetRightDirection() * float(ts) * speed;
+			break;
+		case ProjectionType::Orthographic:
+			if (Input::IsKeyPressed(Key::W))
+				m_Offets += (GetUpDirection() * float(ts) * speed);
+			if (Input::IsKeyPressed(Key::S))
+				m_Offets -= GetUpDirection() * float(ts) * speed;
+			if (Input::IsKeyPressed(Key::A))
+				m_Offets -= GetRightDirection() * float(ts) * speed;
+			if (Input::IsKeyPressed(Key::D))
+				m_Offets += GetRightDirection() * float(ts) * speed;
+			break;
 		}
-		if (Input::IsKeyPressed(Key::S))
-			m_Offets -= GetForwardDirection() * float(ts) * speed;
-		if (Input::IsKeyPressed(Key::A))
-			m_Offets -= GetRightDirection() * float(ts) * speed;
-		if (Input::IsKeyPressed(Key::D))
-			m_Offets += GetRightDirection() * float(ts) * speed;
+		
 
 
 		UpdateView();
@@ -137,8 +152,15 @@ namespace GT {
 	void EditorCamera::MousePan(const glm::vec2& delta)
 	{
 		auto [xSpeed, ySpeed] = PanSpeed();
-		m_FocalPoint += -GetRightDirection() * delta.x * xSpeed * m_Distance;
-		m_FocalPoint += GetUpDirection() * delta.y * ySpeed * m_Distance;
+		switch (m_ProjectionType)
+		{
+		case ProjectionType::Perspective:
+			m_FocalPoint += -GetRightDirection() * delta.x * xSpeed * m_Distance;
+			m_FocalPoint += GetUpDirection() * delta.y * ySpeed * m_Distance;
+			break;
+		case ProjectionType::Orthographic:
+			break;
+		}
 	}
 
 	void EditorCamera::MouseRotate(const glm::vec2& delta)
@@ -150,12 +172,20 @@ namespace GT {
 
 	void EditorCamera::MouseZoom(float delta)
 	{
-		m_Distance -= delta * ZoomSpeed();
-		if (m_Distance < 1.0f)
+		switch (m_ProjectionType)
 		{
-			m_FocalPoint += GetForwardDirection();
-			m_Distance = 1.0f;
+		case ProjectionType::Perspective:
+			m_Distance -= delta * ZoomSpeed();
+			if (m_Distance < 1.0f)
+			{
+				m_FocalPoint += GetForwardDirection();
+				m_Distance = 1.0f;
+			}
+			break;
+		case ProjectionType::Orthographic:
+			break;
 		}
+		
 	}
 
 	glm::vec3 EditorCamera::GetUpDirection() const
@@ -171,6 +201,22 @@ namespace GT {
 	glm::vec3 EditorCamera::GetForwardDirection() const
 	{
 		return glm::rotate(GetOrientation(), glm::vec3(0.0f, 0.0f, -1.0f));
+	}
+
+	void EditorCamera::ChangeProjectionType(ProjectionType type)
+	{
+		SetProjectionType(type);
+		switch (type)
+		{
+		case ProjectionType::Perspective:
+			break;
+		case ProjectionType::Orthographic:
+			m_Offets = glm::vec3(0.0f,0.0f,-1.0f);
+			m_Position = glm::vec3(0.0f);
+			m_FocalPoint = glm::vec3(0.0f);
+			break;
+		}
+		UpdateView();
 	}
 
 	glm::vec3 EditorCamera::CalculatePosition() const

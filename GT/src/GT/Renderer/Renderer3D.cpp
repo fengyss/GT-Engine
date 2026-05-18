@@ -63,6 +63,7 @@ namespace GT
 		SetViewProjection(camera.GetViewProjection(), camera.GetPosition());
 	}
 
+
 	void Renderer3D::BeginScene(OrthographicCamera& camera)
 	{
 		GT_PROFILE_FUNCTION();
@@ -111,9 +112,12 @@ namespace GT
 
 		glActiveTexture(GL_TEXTURE7);
 		glBindTexture(GL_TEXTURE_2D, shadowmap.GetDepthTextureID());
+
 		shader->SetUniform1i("u_ShadowMap", 7);
+
 		shader->SetUniformMat4("u_ViewProjection", s_ViewProjectionMatrix);
 		shader->SetUniform3f("u_ViewPos", s_viewPos);
+
 		unsigned int lightslots = 0;
 		for (auto& [light, spacematrix] : s_Lights)
 		{
@@ -141,6 +145,7 @@ namespace GT
 				break;
 			}
 		}
+
 		shader->SetUniform1ui("u_LightSlots", lightslots);
 		for (auto& [transform, model,ID] : models)
 		{

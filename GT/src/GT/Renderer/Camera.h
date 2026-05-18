@@ -6,6 +6,9 @@ namespace GT
 	class Camera
 	{
 	public:
+		enum class ProjectionType { Perspective = 0, Orthographic = 1 };
+
+	public:
 		Camera() = default;
 		Camera(const glm::mat4 projection)
 			: m_Projection(projection) { }

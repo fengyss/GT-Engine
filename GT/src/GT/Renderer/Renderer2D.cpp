@@ -288,7 +288,6 @@ namespace GT
 		s_Data.TextureSlotIndex = 1;
 		StartNewBatch();
 	}
-
 	void Renderer2D::BeginScene(OrthographicCamera& camera)
 	{
 		GT_PROFILE_FUNCTION();

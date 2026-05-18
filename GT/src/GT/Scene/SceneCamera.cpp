@@ -11,6 +11,7 @@ GT::SceneCamera::SceneCamera()
 
 void GT::SceneCamera::SetOrthographic(float size, float nearClip, float farClip)
 {
+	m_ProjectionType = ProjectionType::Orthographic;
 	m_OrthographicSize = size;
 	m_OrthographicNear = nearClip;
 	m_OrthographicFar = farClip;
@@ -19,9 +20,20 @@ void GT::SceneCamera::SetOrthographic(float size, float nearClip, float farClip)
 }
 void GT::SceneCamera::SetPerspective(float verticalFov, float nearClip, float farClip)
 {
+	m_ProjectionType = ProjectionType::Perspective;
 	m_PerspectiveFov = verticalFov;
 	m_PerspectiveNear = nearClip;
 	m_PerspectiveFar = farClip;
+	RecalculateProjection();
+}
+
+void GT::SceneCamera::SetPerspective(float verticalFov, float aspectRatio, float nearClip, float farClip)
+{
+	m_ProjectionType = ProjectionType::Perspective;
+	m_PerspectiveFov = verticalFov;
+	m_PerspectiveNear = nearClip;
+	m_PerspectiveFar = farClip;
+	m_AspectRatio = aspectRatio;
 	RecalculateProjection();
 }
 

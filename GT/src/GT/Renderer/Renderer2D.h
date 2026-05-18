@@ -3,7 +3,6 @@
 #include "EditorCamera.h"
 #include "OrthographicCamera.h"
 #include "GT/Scene/Components.h"
-
 #include "Shader.h"
 #include "Texture.h"
 namespace GT
