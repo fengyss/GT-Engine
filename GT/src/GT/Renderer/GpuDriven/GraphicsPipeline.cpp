@@ -9,10 +9,6 @@ namespace GT
 
     GraphicsPipeline::GraphicsPipeline(Type type)
         : m_Type(type) {
-        if (type == Type::Graphics)
-            m_Program = glCreateProgram();
-        else
-            m_Program = glCreateProgram(); // Compute Ò²ÊÇ Program
     }
 
     GraphicsPipeline::~GraphicsPipeline() {

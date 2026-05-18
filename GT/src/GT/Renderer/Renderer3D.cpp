@@ -2,8 +2,9 @@
 #include "Renderer3D.h"
 #include "GT/Assets/AssetsHandle.h"
 #include"GT/Renderer/Frustum.h"
-
+#include "ShadowMap.h"
 #include "Renderer2D.h"
+#include "glad/glad.h"
 namespace GT
 {
 	Renderer3DState Renderer3D::state = Renderer3DState::None;
@@ -12,9 +13,11 @@ namespace GT
 	glm::mat4 Renderer3D::s_ViewProjectionMatrix = glm::mat4(1.0f);
 	bool Renderer3D::IsShowAABB=false;
 	glm::vec3& Renderer3D::s_viewPos = glm::vec3(0.0f);
-	std::vector<Light> Renderer3D::s_Lights;
+	std::vector<Light_Matrix> Renderer3D::s_Lights;
 	static Renderer3D::Statistics s_stats;
-
+	Ref<AssetsHandle<Shader>> m_ShadowShader;
+	ShadowMap Renderer3D::shadowmap;
+	Ref<Framebuffer> m_Framebuffer;
 	struct Trans_model
 	{
 		glm::mat4 transform;
@@ -26,6 +29,8 @@ namespace GT
 	void Renderer3D::Init()
 	{
 		s_ModelShader = CreateHandle<Shader>("Model");
+		m_ShadowShader = CreateHandle<Shader>("Shadow");
+		shadowmap = ShadowMap(4096, 4096);
 	}
 
 	void Renderer3D::Shutdown()
@@ -79,9 +84,9 @@ namespace GT
 		s_ModelShader->Get()->SetUniform3f("u_LightPos", lightpos);
 		s_ModelShader->Get()->SetUniform3f("u_LightColor", lightcolor);
 	}
-	void Renderer3D::AddLight(Light& light)
+	void Renderer3D::AddLight(const Light& light, const glm::mat4& lightSpaceMatrix)
 	{
-		s_Lights.push_back(light);
+		s_Lights.push_back({ light, lightSpaceMatrix });
 	}
 	void  Renderer3D::EndScene()
 	{
@@ -90,19 +95,27 @@ namespace GT
 		GT_CORE_ASSERT(state != Renderer3DState::EndScene, "You Should Call BeginScene First!");
 		state = Renderer3DState::EndScene;
 
+
+		RenderShadowMap(shadowmap);
+		m_Framebuffer->Bind();
 		Flush();
 
 		s_Lights.clear();
 	}
+
 	void Renderer3D::Flush()
 	{
 
 		Ref<Shader> shader = s_ModelShader->Get();
 		shader->Bind();
+
+		glActiveTexture(GL_TEXTURE7);
+		glBindTexture(GL_TEXTURE_2D, shadowmap.GetDepthTextureID());
+		shader->SetUniform1i("u_ShadowMap", 7);
 		shader->SetUniformMat4("u_ViewProjection", s_ViewProjectionMatrix);
 		shader->SetUniform3f("u_ViewPos", s_viewPos);
 		unsigned int lightslots = 0;
-		for (auto& light : s_Lights)
+		for (auto& [light, spacematrix] : s_Lights)
 		{
 			switch (light.type)
 			{
@@ -112,16 +125,19 @@ namespace GT
 				lightslots |= 1u;
 				PointLight plight = light.GetPointLight();
 				shader->SetUniformPointLight("u_pointLight", plight);
+				shader->SetUniformMat4("u_LightSpaceMatrix", spacematrix);
 				break;
 			case LightType::Directional:
 				lightslots |= 2u;
 				DirectionalLight dlight = light.GetDirectionalLight();
 				shader->SetUniformDirectionalLight("u_dirLight", dlight);
+				shader->SetUniformMat4("u_LightSpaceMatrix", spacematrix);
 				break;
 			case LightType::Spot:
 				lightslots |= 4u;
 				SpotLight slight = light.GetSpotLight();
 				shader->SetUniformSpotLight("u_spotLight", slight);
+				shader->SetUniformMat4("u_LightSpaceMatrix", spacematrix);
 				break;
 			}
 		}
@@ -166,6 +182,10 @@ namespace GT
 		for (int j = 0; j < 4; ++j)
 			Renderer2D::DrawLine(corners[j], corners[j + 4], color);
 	}
+	void Renderer3D::SetFramebuffer(Ref<Framebuffer> framebuffer)
+	{
+		m_Framebuffer = framebuffer;
+	}
 	void Renderer3D::ShowAABB(bool show) { IsShowAABB = show; }
 	void Renderer3D::DrawModel(const glm::mat4& transform, Ref<Model>& model)
 	{
@@ -175,6 +195,48 @@ namespace GT
 	void Renderer3D::SetCurrentEntityID(int entityID)
 	{
 		s_CurrentEntityID = entityID;
+	}
+
+	void Renderer3D::RenderShadowMap(ShadowMap& shadowMap)
+	{
+		// 1. 绑定阴影 FBO
+		shadowMap.Bind();
+
+		// 2. 设置视口（必须是阴影贴图的大小）
+		glViewport(0, 0, shadowMap.GetWidth(), shadowMap.GetHeight());
+
+		// 3. 清空深度缓冲
+		glClear(GL_DEPTH_BUFFER_BIT);
+
+		Ref<Shader> shader = m_ShadowShader->Get();
+		// 4. 使用深度着色器
+		shader->Bind();
+
+		for (auto& [light, spacematrix] : s_Lights)
+		{
+			switch (light.type)
+			{
+			case LightType::Ambient:
+				break;
+			case LightType::Directional:
+				shader->SetUniformMat4("u_LightSpaceMatrix", spacematrix);
+				break;
+			case LightType::Point:
+			case LightType::Spot:
+				shader->SetUniformMat4("u_LightSpaceMatrix", spacematrix);
+				break;
+			}
+		}
+
+		// 5. 渲染场景中的所有物体
+		for (auto& [transform, model, ID] : models)
+		{
+			shader->SetUniformMat4("u_Model", transform);
+			model->Draw(transform,shader);
+		}
+
+		// 6. 恢复默认 FBO
+		shadowMap.Unbind();
 	}
 
 	Renderer3D::Statistics& Renderer3D::GetStats()

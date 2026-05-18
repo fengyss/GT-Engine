@@ -132,33 +132,15 @@ namespace GT
 
 	glm::vec3 ParticleEmitter::GenerateRandomPosition()
 	{
-		if (m_Config.InUnitSphere) return Random::InUnitSphere() * m_Config.positionVariance;
-		else
-			return glm::vec3(
-				Random::Range(-m_Config.positionVariance.x, m_Config.positionVariance.x),
-				Random::Range(-m_Config.positionVariance.y, m_Config.positionVariance.y),
-				Random::Range(-m_Config.positionVariance.z, m_Config.positionVariance.z)
-			);
+		return glm::vec3(1.0f);
 	}
 	glm::vec3 ParticleEmitter::GenerateRandomVelocity()
 	{
-		if (m_Config.InUnitSphere) return Random::InUnitSphere() * m_Config.velocityVariance;
-		else
-			return glm::vec3(
-				Random::Range(-m_Config.velocityVariance.x, m_Config.velocityVariance.x),
-				Random::Range(-m_Config.velocityVariance.y, m_Config.velocityVariance.y),
-				Random::Range(-m_Config.velocityVariance.z, m_Config.velocityVariance.z)
-			);
+		return glm::vec3(1.0f);
 	}
 	glm::vec3 ParticleEmitter::GenerateRandomRotationVelocity()
 	{
-		if (m_Config.InUnitSphere) return Random::InUnitSphere() * m_Config.rotationVariance;
-		else
-			return glm::vec3(
-				Random::Range(-m_Config.rotationVariance.x, m_Config.rotationVariance.x),
-				Random::Range(-m_Config.rotationVariance.y, m_Config.rotationVariance.y),
-				Random::Range(-m_Config.rotationVariance.z, m_Config.rotationVariance.z)
-			);
+		return glm::vec3(1.0f);
 	}
 	glm::vec4 ParticleEmitter::GenerateRandomColor()
 	{
@@ -196,11 +178,12 @@ namespace GT
 		particle->Rvelocity = GenerateRandomRotationVelocity();
 
 		particle->lifeRemaining = m_Config.lifetime;
-		particle->size = m_Config.sizeStart + (Random::NormalFloat() * m_Config.sizeVariance);
+		particle->size = m_Config.sizeStart + (Random::NormalFloat() * m_Config.sizeStrength);
 
 
 		m_InitParticleFunc(particle);
 
+		particle->velocity *= m_Config.velocityStrength;
 		particle->position += m_Postion;
 		//particle->startsize *= m_Scalar.x;
 

@@ -56,17 +56,17 @@ namespace GT
 
     private:
         // GPU 资源句柄
-        std::unique_ptr<GPUBuffer> m_FrameUBO;
-        std::unique_ptr<GPUBuffer> m_InstanceSSBO;
-        std::unique_ptr<GPUBuffer> m_DrawCommandBuffer;
-        std::unique_ptr<GPUBuffer> m_AtomicCounterBuffer;
+        Scope<GPUBuffer> m_FrameUBO;
+        Scope<GPUBuffer> m_InstanceSSBO;
+        Scope<GPUBuffer> m_DrawCommandBuffer;
+        Scope<GPUBuffer> m_AtomicCounterBuffer;
 
         // 管线状态
-        std::unique_ptr<GraphicsPipeline> m_CullingComputePipeline;
-        std::unique_ptr<GraphicsPipeline> m_GraphicsPipeline;
+        Scope<GraphicsPipeline> m_CullingComputePipeline;
+        Scope<GraphicsPipeline> m_GraphicsPipeline;
 
         // 描述符集 (绑定 UBO/SSBO/Textures)
-        std::unique_ptr<DescriptorSet> m_DescriptorSet;
+        Scope<DescriptorSet> m_DescriptorSet;
 
         // CPU 端暂存数据
         std::vector<GPUInstance> m_CPUInstanceCache;

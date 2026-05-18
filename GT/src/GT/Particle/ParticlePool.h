@@ -8,7 +8,7 @@ namespace GT {
 
     class ParticlePool {
     public:
-        ParticlePool(size_t maxParticles = 1000);
+        ParticlePool(size_t maxParticles = 3000);
 
         // 获取可用粒子索引，-1表示池满
         int32_t GetAvailableParticleIndex();

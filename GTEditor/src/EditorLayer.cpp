@@ -9,6 +9,7 @@
 #include "GT/Particle/ParticleSystem.h"
 
 #include "Panels/SpriteSheetPanel.h"
+#include "GT/Renderer/ShadowMap.h"
 
 namespace GT
 {
@@ -66,7 +67,7 @@ namespace GT
 		}
 
 		m_SpriteSheetPanel = CreateScope<SpriteSheetPanel>();
-
+		Renderer3D::SetFramebuffer(m_Framebuffer);
 	}
 
 	void EditorLayer::OnDetach()
@@ -94,6 +95,13 @@ namespace GT
 			m_CameraController.OnResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
 			m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
 			m_EditorCamera.SetViewportSize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
+			float aspecratio = m_ViewportSize.x / m_ViewportSize.y;
+			auto view = m_ActiveScene->Reg().view<LightRendererComponent>();
+			for (auto e : view)
+			{
+				auto& light = view.get<LightRendererComponent>(e);
+				light.aspectRatio = aspecratio;
+			}
 		}
 
 
@@ -406,6 +414,9 @@ namespace GT
 
 		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 
+		auto& map = Renderer3D::GetShadowMap();
+		
+		ImGui::Image((void*)(uint64_t)map.GetDepthTextureID(), ImVec2(100.0f,100.0f));
 
 		ImGui::End();
 	}

@@ -12,6 +12,7 @@ layout(location = 6) in vec4 a_Weights;
 
 uniform mat4 u_ViewProjection;
 uniform mat4 u_Transform;
+uniform mat4 u_LightSpaceMatrix;
 
 out vec2 v_TexCoord;
 out vec3 v_FragPos;
@@ -20,7 +21,7 @@ out vec3 v_Tangent;
 out vec3 v_Bitangent;
 out ivec4 v_m_BoneIDs;
 out vec4 v_Weights;
-
+out vec4 v_LightSpacePos;
 
 
 void main()
@@ -35,6 +36,8 @@ void main()
     v_Normal = (u_Transform * vec4(a_Normal,0.0)).rgb;
     v_Tangent = (u_Transform * vec4(a_Tangent,0.0)).rgb;
     v_Bitangent = (u_Transform * vec4(a_Bitangent,0.0)).rgb;
+
+    v_LightSpacePos  = u_LightSpaceMatrix * vec4(v_FragPos,1.0);
 }
 
 
@@ -52,6 +55,7 @@ in vec3 v_Tangent;
 in vec3 v_Bitangent;
 in ivec4 v_m_BoneIDs;
 in vec4 v_Weights;
+in vec4 v_LightSpacePos;
 
 uniform vec3 u_LightPos = vec3(10.0, 10.0, 10.0);
 uniform vec3 u_LightColor = vec3(1.0, 1.0, 1.0);
@@ -63,6 +67,7 @@ uniform sampler2D texture_specular;      //31
 uniform sampler2D texture_normal;        //30
 uniform sampler2D texture_height; 	     //29
 uniform sampler2D texture_emission;      //28
+uniform sampler2D u_ShadowMap; 
 
 uniform uint u_TexSlot;
 
@@ -118,6 +123,7 @@ Material material;
 vec3 CalcDirectionalLight(DirectionalLight light, vec3 normal, vec3 viewDir);
 vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir);
 vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir);
+float CalculateShadow(vec4 fragPosLightSpace, vec3 lightDir);
 
 void main()
 {
@@ -174,8 +180,11 @@ void main()
     if((u_LightSlots & 4u)>0)
         result += vec4(CalcSpotLight(u_spotLight, worldNormal, v_FragPos, viewDir),0.0f);
 
+    result = (1.0 - CalculateShadow(v_LightSpacePos, u_dirLight.direction)) * result + material.ambient;
     result.a = diffuseColor.a;
     o_Color = result;
+
+
 }
 
 /* ---------- 方向光 ---------- */
@@ -193,6 +202,29 @@ vec3 CalcDirectionalLight(DirectionalLight light, vec3 normal, vec3 viewDir)
     vec3 specular = light.specular * spec * material.specular.rgb;
 
     return (ambient + diffuse + specular);
+}
+
+float CalculateShadow(vec4 fragPosLightSpace, vec3 lightDir)
+{
+    // 1. 透视除法
+    vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
+
+    // 2. NDC → UV
+    projCoords = projCoords * 0.5 + 0.5;
+
+    // 3. 超出远平面 → 无阴影
+    //if (projCoords.z > 1.0)
+        //return 0.0;
+
+    // 4. 采样最近深度
+    float closestDepth = texture(u_ShadowMap, projCoords.xy).r;
+    float currentDepth = projCoords.z;
+
+    // 5. 基础 Bias（防止 acne）
+    float bias = max(0.005 * (1.0 - dot(v_Normal, lightDir)), 0.005);
+
+    // 6. 阴影判断
+    return currentDepth - bias > closestDepth ? 1.0 : 0.0;
 }
 
 /* ---------- 点光源 ---------- */

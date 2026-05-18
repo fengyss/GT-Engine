@@ -79,11 +79,12 @@ namespace GT {
 
 
         // Ëæ»ú»¯·¶Î§
-        glm::vec3 positionVariance{ 1.0f };
-        glm::vec3 velocityVariance{ 1.0f };
-        glm::vec3 rotationVariance{ 1.0f };
+        glm::vec3 positionStrength{ 1.0f };
+        glm::vec3 velocityStrength{ 1.0f };
+        glm::vec3 rotationStrength{ 1.0f };
+
         glm::vec4 colorVariance{ 0.1f };
-        float sizeVariance = 0.2f;
+        float sizeStrength = 0.2f;
 
         glm::vec4 color{ 1.0f };
 

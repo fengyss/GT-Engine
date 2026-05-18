@@ -119,12 +119,24 @@ namespace GT
 
         Light light;
 
+
+        float orthoSize = 50.0f;
+        float nearPlane = 0.2f;
+        float farPlane = 100.0f;
+
+
+        float perspectiveFov = glm::radians(90.0f);
+        float perspectiveNear = 0.1f;
+        float perspectiveFar = 50.0f;
+        float aspectRatio = 0.7f;
+
         LightRendererComponent() = default;
         LightRendererComponent(const LightRendererComponent&) = default;
         LightRendererComponent(Light _light)
             :light(_light) {
         }
 
+        glm::mat4 GetLightSpaceMatrix();
     };
 
     struct ModelComponent

@@ -75,6 +75,7 @@ namespace GT
         LoadShader("Renderer2D_Line", "project\\assets\\shaders\\Renderer2D_Line.glsl");
         LoadShader("Model", "project\\assets\\shaders\\Model.glsl");
         LoadShader("Particles", "project\\assets\\shaders\\particles.glsl");
+        LoadShader("Shadow", "project\\assets\\shaders\\showmap.glsl");
 
 
         LoadTexture("DirectoryIcon", "Resources\\Icons\\DirectoryIcon.png");

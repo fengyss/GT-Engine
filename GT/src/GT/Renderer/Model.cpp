@@ -33,7 +33,7 @@ namespace GT
 
         return glm::dot(glm::vec3(plane), positive) + plane.w >= 0.0;
     }
-
+    
     void Model::Draw(const glm::mat4& transform)
     {
         for (unsigned int i = 0; i < meshes.size(); i++)
@@ -41,10 +41,17 @@ namespace GT
             meshes[i].Draw(transform, shader->Get());
         }
     }
+    void Model::Draw(const glm::mat4& transform, const Ref<Shader> shader)
+    {
+        for (unsigned int i = 0; i < meshes.size(); i++)
+        {
+            meshes[i].Draw(transform, shader);
+        }
+    }
 
     void Model::Draw(const glm::mat4& transform, const Frustum& frustum)
     {
-        RenderCommand::SetLineWidth(0.3f);
+        
         
         for (unsigned int i = 0; i < meshes.size(); i++)
         {
@@ -70,6 +77,7 @@ namespace GT
 
             if(visible)
             {
+                RenderCommand::SetLineWidth(0.3f);
                 meshes[i].Draw(transform, shader->Get());
                 Renderer3D::GetStats().DrawCalls++;
                 Renderer3D::GetStats().Meshes++;

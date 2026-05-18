@@ -760,16 +760,28 @@ namespace GT
 					break;
 				}
 				
-				ImGui::DragFloat("Lifetime", &config.lifetime, 0.3f, 0.01f, 100.0f);
-				ImGui::DragFloat("Velocity", &config.velocity, 1.0f, 1.0f, 100.0f);
-				ImGui::DragFloat("Emission Rate", &config.spawnRate, 10.0f, 1.0f, 100.0f);
-				ImGui::DragFloat("Size", &config.sizeStart, 10.0f, 1.0f, 100.0f);
+				if(ImGui::DragFloat("Lifetime", &config.lifetime, 0.3f, 0.01f, 100.0f))
+				{
+					component.IsRegen = true;
+				}
+				if(ImGui::DragFloat("Velocity", &config.velocity, 1.0f, 1.0f, 100.0f))
+				{
+					component.IsRegen = true;
+				}
+				if(ImGui::DragFloat("Emission Rate", &config.spawnRate, 10.0f, 1.0f, 1000.0f))
+				{
+					component.IsRegen = true;
+				}
+				if(ImGui::DragFloat("Size", &config.sizeStart, 0.01f, 0.1f, 5.0f))
+				{
+					component.IsRegen = true;
+				}
 
-				ImGui::DragFloat("Size Variance", &config.sizeVariance, 0.0f, 0.1f, 0.5f);
+				ImGui::DragFloat("Size Variance", &config.sizeStrength, 0.0f, 0.1f, 0.5f);
 
-				DrawVec3Control("Position Variance", config.positionVariance,1.0f);
-				DrawVec3Control("Velocity Variance", config.velocityVariance,1.0f);
-				DrawVec3Control("Rotation Variance", config.rotationVariance, 1.0f);
+				DrawVec3Control("Position Strength", config.positionStrength,1.0f);
+				DrawVec3Control("Velocity Strength", config.velocityStrength,1.0f);
+				DrawVec3Control("Rotation Strength", config.rotationStrength, 1.0f);
 				ImGui::ColorEdit4("Color Variance", glm::value_ptr(config.colorVariance));
 
 
@@ -785,6 +797,7 @@ namespace GT
 					if (ImGui::Button("Add burst"))
 					{
 						config.bursts.push_back(burst);
+						component.IsRegen = true;
 					}
 					ImGui::PopID();
 				}
@@ -797,13 +810,14 @@ namespace GT
 					if (ImGui::Button("-"))
 					{
 						it = config.bursts.erase(it);
+						ImGui::PopID();
 						continue;
 					}
 					auto& burst = *it;
 					ImGui::DragFloat("Start Time", &burst.time, 1.0f, 0.0f, 100.0f);
 					ImGui::DragInt("Count", &(int)burst.count, 5, 20, 100);
 					ImGui::DragInt("Cycles", &(int)burst.cycles, 1, 0, 30);
-					ImGui::DragFloat("Interval", &burst.interval, 1.0f, 1.0f, 10.0f);
+					ImGui::DragFloat("Interval", &burst.interval, 0.1f, 0.1f, 5.0f);
 					ImGui::Separator();
 					ImGui::PopID();
 					it++;

@@ -213,19 +213,17 @@ namespace GT
         //float time = Time::GetTime();
         // Render 2D
         Renderer2D::BeginScene(camera);
-        RenderScene2D();
-
+        Renderer3D::BeginScene(camera);
         ParticleRenderer::BeginScene(camera);
 
         ParticleSystem::OnRender(this);
 
         // Render 3D
-        Renderer3D::BeginScene(camera);
+        RenderScene2D();
         RenderScene3D();
 
         ParticleRenderer::Flush(BlendMode::Alpha);
         Renderer3D::EndScene();
-
         Renderer2D::EndScene();
 
         ParticleRenderer::EndScene();
@@ -274,7 +272,7 @@ namespace GT
                 else Renderer2D::DrawCube(transform.GetTransform(), glm::vec4(1.0f));
                 Renderer2D::SetCurrentEntityID(-1);
 
-                Renderer3D::AddLight(light.light);
+                Renderer3D::AddLight(light.light,light.GetLightSpaceMatrix());
 
                 switch (light.light.type)
                 {
@@ -336,6 +334,7 @@ namespace GT
 
             }
         }
+
         ParticleSystem::OnUpdate(this,ts);
 
         Animation2DSystem::OnUpdate(this, ts);
