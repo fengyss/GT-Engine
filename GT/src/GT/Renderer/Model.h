@@ -44,6 +44,7 @@ namespace GT
         // draws the model, and thus all its meshes
         void Draw(const glm::mat4& transform);
         void Draw(const glm::mat4& transform, const Ref<Shader> shader);
+        void DrawForShadowMap(const glm::mat4& transform, const Ref<Shader> shader);
         void Draw(const glm::mat4& transform,const Frustum& frustum);
         void SetShader(RefHandle<Shader> shader) {
             this->shader = shader; 

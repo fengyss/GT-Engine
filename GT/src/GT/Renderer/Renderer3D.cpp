@@ -237,7 +237,7 @@ namespace GT
 		for (auto& [transform, model, ID] : models)
 		{
 			shader->SetUniformMat4("u_Model", transform);
-			model->Draw(transform,shader);
+			model->DrawForShadowMap(transform,shader);
 		}
 
 		// 6. ╩ж╦╢д╛хо FBO

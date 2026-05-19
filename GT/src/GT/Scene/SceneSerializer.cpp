@@ -396,6 +396,12 @@ namespace GT
 					cc2d.Restitution = circleCollider2DComponent["Restitution"].as<float>();
 					cc2d.RestitutionThreshold = circleCollider2DComponent["RestitutionThreshold"].as<float>();
 				}
+				
+				auto animator2DComponent = entity["Animator2DComponent"];
+				if (animator2DComponent)
+				{
+					auto& anim = deserializedEntity.AddComponent<Animator2DComponent>();
+				}
 
 				auto particleComponent = entity["ParticleComponent"];
 				if (particleComponent)
@@ -682,6 +688,15 @@ namespace GT
 			out << YAML::Key << "Friction" << YAML::Value << cc2dComponent.Friction;
 			out << YAML::Key << "Restitution" << YAML::Value << cc2dComponent.Restitution;
 			out << YAML::Key << "RestitutionThreshold" << YAML::Value << cc2dComponent.RestitutionThreshold;
+
+			out << YAML::EndMap; // CircleCollider2DComponent
+		}
+		if (entity.HasComponent<Animator2DComponent>())
+		{
+			out << YAML::Key << "Animator2DComponent";
+			out << YAML::BeginMap; // CircleCollider2DComponent
+
+			auto& animComponent = entity.GetComponent<Animator2DComponent>();
 
 			out << YAML::EndMap; // CircleCollider2DComponent
 		}

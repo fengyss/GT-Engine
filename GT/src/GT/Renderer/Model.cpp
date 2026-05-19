@@ -49,6 +49,13 @@ namespace GT
         }
     }
 
+    void Model::DrawForShadowMap(const glm::mat4& transform, const Ref<Shader> shader)
+    {
+        for (unsigned int i = 0; i < meshes.size(); i++)
+        {
+            meshes[i].DrawForShadowMap(transform, shader);
+        }
+    }
     void Model::Draw(const glm::mat4& transform, const Frustum& frustum)
     {
         

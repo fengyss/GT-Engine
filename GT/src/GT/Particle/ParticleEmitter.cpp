@@ -203,13 +203,13 @@ namespace GT
 	void ParticleEmitter::InitBoxParticle(Ref<Particle> particle)
 	{
 		//particle->position = GenerateRandomPosition();
-		particle->position = glm::vec3(0.0f);
+		particle->position = GenerateBoxRandomVec3();
 		particle->velocity = m_Config.velocity * GenerateBoxRandomVec3();
 	}
 	void ParticleEmitter::InitSphereParticle(Ref<Particle> particle)
 	{
 		//particle->position = GenerateSphereRandomVec3();
-		particle->position = glm::vec3(0.0f);
+		particle->position = GenerateSphereRandomVec3(m_Config.radius);
 		particle->velocity = m_Config.velocity * GenerateSphereRandomVec3(m_Config.radius);
 	}
 	void ParticleEmitter::InitRingParticle(Ref<Particle> particle)

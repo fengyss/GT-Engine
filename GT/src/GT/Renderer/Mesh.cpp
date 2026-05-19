@@ -36,6 +36,12 @@ namespace GT
         RenderCommand::DrawIndexed(m_VertexArray, indices.size());
     }
 
+    void Mesh::DrawForShadowMap(const glm::mat4& transform, Ref<Shader> shader)
+    {
+        shader->SetUniformMat4("u_Transform", transform);
+        RenderCommand::DrawIndexed(m_VertexArray, indices.size());
+    }
+
     void Mesh::ComputeAABB(const std::vector<Vertex>& vertices)
     {
         m_Min = glm::vec3(std::numeric_limits<float>::max());
