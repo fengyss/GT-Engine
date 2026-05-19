@@ -1,50 +1,126 @@
-include "./vendor/premake/premake_customization/solution_items.lua"
-include "Dependencies.lua"
 
-workspace "GT"
-	architecture "x86_64"
-	startproject "GTEditor"
+project "GT"
+	kind "StaticLib"
+	language "C++"
+	cppdialect "C++17"
+	staticruntime "on"
 
-	configurations
+	buildoptions "/utf-8"
+	buildoptions "/NODEFAULTLIB:msvcrtd.lib"
+
+	targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
+	objdir ("%{wks.location}/bin-int/" .. outputdir .. "/%{prj.name}")
+
+	pchheader "gtpch.h"
+	pchsource "src/gtpch.cpp"
+
+	files
 	{
-		"Debug",
-		"Release",
-		"Dist"
+		
+		"src/**.h",
+		"src/**.cpp",
+
+		"vendor/stb_image/**.h",
+		"vendor/stb_image/**.cpp",
+
+		"vendor/glm/glm/**.hpp",
+		"vendor/glm/glm/**.inl",
+
+		"vendor/ImGuizmo/**.h",
+		"vendor/ImGuizmo/**.cpp",
+
+		"vendor/assimp/include/assimp/**.hpp",
+		"vendor/assimp/include/assimp/**.h",
+
+		--"vendor/entt/entt.hpp",
+
+		"vendor/mono/include/**.h",
 	}
 
-	solution_items
+	includedirs
 	{
-		".editorconfig"
+		"src",
+		"vendor/spdlog/include",
+		"%{IncludeDir.glm}",
+		"%{IncludeDir.ImGuizmo}",
+		--"%{IncludeDir.mono}",
+		"%{IncludeDir.GLFW}",
+		"%{IncludeDir.Glad}",
+		"%{IncludeDir.ImGui}",
+		"%{IncludeDir.stb_image}",
+		"%{IncludeDir.entt}",
+		"%{IncludeDir.yaml_cpp}",
+		"%{IncludeDir.Box2D}",
+		"%{IncludeDir.entt}",
+		"%{IncludeDir.assimp}",
+		"%{IncludeDir.efsw}",
+		"%{IncludeDir.json}",
 	}
 
-	flags
+	filter "files:vendor/ImGuizmo/**.cpp"
+		flags { "NoPCH" }
+
+	links
 	{
-		"MultiProcessorCompile"
+		"efsw",
+		"libcmt.lib",
+		"GLFW",
+		"Glad",
+		"Box2D",
+		"ENTT",
+		"json",
+		"yaml_cpp",
+		"ImGui",
+		"opengl32.lib",
+		--"%{Library.mono}"
 	}
 
-outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
+	filter "system:windows"
+		systemversion "10.0"
 
-group "Dependencies"
-	include "vendor/premake"
-	include "GT/vendor/Box2D"
-	include "GT/vendor/GLFW"
-	include "GT/vendor/Glad"
-	include "GT/vendor/entt"
-	include "GT/vendor/ImGui"
-	include "GT/vendor/yaml-cpp"
-	include "GT/vendor/efsw"
-	include "GT/vendor/json"
-group ""
+		defines
+		{
+			"_CRT_SECURE_NO_WARNINGS",
+			"GLFW_INCLUDE_NONE"
+		}
 
-group "Core"
-	include "GT"
-	include "GT-ScriptCore"
-group ""
+		defines
+		{
+			"GT_PLATFORM_WINDOWS",
+			"GT_BUILD_DLL",
+			"GLFW_INCLUDE_NONE",
+			"YAML_CPP_STATIC_DEFINE"
+		}
+		links
+		{
+			"%{Library.WinSock}",
+			"%{Library.WinMM}",
+			"%{Library.WinVersion}",
+			"%{Library.BCrypt}",
+		}
 
-group "Tools"
-	include "GTEditor"
-group ""
+--	doesn't need to copy dlls anymore since we are using static lib
+--	postbuildcommands
+--	{
+--		("{COPYFILE} %{cfg.buildtarget.relpath} \"../bin/" .. outputdir .. "/Sandbox/\"")
+--	}
+	
 
--- group "Misc"
--- 	include "Sandbox"
--- group ""
+	filter "configurations:Debug"
+		defines "GT_DEBUG"
+		symbols "On"
+		runtime "Debug"
+
+	filter "configurations:Release"
+		 defines "GT_RELEASE"
+		 optimize "On"
+		 runtime "Release"
+
+	filter "configurations:Dist"
+		 defines "GT_DIST"
+		 optimize "On"
+		 runtime "Release"
+
+    filter {"system:windows", "configurations:Release" }
+		buildoptions "/MT"
+		

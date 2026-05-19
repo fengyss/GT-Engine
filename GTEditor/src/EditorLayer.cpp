@@ -535,7 +535,7 @@ namespace GT
 		ImGui::Begin("Viewport", NULL);
 
 
-		m_ViewportActived = ImGui::IsWindowFocused() && ImGui::IsWindowHovered();
+		m_ViewportActived = ImGui::IsWindowFocused() || ImGui::IsWindowHovered();
 
 		Application::Get().GetImGuiLayer()->BlockEvents(!m_ViewportActived);
 

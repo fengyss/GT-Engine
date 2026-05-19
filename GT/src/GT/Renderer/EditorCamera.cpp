@@ -24,15 +24,42 @@ namespace GT {
 		SetOrthographic(size, nearClip, farClip);
 	}
 
+	glm::vec3 position;
 	void EditorCamera::UpdateView()
 	{
 		// m_Yaw = m_Pitch = 0.0f; // Lock the camera's rotation
-		m_Position = CalculatePosition();
-		m_Position += m_Offets;
+		
+		switch (m_ProjectionType)
+		{
+		case ProjectionType::Perspective:
+			Pers_Position = CalculatePosition();
+			Pers_Position += Pers_Offets;
+			position = Pers_Position;
+			break;
+		case ProjectionType::Orthographic:
+			Orth_Position = CalculatePosition();
+			Orth_Position += Orth_Offets;
+			position = Orth_Position;
+			break;
+		}
 
 		glm::quat orientation = GetOrientation();
-		m_ViewMatrix = glm::translate(glm::mat4(1.0f), m_Position) * glm::toMat4(orientation);
+		m_ViewMatrix = glm::translate(glm::mat4(1.0f), position) * glm::toMat4(orientation);
 		m_ViewMatrix = glm::inverse(m_ViewMatrix);
+	}
+
+
+	const glm::vec3& EditorCamera::GetPosition() const
+	{
+		switch (m_ProjectionType)
+		{
+		case ProjectionType::Perspective:
+			return Pers_Position;
+			break;
+		case ProjectionType::Orthographic:
+			return Orth_Position;
+			break;
+		}
 	}
 
 	std::pair<float, float> EditorCamera::PanSpeed() const
@@ -96,36 +123,29 @@ namespace GT {
 		{
 		case ProjectionType::Perspective:
 			if (Input::IsKeyPressed(Key::W))
-				m_Offets += (GetForwardDirection() * float(ts) * speed);
+				Pers_Offets += (GetForwardDirection() * float(ts) * speed);
 			if (Input::IsKeyPressed(Key::S))
-				m_Offets -= GetForwardDirection() * float(ts) * speed;
+				Pers_Offets -= GetForwardDirection() * float(ts) * speed;
 			if (Input::IsKeyPressed(Key::A))
-				m_Offets -= GetRightDirection() * float(ts) * speed;
+				Pers_Offets -= GetRightDirection() * float(ts) * speed;
 			if (Input::IsKeyPressed(Key::D))
-				m_Offets += GetRightDirection() * float(ts) * speed;
+				Pers_Offets += GetRightDirection() * float(ts) * speed;
 			break;
 		case ProjectionType::Orthographic:
 			if (Input::IsKeyPressed(Key::W))
-				m_Offets += (GetUpDirection() * float(ts) * speed);
+				Orth_Offets += (GetUpDirection() * float(ts) * speed);
 			if (Input::IsKeyPressed(Key::S))
-				m_Offets -= GetUpDirection() * float(ts) * speed;
+				Orth_Offets -= GetUpDirection() * float(ts) * speed;
 			if (Input::IsKeyPressed(Key::A))
-				m_Offets -= GetRightDirection() * float(ts) * speed;
+				Orth_Offets -= GetRightDirection() * float(ts) * speed;
 			if (Input::IsKeyPressed(Key::D))
-				m_Offets += GetRightDirection() * float(ts) * speed;
+				Orth_Offets += GetRightDirection() * float(ts) * speed;
 			break;
 		}
 		
 
 
 		UpdateView();
-		//int p = 400;
-		//int kkk = ((abs(mouse.x - p)+abs(mouse.y-p))>300? 1 : 0);
-		//if (EnableInfinite && kkk) 
-		//{
-		//	Application::Get().GetWindow().SetCursorPosition(p, p);
-		//	m_InitialMousePosition = { p,p };
-		//}
 	}
 
 	void EditorCamera::OnEvent(Event& e)
@@ -155,19 +175,29 @@ namespace GT {
 		switch (m_ProjectionType)
 		{
 		case ProjectionType::Perspective:
-			m_FocalPoint += -GetRightDirection() * delta.x * xSpeed * m_Distance;
-			m_FocalPoint += GetUpDirection() * delta.y * ySpeed * m_Distance;
+			Pers_FocalPoint += -GetRightDirection() * delta.x * xSpeed * m_Distance;
+			Pers_FocalPoint += GetUpDirection() * delta.y * ySpeed * m_Distance;
 			break;
 		case ProjectionType::Orthographic:
+			Orth_Offets += glm::vec3(delta * glm::vec2(xSpeed, ySpeed),0.0f);
 			break;
 		}
 	}
 
 	void EditorCamera::MouseRotate(const glm::vec2& delta)
 	{
-		float yawSign = GetUpDirection().y < 0 ? -1.0f : 1.0f;
-		m_Yaw += yawSign * delta.x * RotationSpeed();
-		m_Pitch += delta.y * RotationSpeed();
+		switch (m_ProjectionType)
+		{
+		case ProjectionType::Perspective:
+		{
+			float yawSign = GetUpDirection().y < 0 ? -1.0f : 1.0f;
+			m_Yaw += yawSign * delta.x * RotationSpeed();
+			m_Pitch += delta.y * RotationSpeed();
+		}
+			break;
+		case ProjectionType::Orthographic:
+			break;
+		}
 	}
 
 	void EditorCamera::MouseZoom(float delta)
@@ -178,7 +208,7 @@ namespace GT {
 			m_Distance -= delta * ZoomSpeed();
 			if (m_Distance < 1.0f)
 			{
-				m_FocalPoint += GetForwardDirection();
+				Pers_FocalPoint += GetForwardDirection();
 				m_Distance = 1.0f;
 			}
 			break;
@@ -211,9 +241,6 @@ namespace GT {
 		case ProjectionType::Perspective:
 			break;
 		case ProjectionType::Orthographic:
-			m_Offets = glm::vec3(0.0f,0.0f,-1.0f);
-			m_Position = glm::vec3(0.0f);
-			m_FocalPoint = glm::vec3(0.0f);
 			break;
 		}
 		UpdateView();
@@ -221,12 +248,28 @@ namespace GT {
 
 	glm::vec3 EditorCamera::CalculatePosition() const
 	{
-		return m_FocalPoint - GetForwardDirection() * m_Distance;
+		switch (m_ProjectionType)
+		{
+		case ProjectionType::Perspective:
+			return Pers_FocalPoint - GetForwardDirection() * m_Distance;
+			break;
+		case ProjectionType::Orthographic:
+			return Orth_FocalPoint - GetForwardDirection() * m_Distance;
+			break;
+		}
 	}
 
 	glm::quat EditorCamera::GetOrientation() const
 	{
-		return glm::quat(glm::vec3(-m_Pitch, -m_Yaw, 0.0f));
+		switch (m_ProjectionType)
+		{
+		case ProjectionType::Perspective:
+			return glm::quat(glm::vec3(-m_Pitch, -m_Yaw, 0.0f));
+			break;
+		case ProjectionType::Orthographic:
+			return glm::quat(glm::vec3(0.0f));
+			break;
+		}
 	}
 
 }

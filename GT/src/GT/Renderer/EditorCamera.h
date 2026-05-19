@@ -34,7 +34,7 @@ namespace GT {
 		void ChangeProjectionType(ProjectionType type);
 
 
-		const glm::vec3& GetPosition() const { return m_Position; }
+		const glm::vec3& GetPosition() const;
 		glm::quat GetOrientation() const;
 
 		float GetPitch() const { return m_Pitch; }
@@ -58,11 +58,17 @@ namespace GT {
 		float ZoomSpeed() const;
 	private:
 
-		glm::vec3 m_Offets = { 0.0f, 0.0f, 0.0f };
 
 		glm::mat4 m_ViewMatrix;
-		glm::vec3 m_Position = { 0.0f, 0.0f, 0.0f };
-		glm::vec3 m_FocalPoint = { 0.0f, 0.0f, 0.0f };
+
+		glm::vec3 Orth_Offets = { 0.0f, 0.0f, 0.0f };
+		glm::vec3 Orth_Position = { 0.0f, 0.0f, 0.0f };
+		glm::vec3 Orth_FocalPoint = { 0.0f, 0.0f, 0.0f };
+
+
+		glm::vec3 Pers_Offets = { 0.0f, 0.0f, 0.0f };
+		glm::vec3 Pers_Position = { 0.0f, 0.0f, 0.0f };
+		glm::vec3 Pers_FocalPoint = { 0.0f, 0.0f, 0.0f };
 
 		glm::vec2 m_InitialMousePosition = { 0.0f, 0.0f };
 
