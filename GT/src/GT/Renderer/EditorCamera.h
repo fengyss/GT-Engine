@@ -40,11 +40,12 @@ namespace GT {
 		float GetPitch() const { return m_Pitch; }
 		float GetYaw() const { return m_Yaw; }
 
-		void FlipMouseFollow() { IsEnableMouseFollow ^= true; }
+		void FlipMouseFollow();
 	private:
 		void UpdateView();
 
 		bool OnMouseScroll(MouseScrolledEvent& e);
+		bool OnMouseButtonPressed(MouseButtonPressedEvent& e);
 
 		void RotateView(const glm::vec2& delta);
 		void MousePan(const glm::vec2& delta);
@@ -60,7 +61,9 @@ namespace GT {
 
 
 		glm::mat4 m_ViewMatrix;
-
+		bool IsDraging = false;
+		float Orth_Speed = 20.0f;
+		glm::vec2 Orth_DragPos = glm::vec2(0.0f);
 		glm::vec3 Orth_Offets = { 0.0f, 0.0f, 0.0f };
 		glm::vec3 Orth_Position = { 0.0f, 0.0f, 0.0f };
 		glm::vec3 Orth_FocalPoint = { 0.0f, 0.0f, 0.0f };
@@ -75,7 +78,6 @@ namespace GT {
 		float m_Distance = 1.0f;
 		float m_Pitch = 0.0f, m_Yaw = 0.0f;
 
-		float m_ViewportWidth = 1280, m_ViewportHeight = 720;
 
 		bool IsEnableMouseFollow = false;
 	};

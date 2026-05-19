@@ -56,6 +56,7 @@ namespace GT
 		float m_PerspectiveFar = 1000.0f;
 
 
+		float m_ViewportWidth = 1280, m_ViewportHeight = 720;
 		float m_AspectRatio = 0.0f;
 	};
 }

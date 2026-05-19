@@ -35,6 +35,13 @@ namespace GT
 		return state == GLFW_PRESS;
 	}
 
+	bool Input::IsMouseButtonReleased(MouseCode button)
+	{
+		auto window = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());
+		auto state = glfwGetMouseButton(window, button);
+		return state == GLFW_RELEASE;
+	}
+
 	std::pair<float, float> Input::GetMousePosition()
 	{
 		auto window = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());

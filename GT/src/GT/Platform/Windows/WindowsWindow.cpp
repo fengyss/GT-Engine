@@ -235,12 +235,9 @@ namespace GT
 		switch (type)
 		{
 		case 1:
-			//ClipCursor(nullptr);
-			//glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 			glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 			break;
 		case 2:
-			//ClipCursor(&clipRect);
 			glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 			break;
 		};

@@ -25,6 +25,19 @@ namespace GT {
 	}
 
 	glm::vec3 position;
+	void EditorCamera::FlipMouseFollow()
+	{
+		IsEnableMouseFollow ^= true;
+
+		if (IsEnableMouseFollow)
+		{
+			Application::Get().GetWindow().SetCursorClip(1); // set cursor disable
+		}
+		else
+		{
+			Application::Get().GetWindow().SetCursorClip(2); // set cursor normal
+		}
+	}
 	void EditorCamera::UpdateView()
 	{
 		// m_Yaw = m_Pitch = 0.0f; // Lock the camera's rotation
@@ -87,9 +100,6 @@ namespace GT {
 		return speed;
 	}
 
-	int EnableInfinite = 0;
-
-
 
 	void EditorCamera::OnUpdate(Timestep ts)
 	{
@@ -107,15 +117,8 @@ namespace GT {
 				MouseZoom(delta.y);
 		}
 
-		if(IsEnableMouseFollow) RotateView(delta);
 		
 
-		if (Input::IsKeyPressed(Key::J))
-			Application::Get().GetWindow().SetCursorClip(1);
-		if (Input::IsKeyPressed(Key::K))
-			Application::Get().GetWindow().SetCursorClip(2);
-		if (Input::IsKeyPressed(Key::P))
-			EnableInfinite ^= 1;
 
 		float speed = 40.f;
 
@@ -130,20 +133,44 @@ namespace GT {
 				Pers_Offets -= GetRightDirection() * float(ts) * speed;
 			if (Input::IsKeyPressed(Key::D))
 				Pers_Offets += GetRightDirection() * float(ts) * speed;
+			
 			break;
 		case ProjectionType::Orthographic:
 			if (Input::IsKeyPressed(Key::W))
-				Orth_Offets += (GetUpDirection() * float(ts) * speed);
+				Orth_Offets += (GetUpDirection() * float(ts) * Orth_Speed);
 			if (Input::IsKeyPressed(Key::S))
-				Orth_Offets -= GetUpDirection() * float(ts) * speed;
+				Orth_Offets -= GetUpDirection() * float(ts) * Orth_Speed;
 			if (Input::IsKeyPressed(Key::A))
-				Orth_Offets -= GetRightDirection() * float(ts) * speed;
+				Orth_Offets -= GetRightDirection() * float(ts) * Orth_Speed;
 			if (Input::IsKeyPressed(Key::D))
-				Orth_Offets += GetRightDirection() * float(ts) * speed;
+				Orth_Offets += GetRightDirection() * float(ts) * Orth_Speed;
+			if (IsDraging)
+			{
+				delta = mouse - Orth_DragPos;
+				delta.x = -delta.x;
+				delta.x /= m_ViewportWidth;
+				delta.y /= m_ViewportHeight;
+				float size = GetOrthographicSize();
+
+				Orth_Offets += glm::vec3(delta*size, 0.0f);
+				Orth_DragPos = mouse;
+				GT_CORE_INFO("{0} {1} ", m_ViewportWidth, m_ViewportHeight);
+			}
 			break;
 		}
-		
+		if (IsEnableMouseFollow)
+		{
+			RotateView(delta);
+			Application::Get().GetWindow().SetCursorPosition(500, 500);
+			m_InitialMousePosition = { 500,500 };
+			Orth_DragPos = { 500,500 };
+		}
+		if (Input::IsKeyPressed(Key::F)) FlipMouseFollow();
 
+		if (Input::IsMouseButtonReleased(Mouse::Button0))
+		{
+			IsDraging = false;
+		}
 
 		UpdateView();
 	}
@@ -152,13 +179,42 @@ namespace GT {
 	{
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<MouseScrolledEvent>(GT_BIND_EVENT_FN(EditorCamera::OnMouseScroll));
+		dispatcher.Dispatch<MouseButtonPressedEvent>(GT_BIND_EVENT_FN(EditorCamera::OnMouseButtonPressed));
 	}
+	bool EditorCamera::OnMouseButtonPressed(MouseButtonPressedEvent& e)
+	{
+		switch (e.GetMouseButton())
+		{
+		case Mouse::Button0:
+			Orth_DragPos = { Input::GetMouseX(), Input::GetMouseY() };
+			IsDraging = true;
+			GT_CORE_INFO("11");
+			break;
 
+		}
+		return false;
+	}
 	bool EditorCamera::OnMouseScroll(MouseScrolledEvent& e)
 	{
+
 		float delta = e.GetYOffset() * 0.1f;
-		MouseZoom(delta);
-		UpdateView();
+		switch (m_ProjectionType)
+		{
+		case ProjectionType::Perspective:
+		{
+			MouseZoom(delta);
+			UpdateView();
+		}
+			break;
+		case ProjectionType::Orthographic:
+		{
+			float size = GetOrthographicSize() - delta;
+			Orth_Speed = size;
+			SetOrthographicSize(size);
+		}
+			break;
+		}
+		
 		return false;
 	}
 
@@ -241,6 +297,7 @@ namespace GT {
 		case ProjectionType::Perspective:
 			break;
 		case ProjectionType::Orthographic:
+			IsDraging = false;
 			break;
 		}
 		UpdateView();

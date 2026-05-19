@@ -457,11 +457,12 @@ namespace GT
 
 	void Renderer2D::DrawQuad(const glm::mat4& transform, const glm::vec4& color, const Ref<Texture2D>& texture, int tilingfactor)
 	{
+		float scale = float(texture->GetHeight()) / float(texture->GetWidth());
 		for (size_t i = 0; i < 4; i++)
 		{
-			quadState.Position[i] = transform * s_Data.QuadVertexPositions[i];
+			quadState.Position[i] = glm::scale(transform, glm::vec3(1.0f, scale, 1.0f)) * s_Data.QuadVertexPositions[i];
 		}
-
+		
 		SetTextureCoords();
 
 		quadState.Color = color;
@@ -475,13 +476,7 @@ namespace GT
 
 	void Renderer2D::DrawQuad(const glm::mat4& transform, const SpriteRendererComponent& sprite)
 	{
-		for (size_t i = 0; i < 4; i++)
-		{
-			quadState.Position[i] = transform * s_Data.QuadVertexPositions[i];
-		}
-
-		
-
+		float scale = 1.0f;
 		quadState.Color = sprite.Color;
 
 
@@ -490,12 +485,19 @@ namespace GT
 			SetTextureCoords(sprite.UVOffset, sprite.UVSize);
 			quadState.TextureIndex = GetTextureSlotIndex(sprite.texture->Get());
 			quadState.TilingFactor = sprite.TilingFactor;
+			auto& texture = sprite.texture->Get();
+			scale = float(texture->GetHeight()) / float(texture->GetWidth());
 		}
 		else 
 		{
 			SetTextureCoords();
 			quadState.TextureIndex = 0.0f;
 			quadState.TilingFactor = 1.0f;
+		}
+
+		for (size_t i = 0; i < 4; i++)
+		{
+			quadState.Position[i] = glm::scale(transform, glm::vec3(1.0f, scale, 1.0f)) * s_Data.QuadVertexPositions[i];
 		}
 
 		quadState.EntityID = s_CurrentEntityID;
