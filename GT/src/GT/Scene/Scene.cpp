@@ -3,6 +3,7 @@
 
 #include "glm/glm.hpp"
 #include "Components.h"
+#include "GT/Renderer/Camera.h"
 #include "GT/Renderer/Renderer2D.h"
 #include "GT/Renderer/Renderer3D.h"
 #include "Entity.h"
@@ -216,11 +217,27 @@ namespace GT
         Renderer3D::BeginScene(camera);
         ParticleRenderer::BeginScene(camera);
 
-        ParticleSystem::OnRender(this);
+        switch (camera.GetProjectionType())
+        {
+        case Camera::ProjectionType::Perspective:
+        {
+            Renderer2D::DrawLine(glm::vec3(-1000.0f, 0.0f, 0.0f), glm::vec3(1000.0f, 0.0f, 0.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
+            Renderer2D::DrawLine(glm::vec3(0.0f, -1000.0f, 0.0f), glm::vec3(0.0f, 1000.0f, 0.0f), glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
+            Renderer2D::DrawLine(glm::vec3(0.0f, 0.0f, -1000.0f), glm::vec3(0.0f, 0.0f, 1000.0f), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
+        }
+        break;
+        case Camera::ProjectionType::Orthographic:
+        {
+            Renderer2D::DrawLine(glm::vec3(-1000.0f,0.0f,0.0f), glm::vec3(1000.0f, 0.0f, 0.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
+            Renderer2D::DrawLine(glm::vec3(0.0f,-1000.0f, 0.0f), glm::vec3(0.0f,1000.0f, 0.0f), glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
+        }
+        break;
+            
+        }
 
-        // Render 3D
         RenderScene2D();
         RenderScene3D();
+        ParticleSystem::OnRender(this);
 
         ParticleRenderer::Flush(BlendMode::Alpha);
         Renderer3D::EndScene();

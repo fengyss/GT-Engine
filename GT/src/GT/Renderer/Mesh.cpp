@@ -38,7 +38,6 @@ namespace GT
 
     void Mesh::DrawForShadowMap(const glm::mat4& transform, Ref<Shader> shader)
     {
-        shader->SetUniformMat4("u_Transform", transform);
         RenderCommand::DrawIndexed(m_VertexArray, indices.size());
     }
 
