@@ -666,7 +666,7 @@ namespace GT
 
 		DrawComponent<Animator2DComponent>("Animator 2D", e, [](auto& component)
 			{
-				ImGui::Text("Name: %s", &component.name);
+				ImGui::Text("Name: %s", component.name.c_str());
 				ImGui::DragFloat("Duration", &component.duration, 0.5f, 1.0f, 20.0f);
 				//ImGui::PushItemWidth(-1);
 

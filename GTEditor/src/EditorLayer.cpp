@@ -634,7 +634,7 @@ namespace GT
 			{
 				glm::vec3 translation, rotation, scale;
 				Math::DecomposeTransform(transform, translation, rotation, scale);
-
+				m_EditorCamera.CancelDraging();
 				tc.Translation = translation;
 				tc.Scale = scale;
 				tc.Rotation = rotation;

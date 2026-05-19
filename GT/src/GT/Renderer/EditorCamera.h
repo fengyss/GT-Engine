@@ -32,7 +32,7 @@ namespace GT {
 		glm::vec3 GetForwardDirection() const;
 
 		void ChangeProjectionType(ProjectionType type);
-
+		void CancelDraging() { IsDraging = false; }
 
 		const glm::vec3& GetPosition() const;
 		glm::quat GetOrientation() const;

@@ -5,7 +5,7 @@ pause
 git add .
 pause
 
-git commit -m "docs: Update ChangeLog."
+git commit -m "feat: Add Draging for orthographic 2D." -m "feat: quad texture ratio isn't 1:1, will display origin ratio.."
 
 pause
 
