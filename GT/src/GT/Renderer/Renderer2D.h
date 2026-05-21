@@ -47,9 +47,8 @@ namespace GT
 		static void Init();
 		static void Shutdown();
 
-		static void BeginScene(Camera& camera,glm::mat4& transform);
-		static void BeginScene(EditorCamera& camera);
-		static void BeginScene(OrthographicCamera& camera);
+		static void BeginScene(Camera& camera);
+
 		static void SetViewProjection(const glm::mat4& viewProjection);
 
 		static void EndScene();

@@ -31,7 +31,7 @@ namespace GT
 		static void Init();
 		static void Shutdown();
 
-		static void BeginScene(Camera& camera, glm::mat4& transform);
+		static void BeginScene(Camera& camera);
 		static void BeginScene(EditorCamera& camera);
 		static void BeginScene(OrthographicCamera& camera);
 

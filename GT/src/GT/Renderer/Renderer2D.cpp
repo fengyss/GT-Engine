@@ -260,43 +260,16 @@ namespace GT
 		s_Data.CircleVertexBuffer.reset();
     }
 
-	void Renderer2D::BeginScene(Camera& camera, glm::mat4& transform)
+	void Renderer2D::BeginScene(Camera& camera)
 	{
 		GT_PROFILE_FUNCTION();
 
 		GT_CORE_ASSERT(state != RendererState::BeginScene, "Renderer2D::BeginScene is already Called!");
 		state = RendererState::BeginScene;
 
-		glm::mat4 viewProj = camera.GetProjection() * glm::inverse(transform);
-
-		SetViewProjection(viewProj);
-
-		s_Data.TextureSlotIndex = 1;
-		StartNewBatch();
-	}
-	glm::vec3 camerapos;
-	void Renderer2D::BeginScene(EditorCamera& camera)
-	{
-		GT_PROFILE_FUNCTION();
-
-		GT_CORE_ASSERT(state != RendererState::BeginScene, "Renderer2D::BeginScene is already Called!");
-		state = RendererState::BeginScene;
 
 		SetViewProjection(camera.GetViewProjection());
-		camerapos = camera.GetPosition();
-		
-		s_Data.TextureSlotIndex = 1;
-		StartNewBatch();
-	}
-	void Renderer2D::BeginScene(OrthographicCamera& camera)
-	{
-		GT_PROFILE_FUNCTION();
 
-		GT_CORE_ASSERT(state != RendererState::BeginScene, "Renderer2D::BeginScene is already Called!");
-		state = RendererState::BeginScene;
-
-		SetViewProjection(camera.GetViewProjectionMatrix());
-		
 		s_Data.TextureSlotIndex = 1;
 		StartNewBatch();
 	}

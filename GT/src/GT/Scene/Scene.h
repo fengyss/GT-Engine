@@ -21,10 +21,26 @@ namespace GT
 
 		static Ref<Scene> Copy(Ref<Scene> other);
 
-		void OnUpdateRuntime(Timestep ts);
 
 		void OnUpdateEditor(Timestep ts, EditorCamera& camera);
+		void OnUpdateRuntime(Timestep ts);
 		void OnUpdateSimulation(Timestep ts,EditorCamera& camera);
+
+		void SceneUpdate(Timestep ts);
+
+		void OnRuntimeStart();
+		void OnRuntimeStop();
+
+		void OnSimulationStart();
+		void OnSimulationStop();
+
+		void OnPhysics2DStart();
+		void OnPhysics2DUpdate(Timestep ts);
+		void OnPhysics2DStop();
+
+		void RenderScene(Camera& camera);
+		void RenderScene2D();
+		void RenderScene3D();
 
 
 
@@ -33,7 +49,7 @@ namespace GT
 		void DuplicateEntity(Entity entity);
 
 		Entity CreateEntityWithUUID(UUID uuid, const std::string& name = std::string());
-		
+
 		template<typename... Components>
 		auto GetAllEntitiesWith()
 		{
@@ -45,20 +61,6 @@ namespace GT
 		entt::registry& Reg() { return m_Registry; }
 
 		Entity GetPrimaryCameraEntity();
-
-		void OnRuntimeStart();
-		void OnRuntimeStop();
-
-		void OnSimulationStart();
-		void OnSimulationStop();
-
-		void OnPhysics2DStart();
-		void OnPhysics2DStop();
-
-		void RenderScene(Timestep ts, EditorCamera& camera);
-		void RenderScene2D();
-		void RenderScene3D();
-
 
 
 		void SetName(const std::string& newName) { name = newName; }

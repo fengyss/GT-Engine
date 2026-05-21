@@ -23,18 +23,16 @@ namespace GT {
 		inline void SetDistance(float distance) { m_Distance = distance; }
 		
 
-		const glm::mat4& GetViewMatrix() const { return m_ViewMatrix; }
-		glm::mat4 GetViewProjection() const { return m_Projection * m_ViewMatrix; }
 
 
 		glm::vec3 GetUpDirection() const;
 		glm::vec3 GetRightDirection() const;
 		glm::vec3 GetForwardDirection() const;
 
-		void ChangeProjectionType(ProjectionType type);
+		virtual void SetProjectionType(ProjectionType type);
 		void CancelDraging() { IsDraging = false; }
 
-		const glm::vec3& GetPosition() const;
+		virtual const glm::vec3& GetPosition() const;
 		glm::quat GetOrientation() const;
 
 		float GetPitch() const { return m_Pitch; }
@@ -60,7 +58,6 @@ namespace GT {
 	private:
 
 
-		glm::mat4 m_ViewMatrix;
 		bool IsDraging = false;
 		float Orth_Speed = 20.0f;
 		glm::vec2 Orth_DragPos = glm::vec2(0.0f);

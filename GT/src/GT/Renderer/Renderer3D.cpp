@@ -40,39 +40,18 @@ namespace GT
 		s_ModelShader.reset();
 	}
 
-	void Renderer3D::BeginScene(Camera& camera, glm::mat4& transform)
+	void Renderer3D::BeginScene(Camera& camera)
 	{
 		GT_PROFILE_FUNCTION();
 
 		GT_CORE_ASSERT(state != Renderer3DState::BeginScene, "Renderer3D::BeginScene is already Called!");
 		state = Renderer3DState::BeginScene;
 
-		glm::mat4 viewProj = camera.GetProjection() * glm::inverse(transform);
-
-		SetViewProjection(viewProj,glm::vec3(transform[3][0],transform[3][1],transform[3][2]));
-
-	}
-
-	void Renderer3D::BeginScene(EditorCamera& camera)
-	{
-		GT_PROFILE_FUNCTION();
-
-		GT_CORE_ASSERT(state != Renderer3DState::BeginScene, "Renderer3D::BeginScene is already Called!");
-		state = Renderer3DState::BeginScene;
 
 		SetViewProjection(camera.GetViewProjection(), camera.GetPosition());
+
 	}
 
-
-	void Renderer3D::BeginScene(OrthographicCamera& camera)
-	{
-		GT_PROFILE_FUNCTION();
-
-		GT_CORE_ASSERT(state != Renderer3DState::BeginScene, "Renderer3D::BeginScene is already Called!");
-		state = Renderer3DState::BeginScene;
-
-		SetViewProjection(camera.GetViewProjectionMatrix(),camera.GetPosition());
-	}
 	void Renderer3D::SetViewProjection(const glm::mat4& viewProjection, const glm::vec3& viewPos)
 	{
 		s_ViewProjectionMatrix = viewProjection;

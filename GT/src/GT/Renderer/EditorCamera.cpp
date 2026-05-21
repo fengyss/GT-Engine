@@ -154,7 +154,6 @@ namespace GT {
 
 				Orth_Offets += glm::vec3(delta*size, 0.0f);
 				Orth_DragPos = mouse;
-				GT_CORE_INFO("{0} {1} ", m_ViewportWidth, m_ViewportHeight);
 			}
 			break;
 		}
@@ -188,7 +187,6 @@ namespace GT {
 		case Mouse::Button0:
 			Orth_DragPos = { Input::GetMouseX(), Input::GetMouseY() };
 			IsDraging = true;
-			GT_CORE_INFO("11");
 			break;
 
 		}
@@ -289,9 +287,9 @@ namespace GT {
 		return glm::rotate(GetOrientation(), glm::vec3(0.0f, 0.0f, -1.0f));
 	}
 
-	void EditorCamera::ChangeProjectionType(ProjectionType type)
+	void EditorCamera::SetProjectionType(ProjectionType type)
 	{
-		SetProjectionType(type);
+		m_ProjectionType = type;
 		switch (type)
 		{
 		case ProjectionType::Perspective:

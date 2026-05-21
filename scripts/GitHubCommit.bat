@@ -5,7 +5,7 @@ pause
 git add .
 pause
 
-git commit -m "fix: fix when render shadowmap pop error for uniform." -m "fix: Add (de)serizlize for Animator2DComponent."
+git commit -m "feat: add coordinate axis render."
 
 pause
 

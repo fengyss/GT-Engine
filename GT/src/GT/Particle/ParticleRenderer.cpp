@@ -46,24 +46,12 @@ namespace GT {
         uint32_t whiteTextureData = 0xffffffff;
         TextureSlots[0]->SetData(&whiteTextureData, sizeof(uint32_t));
     }
-    void ParticleRenderer::BeginScene(Camera& camera, glm::mat4& transform)
-	{
-		glm::mat4 viewProj = camera.GetProjection() * glm::inverse(transform);
-
-		SetViewProjection(viewProj);
-      
-
-	}
-	void ParticleRenderer::BeginScene(EditorCamera& camera)
+    void ParticleRenderer::BeginScene(Camera& camera)
 	{
 
 		SetViewProjection(camera.GetViewProjection());
+      
 
-	}
-
-	void ParticleRenderer::BeginScene(OrthographicCamera& camera)
-	{
-        SetViewProjection(camera.GetViewProjectionMatrix());
 	}
 
 	void  ParticleRenderer::EndScene()

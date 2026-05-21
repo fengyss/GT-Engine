@@ -508,14 +508,14 @@ namespace GT
 		ImGui::SameLine();
 		if (ImGui::Button("2D", ImVec2(size, size)))
 		{
-			m_EditorCamera.ChangeProjectionType(Camera::ProjectionType::Orthographic);
+			m_EditorCamera.SetProjectionType(Camera::ProjectionType::Orthographic);
 		}
 
 		ImGui::SameLine();
 
 		if (ImGui::Button("3D", ImVec2(size, size)))
 		{
-			m_EditorCamera.ChangeProjectionType(Camera::ProjectionType::Perspective);
+			m_EditorCamera.SetProjectionType(Camera::ProjectionType::Perspective);
 		}
 
 
@@ -581,8 +581,8 @@ namespace GT
 		}
 
 
-
-		OnImGuizmoRender();
+		if(m_SceneState != SceneState::Play)
+			OnImGuizmoRender();
 
 
 		ImGui::End();
@@ -685,7 +685,7 @@ namespace GT
 			Entity camera = m_ActiveScene->GetPrimaryCameraEntity();
 			if (!camera) return;
 
-			Renderer2D::BeginScene(camera.GetComponent<CameraComponent>().Camera, camera.GetComponent<TransformComponent>().GetTransform());
+			Renderer2D::BeginScene(camera.GetComponent<CameraComponent>().Camera);
 		}
 		else
 		{

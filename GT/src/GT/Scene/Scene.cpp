@@ -95,10 +95,10 @@ namespace GT
         CopyComponent<Rigidbody2DComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
         CopyComponent<BoxCollider2DComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
         CopyComponent<CircleCollider2DComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
-
         CopyComponent<ParticleComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
         CopyComponent<LightRendererComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
         CopyComponent<ModelComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
+        CopyComponent<Animator2DComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
 
         return newScene;
     }
@@ -115,6 +115,10 @@ namespace GT
         CopyComponentIfExists<Rigidbody2DComponent>(newEntity, entity);
         CopyComponentIfExists<BoxCollider2DComponent>(newEntity, entity);
         CopyComponentIfExists<CircleCollider2DComponent>(newEntity, entity);
+        CopyComponentIfExists<ParticleComponent>(newEntity, entity);
+        CopyComponentIfExists<LightRendererComponent>(newEntity, entity);
+        CopyComponentIfExists<ModelComponent>(newEntity, entity);
+        CopyComponentIfExists<Animator2DComponent>(newEntity, entity);
     }
 
     void Scene::OnRuntimeStart()
@@ -203,13 +207,36 @@ namespace GT
         }
     }
 
+    void Scene::OnPhysics2DUpdate(Timestep ts)
+    {
+        b2World_Step(m_WorldID, ts, substepcount);
+
+
+        // Retrieve transform from Box2D
+        auto view = m_Registry.view<Rigidbody2DComponent>();
+        for (auto e : view)
+        {
+            Entity entity = { e, this };
+            auto& transform = entity.GetComponent<TransformComponent>();
+            auto& rb2d = entity.GetComponent<Rigidbody2DComponent>();
+
+            b2BodyId bodyid = rb2d.RuntimeBody;
+            const auto& position = b2Body_GetPosition(bodyid);
+
+            transform.Translation.x = position.x;
+            transform.Translation.y = position.y;
+
+            transform.Rotation.z = b2Rot_GetAngle(b2Body_GetRotation(bodyid));
+        }
+    }
+
     void Scene::OnPhysics2DStop()
     {
         b2DestroyWorld(m_WorldID);
         m_WorldID = b2_nullWorldId;
     }
 
-    void Scene::RenderScene(Timestep ts, EditorCamera& camera)
+    void Scene::RenderScene(Camera& camera)
     {
         //float time = Time::GetTime();
         // Render 2D
@@ -336,6 +363,7 @@ namespace GT
 
     void Scene::OnUpdateEditor(Timestep ts, EditorCamera& camera)
     {
+        // check is regenerate particle emitter
         {
             auto view = m_Registry.view<ParticleComponent>();
             for (auto entity : view)
@@ -352,48 +380,42 @@ namespace GT
             }
         }
 
-        ParticleSystem::OnUpdate(this,ts);
+        
 
-        Animation2DSystem::OnUpdate(this, ts);
+        SceneUpdate(ts);
 
-        {
-            auto view = m_Registry.view<TransformComponent, LightRendererComponent>();
-            for (auto entity : view)
-            {
-                Renderer2D::SetCurrentEntityID(int(entity));
-                auto& [transform, light] = view.get<TransformComponent, LightRendererComponent>(entity);
-
-                light.light.pos = transform.Translation;
-                if (light.light.type == LightType::Directional) 
-                    light.light.direction = transform.Translation;
-            }
-        }
-
-        RenderScene(ts, camera);
+        RenderScene(camera);
     }
 
     void Scene::OnUpdateSimulation(Timestep ts, EditorCamera& camera)
     {
-        b2World_Step(m_WorldID, ts, substepcount);
 
-        // Retrieve transform from Box2D
-        auto view = m_Registry.view<Rigidbody2DComponent>();
-        for (auto e : view)
-        {
-            Entity entity = { e, this };
-            auto& transform = entity.GetComponent<TransformComponent>();
-            auto& rb2d = entity.GetComponent<Rigidbody2DComponent>();
-            b2BodyId body = rb2d.RuntimeBody;
+        OnPhysics2DUpdate(ts);
 
-            const auto& position = b2Body_GetPosition(body);
-            transform.Translation.x = position.x;
-            transform.Translation.y = position.y;
-            transform.Rotation.z = b2Rot_GetAngle(b2Body_GetRotation(body));
-        }
-        
+        SceneUpdate(ts);
+
         // Render
-		RenderScene(ts, camera);
+		RenderScene(camera);
 
+    }
+
+    void Scene::SceneUpdate(Timestep ts)
+    {
+        Animation2DSystem::OnUpdate(this, ts);
+        ParticleSystem::OnUpdate(this, ts);
+
+        // update light properties
+        {
+            auto view = m_Registry.view<TransformComponent, LightRendererComponent>();
+            for (auto entity : view)
+            {
+                auto& [transform, light] = view.get<TransformComponent, LightRendererComponent>(entity);
+
+                light.light.pos = transform.Translation;
+                if (light.light.type == LightType::Directional)
+                    light.light.direction = transform.Translation;
+            }
+        }
     }
 
 
@@ -416,32 +438,11 @@ namespace GT
         }
 
 
-        // Physics
-        {
+        OnPhysics2DUpdate(ts);
 
-            b2World_Step(m_WorldID,ts, substepcount);
+        SceneUpdate(ts);
 
-
-            // Retrieve transform from Box2D
-            auto view = m_Registry.view<Rigidbody2DComponent>();
-            for (auto e : view)
-            {
-                Entity entity = { e, this };
-                auto& transform = entity.GetComponent<TransformComponent>();
-                auto& rb2d = entity.GetComponent<Rigidbody2DComponent>();
-
-                b2BodyId bodyid = rb2d.RuntimeBody;
-                const auto& position = b2Body_GetPosition(bodyid);
-
-                transform.Translation.x = position.x;
-                transform.Translation.y = position.y;
-
-                transform.Rotation.z = b2Rot_GetAngle(b2Body_GetRotation(bodyid));
-            }
-        }
-
-
-        // Renderer2D
+        // Renderer
         Camera* mainCamera = nullptr;
         glm::mat4 cameraTransform;
         {
@@ -451,27 +452,13 @@ namespace GT
                 if (camera.Primary)
                 {
                     mainCamera = &camera.Camera;
-					cameraTransform = transform.GetTransform();
+					mainCamera->SetViewMatrix(transform.GetTransform());
                 }
                 });
         }
-        ParticleSystem::OnUpdate(this, ts);
         if (mainCamera)
         {
-            // Render
-            Renderer2D::BeginScene(*mainCamera, cameraTransform);
-            Renderer3D::BeginScene(*mainCamera, cameraTransform);
-            ParticleRenderer::BeginScene(*mainCamera, cameraTransform);
-
-			RenderScene2D();
-            RenderScene3D();
-            ParticleSystem::OnRender(this);
-
-            ParticleRenderer::EndScene();
-            
-            ParticleRenderer::Flush(BlendMode::Alpha);
-            Renderer2D::EndScene();
-            Renderer3D::EndScene();
+            RenderScene(*mainCamera);
         }
     }
 
@@ -518,9 +505,13 @@ namespace GT
         auto view = m_Registry.view<CameraComponent>();
         for (auto e : view)
         {
-            const auto& camera = view.get<CameraComponent>(e);
+            auto& camera = view.get<CameraComponent>(e);
             if (camera.Primary)
-                return Entity{e, this};
+            {
+                Entity entity = Entity{ e, this };
+				camera.Camera.SetViewMatrix(entity.GetComponent<TransformComponent>().GetTransform());
+                return entity;
+            }
         }
         return Entity{};
     }
