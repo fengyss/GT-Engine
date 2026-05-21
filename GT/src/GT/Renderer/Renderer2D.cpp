@@ -178,22 +178,24 @@ namespace GT
 		s_Data.CircleVertexArray->SetIndexBuffer(squareIB); // Use quad IB
 		s_Data.CircleVertexBufferBase = new CircleVertex[s_Data.MaxVertices];
 
+
+
 		// Lines
 		s_Data.LineVertexArray = VertexArray::Create();
 
-		s_Data.LineVertexBuffer = VertexBuffer::Create(s_Data.MaxVertices * sizeof(LineVertex));
+		s_Data.LineVertexBuffer = VertexBuffer::Create(1000 * sizeof(LineVertex));
 		s_Data.LineVertexBuffer->SetLayout({
 			{ ShaderDataType::Float3, "a_Position" },
 			{ ShaderDataType::Float4, "a_Color"    },
 			{ ShaderDataType::Int,    "a_EntityID" }
 			});
 		s_Data.LineVertexArray->AddVertexBuffer(s_Data.LineVertexBuffer);
-		s_Data.LineVertexBufferBase = new LineVertex[s_Data.MaxVertices];
+		s_Data.LineVertexBufferBase = new LineVertex[1000];
 
 		// UIs
 		s_Data.UIVertexArray = VertexArray::Create();
 
-		s_Data.UIVertexBuffer = VertexBuffer::Create(s_Data.MaxVertices * sizeof(UIVertex));
+		s_Data.UIVertexBuffer = VertexBuffer::Create(1000 * sizeof(UIVertex));
 		s_Data.UIVertexBuffer->SetLayout({
 			{ ShaderDataType::Float3, "a_Position" },
 			{ ShaderDataType::Float4, "a_Color"    },
@@ -203,7 +205,7 @@ namespace GT
 			});
 		s_Data.UIVertexArray->AddVertexBuffer(s_Data.UIVertexBuffer);
 		s_Data.UIVertexArray->SetIndexBuffer(squareIB); // Use quad IB
-		s_Data.UIVertexBufferBase = new UIVertex[s_Data.MaxVertices];
+		s_Data.UIVertexBufferBase = new UIVertex[1000];
 
 		
 		s_Data.WhiteTexture = Texture2D::Create(1, 1);
