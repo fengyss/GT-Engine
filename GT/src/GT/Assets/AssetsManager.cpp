@@ -74,8 +74,9 @@ namespace GT
         LoadShader("Renderer2D_Circle", "project\\assets\\shaders\\Renderer2D_Circle.glsl");
         LoadShader("Renderer2D_Line", "project\\assets\\shaders\\Renderer2D_Line.glsl");
         LoadShader("Model", "project\\assets\\shaders\\Model.glsl");
-        LoadShader("Particles", "project\\assets\\shaders\\particles.glsl");
-        LoadShader("Shadow", "project\\assets\\shaders\\showmap.glsl");
+        LoadShader("Particles", "project\\assets\\shaders\\Particle.glsl");
+        LoadShader("Shadow", "project\\assets\\shaders\\ShadowMap.glsl");
+        LoadShader("Renderer2D_UI", "project\\assets\\shaders\\UI.glsl");
 
 
         LoadTexture("DirectoryIcon", "Resources\\Icons\\DirectoryIcon.png");

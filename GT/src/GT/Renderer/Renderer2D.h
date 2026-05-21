@@ -13,12 +13,7 @@ namespace GT
 		glm::vec3 Position[4];
 		glm::vec4 Color = { 1.0f,1.0f,1.0f,1.0f };
 		// Bottom_Left(0,0), Top_right(1,1)
-		glm::vec2 TexCoords[4] =
-		{   { 0.0f, 0.0f },
-			{ 1.0f, 0.0f },
-			{ 1.0f, 1.0f },
-			{ 0.0f, 1.0f }
-		};
+		glm::vec2 TexCoords[4];
 		int TextureIndex = 0;
 		float TilingFactor = 1.0f;
 		int EntityID = -1;
@@ -35,11 +30,30 @@ namespace GT
 		int TexIndex = 0;
 
 	};
+	struct UIState
+	{
+		glm::vec3 Position[4];
+		glm::vec4 color = { 1.0f,1.0f,1.0f,1.0f };
+		glm::vec2 TexCoords[4] =
+		{   { 0.0f, 0.0f },
+			{ 1.0f, 0.0f },
+			{ 1.0f, 1.0f },
+			{ 0.0f, 1.0f }
+		};
+		int EntityID = -1;
+		int TexIndex = 0;
+
+	};
 	enum struct RendererState
 	{
 		None = 0,
 		BeginScene,
 		EndScene
+	};
+	struct Rect
+	{
+		glm::vec2 origin;
+		glm::vec2 size;
 	};
 	class Renderer2D
 	{
@@ -55,6 +69,8 @@ namespace GT
 
 		static void SetCurrentEntityID(int entityID);
 
+		static void UI(const Rect& rect, const glm::vec4& color, const Ref<Texture2D>& texture = nullptr);
+
 		static void DrawQuad(const glm::mat4& transform, const glm::vec4& color);
 		static void DrawQuad(const glm::mat4& transform, const glm::vec4& color, const Ref<Texture2D>& texture, int tilingfactor = 1);
 		static void DrawQuad(const glm::mat4& transform, const SpriteRendererComponent& sprite);
@@ -66,6 +82,7 @@ namespace GT
 
 		static void Draw(const QuadState& state);
 		static void Draw(const CircleState& state);
+		static void Draw(const UIState& state);
 
 
 		static float GetTextureSlotIndex(const Ref<Texture2D>& texture);

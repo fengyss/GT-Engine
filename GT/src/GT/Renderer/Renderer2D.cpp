@@ -8,7 +8,6 @@
 namespace GT
 {
 	int Renderer2D::s_CurrentEntityID = -1;
-
 	RendererState Renderer2D::state = RendererState::None;
 	glm::mat4 Renderer2D::m_viewProjection;
 	struct QuadVertex
@@ -42,6 +41,15 @@ namespace GT
 		// Editor-only
 		int EntityID;
 	};
+	struct UIVertex
+	{
+		glm::vec3 Position;
+		glm::vec4 Color;
+		glm::vec2 TexCoord;
+		int TexIndex = 0;
+		// Editor-only
+		int EntityID;
+	};
 
 	struct Renderer2DData
 	{
@@ -63,6 +71,10 @@ namespace GT
 		Ref<VertexBuffer> LineVertexBuffer;
 
 
+		RefHandle<Shader> UIShader;
+		Ref<VertexArray> UIVertexArray;
+		Ref<VertexBuffer> UIVertexBuffer;
+
 
 		uint32_t QuadIndexCount = 0;
 		QuadVertex* QuadVertexBufferBase = nullptr;
@@ -75,6 +87,11 @@ namespace GT
 		uint32_t LineVertexCount = 0;
 		LineVertex* LineVertexBufferBase = nullptr;
 		LineVertex* LineVertexBufferPtr = nullptr;
+
+
+		uint32_t UIVertexCount = 0;
+		UIVertex* UIVertexBufferBase = nullptr;
+		UIVertex* UIVertexBufferPtr = nullptr;
 
 		float LineWidth = 2.0f;
 
@@ -95,6 +112,7 @@ namespace GT
 	static Renderer2DData s_Data;
 	static QuadState quadState;
 	static CircleState circleState;
+	static UIState uiState;
 	
 
 	void Renderer2D::Init()
@@ -172,7 +190,20 @@ namespace GT
 		s_Data.LineVertexArray->AddVertexBuffer(s_Data.LineVertexBuffer);
 		s_Data.LineVertexBufferBase = new LineVertex[s_Data.MaxVertices];
 
+		// UIs
+		s_Data.UIVertexArray = VertexArray::Create();
 
+		s_Data.UIVertexBuffer = VertexBuffer::Create(s_Data.MaxVertices * sizeof(UIVertex));
+		s_Data.UIVertexBuffer->SetLayout({
+			{ ShaderDataType::Float3, "a_Position" },
+			{ ShaderDataType::Float4, "a_Color"    },
+			{ ShaderDataType::Float2, "a_TexCoord" },
+			{ ShaderDataType::Int,    "a_TexIndex" },
+			{ ShaderDataType::Int,    "a_EntityID" }
+			});
+		s_Data.UIVertexArray->AddVertexBuffer(s_Data.UIVertexBuffer);
+		s_Data.UIVertexArray->SetIndexBuffer(squareIB); // Use quad IB
+		s_Data.UIVertexBufferBase = new UIVertex[s_Data.MaxVertices];
 
 		
 		s_Data.WhiteTexture = Texture2D::Create(1, 1);
@@ -190,6 +221,7 @@ namespace GT
 		s_Data.QuadShader = CreateHandle<Shader>("Renderer2D_Quad");
 		s_Data.CircleShader = CreateHandle<Shader>("Renderer2D_Circle");
 		s_Data.LineShader = CreateHandle<Shader>("Renderer2D_Line");
+		s_Data.UIShader = CreateHandle<Shader>("Renderer2D_UI");
 
 		s_Data.QuadShader->Get()->Bind();
 		s_Data.QuadShader->Get()->SetUniformiv("u_Textures", samplers, s_Data.MaxTextureSlots);
@@ -197,6 +229,8 @@ namespace GT
 		s_Data.CircleShader->Get()->Bind();
 		s_Data.CircleShader->Get()->SetUniformiv("u_Textures", samplers, s_Data.MaxTextureSlots);
 
+		s_Data.UIShader->Get()->Bind();
+		s_Data.UIShader->Get()->SetUniformiv("u_Textures", samplers, s_Data.MaxTextureSlots);
 
 
 
@@ -246,6 +280,7 @@ namespace GT
 		s_Data.QuadTexCoords[1] = { 1.0f, 0.0f };
 		s_Data.QuadTexCoords[2] = { 1.0f, 1.0f };
 		s_Data.QuadTexCoords[3] = { 0.0f, 1.0f };
+
 	}
     void Renderer2D::Shutdown()  
     {  
@@ -290,6 +325,11 @@ namespace GT
 	{
 		GT_PROFILE_FUNCTION();
 
+		for (uint32_t i = 0; i < s_Data.TextureSlotIndex; i++)
+		{
+			s_Data.TextureSlots[i]->Bind(i);
+		}
+
 		// For Quad
 		if(s_Data.QuadIndexCount)
 		{
@@ -297,11 +337,6 @@ namespace GT
 			s_Data.QuadShader->Get()->SetUniformMat4("u_ViewProjection", m_viewProjection);
 			uint32_t dataSize = (uint32_t)((uint8_t*)s_Data.QuadVertexBufferPtr - (uint8_t*)s_Data.QuadVertexBufferBase);
 			s_Data.QuadVertexBuffer->SetData(s_Data.QuadVertexBufferBase, dataSize);
-
-			for (uint32_t i = 0; i < s_Data.TextureSlotIndex; i++)
-			{
-				s_Data.TextureSlots[i]->Bind(i);
-			}
 			RenderCommand::DrawIndexed(s_Data.QuadVertexArray, s_Data.QuadIndexCount);
 			s_Data.Stats.DrawCalls++;
 		}
@@ -311,10 +346,6 @@ namespace GT
 		{
 			s_Data.CircleShader->Get()->Bind();
 			s_Data.CircleShader->Get()->SetUniformMat4("u_ViewProjection", m_viewProjection);
-			for (uint32_t i = 0; i < s_Data.TextureSlotIndex; i++)
-			{
-				s_Data.TextureSlots[i]->Bind(i);
-			}
 			uint32_t dataSize = (uint32_t)((uint8_t*)s_Data.CircleVertexBufferPtr - (uint8_t*)s_Data.CircleVertexBufferBase);
 			s_Data.CircleVertexBuffer->SetData(s_Data.CircleVertexBufferBase, dataSize);
 			RenderCommand::DrawIndexed(s_Data.CircleVertexArray, s_Data.CircleIndexCount);
@@ -332,6 +363,14 @@ namespace GT
 			RenderCommand::SetLineWidth(s_Data.LineWidth);
 			RenderCommand::DrawLines(s_Data.LineVertexArray, s_Data.LineVertexCount);
 			s_Data.Stats.DrawCalls++;
+		}
+
+		if (s_Data.UIVertexCount)
+		{
+			s_Data.UIShader->Get()->Bind();
+			uint32_t dataSize = (uint32_t)((uint8_t*)s_Data.UIVertexBufferPtr - (uint8_t*)s_Data.UIVertexBufferBase);
+			s_Data.UIVertexBuffer->SetData(s_Data.UIVertexBufferBase, dataSize);
+			RenderCommand::DrawIndexed(s_Data.UIVertexArray, s_Data.UIVertexCount);
 		}
 	}
 	glm::vec3 cameraright, cameraup;
@@ -413,6 +452,26 @@ namespace GT
 	void Renderer2D::SetCurrentEntityID(int entityID)
 	{
 		s_CurrentEntityID = entityID;
+	}
+
+	void Renderer2D::UI(const Rect& rect, const glm::vec4& color, const Ref<Texture2D>& texture)
+	{
+		uiState.color = color;
+		if(texture)
+		{
+			uiState.TexIndex = GetTextureSlotIndex(texture);
+		}
+		else
+		{
+			uiState.TexIndex = 0.0f;
+		}
+		uiState.EntityID = s_CurrentEntityID;
+		uiState.Position[0] = { rect.origin.x, rect.origin.y, 0.0f };
+		uiState.Position[1] = { rect.origin.x + rect.size.x, rect.origin.y, 0.0f };
+		uiState.Position[2] = { rect.origin.x + rect.size.x, rect.origin.y - rect.size.y, 0.0f };
+		uiState.Position[3] = { rect.origin.x, rect.origin.y - rect.size.y, 0.0f };
+
+		Draw(uiState);
 	}
 
 	void Renderer2D::DrawQuad(const glm::mat4& transform, const glm::vec4& color)
@@ -618,6 +677,25 @@ namespace GT
 		}
 	}
 
+	void Renderer2D::Draw(const UIState& state)
+	{
+		for(int i=0;i<4;i++)
+		{
+			s_Data.UIVertexBufferPtr->Position = state.Position[i];
+			s_Data.UIVertexBufferPtr->Color = state.color;
+			s_Data.UIVertexBufferPtr->TexCoord = state.TexCoords[i];
+			s_Data.UIVertexBufferPtr->EntityID = state.EntityID;
+			s_Data.UIVertexBufferPtr->TexIndex = state.TexIndex;
+			s_Data.UIVertexBufferPtr++;
+		}
+		s_Data.UIVertexCount += 6;
+		 if (s_Data.UIVertexCount >= s_Data.MaxVertices)
+		{
+			Flush();
+			StartNewBatch();
+		 }
+	}
+
 
 	float Renderer2D::GetTextureSlotIndex(const Ref<Texture2D>& texture)
 	{
@@ -672,6 +750,9 @@ namespace GT
 
 		s_Data.LineVertexCount = 0;
 		s_Data.LineVertexBufferPtr = s_Data.LineVertexBufferBase;
+
+		s_Data.UIVertexCount = 0;
+		s_Data.UIVertexBufferPtr = s_Data.UIVertexBufferBase;
 
 		s_Data.TextureSlotIndex = 1;
 

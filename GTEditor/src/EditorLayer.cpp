@@ -85,6 +85,8 @@ namespace GT
 
 	int lastx, lasty, lastp;
 	int pixelData;
+	glm::vec2 pos(0.5f), size(0.2f);
+	glm::vec4 _color(1.0f, 0.0f, 0.0f, 1.0f);
 	void EditorLayer::OnUpdate(Timestep ts)
 	{
 		//m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
@@ -149,6 +151,10 @@ namespace GT
 					break;
 				}
 				}
+			//Ref<Texture2D> tex = AssetsManager::Get<Texture2D>("Checkerboard");
+			//Renderer2D::BeginScene(m_EditorCamera);
+			//Renderer2D::UI({ pos,size }, _color,tex);
+			//Renderer2D::EndScene();
 
 			// read entity ID
 			auto [mx, my] = ImGui::GetMousePos();
@@ -346,6 +352,9 @@ namespace GT
 			m_EditorCamera.SetDistance(dis);
 		}
 
+		ImGui::SliderFloat2("UI Pos", (float*)&pos, -1.0f, 1.0f);
+		ImGui::SliderFloat2("UI Size", (float*)&size, -1.0f, 1.0f);
+		ImGui::ColorEdit4("UI Color", (float*)&_color);
 		
 
 		ImGui::Separator();
