@@ -4,6 +4,7 @@
 #include "GT/Core/Timestep.h"
 #include "GT/Events/Event.h"
 #include "GT/Events/MouseEvent.h"
+#include "GT/Events/KeyEvent.h"
 
 #include <glm/glm.hpp>
 
@@ -43,6 +44,7 @@ namespace GT {
 		void UpdateView();
 
 		bool OnMouseScroll(MouseScrolledEvent& e);
+		bool OnKeyPressedEvent(KeyPressedEvent& e);
 		bool OnMouseButtonPressed(MouseButtonPressedEvent& e);
 
 		void RotateView(const glm::vec2& delta);

@@ -1,5 +1,5 @@
 #pragma once
-/*
+
 #include "GT/Core/Log.h"
 
 #include <algorithm>
@@ -201,7 +201,7 @@ namespace GT {
 		}
 	}
 }
-*/
+
 #define GT_PROFILE 0
 #if GT_PROFILE
 // Resolve which function signature macro will be used. Note that this only

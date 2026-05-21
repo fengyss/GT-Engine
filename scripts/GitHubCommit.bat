@@ -5,7 +5,7 @@ pause
 git add .
 pause
 
-git commit -m "feat: add coordinate axis render."
+git commit -m "feat: when runtime or simulation scene will update too." -m "fix: duplicate entity now copy all component."
 
 pause
 

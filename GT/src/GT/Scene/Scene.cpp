@@ -148,8 +148,6 @@ namespace GT
         worldDef.gravity = gravity;
         m_WorldID = b2CreateWorld(&worldDef);
 
-
-
         auto view = m_Registry.view<Rigidbody2DComponent>();
         for (auto e : view)
         {
@@ -163,10 +161,7 @@ namespace GT
             bodyDef.position = { transform.Translation.x, transform.Translation.y };
             bodyDef.rotation = b2MakeRot(transform.Rotation.z);
 
-
             b2BodyId bodyId = b2CreateBody(m_WorldID, &bodyDef);
-
-
 
 
             rb2d.RuntimeBody = bodyId;

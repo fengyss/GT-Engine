@@ -164,7 +164,6 @@ namespace GT {
 			m_InitialMousePosition = { 500,500 };
 			Orth_DragPos = { 500,500 };
 		}
-		if (Input::IsKeyPressed(Key::F)) FlipMouseFollow();
 
 		if (Input::IsMouseButtonReleased(Mouse::Button0))
 		{
@@ -179,6 +178,7 @@ namespace GT {
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<MouseScrolledEvent>(GT_BIND_EVENT_FN(EditorCamera::OnMouseScroll));
 		dispatcher.Dispatch<MouseButtonPressedEvent>(GT_BIND_EVENT_FN(EditorCamera::OnMouseButtonPressed));
+		dispatcher.Dispatch<KeyPressedEvent>(GT_BIND_EVENT_FN(EditorCamera::OnKeyPressedEvent));
 	}
 	bool EditorCamera::OnMouseButtonPressed(MouseButtonPressedEvent& e)
 	{
@@ -213,6 +213,19 @@ namespace GT {
 			break;
 		}
 		
+		return false;
+	}
+
+	bool EditorCamera::OnKeyPressedEvent(KeyPressedEvent& e)
+	{
+		switch (e.GetKeyCode())
+		{
+		case Key::F:
+			FlipMouseFollow();
+			break;
+		default:
+			break;
+		}
 		return false;
 	}
 
