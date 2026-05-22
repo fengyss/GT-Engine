@@ -34,6 +34,7 @@ group "Dependencies"
 	include "GT/vendor/yaml-cpp"
 	include "GT/vendor/efsw"
 	include "GT/vendor/json"
+	include "GT/vendor/googletest"
 group ""
 
 group "Core"
@@ -43,6 +44,7 @@ group ""
 
 group "Tools"
 	include "GTEditor"
+	include "Test"
 group ""
 
 -- group "Misc"

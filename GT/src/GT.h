@@ -21,6 +21,9 @@
 
 // -------Renderer------------
 
+#include "GT/Renderer/Mesh.h"
+#include "GT/Renderer/Model.h"
+
 #include "GT/Renderer/Renderer.h"
 #include "GT/Renderer/Renderer2D.h"
 #include "GT/Renderer/Renderer3D.h"
@@ -32,13 +35,18 @@
 #include "GT/Renderer/Texture.h"
 #include "GT/Renderer/Framebuffer.h"
 
+
+#include "GT/Renderer/ShadowMap.h"
+
+#include "GT/Renderer/Camera.h"
 #include "GT/Renderer/EditorCamera.h"
 #include "GT/Renderer/OrthographicCamera.h"
 #include "GT/OrthographicCameraController.h"
 
-// ------------------------------
+// ----------Scene----------------
 
 #include "GT/Scene/Scene.h"
+#include "GT/Scene/SceneCamera.h"
 #include "GT/Scene/Components.h"
 #include "GT/Scene/Entity.h"
 #include "GT/Scene/ScriptableEntity.h"

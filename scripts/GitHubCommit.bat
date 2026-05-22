@@ -5,7 +5,7 @@ pause
 git add .
 pause
 
-git commit -m "feat: add UI render."
+git commit -m "misc: add freetype lib."
 
 pause
 

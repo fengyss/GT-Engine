@@ -6,7 +6,6 @@ project "GT"
 	staticruntime "on"
 
 	buildoptions "/utf-8"
-	buildoptions "/NODEFAULTLIB:msvcrtd.lib"
 
 	targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("%{wks.location}/bin-int/" .. outputdir .. "/%{prj.name}")

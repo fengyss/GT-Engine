@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="GT">
+      <UniqueIdentifier>{C0735900-ACFF-870B-15AE-880B0159880B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GT\vendor">
+      <UniqueIdentifier>{1D52CD02-89BC-8179-D2FA-321F3EA45FCE}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GT\vendor\googletest">
+      <UniqueIdentifier>{8937EE12-75C6-77DC-1EE5-8BD70A538882}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GT\vendor\googletest\src">
+      <UniqueIdentifier>{2092FCC6-0CB7-4B47-3502-31D721864A65}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\GT\vendor\googletest\src\gtest-all.cc">
+      <Filter>GT\vendor\googletest\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\GT\vendor\googletest\src\gtest_main.cc">
+      <Filter>GT\vendor\googletest\src</Filter>
+    </ClCompile>
+    <ClCompile Include="Test.cpp" />
+  </ItemGroup>
+</Project>

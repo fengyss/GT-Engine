@@ -18,6 +18,7 @@ IncludeDir["mono"] = "%{wks.location}/GT/vendor/mono/include"
 IncludeDir["assimp"] = "%{wks.location}/GT/vendor/assimp/include"
 IncludeDir["efsw"] = "%{wks.location}/GT/vendor/efsw/include"
 IncludeDir["json"] = "%{wks.location}/GT/vendor/json/include"
+IncludeDir["gtest"] = "%{wks.location}/GT/vendor/googletest/include"
 -- IncludeDir["shaderc"] = "%{wks.location}/GT/vendor/shaderc/include"
 -- IncludeDir["SPIRV_Cross"] = "%{wks.location}/GT/vendor/SPIRV-Cross"
 -- IncludeDir["VulkanSDK"] = "%{VULKAN_SDK}/Include"
@@ -29,10 +30,12 @@ LibraryDir = {}
 -- LibraryDir["VulkanSDK"] = "%{VULKAN_SDK}/Lib"
 --LibraryDir["mono"] = "%{wks.location}/GT/vendor/mono/lib/%{cfg.buildcfg}"
 LibraryDir["assimp"] = "%{wks.location}/GT/vendor/assimp/lib"
+LibraryDir["gtest"] = "%{wks.location}/GT/vendor/googletest/lib"
 
 Library = {}
 --Library["mono"] = "%{LibraryDir.mono}/libmono-static-sgen.lib"
 Library["assimp"] = "%{LibraryDir.assimp}/assimp-vc143-mt.lib"
+Library["gtest"] = "%{LibraryDir.gtest}/gtest.lib"
 
 -- Library["Vulkan"] = "%{LibraryDir.VulkanSDK}/vulkan-1.lib"
 -- Library["VulkanUtils"] = "%{LibraryDir.VulkanSDK}/VkLayer_utils.lib"
