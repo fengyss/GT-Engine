@@ -114,6 +114,28 @@ namespace GT
 			data.EventCallback(event);
 		});
 
+		glfwSetWindowFocusCallback(m_Window, [](GLFWwindow* window, int focused)
+		{
+			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+			if (focused)
+			{
+				WindowFocusEvent event;
+				data.EventCallback(event);
+			}
+			else
+			{
+				WindowLostFocusEvent event;
+				data.EventCallback(event);
+			}
+		});
+
+		glfwSetWindowPosCallback(m_Window, [](GLFWwindow* window, int xpos, int ypos)
+		{
+			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+			WindowMovedEvent event(xpos,ypos);
+			data.EventCallback(event);
+			});
+
 		glfwSetKeyCallback(m_Window, [](GLFWwindow* window, int key, int scancode, int action, int mods)
 		{
 			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);

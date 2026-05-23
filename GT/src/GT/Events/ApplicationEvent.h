@@ -35,6 +35,35 @@ namespace GT
 		EVENT_CLASS_CATEGORY(EventCategoryApplication)
 	};
 
+	class HAZEL_API WindowMovedEvent : public Event
+	{
+	public:
+		WindowMovedEvent(int xpos, int ypos) 
+			:m_Posx(xpos), m_Posy(ypos) {};
+		EVENT_CLASS_TYPE(WindowMoved)
+			EVENT_CLASS_CATEGORY(EventCategoryApplication)
+	private:
+		int m_Posx, m_Posy;
+	};
+
+	class HAZEL_API WindowFocusEvent : public Event
+	{
+	public:
+		WindowFocusEvent() = default;
+		EVENT_CLASS_TYPE(WindowFocus)
+			EVENT_CLASS_CATEGORY(EventCategoryApplication)
+	};
+
+
+
+	class HAZEL_API WindowLostFocusEvent : public Event
+	{
+	public:
+		WindowLostFocusEvent() = default;
+		EVENT_CLASS_TYPE(WindowLostFocus)
+			EVENT_CLASS_CATEGORY(EventCategoryApplication)
+	};
+
 	class HAZEL_API AppTickEvent : public Event
 	{
 	public:

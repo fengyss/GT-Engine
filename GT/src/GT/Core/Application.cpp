@@ -127,7 +127,7 @@ namespace GT
 			Timestep timestep = time - m_LastFrameTime;
 			m_LastFrameTime = time;
 
-			if(Input::IsKeyPressed(GT_KEY_ESCAPE))
+			if(Input::IsKeyPressed(Key::Escape))
 				m_Running = false;
 
 			m_Window->OnUpdate();

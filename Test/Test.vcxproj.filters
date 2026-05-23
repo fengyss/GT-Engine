@@ -15,12 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\GT\vendor\googletest\src\gtest-all.cc">
-      <Filter>GT\vendor\googletest\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\GT\vendor\googletest\src\gtest_main.cc">
-      <Filter>GT\vendor\googletest\src</Filter>
-    </ClCompile>
-    <ClCompile Include="Test.cpp" />
+    <ClCompile Include="Test.cc" />
+    <ClCompile Include="EventDispatcherTests.cc" />
   </ItemGroup>
 </Project>

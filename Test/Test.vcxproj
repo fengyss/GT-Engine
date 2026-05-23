@@ -147,7 +147,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Test.cpp" />
+    <ClCompile Include="EventDispatcherTests.cc" />
+    <ClCompile Include="Test.cc" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GT\GT.vcxproj">

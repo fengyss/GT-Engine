@@ -17,22 +17,22 @@ namespace GT
 		//camera control (reversed)
 		if (0)
 		{
-			if (Input::IsKeyPressed(GT_KEY_A))
+			if (Input::IsKeyPressed(Key::A))
 			{
 				m_CameraPosition.x -= cos(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * m_ZoomLevel * ts;
 				m_CameraPosition.y -= sin(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * m_ZoomLevel * ts;
 			}
-			if (Input::IsKeyPressed(GT_KEY_D))
+			if (Input::IsKeyPressed(Key::D))
 			{
 				m_CameraPosition.x += cos(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * m_ZoomLevel * ts;
 				m_CameraPosition.y += sin(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * m_ZoomLevel * ts;
 			}
-			if (Input::IsKeyPressed(GT_KEY_W))
+			if (Input::IsKeyPressed(Key::W))
 			{
 				m_CameraPosition.x += -sin(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * m_ZoomLevel * ts;
 				m_CameraPosition.y += cos(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * m_ZoomLevel * ts;
 			}
-			if (Input::IsKeyPressed(GT_KEY_S))
+			if (Input::IsKeyPressed(Key::S))
 			{
 				m_CameraPosition.x -= -sin(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * m_ZoomLevel * ts;
 				m_CameraPosition.y -= cos(glm::radians(m_CameraRotation)) * m_CameraTranslationSpeed * m_ZoomLevel * ts;
@@ -40,17 +40,17 @@ namespace GT
 		}
 		else
 		{
-			if (Input::IsKeyPressed(GT_KEY_A)) m_CameraPosition.x -= m_CameraTranslationSpeed * m_ZoomLevel * ts;
-			if (Input::IsKeyPressed(GT_KEY_D)) m_CameraPosition.x += m_CameraTranslationSpeed * m_ZoomLevel * ts;
-			if (Input::IsKeyPressed(GT_KEY_W)) m_CameraPosition.y += m_CameraTranslationSpeed * m_ZoomLevel * ts;
-			if (Input::IsKeyPressed(GT_KEY_S)) m_CameraPosition.y -= m_CameraTranslationSpeed * m_ZoomLevel * ts;
+			if (Input::IsKeyPressed(Key::A)) m_CameraPosition.x -= m_CameraTranslationSpeed * m_ZoomLevel * ts;
+			if (Input::IsKeyPressed(Key::D)) m_CameraPosition.x += m_CameraTranslationSpeed * m_ZoomLevel * ts;
+			if (Input::IsKeyPressed(Key::W)) m_CameraPosition.y += m_CameraTranslationSpeed * m_ZoomLevel * ts;
+			if (Input::IsKeyPressed(Key::S)) m_CameraPosition.y -= m_CameraTranslationSpeed * m_ZoomLevel * ts;
 		}
 		m_Camera.SetPosition(m_CameraPosition);
 
 		if (m_Rotation)
 		{
-			if (Input::IsKeyPressed(GT_KEY_E)) m_CameraRotation += m_CameraRotationSpeed * ts;
-			if (Input::IsKeyPressed(GT_KEY_Q)) m_CameraRotation -= m_CameraRotationSpeed * ts;
+			if (Input::IsKeyPressed(Key::E)) m_CameraRotation += m_CameraRotationSpeed * ts;
+			if (Input::IsKeyPressed(Key::Q)) m_CameraRotation -= m_CameraRotationSpeed * ts;
 			m_Camera.SetRotation(m_CameraRotation);
 		}
 	}
