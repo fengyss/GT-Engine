@@ -5,7 +5,7 @@ pause
 git add .
 pause
 
-git commit -m "feat: add googletest and Project Test."
+git commit -m "feat: add eventdispatcher test."
 
 pause
 

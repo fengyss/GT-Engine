@@ -16,6 +16,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Test.cc" />
-    <ClCompile Include="EventDispatcherTests.cc" />
+    <ClCompile Include="EventSystemTests.cc" />
   </ItemGroup>
 </Project>

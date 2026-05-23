@@ -30,11 +30,13 @@ LibraryDir = {}
 -- LibraryDir["VulkanSDK"] = "%{VULKAN_SDK}/Lib"
 --LibraryDir["mono"] = "%{wks.location}/GT/vendor/mono/lib/%{cfg.buildcfg}"
 LibraryDir["assimp"] = "%{wks.location}/GT/vendor/assimp/lib"
-LibraryDir["gtest"] = "%{wks.location}/GT/vendor/googletest/lib"
+
+LibraryDir["gtest"] = "%{wks.location}/bin/" .. outputdir .. "/gtest"
 
 Library = {}
 --Library["mono"] = "%{LibraryDir.mono}/libmono-static-sgen.lib"
 Library["assimp"] = "%{LibraryDir.assimp}/assimp-vc143-mt.lib"
+
 Library["gtest"] = "%{LibraryDir.gtest}/gtest.lib"
 
 -- Library["Vulkan"] = "%{LibraryDir.VulkanSDK}/vulkan-1.lib"

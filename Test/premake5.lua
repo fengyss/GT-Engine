@@ -16,7 +16,7 @@ project "Test"
 	{
 		
 		"**.h",
-		"**.cpp",
+		"**.cc",
 	}
 	includedirs
 	{
