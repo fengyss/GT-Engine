@@ -17,5 +17,6 @@
   <ItemGroup>
     <ClCompile Include="Test.cc" />
     <ClCompile Include="EventSystemTests.cc" />
+    <ClCompile Include="main.cc" />
   </ItemGroup>
 </Project>

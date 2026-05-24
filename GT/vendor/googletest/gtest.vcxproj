@@ -135,6 +135,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="include\gmock\gmock-actions.h" />
+    <ClInclude Include="include\gmock\gmock-cardinalities.h" />
+    <ClInclude Include="include\gmock\gmock-function-mocker.h" />
+    <ClInclude Include="include\gmock\gmock-matchers.h" />
+    <ClInclude Include="include\gmock\gmock-more-actions.h" />
+    <ClInclude Include="include\gmock\gmock-more-matchers.h" />
+    <ClInclude Include="include\gmock\gmock-nice-strict.h" />
+    <ClInclude Include="include\gmock\gmock-spec-builders.h" />
+    <ClInclude Include="include\gmock\gmock.h" />
+    <ClInclude Include="include\gmock\internal\custom\gmock-generated-actions.h" />
+    <ClInclude Include="include\gmock\internal\custom\gmock-matchers.h" />
+    <ClInclude Include="include\gmock\internal\custom\gmock-port.h" />
+    <ClInclude Include="include\gmock\internal\gmock-internal-utils.h" />
+    <ClInclude Include="include\gmock\internal\gmock-port.h" />
+    <ClInclude Include="include\gmock\internal\gmock-pp.h" />
     <ClInclude Include="include\gtest\gtest-assertion-result.h" />
     <ClInclude Include="include\gtest\gtest-death-test.h" />
     <ClInclude Include="include\gtest\gtest-matchers.h" />
@@ -161,6 +176,13 @@
     <ClInclude Include="src\gtest-internal-inl.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\gmock-all.cc" />
+    <ClCompile Include="src\gmock-cardinalities.cc" />
+    <ClCompile Include="src\gmock-internal-utils.cc" />
+    <ClCompile Include="src\gmock-matchers.cc" />
+    <ClCompile Include="src\gmock-spec-builders.cc" />
+    <ClCompile Include="src\gmock.cc" />
+    <ClCompile Include="src\gmock_main.cc" />
     <ClCompile Include="src\gtest-all.cc" />
     <ClCompile Include="src\gtest-assertion-result.cc" />
     <ClCompile Include="src\gtest-death-test.cc" />

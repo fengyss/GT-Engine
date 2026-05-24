@@ -4,6 +4,15 @@
     <Filter Include="include">
       <UniqueIdentifier>{89AF369E-F58E-B539-FEA6-40106A051C9B}</UniqueIdentifier>
     </Filter>
+    <Filter Include="include\gmock">
+      <UniqueIdentifier>{696E50A5-D52E-CCDB-9E69-15590AE910B8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\gmock\internal">
+      <UniqueIdentifier>{D5565B45-C150-8497-AABD-1AA89656EA03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\gmock\internal\custom">
+      <UniqueIdentifier>{9FD1AA12-0BEA-913C-D496-21D6406E26D6}</UniqueIdentifier>
+    </Filter>
     <Filter Include="include\gtest">
       <UniqueIdentifier>{9F1C54A5-0BDD-CFDB-D417-1959409714B8}</UniqueIdentifier>
     </Filter>
@@ -18,6 +27,51 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\gmock\gmock-actions.h">
+      <Filter>include\gmock</Filter>
+    </ClInclude>
+    <ClInclude Include="include\gmock\gmock-cardinalities.h">
+      <Filter>include\gmock</Filter>
+    </ClInclude>
+    <ClInclude Include="include\gmock\gmock-function-mocker.h">
+      <Filter>include\gmock</Filter>
+    </ClInclude>
+    <ClInclude Include="include\gmock\gmock-matchers.h">
+      <Filter>include\gmock</Filter>
+    </ClInclude>
+    <ClInclude Include="include\gmock\gmock-more-actions.h">
+      <Filter>include\gmock</Filter>
+    </ClInclude>
+    <ClInclude Include="include\gmock\gmock-more-matchers.h">
+      <Filter>include\gmock</Filter>
+    </ClInclude>
+    <ClInclude Include="include\gmock\gmock-nice-strict.h">
+      <Filter>include\gmock</Filter>
+    </ClInclude>
+    <ClInclude Include="include\gmock\gmock-spec-builders.h">
+      <Filter>include\gmock</Filter>
+    </ClInclude>
+    <ClInclude Include="include\gmock\gmock.h">
+      <Filter>include\gmock</Filter>
+    </ClInclude>
+    <ClInclude Include="include\gmock\internal\custom\gmock-generated-actions.h">
+      <Filter>include\gmock\internal\custom</Filter>
+    </ClInclude>
+    <ClInclude Include="include\gmock\internal\custom\gmock-matchers.h">
+      <Filter>include\gmock\internal\custom</Filter>
+    </ClInclude>
+    <ClInclude Include="include\gmock\internal\custom\gmock-port.h">
+      <Filter>include\gmock\internal\custom</Filter>
+    </ClInclude>
+    <ClInclude Include="include\gmock\internal\gmock-internal-utils.h">
+      <Filter>include\gmock\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="include\gmock\internal\gmock-port.h">
+      <Filter>include\gmock\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="include\gmock\internal\gmock-pp.h">
+      <Filter>include\gmock\internal</Filter>
+    </ClInclude>
     <ClInclude Include="include\gtest\gtest-assertion-result.h">
       <Filter>include\gtest</Filter>
     </ClInclude>
@@ -92,6 +146,27 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\gmock-all.cc">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gmock-cardinalities.cc">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gmock-internal-utils.cc">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gmock-matchers.cc">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gmock-spec-builders.cc">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gmock.cc">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gmock_main.cc">
+      <Filter>src</Filter>
+    </ClCompile>
     <ClCompile Include="src\gtest-all.cc">
       <Filter>src</Filter>
     </ClCompile>

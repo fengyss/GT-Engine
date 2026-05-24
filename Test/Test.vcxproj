@@ -149,6 +149,7 @@
   <ItemGroup>
     <ClCompile Include="EventSystemTests.cc" />
     <ClCompile Include="Test.cc" />
+    <ClCompile Include="main.cc" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GT\GT.vcxproj">

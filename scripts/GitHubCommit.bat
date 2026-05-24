@@ -5,7 +5,7 @@ pause
 git add .
 pause
 
-git commit -m "fix: reduce memory leak to a low level."
+git commit -m "fix: add vld.lib dir to premake, delete some should not exited."
 
 pause
 
