@@ -23,6 +23,9 @@ namespace GT {
     {
 		for (auto& [path, watchID] : m_WatchIDs)
 		    m_Watcher.removeWatch(watchID);
+
+        m_Watcher.~FileWatcher();
+        delete m_Listener;
     }
 
     void FileWatcher::RemoveWatch(const std::filesystem::path& path)

@@ -38,7 +38,6 @@ namespace GT {
                 const std::string& filename, efsw::Action action,
                 const std::string& oldFilename = ""
             ) override;
-
         private:
             FileWatcher& m_Watcher;
         };

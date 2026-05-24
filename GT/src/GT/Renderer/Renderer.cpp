@@ -22,6 +22,7 @@ namespace GT
 		Renderer2D::ShutDown();
 		Renderer3D::ShutDown();
 		ParticleRenderer::ShutDown();
+		RenderCommand::ShutDown();
 		delete m_SceneData;
 	}
 	void Renderer::BeginScene(OrthographicCamera& camera)

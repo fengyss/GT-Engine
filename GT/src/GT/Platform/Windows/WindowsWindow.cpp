@@ -209,6 +209,9 @@ namespace GT
 	{
 		GT_PROFILE_FUNCTION();
 		glfwDestroyWindow(m_Window);
+		delete m_Context;
+		m_Data.EventCallback = nullptr;
+		glfwTerminate();
 	}
 
 	void WindowsWindow::OnUpdate()
