@@ -35,6 +35,7 @@ project "GTEditor"
 
 	libdirs {
         "%{LibraryDir.assimp}",
+		"%{wks.location}/GT/vendor/vld",
     }
 	links {
         "assimp-vc143-mt.lib",

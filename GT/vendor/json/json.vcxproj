@@ -15,22 +15,29 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{6ACC3F23-D6AB-BEBE-DFC3-49954B222520}</ProjectGuid>
+    <ProjectGuid>{9F27997C-8B5E-9A0D-344B-80102061160F}</ProjectGuid>
     <IgnoreWarnCompileDuplicatedFilename>true</IgnoreWarnCompileDuplicatedFilename>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>Premake</RootNamespace>
+    <RootNamespace>json</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Utility</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Utility</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'" Label="Configuration">
-    <ConfigurationType>Utility</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
@@ -47,53 +54,75 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>..\..\bin\Debug-windows-x86_64\Premake\</OutDir>
-    <IntDir>..\..\bin-int\Debug-windows-x86_64\Premake\</IntDir>
+    <OutDir>bin\Debug-windows-x86_64\json\</OutDir>
+    <IntDir>bin-int\Debug-windows-x86_64\json\</IntDir>
+    <TargetName>json</TargetName>
+    <TargetExt>.lib</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>..\..\bin\Release-windows-x86_64\Premake\</OutDir>
-    <IntDir>..\..\bin-int\Release-windows-x86_64\Premake\</IntDir>
+    <OutDir>bin\Release-windows-x86_64\json\</OutDir>
+    <IntDir>bin-int\Release-windows-x86_64\json\</IntDir>
+    <TargetName>json</TargetName>
+    <TargetExt>.lib</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
-    <OutDir>..\..\bin\Dist-windows-x86_64\Premake\</OutDir>
-    <IntDir>..\..\bin-int\Dist-windows-x86_64\Premake\</IntDir>
+    <OutDir>bin\Dist-windows-x86_64\json\</OutDir>
+    <IntDir>bin-int\Dist-windows-x86_64\json\</IntDir>
+    <TargetName>json</TargetName>
+    <TargetExt>.lib</TargetExt>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <PostBuildEvent>
-      <Command>"$(ProjectDir)/bin/premake5" vs2022 --file="$(SolutionDir)premake5.lua"</Command>
-      <Message>Regenerating project files with Premake5!</Message>
-    </PostBuildEvent>
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+      <MinimalRebuild>false</MinimalRebuild>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <ExternalWarningLevel>Level3</ExternalWarningLevel>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <PostBuildEvent>
-      <Command>"$(ProjectDir)/bin/premake5" vs2022 --file="$(SolutionDir)premake5.lua"</Command>
-      <Message>Regenerating project files with Premake5!</Message>
-    </PostBuildEvent>
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Full</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <ExternalWarningLevel>Level3</ExternalWarningLevel>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
-    <PostBuildEvent>
-      <Command>"$(ProjectDir)/bin/premake5" vs2022 --file="$(SolutionDir)premake5.lua"</Command>
-      <Message>Regenerating project files with Premake5!</Message>
-    </PostBuildEvent>
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <MinimalRebuild>false</MinimalRebuild>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <ExternalWarningLevel>Level3</ExternalWarningLevel>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+    </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <None Include="..\..\Dependencies.lua" />
-    <None Include="..\..\GT\premake5.lua" />
-    <None Include="..\..\GT\vendor\Box2D\premake5.lua" />
-    <None Include="..\..\GT\vendor\GLFW\premake5.lua" />
-    <None Include="..\..\GT\vendor\Glad\premake5.lua" />
-    <None Include="..\..\GT\vendor\ImGui\premake5.lua" />
-    <None Include="..\..\GT\vendor\efsw\premake5.lua" />
-    <None Include="..\..\GT\vendor\entt\premake5.lua" />
-    <None Include="..\..\GT\vendor\googletest\premake5.lua" />
-    <None Include="..\..\GT\vendor\json\premake5.lua" />
-    <None Include="..\..\GT\vendor\yaml-cpp\premake5.lua" />
-    <None Include="..\..\GTEditor\premake5.lua" />
-    <None Include="..\..\Test\premake5.lua" />
-    <None Include="..\..\premake5.lua" />
-    <None Include="premake5.lua" />
-    <None Include="premake_customization\solution_items.lua" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

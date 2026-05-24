@@ -5,7 +5,7 @@ pause
 git add .
 pause
 
-git commit -m "add vld to vendor."
+git commit -m "fix: reduce memory leak to a low level."
 
 pause
 
