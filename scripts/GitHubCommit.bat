@@ -5,7 +5,7 @@ pause
 git add .
 pause
 
-git commit -m "feat: add more event test." -m "misc: refactor dependencies.lua for lib to match configuration."
+git commit -m "fix: fix program won't end correctly cause opengl resouse release error." -m "feat: add vld to detect memory leak at debug." -m "fix: release memory at end for some file."
 
 pause
 
