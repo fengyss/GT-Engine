@@ -7,7 +7,7 @@ namespace GT
 	{
 	public:
 
-		virtual ~RenderCommand() = default;
+		virtual ~RenderCommand() { delete s_RendererAPI; };
 		static void Init();
 		inline static void SetClearColor(const glm::vec4& color)
 		{

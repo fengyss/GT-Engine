@@ -18,6 +18,7 @@ namespace GT
 	Ref<AssetsHandle<Shader>> m_ShadowShader;
 	ShadowMap Renderer3D::shadowmap;
 	Ref<Framebuffer> m_Framebuffer;
+
 	struct Trans_model
 	{
 		glm::mat4 transform;
@@ -33,11 +34,12 @@ namespace GT
 		shadowmap = ShadowMap(4096, 4096);
 	}
 
-	void Renderer3D::Shutdown()
+	void Renderer3D::ShutDown()
 	{
 		GT_PROFILE_FUNCTION();
 		// Clean up opengl resources before opengl context is destroyed
 		s_ModelShader.reset();
+		models.clear();
 	}
 
 	void Renderer3D::BeginScene(Camera& camera)

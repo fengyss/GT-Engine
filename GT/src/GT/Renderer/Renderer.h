@@ -11,6 +11,7 @@ namespace GT
 	{
 	public:
 		static void Init();
+		static void ShutDown();
 		static void BeginScene(OrthographicCamera& camera);
 		static void EndScene();
 

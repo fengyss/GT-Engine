@@ -93,7 +93,7 @@ namespace GT
 
 		Ref<Texture2D> Load(uint32_t ID, const std::filesystem::path& filepath);
 		Ref<Texture2D> Reload(uint32_t ID, const std::filesystem::path& filepath);
-		void Clear() { m_Textures.clear(); }
+		void Clear();
 		Ref<Texture2D> Get(uint32_t ID);
 
 		bool Exists(uint32_t ID) const

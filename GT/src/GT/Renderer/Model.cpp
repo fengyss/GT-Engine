@@ -237,6 +237,14 @@ namespace GT
         }
     }
 
+    void ModelLibrary::Clear()
+    {
+        for(auto& [id, model] : m_Models)
+        {
+            model.reset();
+		}
+	}
+
 
     void ModelLibrary::Add(uint32_t ID, const Ref<Model>& model)
     {

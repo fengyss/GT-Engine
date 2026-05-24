@@ -70,7 +70,13 @@ namespace GT
 		return nullptr;
 	}
 
-
+	void ShaderLibrary::Clear()
+	{
+		for (auto& [id, shader] : m_Shaders)
+		{
+			shader.reset();
+		}
+	}
 
 	void ShaderLibrary::Add(uint32_t ID, const Ref<Shader>& shader)
 	{

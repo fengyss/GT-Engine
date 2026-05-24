@@ -59,6 +59,7 @@
     <IntDir>..\bin-int\Debug-windows-x86_64\GTEditor\</IntDir>
     <TargetName>GTEditor</TargetName>
     <TargetExt>.exe</TargetExt>
+    <LibraryPath>C:\Dev\GT\GT\vendor\vld;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>

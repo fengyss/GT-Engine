@@ -1,7 +1,11 @@
 #include "gtpch.h"
+
+#ifdef GT_DEBUG
+#include<vld/vld.h>
+#endif 
+
+
 #include <GT.h>
-
-
 #include "EditorLayer.h"
 
 // -------Entry Point------------

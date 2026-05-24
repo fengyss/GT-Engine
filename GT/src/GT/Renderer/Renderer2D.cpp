@@ -284,17 +284,43 @@ namespace GT
 		s_Data.QuadTexCoords[3] = { 0.0f, 1.0f };
 
 	}
-    void Renderer2D::Shutdown()  
+    void Renderer2D::ShutDown()  
     {  
         GT_PROFILE_FUNCTION();  
 		// Clean up opengl resources before opengl context is destroyed
+
+		s_Data.WhiteTexture.reset();
+
 		s_Data.QuadShader.reset();
 		s_Data.QuadVertexArray.reset();
 		s_Data.QuadVertexBuffer.reset();
+		s_Data.QuadVertexBuffer.reset();
+		delete s_Data.QuadVertexBufferBase;
+		s_Data.QuadVertexBufferPtr = nullptr;
 
 		s_Data.CircleShader.reset();
 		s_Data.CircleVertexArray.reset();
 		s_Data.CircleVertexBuffer.reset();
+		s_Data.CircleVertexBuffer.reset();
+		delete s_Data.CircleVertexBufferBase;
+		s_Data.CircleVertexBufferPtr = nullptr;
+
+
+		s_Data.LineShader.reset();
+		s_Data.LineVertexArray.reset();
+		s_Data.LineVertexBuffer.reset();
+		s_Data.LineVertexBuffer.reset();
+		delete s_Data.LineVertexBufferBase;
+		s_Data.LineVertexBufferPtr = nullptr;
+
+
+		s_Data.UIShader.reset();
+		s_Data.UIVertexArray.reset();
+		s_Data.UIVertexBuffer.reset();
+		s_Data.UIVertexBuffer.reset();
+		delete s_Data.UIVertexBufferBase;
+		s_Data.UIVertexBufferPtr = nullptr;
+
     }
 
 	void Renderer2D::BeginScene(Camera& camera)

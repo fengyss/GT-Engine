@@ -84,11 +84,22 @@ namespace GT
 	}
     void AssetsManager::ShutDown()
     {
+        for (auto& [path, fns] : s_ReloadCallbacks)
+        {
+            for (auto& fn : fns)
+                fn();
+        }
+
         m_ShadersCache.clear();
 		m_TexturesCache.clear();
 
 		m_TextureLibrary.Clear();
 		m_ShaderLibrary.Clear();
+
+		m_ModelLibrary.Clear();
+		m_ModelsCache.clear();
+
+        
     }
     Ref<Texture2D> AssetsManager::LoadTexture(const std::filesystem::path& path)
     {

@@ -16,6 +16,14 @@ namespace GT
 		Renderer3D::Init();
 		ParticleRenderer::Init();
 	}
+	void Renderer::ShutDown()
+	{
+		GT_PROFILE_FUNCTION();
+		Renderer2D::ShutDown();
+		Renderer3D::ShutDown();
+		ParticleRenderer::ShutDown();
+		delete m_SceneData;
+	}
 	void Renderer::BeginScene(OrthographicCamera& camera)
 	{
 		m_SceneData->ViewProjectionMatrix = camera.GetViewProjectionMatrix();

@@ -39,7 +39,7 @@ namespace GT
 				name = filepath.stem().string();
             }
         }
-		~Model() = default;
+        ~Model() { meshes.clear(); };
 
         // draws the model, and thus all its meshes
         void Draw(const glm::mat4& transform);
@@ -86,7 +86,7 @@ namespace GT
 
         Ref<Model> Load(uint32_t ID, const std::filesystem::path& filepath);
         Ref<Model> Reload(uint32_t ID, const std::filesystem::path& filepath);
-        void Clear() { m_Models.clear(); }
+        void Clear();
         Ref<Model> Get(uint32_t ID);
 
         bool Exists(uint32_t ID) const

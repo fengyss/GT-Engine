@@ -152,7 +152,7 @@ namespace GT
 
 		Ref<Shader> Get(uint32_t ID);
 		Ref<Shader> ShaderLibrary::Reload(uint32_t ID, const std::filesystem::path& filepath);
-		void Clear() { m_Shaders.clear(); }
+		void Clear();
 		bool Exists(uint32_t ID) const
 		{
 			return m_Shaders.find(ID) != m_Shaders.end();

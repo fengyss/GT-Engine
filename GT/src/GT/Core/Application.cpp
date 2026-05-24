@@ -71,6 +71,12 @@ namespace GT
 
 	Application::~Application()
 	{
+
+		AssetsManager::ShutDown();
+		Renderer::ShutDown();
+		for(auto layer : m_LayerStack)
+			layer->OnDetach();
+		m_Window.reset();
 	}
 
 
@@ -154,7 +160,8 @@ namespace GT
 
 			m_Window->OnRender();
 		}
-		Renderer2D::Shutdown();
+
+
 	}
 
 

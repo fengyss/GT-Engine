@@ -17,6 +17,7 @@ namespace GT {
     public:
         ~ParticleRenderer() = default;
         static void Init();
+        static void ShutDown();
         static void BeginScene(Camera& camera);
         static void EndScene();
         static void SetViewProjection(const glm::mat4& viewProjection);

@@ -39,7 +39,13 @@ namespace GT
 		return nullptr;		
 	}
 
-
+	void TextureLibrary::Clear()
+	{
+		for(auto& [id, texture] : m_Textures)
+		{
+			texture.reset();
+		}
+	}
 
 	void TextureLibrary::Add(uint32_t ID, const Ref<Texture2D>& texture)
 	{

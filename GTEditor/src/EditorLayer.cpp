@@ -818,8 +818,8 @@ namespace GT
 	{
 		if (event.IsRepeat())
 			return false;
-		bool control = Input::IsKeyPressed(GT_KEY_LEFT_CONTROL) || Input::IsKeyPressed(GT_KEY_RIGHT_CONTROL);
-		bool shift = Input::IsKeyPressed(GT_KEY_LEFT_SHIFT) || Input::IsKeyPressed(GT_KEY_RIGHT_SHIFT);
+		bool control = Input::IsKeyPressed(Key::LeftControl) || Input::IsKeyPressed(Key::LeftControl);
+		bool shift = Input::IsKeyPressed(Key::LeftControl) || Input::IsKeyPressed(Key::LeftControl);
 		switch (event.GetKeyCode())
 		{
 

@@ -7,7 +7,8 @@ void GLClearError()
 	while (glGetError() != GL_NO_ERROR)
 	{
 		count++;
-		if(count>50) GT_CORE_ASSERT(-1,"OpenGL Keep Clearing Errors!!!");
+		GLLogCall("11", "22", 33);
+		if(count>50) GT_CORE_ASSERT(false,"OpenGL Keep Clearing Errors!!!");
 	}
 }
 

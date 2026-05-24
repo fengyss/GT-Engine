@@ -59,7 +59,7 @@ namespace GT
 	{
 	public:
 		static void Init();
-		static void Shutdown();
+		static void ShutDown();
 
 		static void BeginScene(Camera& camera);
 

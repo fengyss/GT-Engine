@@ -21,6 +21,7 @@ namespace GT {
     std::vector<ParticleGPUVertex> Mul_Vertices;
     Ref<Texture> TextureSlots[32];
     int TextureSlotIndex = 1;
+
     void ParticleRenderer::Init()
     { 
         ParticleShader = CreateHandle<Shader>("Particles");
@@ -45,6 +46,12 @@ namespace GT {
         TextureSlots[0] = Texture2D::Create(1, 1);
         uint32_t whiteTextureData = 0xffffffff;
         TextureSlots[0]->SetData(&whiteTextureData, sizeof(uint32_t));
+    }
+
+    void ParticleRenderer::ShutDown()
+    {
+        vertexArray.reset();
+		vbo.reset();
     }
     void ParticleRenderer::BeginScene(Camera& camera)
 	{

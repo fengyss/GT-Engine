@@ -5,7 +5,7 @@ pause
 git add .
 pause
 
-git commit -m "feat: add eventdispatcher test."
+git commit -m "feat: add more event test." -m "misc: refactor dependencies.lua for lib to match configuration."
 
 pause
 

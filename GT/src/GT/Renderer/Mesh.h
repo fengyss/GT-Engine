@@ -44,7 +44,11 @@ namespace GT
         // constructor
         Mesh() {};
         Mesh(std::vector<Vertex> _vertices, std::vector<unsigned int> _indices, std::vector<RefHandle<Texture2D>> _textures);
-
+        ~Mesh()
+        {
+            m_VertexArray.reset();
+			VBuffer.reset();
+        }
         // render the mesh
         void Draw(Ref<Shader> shader);
         void Draw(const glm::mat4& transform, Ref<Shader> shader);
