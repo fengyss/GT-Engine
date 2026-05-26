@@ -63,17 +63,19 @@ namespace GT
 
 		static void BeginScene(Camera& camera);
 
-		static void SetViewProjection(const glm::mat4& viewProjection);
+		static void SetViewProjection(const glm::mat4& viewProjection, const glm::mat4& Projection);
 
 		static void EndScene();
 
 		static void SetCurrentEntityID(int entityID);
 
 		static void UI(const Rect& rect, const glm::vec4& color, const Ref<Texture2D>& texture = nullptr);
+		static void Text(const std::string& text, glm::vec2 position, const glm::vec4& color);
 
 		static void DrawQuad(const glm::mat4& transform, const glm::vec4& color);
 		static void DrawQuad(const glm::mat4& transform, const glm::vec4& color, const Ref<Texture2D>& texture, int tilingfactor = 1);
 		static void DrawQuad(const glm::mat4& transform, const SpriteRendererComponent& sprite);
+
 		static void DrawCube(const glm::mat4& transform, const glm::vec4& color);
 		static void DrawCube(const glm::mat4& transform, const glm::vec4& color, const Ref<Texture2D>& texture);
 

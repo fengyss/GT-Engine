@@ -5,6 +5,11 @@
 #include "GT/Assets/AssetsHandle.h"
 #include "GT/Assets/AssetsManager.h"
 
+#include "glad/glad.h"
+
+#include <ft2build.h>
+#include FT_FREETYPE_H
+
 namespace GT
 {
 	int Renderer2D::s_CurrentEntityID = -1;
@@ -76,6 +81,11 @@ namespace GT
 		Ref<VertexBuffer> UIVertexBuffer;
 
 
+		RefHandle<Shader> TextShader;
+		Ref<VertexArray> TextVertexArray;
+		Ref<VertexBuffer> TextVertexBuffer;
+
+
 		uint32_t QuadIndexCount = 0;
 		QuadVertex* QuadVertexBufferBase = nullptr;
 		QuadVertex* QuadVertexBufferPtr = nullptr;
@@ -114,6 +124,14 @@ namespace GT
 	static CircleState circleState;
 	static UIState uiState;
 	
+	struct Character {
+		unsigned int TextureID; // ID handle of the glyph texture
+		glm::ivec2   Size;      // Size of glyph
+		glm::ivec2   Bearing;   // Offset from baseline to left/top of glyph
+		unsigned int Advance;   // Horizontal offset to advance to next glyph
+	};
+
+	std::map<GLchar, Character> Characters;
 
 	void Renderer2D::Init()
 	{
@@ -283,6 +301,96 @@ namespace GT
 		s_Data.QuadTexCoords[2] = { 1.0f, 1.0f };
 		s_Data.QuadTexCoords[3] = { 0.0f, 1.0f };
 
+
+		s_Data.TextShader = CreateHandle<Shader>("Renderer2D_Text");
+		s_Data.TextShader->Get()->Bind();
+		s_Data.TextShader->Get()->SetUniform1i("u_Text", 0);
+		s_Data.TextShader->Get()->SetUniformMat4("projection", glm::ortho(
+			0.0f, 600.0f,
+			0.0f, 600.0f
+		));
+		// FreeType
+		// --------
+		FT_Library ft;
+		// All functions return a value different than 0 whenever an error occurred
+		if (FT_Init_FreeType(&ft))
+		{
+			GT_CORE_ASSERT(false, "Failed to initialize FreeType Library");
+		}
+
+		std::string font_name = "Resources/fonts/opensans/OpenSans-Bold.ttf";
+		if (font_name.empty())
+		{
+			std::cout << "ERROR::FREETYPE: Failed to load font_name" << std::endl;
+		}
+
+		// load font as face
+		FT_Face face;
+		if (FT_New_Face(ft, font_name.c_str(), 0, &face)) {
+			GT_CORE_ASSERT(false, "Failed to load font");
+		}
+		else {
+			// set size to load glyphs as
+			FT_Set_Pixel_Sizes(face, 0, 48);
+
+			// disable byte-alignment restriction
+			glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
+			// load first 128 characters of ASCII set
+			for (unsigned char c = 0; c < 128; c++)
+			{
+				// Load character glyph 
+				if (FT_Load_Char(face, c, FT_LOAD_RENDER))
+				{
+					std::cout << "ERROR::FREETYTPE: Failed to load Glyph" << std::endl;
+					continue;
+				}
+				// generate texture
+				unsigned int texture;
+				glGenTextures(1, &texture);
+				glBindTexture(GL_TEXTURE_2D, texture);
+				glTexImage2D(
+					GL_TEXTURE_2D,
+					0,
+					GL_RED,
+					face->glyph->bitmap.width,
+					face->glyph->bitmap.rows,
+					0,
+					GL_RED,
+					GL_UNSIGNED_BYTE,
+					face->glyph->bitmap.buffer
+				);
+				// set texture options
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+				// now store character for later use
+				Character character = {
+					texture,
+					glm::ivec2(face->glyph->bitmap.width, face->glyph->bitmap.rows),
+					glm::ivec2(face->glyph->bitmap_left, face->glyph->bitmap_top),
+					static_cast<unsigned int>(face->glyph->advance.x)
+				};
+				Characters.insert(std::pair<char, Character>(c, character));
+			}
+			glBindTexture(GL_TEXTURE_2D, 0);
+		}
+		// destroy FreeType once we're finished
+		FT_Done_Face(face);
+		FT_Done_FreeType(ft);
+
+
+		// configure VAO/VBO for texture quads
+		// -----------------------------------
+		s_Data.TextVertexArray = VertexArray::Create();
+		s_Data.TextVertexBuffer = VertexBuffer::Create(sizeof(float) * 6 * 4);
+		BufferLayout textLayout = {
+			{ ShaderDataType::Float4, "a_vertex" }, // <vec2 pos, vec2 tex>
+		};
+		s_Data.TextVertexBuffer->SetLayout(textLayout);
+		s_Data.TextVertexArray->AddVertexBuffer(s_Data.TextVertexBuffer);
+
 	}
     void Renderer2D::ShutDown()  
     {  
@@ -294,13 +402,11 @@ namespace GT
 		s_Data.QuadShader.reset();
 		s_Data.QuadVertexArray.reset();
 		s_Data.QuadVertexBuffer.reset();
-		s_Data.QuadVertexBuffer.reset();
 		delete s_Data.QuadVertexBufferBase;
 		s_Data.QuadVertexBufferPtr = nullptr;
 
 		s_Data.CircleShader.reset();
 		s_Data.CircleVertexArray.reset();
-		s_Data.CircleVertexBuffer.reset();
 		s_Data.CircleVertexBuffer.reset();
 		delete s_Data.CircleVertexBufferBase;
 		s_Data.CircleVertexBufferPtr = nullptr;
@@ -309,7 +415,6 @@ namespace GT
 		s_Data.LineShader.reset();
 		s_Data.LineVertexArray.reset();
 		s_Data.LineVertexBuffer.reset();
-		s_Data.LineVertexBuffer.reset();
 		delete s_Data.LineVertexBufferBase;
 		s_Data.LineVertexBufferPtr = nullptr;
 
@@ -317,9 +422,15 @@ namespace GT
 		s_Data.UIShader.reset();
 		s_Data.UIVertexArray.reset();
 		s_Data.UIVertexBuffer.reset();
-		s_Data.UIVertexBuffer.reset();
 		delete s_Data.UIVertexBufferBase;
 		s_Data.UIVertexBufferPtr = nullptr;
+
+
+		s_Data.TextShader.reset();
+		s_Data.TextVertexArray.reset();
+		s_Data.TextVertexBuffer.reset();
+
+
 
     }
 
@@ -330,8 +441,8 @@ namespace GT
 		GT_CORE_ASSERT(state != RendererState::BeginScene, "Renderer2D::BeginScene is already Called!");
 		state = RendererState::BeginScene;
 
-
-		SetViewProjection(camera.GetViewProjection());
+		
+		SetViewProjection(camera.GetViewProjection(), camera.GetProjection());
 
 		s_Data.TextureSlotIndex = 1;
 		StartNewBatch();
@@ -402,12 +513,15 @@ namespace GT
 		}
 	}
 	glm::vec3 cameraright, cameraup;
-	void Renderer2D::SetViewProjection(const glm::mat4& viewProjection)
+	void Renderer2D::SetViewProjection(const glm::mat4& viewProjection, const glm::mat4& Projection)
 	{
 
 		m_viewProjection = viewProjection;
 		cameraright = viewProjection[0];
 		cameraup = viewProjection[1];
+
+		s_Data.TextShader->Get()->Bind();
+		//s_Data.TextShader->Get()->SetUniformMat4("projection", viewProjection);
 
 	}
 
@@ -501,6 +615,50 @@ namespace GT
 
 		Draw(uiState);
 	}
+
+	float scale = 1.0f;
+	void Renderer2D::Text(const std::string& text, glm::vec2 position, const glm::vec4& color)
+	{
+
+		s_Data.TextShader->Get()->Bind();
+		s_Data.TextShader->Get()->SetUniform4f("u_TextColor", color);
+
+		s_Data.TextVertexArray->Bind();
+		scale = 1.0f;
+		std::string::const_iterator c;
+		for (c = text.begin(); c != text.end(); c++)
+		{
+			Character ch = Characters[*c];
+
+			float xpos = position.x + ch.Bearing.x * scale;
+			float ypos = position.y - (ch.Size.y - ch.Bearing.y) * scale;
+
+			float w = ch.Size.x * scale;
+			float h = ch.Size.y * scale;
+
+			float vertices[6][4] = {
+				{ xpos,     ypos + h,   0.0f, 0.0f },
+				{ xpos,     ypos,       0.0f, 1.0f },
+				{ xpos + w, ypos,       1.0f, 1.0f },
+
+				{ xpos,     ypos + h,   0.0f, 0.0f },
+				{ xpos + w, ypos,       1.0f, 1.0f },
+				{ xpos + w, ypos + h,   1.0f, 0.0f }
+			};
+
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, ch.TextureID);
+
+			s_Data.TextVertexBuffer->SetData(vertices, sizeof(vertices)); 
+			s_Data.TextVertexBuffer->Bind();
+
+			//RenderCommand::DrawArrays(s_Data.TextVertexArray, 6);
+			glDrawArrays(GL_TRIANGLES, 0, 6);
+
+			position.x += (ch.Advance >> 6) * scale;
+		}
+	}
+
 
 	void Renderer2D::DrawQuad(const glm::mat4& transform, const glm::vec4& color)
 	{

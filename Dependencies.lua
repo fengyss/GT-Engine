@@ -19,6 +19,7 @@ IncludeDir["assimp"] = "%{wks.location}/GT/vendor/assimp/include"
 IncludeDir["efsw"] = "%{wks.location}/GT/vendor/efsw/include"
 IncludeDir["json"] = "%{wks.location}/GT/vendor/json/include"
 IncludeDir["gtest"] = "%{wks.location}/GT/vendor/googletest/include"
+IncludeDir["freetype"] = "%{wks.location}/GT/vendor/freetype"
 -- IncludeDir["shaderc"] = "%{wks.location}/GT/vendor/shaderc/include"
 -- IncludeDir["SPIRV_Cross"] = "%{wks.location}/GT/vendor/SPIRV-Cross"
 -- IncludeDir["VulkanSDK"] = "%{VULKAN_SDK}/Include"
@@ -33,10 +34,12 @@ LibraryDir["assimp"] = "%{wks.location}/GT/vendor/assimp/lib"
 
 LibraryDir["gtest"] = "%{wks.location}/bin/" .. outputdir .. "/gtest"
 
+LibraryDir["freetype"] = "%{wks.location}/GT/vendor/freetype/lib"
+
 Library = {}
 --Library["mono"] = "%{LibraryDir.mono}/libmono-static-sgen.lib"
 Library["assimp"] = "%{LibraryDir.assimp}/assimp-vc143-mt.lib"
-
+Library["freetype"] = "%{LibraryDir.freetype}/freetype.lib"
 Library["gtest"] = "%{LibraryDir.gtest}/gtest.lib"
 
 -- Library["Vulkan"] = "%{LibraryDir.VulkanSDK}/vulkan-1.lib"

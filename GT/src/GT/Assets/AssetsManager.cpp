@@ -77,6 +77,7 @@ namespace GT
         LoadShader("Particles", "project\\assets\\shaders\\Particle.glsl");
         LoadShader("Shadow", "project\\assets\\shaders\\ShadowMap.glsl");
         LoadShader("Renderer2D_UI", "project\\assets\\shaders\\UI.glsl");
+        LoadShader("Renderer2D_Text", "project\\assets\\shaders\\Renderer2D_Text.glsl");
 
 
         LoadTexture("DirectoryIcon", "Resources\\Icons\\DirectoryIcon.png");

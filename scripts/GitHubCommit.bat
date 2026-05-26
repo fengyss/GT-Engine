@@ -5,7 +5,7 @@ pause
 git add .
 pause
 
-git commit -m "fix: add vld.lib dir to premake, delete some should not exited."
+git commit -m "feat: add gmock to vendor."
 
 pause
 

@@ -151,10 +151,12 @@ namespace GT
 					break;
 				}
 				}
-			//Ref<Texture2D> tex = AssetsManager::Get<Texture2D>("Checkerboard");
-			//Renderer2D::BeginScene(m_EditorCamera);
-			//Renderer2D::UI({ pos,size }, _color,tex);
-			//Renderer2D::EndScene();
+			Ref<Texture2D> tex = AssetsManager::Get<Texture2D>("Checkerboard");
+			Renderer2D::BeginScene(m_EditorCamera);
+			Renderer2D::UI({ pos,size }, _color,tex);
+			RenderCommand::SetBlendMode(BlendMode::Alpha);
+			Renderer2D::Text("Hello World", { 0.2f,0.5f }, { 1.0f,1.0f,0.0f,0.5f });
+			Renderer2D::EndScene();
 
 			// read entity ID
 			auto [mx, my] = ImGui::GetMousePos();

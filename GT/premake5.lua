@@ -34,11 +34,13 @@ project "GT"
 		--"vendor/entt/entt.hpp",
 
 		"vendor/mono/include/**.h",
+		"vendor/ft2build.h",
 	}
 
 	includedirs
 	{
 		"src",
+		"vendor",
 		"vendor/spdlog/include",
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.ImGuizmo}",
@@ -55,7 +57,13 @@ project "GT"
 		"%{IncludeDir.efsw}",
 		"%{IncludeDir.json}",
 	}
-
+	libdirs {
+        "%{LibraryDir.freetype}",
+    }
+	links
+	{
+		"freetype.lib",
+	}
 	filter "files:vendor/ImGuizmo/**.cpp"
 		flags { "NoPCH" }
 
@@ -70,6 +78,7 @@ project "GT"
 		"json",
 		"yaml_cpp",
 		"ImGui",
+		"freetype",
 		"opengl32.lib",
 		--"%{Library.mono}"
 	}

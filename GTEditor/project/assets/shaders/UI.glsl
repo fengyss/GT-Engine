@@ -7,6 +7,8 @@ layout(location = 2) in vec2 a_TexCoord;
 layout(location = 3) in int a_TexIndex;
 layout(location = 5) in int a_EntityID;
 
+uniform mat4 u_Projection;
+
 out vec4 v_Color;
 out vec2 v_Texcoord;
 out flat int v_TexIndex;
