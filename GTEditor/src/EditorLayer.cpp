@@ -36,7 +36,6 @@ namespace GT
 		m_Framebuffer = Framebuffer::Create(fbSpec);
 
 		
-
 		m_EditorCamera = EditorCamera(45.0f,16.0f/9.0f, 0.1f, 1000.0f);
 
 		m_ViewportSize = { fbSpec.Width,fbSpec.Height };
@@ -67,7 +66,6 @@ namespace GT
 		}
 
 		m_SpriteSheetPanel = CreateScope<SpriteSheetPanel>();
-		Renderer3D::SetFramebuffer(m_Framebuffer);
 	}
 
 	void EditorLayer::OnDetach()
@@ -79,7 +77,7 @@ namespace GT
 	bool synced = true;
 
 	glm::vec4 color = { 0.0f,0.0f,0.5f,0.0f };
-	bool dockspaceOpen = true;
+	bool dockspace = true;
 
 	bool IsEnableTransparentAndMousePassthrough = false;
 
@@ -107,8 +105,6 @@ namespace GT
 		}
 
 
-		//RenderCommand::Clear();
-
 		{
 			GT_PROFILE_SCOPE("Renderer::Draw");
 
@@ -116,25 +112,21 @@ namespace GT
 			Renderer3D::ResetStats();
 
 
-			if (dockspaceOpen) m_Framebuffer->Bind();
+			m_Framebuffer->Bind();
 
 
 			RenderCommand::SetClearColor(color);
 			RenderCommand::Clear();
 			m_Framebuffer->ClearAttachment(1, -1);
 
-			if (dockspaceOpen)
-				switch (m_SceneState)
-				{
+			switch (m_SceneState)
+			{
 				case SceneState::Edit:
 				{
-
-					if(m_ViewportActived)
+					if(m_ViewportActived || !dockspace)
 						m_EditorCamera.OnUpdate(ts);
 
 					m_ActiveScene->OnUpdateEditor(ts, m_EditorCamera);
-
-
 					break;
 				}
 				case SceneState::Simulate:
@@ -150,39 +142,50 @@ namespace GT
 					m_ActiveScene->OnUpdateRuntime(ts);
 					break;
 				}
-				}
-			Ref<Texture2D> tex = AssetsManager::Get<Texture2D>("Checkerboard");
-			Renderer2D::BeginScene(m_EditorCamera);
-			Renderer2D::UI({ pos,size }, _color,tex);
-			RenderCommand::SetBlendMode(BlendMode::Alpha);
-			Renderer2D::Text("Hello World", { 0.2f,0.5f }, { 1.0f,1.0f,0.0f,0.5f });
-			Renderer2D::EndScene();
-
-			// read entity ID
-			auto [mx, my] = ImGui::GetMousePos();
-			if (mx != lastx || my != lasty)
-			{
-				lastx = mx;
-				lasty = my;
-				mx = mx - m_ViewportPosWithoutBar.x;
-				my = my - m_ViewportPosWithoutBar.y;
-
-				my = m_ViewportSize.y - my;
-				int mouseX = (int)mx;
-				int mouseY = (int)my;
-				if (mouseX >= 0 && mouseY >= 0 && mouseX < m_ViewportSize.x && mouseY < m_ViewportSize.y)
-				{
-					pixelData = m_Framebuffer->ReadPixel(1, mouseX, mouseY);
-					//GT_CORE_INFO("{0}", pixelData);
-					m_HoveredEntity = pixelData == -1 ? Entity() : Entity((entt::entity)pixelData, m_ActiveScene.get());
-
-				}
-				//else GT_CORE_INFO("{0},{1},{2},{3}", mouseX, mouseY, m_ViewportSize.x, m_ViewportSize.y);
 			}
 
-			OnOverlayRender();
+			Renderer2D::BeginScene(m_EditorCamera);
+			switch (m_EditorCamera.GetProjectionType())
+			{
+			case Camera::ProjectionType::Perspective:
+			{
+				Renderer2D::DrawLine(glm::vec3(-1000.0f, 0.0f, 0.0f), glm::vec3(1000.0f, 0.0f, 0.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
+				Renderer2D::DrawLine(glm::vec3(0.0f, -1000.0f, 0.0f), glm::vec3(0.0f, 1000.0f, 0.0f), glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
+				Renderer2D::DrawLine(glm::vec3(0.0f, 0.0f, -1000.0f), glm::vec3(0.0f, 0.0f, 1000.0f), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
+			}
+			break;
+			case Camera::ProjectionType::Orthographic:
+			{
+				Renderer2D::DrawLine(glm::vec3(-1000.0f, 0.0f, 0.0f), glm::vec3(1000.0f, 0.0f, 0.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
+				Renderer2D::DrawLine(glm::vec3(0.0f, -1000.0f, 0.0f), glm::vec3(0.0f, 1000.0f, 0.0f), glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
+			}
+			break;
 
-			if (dockspaceOpen) m_Framebuffer->Unbind();
+			}
+			Renderer2D::EndScene();
+
+			{
+				// read entity ID
+				auto [mx, my] = ImGui::GetMousePos();
+				if (mx != lastx || my != lasty)
+				{
+					lastx = mx;
+					lasty = my;
+					mx = mx - m_ViewportPosWithoutBar.x;
+					my = my - m_ViewportPosWithoutBar.y;
+
+					my = m_ViewportSize.y - my;
+					int mouseX = (int)mx;
+					int mouseY = (int)my;
+					if (mouseX >= 0 && mouseY >= 0 && mouseX < m_ViewportSize.x && mouseY < m_ViewportSize.y)
+					{
+						pixelData = m_Framebuffer->ReadPixel(1, mouseX, mouseY);
+						m_HoveredEntity = pixelData == -1 ? Entity() : Entity((entt::entity)pixelData, m_ActiveScene.get());
+					}
+				}
+				OnOverlayRender();
+				m_Framebuffer->Unbind();
+			}
 		}
 	}
 
@@ -191,10 +194,10 @@ namespace GT
 	{
 		GT_PROFILE_FUNCTION();
 
-
-		static bool dockspaceOpen = true;
+		//static bool dockspaceOpen = true;
 		static bool opt_fullscreen_persistant = true;
 
+		if (dockspace)
 		{
 
 			bool opt_fullscreen = opt_fullscreen_persistant;
@@ -216,7 +219,7 @@ namespace GT
 			}
 
 			ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
-			ImGui::Begin("DockSpace", &dockspaceOpen, window_flags);
+			ImGui::Begin("DockSpace", &dockspace, window_flags);
 			ImGui::PopStyleVar();
 
 			if (opt_fullscreen)
@@ -234,13 +237,14 @@ namespace GT
 
 			style.WindowMinSize.x = minWinSizeX;
 
-
 			OnMenuBarRender();
 
 			ImGui::End();
+
+			OnViewportRender();
 		}
 
-		
+
 		OnSceneHierarchyPanelRender();
 
 		m_ContentBrowserPanel->OnImGuiRender();
@@ -249,11 +253,7 @@ namespace GT
 
 		OnSpriteSheetPanelRender();
 
-		if (dockspaceOpen)
-		{
-			OnToolbarRender();
-			OnViewportRender();
-		}
+		OnToolbarRender();
 
 	}
 
@@ -305,7 +305,31 @@ namespace GT
 				}
 				ImGui::EndMenu();
 			}
-
+			if (ImGui::BeginMenu("Setting"))
+			{
+				// µã»÷²Ëµ¥ÏîÇÐ»»ÏÔÊ¾×´Ì¬
+				if (ImGui::MenuItem("Unreal Theme", ""))
+				{
+					Application::Get().GetImGuiLayer()->SetTheme(ImGuiTheme::Unreal);
+				}
+				if (ImGui::MenuItem("Vscode Theme", ""))
+				{
+					Application::Get().GetImGuiLayer()->SetTheme(ImGuiTheme::VSCode);
+				}
+				if (ImGui::MenuItem("Dark Theme", ""))
+				{
+					Application::Get().GetImGuiLayer()->SetTheme(ImGuiTheme::Dark);
+				}
+				if (ImGui::MenuItem("SoftLight Theme", ""))
+				{
+					Application::Get().GetImGuiLayer()->SetTheme(ImGuiTheme::SoftLight);
+				}
+				if (ImGui::MenuItem("Cyberpunk Theme", ""))
+				{
+					Application::Get().GetImGuiLayer()->SetTheme(ImGuiTheme::Cyberpunk);
+				}
+				ImGui::EndMenu();
+			}
 
 			ImGui::EndMainMenuBar();
 		}
@@ -338,9 +362,8 @@ namespace GT
 			Application::Get().GetWindow().SetVSync(synced);
 		}
 
-		if (ImGui::Checkbox("Enable Docking Space", &dockspaceOpen))
+		if (ImGui::Checkbox("Enable Docking Space", &dockspace))
 		{
-			Renderer::OnWindowResize(Application::Get().GetWindow().GetWidth(), Application::Get().GetWindow().GetHeight());
 		}
 		if (ImGui::Checkbox("Enable Window Transparent", &IsEnableTransparentAndMousePassthrough))
 		{
@@ -554,15 +577,15 @@ namespace GT
 		m_ViewportPos = { windowPos.x,windowPos.y };
 
 		// check if viewport size changed
+		
+		ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
+		if (m_ViewportSize != *((glm::vec2*)&viewportPanelSize))
 		{
-			ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
-			if (m_ViewportSize != *((glm::vec2*)&viewportPanelSize))
-			{
-				IsResized = true;
+			IsResized = true;
 
-				m_ViewportSize = { viewportPanelSize.x,viewportPanelSize.y };
-			}
+			m_ViewportSize = { viewportPanelSize.x,viewportPanelSize.y };
 		}
+		
 
 		// Target for drag and drop
 		ImGui::Image((void*)(uint64_t)m_Framebuffer->GetColorAttachmentRendererID(), ImVec2(m_ViewportSize.x, m_ViewportSize.y), ImVec2(0, 1), ImVec2(1, 0));
@@ -764,6 +787,7 @@ namespace GT
 		m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
 		m_HoveredEntity = Entity();
 		m_SceneHierarchyPanel->SetContext(m_ActiveScene);
+		m_ActiveScene->SetFramebuffer(m_Framebuffer);
 	}
 
 	void EditorLayer::OnScenePlay()

@@ -15,46 +15,6 @@ namespace GT
 	int Renderer2D::s_CurrentEntityID = -1;
 	RendererState Renderer2D::state = RendererState::None;
 	glm::mat4 Renderer2D::m_viewProjection;
-	struct QuadVertex
-	{
-		glm::vec3 Position;
-		glm::vec4 Color;
-		glm::vec2 TexCoord;
-		float TexIndex;
-		float TilingFactor;
-
-		// Editor-only
-		int EntityID = -1;
-	};
-	struct CircleVertex
-	{
-		glm::vec3 WorldPosition;
-		glm::vec3 LocalPosition;
-		glm::vec4 Color;
-		float Thickness;
-		float Fade;
-
-		// Editor-only
-		int EntityID;
-		int TexIndex = 0;
-	};
-	struct LineVertex
-	{
-		glm::vec3 Position;
-		glm::vec4 Color;
-
-		// Editor-only
-		int EntityID;
-	};
-	struct UIVertex
-	{
-		glm::vec3 Position;
-		glm::vec4 Color;
-		glm::vec2 TexCoord;
-		int TexIndex = 0;
-		// Editor-only
-		int EntityID;
-	};
 
 	struct Renderer2DData
 	{
@@ -123,8 +83,7 @@ namespace GT
 	static QuadState quadState;
 	static CircleState circleState;
 	static UIState uiState;
-	
-	struct Character {
+		struct Character {
 		unsigned int TextureID; // ID handle of the glyph texture
 		glm::ivec2   Size;      // Size of glyph
 		glm::ivec2   Bearing;   // Offset from baseline to left/top of glyph
@@ -520,7 +479,7 @@ namespace GT
 		cameraright = viewProjection[0];
 		cameraup = viewProjection[1];
 
-		s_Data.TextShader->Get()->Bind();
+		//s_Data.TextShader->Get()->Bind();
 		//s_Data.TextShader->Get()->SetUniformMat4("projection", viewProjection);
 
 	}

@@ -311,6 +311,13 @@ namespace GT
         }
     };
 
+    struct ScriptComponent
+    {
+        std::string ClassName;
+
+        ScriptComponent() = default;
+        ScriptComponent(const ScriptComponent&) = default;
+    };
 
     template<typename... Component>
     struct ComponentGroup

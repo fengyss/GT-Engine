@@ -206,6 +206,7 @@ vec3 CalcDirectionalLight(DirectionalLight light, vec3 normal, vec3 viewDir)
 
 float CalculateShadow(vec4 fragPosLightSpace, vec3 lightDir)
 {
+    lightDir = normalize(lightDir);
     // 1. Í¸ÊÓ³ý·¨
     vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
 
@@ -221,7 +222,7 @@ float CalculateShadow(vec4 fragPosLightSpace, vec3 lightDir)
     float currentDepth = projCoords.z;
 
     // 5. »ù´¡ Bias£¨·ÀÖ¹ acne£©
-    float bias = max(0.005 * (1.0 - dot(v_Normal, lightDir)), 0.005);
+    float bias = max(0.05 * (1.0 - dot(v_Normal, lightDir)), 0.05);
 
     // 6. ÒõÓ°ÅÐ¶Ï
     return currentDepth - bias > closestDepth ? 1.0 : 0.0;

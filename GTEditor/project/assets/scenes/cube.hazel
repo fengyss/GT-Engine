@@ -1,52 +1,40 @@
 Scene: cube
 Entities:
-  - Entity: 13154135276296640512
+  - Entity: 13207694141389359021
     TagComponent:
-      Tag: camera
+      Tag: Empty Entity
       Type: None
     TransformComponent:
-      Translation: [-5.4224434, 1.3556285, 14.8]
-      Rotation: [0, -0, 0]
+      Translation: [0, -3.5, -1.2]
+      Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
-    CameraComponent:
-      Camera:
-        ProjectionType: 0
-        PerspectiveFOV: 0.7853982
-        PerspectiveNear: 0.01
-        PerspectiveFar: 1000
-        OrthographicSize: 10
-        OrthographicNear: -1
-        OrthographicFar: 1
-        Offset: [0, 1.5, 0]
-      Primary: true
-      FixedAspectRatio: false
-    CircleRendererComponent:
-      Color: [1, 1, 0.3372549, 1]
-      Thickness: 0.5
-      Fade: 0.278
-      TexturePath: project\assets\textures\Checkerboard.png
-  - Entity: 5330123923738909701
-    TagComponent:
-      Tag: planet
-      Type: Model
-    TransformComponent:
-      Translation: [-6.6322007, -0.23633716, -3.1]
-      Rotation: [0, -0, 0]
-      Scale: [1, 1, 1]
-    ModelComponent:
-      ModelPath: project\assets\obj\planet\planet.obj
-  - Entity: 6656075414192952750
-    TagComponent:
-      Tag: Floor
-      Type: None
-    TransformComponent:
-      Translation: [0, -153.8, 0]
-      Rotation: [-1.5707964, 0, 0]
-      Scale: [999, 999, 1]
     SpriteRendererComponent:
-      Color: [0.6509804, 0.6509804, 0.6509804, 1]
-      TexturePath: project\assets\textures\Checkerboard.png
-      TilingFactor: 10
+      Color: [1, 1, 1, 1]
+      TilingFactor: 1
+  - Entity: 14229560489946383135
+    TagComponent:
+      Tag: Rock
+      Type: None
+    TransformComponent:
+      Translation: [6.4653716, -10.117889, -5.912943]
+      Rotation: [0, -0, 0]
+      Scale: [3, 3, 3]
+    ModelComponent:
+      ModelPath: project\assets\obj\rock\rock.obj
+  - Entity: 10103489676936779165
+    TagComponent:
+      Tag: " Sheet"
+      Type: None
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, -0, 0]
+      Scale: [2, 2, 1]
+    SpriteRendererComponent:
+      Color: [1, 1, 1, 1]
+      TexturePath: project\assets\textures\Premium Charakter Spritesheet.png
+      TilingFactor: 1
+    Animator2DComponent:
+      {}
   - Entity: 9055524979973331075
     TagComponent:
       Tag: light
@@ -88,38 +76,52 @@ Entities:
       ConeAngle: 18
       Bursts:
         []
-  - Entity: 10103489676936779165
+  - Entity: 6656075414192952750
     TagComponent:
-      Tag: " Sheet"
+      Tag: Floor
       Type: None
     TransformComponent:
-      Translation: [0, 0, 0]
-      Rotation: [0, -0, 0]
-      Scale: [2, 2, 1]
+      Translation: [0, -153.8, 0]
+      Rotation: [-1.5707964, 0, 0]
+      Scale: [999, 999, 1]
+    ScriptComponent:
+      ClassName: GT.Main
     SpriteRendererComponent:
-      Color: [1, 1, 1, 1]
-      TexturePath: project\assets\textures\Premium Charakter Spritesheet.png
-      TilingFactor: 1
-    Animator2DComponent:
-      {}
-  - Entity: 14229560489946383135
+      Color: [0.6509804, 0.6509804, 0.6509804, 1]
+      TexturePath: project\assets\textures\Checkerboard.png
+      TilingFactor: 10
+  - Entity: 5330123923738909701
     TagComponent:
-      Tag: Rock
-      Type: None
+      Tag: planet
+      Type: Model
     TransformComponent:
-      Translation: [6.4653716, -10.117889, -5.912943]
+      Translation: [-6.6322007, -0.23633716, -3.1]
       Rotation: [0, -0, 0]
-      Scale: [3, 3, 3]
-    ModelComponent:
-      ModelPath: project\assets\obj\rock\rock.obj
-  - Entity: 13207694141389359021
-    TagComponent:
-      Tag: Empty Entity
-      Type: None
-    TransformComponent:
-      Translation: [0, -3.5, -1.2]
-      Rotation: [0, 0, 0]
       Scale: [1, 1, 1]
-    SpriteRendererComponent:
-      Color: [1, 1, 1, 1]
-      TilingFactor: 1
+    ModelComponent:
+      ModelPath: project\assets\obj\planet\planet.obj
+  - Entity: 13154135276296640512
+    TagComponent:
+      Tag: camera
+      Type: None
+    TransformComponent:
+      Translation: [-5.4224434, 1.3556285, 14.8]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    CameraComponent:
+      Camera:
+        ProjectionType: 0
+        PerspectiveFOV: 0.7853982
+        PerspectiveNear: 0.01
+        PerspectiveFar: 1000
+        OrthographicSize: 10
+        OrthographicNear: -1
+        OrthographicFar: 1
+        Offset: [0, 1.5, 0]
+      Primary: true
+      FixedAspectRatio: false
+    CircleRendererComponent:
+      Color: [1, 1, 0.3372549, 1]
+      Thickness: 0.5
+      Fade: 0.278
+      TexturePath: project\assets\textures\Checkerboard.png

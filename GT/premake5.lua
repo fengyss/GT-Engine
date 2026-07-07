@@ -44,7 +44,7 @@ project "GT"
 		"vendor/spdlog/include",
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.ImGuizmo}",
-		--"%{IncludeDir.mono}",
+		"%{IncludeDir.mono}",
 		"%{IncludeDir.GLFW}",
 		"%{IncludeDir.Glad}",
 		"%{IncludeDir.ImGui}",
@@ -59,6 +59,7 @@ project "GT"
 	}
 	libdirs {
         "%{LibraryDir.freetype}",
+        "%{LibraryDir.mono}",
     }
 	links
 	{
@@ -69,6 +70,7 @@ project "GT"
 
 	links
 	{
+		"GTScriptCore",
 		"efsw",
 		"libcmt.lib",
 		"GLFW",
@@ -80,12 +82,11 @@ project "GT"
 		"ImGui",
 		"freetype",
 		"opengl32.lib",
-		--"%{Library.mono}"
+		"%{Library.mono}"
 	}
 
 	filter "system:windows"
 		systemversion "10.0"
-
 		defines
 		{
 			"_CRT_SECURE_NO_WARNINGS",
@@ -99,6 +100,7 @@ project "GT"
 			"GLFW_INCLUDE_NONE",
 			"YAML_CPP_STATIC_DEFINE"
 		}
+
 		links
 		{
 			"%{Library.WinSock}",

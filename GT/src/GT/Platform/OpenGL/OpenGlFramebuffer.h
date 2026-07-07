@@ -19,6 +19,7 @@ namespace GT
 		virtual void ClearAttachment(uint32_t attachmentIndex, int value) override;
 
 		virtual uint32_t GetColorAttachmentRendererID(uint32_t index = 0) const override;
+		virtual uint32_t GetDepthAttachmentRendererID() const override;
 		virtual const FramebufferSpecification& GetSpecification() const override;
 
 	private:

@@ -5,45 +5,10 @@
 #include "GT/Scene/Components.h"
 #include "Shader.h"
 #include "Texture.h"
+#include "GT/Core/ID.h"
 namespace GT
 {
 
-	struct QuadState
-	{
-		glm::vec3 Position[4];
-		glm::vec4 Color = { 1.0f,1.0f,1.0f,1.0f };
-		// Bottom_Left(0,0), Top_right(1,1)
-		glm::vec2 TexCoords[4];
-		int TextureIndex = 0;
-		float TilingFactor = 1.0f;
-		int EntityID = -1;
-	};
-	struct CircleState
-	{
-		glm::vec3 WorldPosition[4];
-		glm::vec3 LocalPosition[4];
-		glm::vec4 color = { 1.0f,1.0f,1.0f,1.0f };
-
-		float Thickness = 1.0f;
-		float Fade = 0.005f;
-		int EntityID = -1;
-		int TexIndex = 0;
-
-	};
-	struct UIState
-	{
-		glm::vec3 Position[4];
-		glm::vec4 color = { 1.0f,1.0f,1.0f,1.0f };
-		glm::vec2 TexCoords[4] =
-		{   { 0.0f, 0.0f },
-			{ 1.0f, 0.0f },
-			{ 1.0f, 1.0f },
-			{ 0.0f, 1.0f }
-		};
-		int EntityID = -1;
-		int TexIndex = 0;
-
-	};
 	enum struct RendererState
 	{
 		None = 0,

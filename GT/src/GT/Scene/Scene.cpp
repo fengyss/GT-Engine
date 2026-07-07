@@ -4,12 +4,16 @@
 #include "glm/glm.hpp"
 #include "Components.h"
 #include "GT/Renderer/Camera.h"
+#include "GT/Renderer/Framebuffer.h"
+#include "GT/Renderer/RenderCommand.h"
 #include "GT/Renderer/Renderer2D.h"
 #include "GT/Renderer/Renderer3D.h"
 #include "Entity.h"
 #include "GT/Utils/PlatformUtils.h"
 
 #include "ScriptableEntity.h"
+
+#include "GT/Scripting/ScriptEngine.h"
 
 #include "GT/Particle/ParticleSystem.h"
 #include "GT/Core/Animation/AnimationSystem.h"
@@ -86,6 +90,7 @@ namespace GT
             enttMap[uuid] = (entt::entity)newEntity;
         }
 
+
         // Copy components (except IDComponent and TagComponent)
         CopyComponent<TransformComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
         CopyComponent<SpriteRendererComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
@@ -99,6 +104,7 @@ namespace GT
         CopyComponent<LightRendererComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
         CopyComponent<ModelComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
         CopyComponent<Animator2DComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
+        CopyComponent<ScriptComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
 
         return newScene;
     }
@@ -119,20 +125,39 @@ namespace GT
         CopyComponentIfExists<LightRendererComponent>(newEntity, entity);
         CopyComponentIfExists<ModelComponent>(newEntity, entity);
         CopyComponentIfExists<Animator2DComponent>(newEntity, entity);
+        CopyComponentIfExists<ScriptComponent>(newEntity, entity);
     }
 
     void Scene::OnRuntimeStart()
     {
         OnPhysics2DStart();
+
+
+        // Scripting
+        {
+            ScriptEngine::OnRuntimeStart(this);
+            // Instantiate all script entities
+
+            auto view = m_Registry.view<ScriptComponent>();
+            for (auto e : view)
+            {
+                Entity entity = { e, this };
+                ScriptEngine::OnCreateEntity(entity);
+            }
+        }
     }
+
 
     void Scene::OnRuntimeStop()
     {
+
+        ScriptEngine::OnRuntimeStop();
         OnPhysics2DStop();
     }
 
     void Scene::OnSimulationStart()
     {
+
         OnPhysics2DStart();
     }
 
@@ -234,38 +259,24 @@ namespace GT
     void Scene::RenderScene(Camera& camera)
     {
         //float time = Time::GetTime();
-        // Render 2D
+
         Renderer2D::BeginScene(camera);
         Renderer3D::BeginScene(camera);
         ParticleRenderer::BeginScene(camera);
-
-        switch (camera.GetProjectionType())
-        {
-        case Camera::ProjectionType::Perspective:
-        {
-            Renderer2D::DrawLine(glm::vec3(-1000.0f, 0.0f, 0.0f), glm::vec3(1000.0f, 0.0f, 0.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
-            Renderer2D::DrawLine(glm::vec3(0.0f, -1000.0f, 0.0f), glm::vec3(0.0f, 1000.0f, 0.0f), glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
-            Renderer2D::DrawLine(glm::vec3(0.0f, 0.0f, -1000.0f), glm::vec3(0.0f, 0.0f, 1000.0f), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
-        }
-        break;
-        case Camera::ProjectionType::Orthographic:
-        {
-            Renderer2D::DrawLine(glm::vec3(-1000.0f,0.0f,0.0f), glm::vec3(1000.0f, 0.0f, 0.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
-            Renderer2D::DrawLine(glm::vec3(0.0f,-1000.0f, 0.0f), glm::vec3(0.0f,1000.0f, 0.0f), glm::vec4(0.0f, 1.0f, 0.0f, 1.0f));
-        }
-        break;
-            
-        }
 
         RenderScene2D();
         RenderScene3D();
         ParticleSystem::OnRender(this);
 
+        Renderer3D::RenderShadowMap(Renderer3D::GetShadowMap());
+
+        m_Framebuffer->Bind();
+
+        ParticleRenderer::EndScene();
         ParticleRenderer::Flush(BlendMode::Alpha);
         Renderer3D::EndScene();
         Renderer2D::EndScene();
 
-        ParticleRenderer::EndScene();
 
         //time = Time::GetTime() - time;
         //GT_CORE_CRITICAL("GPU time : {0} ms!", time);
@@ -419,6 +430,14 @@ namespace GT
     {
         // Update Scripts
         {
+            // C# Entity OnUpdate
+            auto view = m_Registry.view<ScriptComponent>();
+            for (auto e : view)
+            {
+                Entity entity = { e, this };
+                ScriptEngine::OnUpdateEntity(entity, ts);
+            }
+
             m_Registry.view<NativeScriptComponent>().each([=](auto entity, auto& nsc)
                 {
                     //TODO: Move to Scene::OnScenePlay
@@ -475,7 +494,8 @@ namespace GT
     }
     Entity Scene::CreateEntity(const char* name)
     {
-        return CreateEntityWithUUID(UUID(), name);
+        UUID uuid = UUID();
+        return CreateEntityWithUUID(uuid, name);
     }
     Entity Scene::CreateEntityWithUUID(UUID uuid, const std::string& name)
     {
@@ -487,12 +507,18 @@ namespace GT
         if (name == "") tag.Tag = "Entity";
         else tag.Tag = name;
 
+
+        m_EntityMap[uuid] = entt::entity(entity);
+
         return entity;
     }
     void Scene::DestroyEntity(Entity e)
     {
         if (e.HasComponent<ParticleComponent>()) e.RemoveComponent<ParticleComponent>();
+       
         m_Registry.destroy(e);
+        m_EntityMap.erase(e.GetUUID());
+
     }
 
     Entity Scene::GetPrimaryCameraEntity()
@@ -511,6 +537,14 @@ namespace GT
         return Entity{};
     }
 
+    Entity Scene::GetEntityByUUID(UUID uuid)
+    {
+        // TODO(Yan): Maybe should be assert
+        if (m_EntityMap.find(uuid) != m_EntityMap.end())
+            return { m_EntityMap.at(uuid), this };
+
+        return {};
+    }
 
     template<typename T>
     inline void Scene::OnComponentAdded(Entity entity, T& component)
@@ -615,6 +649,10 @@ namespace GT
         component.isEnable = component.CurrentAnimation->ImportSpriteSheet(path);
     }
     
+    template<>
+    void Scene::OnComponentAdded<ScriptComponent>(Entity entity, ScriptComponent& component)
+    {
+    }
 
 
 
@@ -693,5 +731,8 @@ namespace GT
     {
     }
 
-    
+    template<>
+    void Scene::OnComponentRemoved<ScriptComponent>(Entity entity, ScriptComponent& component)
+    {
+    }
 }

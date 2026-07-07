@@ -12,6 +12,7 @@ namespace GT
 {
 	class Entity;
 	class ParticleSystem;
+	class Framebuffer;
 
 	class Scene 
 	{
@@ -42,7 +43,10 @@ namespace GT
 		void RenderScene2D();
 		void RenderScene3D();
 
+		Entity GetEntityByUUID(UUID uuid);
 
+		Ref<Framebuffer> GetFramebuffer() { return m_Framebuffer; }
+		void SetFramebuffer(Ref<Framebuffer> framebuffer) { m_Framebuffer = framebuffer; }
 
 		void OnViewportResize(uint32_t width, uint32_t height);
 
@@ -78,6 +82,9 @@ namespace GT
 		void OnComponentRemoved(Entity entity, T& component);
 
 	private:
+
+		std::unordered_map<UUID, entt::entity> m_EntityMap;
+
 		std::string name = "New Scene";
 		std::filesystem::path filepath;
 		entt::registry m_Registry;
@@ -86,6 +93,7 @@ namespace GT
 
 		b2WorldId m_WorldID = b2_nullWorldId;
 		
+		Ref<Framebuffer> m_Framebuffer;
 
 		friend class Entity;
 		friend class SceneSerializer;

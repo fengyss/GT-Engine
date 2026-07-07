@@ -385,6 +385,13 @@ namespace GT
 					bc2d.RestitutionThreshold = boxCollider2DComponent["RestitutionThreshold"].as<float>();
 				}
 
+				auto scriptComponent = entity["ScriptComponent"];
+				if (scriptComponent)
+				{
+					auto& sc = deserializedEntity.AddComponent<ScriptComponent>();
+					sc.ClassName = scriptComponent["ClassName"].as<std::string>();
+				}
+
 				auto circleCollider2DComponent = entity["CircleCollider2DComponent"];
 				if (circleCollider2DComponent)
 				{
@@ -496,6 +503,16 @@ namespace GT
 			out << YAML::Key << "Scale" << YAML::Value << tc.Scale;
 
 			out << YAML::EndMap; // TransformComponent
+		}
+
+		if (entity.HasComponent<ScriptComponent>())
+		{
+			auto& scriptComponent = entity.GetComponent<ScriptComponent>();
+
+			out << YAML::Key << "ScriptComponent";
+			out << YAML::BeginMap; // ScriptComponent
+			out << YAML::Key << "ClassName" << YAML::Value << scriptComponent.ClassName;
+			out << YAML::EndMap; // ScriptComponent
 		}
 
 		if (entity.HasComponent<CameraComponent>())

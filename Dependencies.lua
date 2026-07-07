@@ -29,7 +29,7 @@ IncludeDir["freetype"] = "%{wks.location}/GT/vendor/freetype"
 LibraryDir = {}
 
 -- LibraryDir["VulkanSDK"] = "%{VULKAN_SDK}/Lib"
---LibraryDir["mono"] = "%{wks.location}/GT/vendor/mono/lib/%{cfg.buildcfg}"
+LibraryDir["mono"] = "%{wks.location}/GT/vendor/mono/lib/%{cfg.buildcfg}"
 LibraryDir["assimp"] = "%{wks.location}/GT/vendor/assimp/lib"
 
 LibraryDir["gtest"] = "%{wks.location}/bin/" .. outputdir .. "/gtest"
@@ -38,6 +38,7 @@ LibraryDir["freetype"] = "%{wks.location}/GT/vendor/freetype/lib"
 
 Library = {}
 --Library["mono"] = "%{LibraryDir.mono}/libmono-static-sgen.lib"
+Library["mono"] = "%{LibraryDir.mono}/mono-2.0-sgen.lib"
 Library["assimp"] = "%{LibraryDir.assimp}/assimp-vc143-mt.lib"
 Library["freetype"] = "%{LibraryDir.freetype}/freetype.lib"
 Library["gtest"] = "%{LibraryDir.gtest}/gtest.lib"

@@ -10,6 +10,8 @@ xcopy "Test" "backup/Test" /e /y
 
 xcopy "GTEditor" "backup/GTEditor" /e /y
 
+xcopy "GTScriptCore" "backup/GTScriptCore" /e /y
+
 
 xcopy "docs" "backup/docs" /e /y
 

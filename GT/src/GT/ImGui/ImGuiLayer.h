@@ -8,6 +8,14 @@
 
 namespace GT
 {
+	enum  ImGuiTheme
+	{
+		Dark,
+		SoftLight,
+		Cyberpunk,
+		Unreal,
+		VSCode,
+	};
 	class HAZEL_API ImGuiLayer : public Layer
 	{
 	public:
@@ -22,7 +30,13 @@ namespace GT
 
 		void Begin();
 		void End();
-		void SetDarkThemeColors();
+		void SetTheme(ImGuiTheme theme);
+
+		void ApplySoftLightTheme();
+		void ApplyCyberpunkTheme();
+		void ApplyUnrealTheme();
+		void ApplyVSCodeTheme();
+		void ApplyDarkTheme();
 
 		void BlockEvents(bool block) { m_Block = block; }
 

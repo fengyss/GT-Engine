@@ -12,6 +12,9 @@
 #include "spdlog/fmt/ostr.h"
 #pragma warning(pop)
 
+
+#include "spdlog/fmt/fmt.h"
+
 namespace GT {
 
 	class HAZEL_API Log
@@ -37,6 +40,7 @@ inline OStream& operator<<(OStream& os, const glm::vec<L, T, Q>& vector)
 	return os << glm::to_string(vector);
 }
 
+
 template<typename OStream, glm::length_t C, glm::length_t R, typename T, glm::qualifier Q>
 inline OStream& operator<<(OStream& os, const glm::mat<C, R, T, Q>& matrix)
 {
@@ -49,6 +53,38 @@ inline OStream& operator<<(OStream& os, glm::qua<T, Q> quaternion)
 	return os << glm::to_string(quaternion);
 }
 
+template <glm::length_t L, typename T, glm::qualifier Q>
+struct fmt::formatter<glm::vec<L, T, Q>> {
+    constexpr auto parse(fmt::format_parse_context& ctx) {
+        return ctx.begin();
+    }
+
+    auto format(const glm::vec<L, T, Q>& v, fmt::format_context& ctx) const {
+        return fmt::format_to(ctx.out(), "{}", glm::to_string(v));
+    }
+};
+
+template <glm::length_t C, glm::length_t R, typename T, glm::qualifier Q>
+struct fmt::formatter<glm::mat<C, R, T, Q>> {
+    constexpr auto parse(fmt::format_parse_context& ctx) {
+        return ctx.begin();
+    }
+
+    auto format(const glm::mat<C, R, T, Q>& m, fmt::format_context& ctx) const {
+        return fmt::format_to(ctx.out(), "{}", glm::to_string(m));
+    }
+};
+
+template <typename T, glm::qualifier Q>
+struct fmt::formatter<glm::qua<T, Q>> {
+    constexpr auto parse(fmt::format_parse_context& ctx) {
+        return ctx.begin();
+    }
+
+    auto format(const glm::qua<T, Q>& q, fmt::format_context& ctx) const {
+        return fmt::format_to(ctx.out(), "{}", glm::to_string(q));
+    }
+};
 
 // Core log macros		
 #define GT_CORE_TRACE(...)       ::GT::Log::GetCoreLogger()->trace(__VA_ARGS__)

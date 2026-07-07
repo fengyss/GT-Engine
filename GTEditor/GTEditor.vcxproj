@@ -92,10 +92,9 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>assimp-vc143-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\GT\vendor\assimp\lib;..\GT\vendor\vld;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <IgnoreSpecificDefaultLibraries>
-      </IgnoreSpecificDefaultLibraries>
+      <AdditionalDependencies>..\GT\vendor\assimp\lib\assimp-vc143-mt.lib;..\GT\vendor\mono\lib\Debug\mono-2.0-sgen.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\GT\vendor\assimp\lib;..\GT\vendor\vld;..\GT\vendor\mono\lib\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>/NODEFAULTLIB:MSVCRTD /NODEFAULTLIB:libcmt /NODEFAULTLIB:MSVCRT /NODEFAULTLIB:libcm /ignore:4099 /ignore:4006 /ignore:4286 %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -119,9 +118,9 @@
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>assimp-vc143-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\GT\vendor\assimp\lib;..\GT\vendor\vld;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <IgnoreSpecificDefaultLibraries>libcmtd.lib</IgnoreSpecificDefaultLibraries>
+      <AdditionalDependencies>..\GT\vendor\assimp\lib\assimp-vc143-mt.lib;..\GT\vendor\mono\lib\Release\mono-2.0-sgen.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\GT\vendor\assimp\lib;..\GT\vendor\vld;..\GT\vendor\mono\lib\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>/NODEFAULTLIB:MSVCRTD /NODEFAULTLIB:libcmt /NODEFAULTLIB:MSVCRT /NODEFAULTLIB:libcm /ignore:4099 /ignore:4006 /ignore:4286 %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
@@ -145,9 +144,9 @@
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>assimp-vc143-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\GT\vendor\assimp\lib;..\GT\vendor\vld;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <IgnoreSpecificDefaultLibraries>libcmtd.lib</IgnoreSpecificDefaultLibraries>
+      <AdditionalDependencies>..\GT\vendor\assimp\lib\assimp-vc143-mt.lib;..\GT\vendor\mono\lib\Dist\mono-2.0-sgen.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\GT\vendor\assimp\lib;..\GT\vendor\vld;..\GT\vendor\mono\lib\Dist;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>/NODEFAULTLIB:MSVCRTD /NODEFAULTLIB:libcmt /NODEFAULTLIB:MSVCRT /NODEFAULTLIB:libcm /ignore:4099 /ignore:4006 /ignore:4286 %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

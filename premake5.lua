@@ -41,7 +41,7 @@ group ""
 
 group "Core"
 	include "GT"
-	-- include "GT-ScriptCore"
+	include "GTScriptCore"
 group ""
 
 group "Tools"

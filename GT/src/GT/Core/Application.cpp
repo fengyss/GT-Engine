@@ -74,6 +74,8 @@ namespace GT
 
 		AssetsManager::ShutDown();
 		Renderer::ShutDown();
+		ScriptEngine::Shutdown();
+
 		for(auto layer : m_LayerStack)
 			layer->OnDetach();
 		m_Window.reset();
@@ -84,7 +86,7 @@ namespace GT
 	{
 		AssetsManager::Init();
 		Renderer::Init();
-		//ScriptEngine::Init();
+		ScriptEngine::Init();
 		Random::Init();
 	}
 

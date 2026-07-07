@@ -3,6 +3,7 @@
 #include <glm/glm/gtc/type_ptr.hpp>
 #include <imgui/imgui_internal.h>
 #include "GT/Utils/PlatformUtils.h"
+#include "GT/Scripting/ScriptEngine.h"
 
 namespace GT
 {
@@ -364,6 +365,7 @@ namespace GT
 			AddComponentButton<ModelComponent>("Model Renderer", e);
 			AddComponentButton<ParticleComponent>("Particle Renderer", e);
 			AddComponentButton<Animator2DComponent>("Animator 2D", e);
+			AddComponentButton<ScriptComponent>("Script", e);
 
 			ImGui::EndPopup();
 		}
@@ -726,21 +728,6 @@ namespace GT
 
 				ImGui::Checkbox("ReGenerate Particle", &component.IsRegen);
 
-				//ImGui::Button("Texture");  //Target for drag and drop
-				//if (ImGui::BeginDragDropTarget())
-				//{
-				//	if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
-				//	{
-				//		const wchar_t* path = (const wchar_t*)payload->Data;
-				//		std::filesystem::path filepath(path);
-				//		RefHandle<Texture2D> texture = CreateHandle<Texture2D>(filepath);
-
-				//		if (texture->Get()) component.texture = texture;
-				//		else GT_CORE_WARN("Could not load texture {0}", filepath.string());
-				//	}
-				//	ImGui::EndDragDropTarget();
-				//}
-
 
 				switch (config.shape)
 				{
@@ -824,5 +811,22 @@ namespace GT
 				}
 
 			});
+
+			DrawComponent<ScriptComponent>("Script", e, [](auto& component)
+				{
+					bool scriptClassExists = ScriptEngine::EntityClassExists(component.ClassName);
+
+					static char buffer[64];
+					strcpy(buffer, component.ClassName.c_str());
+
+					if (!scriptClassExists)
+						ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.9f, 0.2f, 0.3f, 1.0f));
+
+					if (ImGui::InputText("Class", buffer, sizeof(buffer)))
+						component.ClassName = buffer;
+
+					if (!scriptClassExists)
+						ImGui::PopStyleColor();
+				});
 	}
 }

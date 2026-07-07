@@ -1,0 +1,6 @@
+C:\Dev\GT\GTEditor\Resources\Scripts\Intermediates\Debug\GTScriptCore.csproj.AssemblyReference.cache
+C:\Dev\GT\GTEditor\Resources\Scripts\Intermediates\Debug\GTScriptCore.csproj.CoreCompileInputs.cache
+C:\Dev\GT\GTEditor\Resources\Scripts\Intermediates\Debug\GTScriptCore.dll
+C:\Dev\GT\GTEditor\Resources\Scripts\Intermediates\Debug\GTScriptCore.pdb
+C:\Dev\GT\GTEditor\Resources\Scripts\GTScriptCore.dll
+C:\Dev\GT\GTEditor\Resources\Scripts\GTScriptCore.pdb

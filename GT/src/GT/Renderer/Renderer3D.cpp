@@ -17,7 +17,6 @@ namespace GT
 	static Renderer3D::Statistics s_stats;
 	Ref<AssetsHandle<Shader>> m_ShadowShader;
 	ShadowMap Renderer3D::shadowmap;
-	Ref<Framebuffer> m_Framebuffer;
 
 	struct Trans_model
 	{
@@ -77,12 +76,11 @@ namespace GT
 		GT_CORE_ASSERT(state != Renderer3DState::EndScene, "You Should Call BeginScene First!");
 		state = Renderer3DState::EndScene;
 
-
-		RenderShadowMap(shadowmap);
-		m_Framebuffer->Bind();
 		Flush();
 
 		s_Lights.clear();
+
+		//m_Framebuffer->Unbind();
 	}
 
 	void Renderer3D::Flush()
@@ -148,14 +146,16 @@ namespace GT
 		glm::vec3 max = aabb.Max;
 
 		glm::vec3 corners[8] = {
-	  transform * glm::vec4(min.x, min.y, min.z, 1.0f),
-	  transform * glm::vec4(max.x, min.y, min.z, 1.0f),
-	  transform * glm::vec4(min.x, max.y, min.z, 1.0f),
-	  transform * glm::vec4(min.x, min.y, max.z, 1.0f),
-	  transform * glm::vec4(max.x, max.y, min.z, 1.0f),
-	  transform * glm::vec4(max.x, min.y, max.z, 1.0f),
-	  transform * glm::vec4(min.x, max.y, max.z, 1.0f),
-	  transform * glm::vec4(max.x, max.y, max.z, 1.0f)
+		  // bl br tr tl
+		  transform * glm::vec4(min.x, min.y, min.z, 1.0f),
+		  transform * glm::vec4(max.x, min.y, min.z, 1.0f),
+		  transform * glm::vec4(max.x, max.y, min.z, 1.0f),
+		  transform * glm::vec4(min.x, max.y, min.z, 1.0f),
+		  // bl br tr tl
+		  transform* glm::vec4(min.x, min.y, max.z, 1.0f),
+		  transform* glm::vec4(max.x, min.y, max.z, 1.0f),
+		  transform* glm::vec4(max.x, max.y, max.z, 1.0f),
+		  transform* glm::vec4(min.x, max.y, max.z, 1.0f),
 		};
 
 		// 后方面
@@ -167,10 +167,6 @@ namespace GT
 		// 连接前后
 		for (int j = 0; j < 4; ++j)
 			Renderer2D::DrawLine(corners[j], corners[j + 4], color);
-	}
-	void Renderer3D::SetFramebuffer(Ref<Framebuffer> framebuffer)
-	{
-		m_Framebuffer = framebuffer;
 	}
 	void Renderer3D::ShowAABB(bool show) { IsShowAABB = show; }
 	void Renderer3D::DrawModel(const glm::mat4& transform, Ref<Model>& model)
@@ -189,7 +185,6 @@ namespace GT
 		shadowMap.Bind();
 
 		// 2. 设置视口（必须是阴影贴图的大小）
-		glViewport(0, 0, shadowMap.GetWidth(), shadowMap.GetHeight());
 
 		// 3. 清空深度缓冲
 		glClear(GL_DEPTH_BUFFER_BIT);

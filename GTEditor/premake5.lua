@@ -32,12 +32,18 @@ project "GTEditor"
 		"%{IncludeDir.efsw}",
 	}
 
-	libdirs {
+	libdirs 
+	{
         "%{LibraryDir.assimp}",
 		"%{wks.location}/GT/vendor/vld",
+        "%{LibraryDir.mono}",
     }
-	links {
-        "assimp-vc143-mt.lib",
+	links 
+	{
+        --"assimp-vc143-mt.lib",
+		--"libmono-static-sgen.lib",
+        "%{Library.assimp}",
+        "%{Library.mono}",
     }
 
 	defines
@@ -57,12 +63,24 @@ project "GTEditor"
 		"Box2D",
 		"ImGui",
 		"yaml_cpp",
-		--"%{Library.mono}"
 		
 	}
 
+	linkoptions 
+	{
+        "/NODEFAULTLIB:MSVCRTD",  
+        "/NODEFAULTLIB:libcmt",   
+        "/NODEFAULTLIB:MSVCRT",  
+        "/NODEFAULTLIB:libcm",   
+    }
+
+
 	filter "system:windows"
-		systemversion "latest"
+		systemversion "10.0"
+		
+		linkoptions { "/ignore:4099" }
+		linkoptions { "/ignore:4006" }
+		linkoptions { "/ignore:4286" }
 
 	filter "configurations:Debug"
 		defines "GT_DEBUG"

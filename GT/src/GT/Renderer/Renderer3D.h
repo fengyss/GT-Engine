@@ -50,7 +50,6 @@ namespace GT
 		static void Flush();
 		static void DrawAABB(const glm::mat4& transform, GPUAABB aabb, glm::vec4 color = { 0.0f,1.0f,0.5f,1.0f });
 
-		static void SetFramebuffer(Ref<Framebuffer> framebuffer);
 
 		struct Statistics
 		{
