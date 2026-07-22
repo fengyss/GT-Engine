@@ -4,9 +4,10 @@
 #include "Components.h"
 #include <yaml-cpp/yaml.h>
 #include "GT/Project/Project.h"
-#include "GT/Assets/AssetsManager.h"
 #include "GT/Particle/ParticleSystem.h"
+#include "GT/Scripting/ScriptEngine.h"
 
+#include "GT/Core/Asset/AssetManager.h"
 
 namespace YAML {
 
@@ -104,22 +105,22 @@ namespace YAML {
 	//		return true;
 	//	}
 	//};
-	//template<>
-	//struct convert<GT::UUID>
-	//{
-	//	static Node encode(const GT::UUID& uuid)
-	//	{
-	//		Node node;
-	//		node.push_back((uint64_t)uuid);
-	//		return node;
-	//	}
+	template<>
+	struct convert<GT::UUID>
+	{
+		static Node encode(const GT::UUID& uuid)
+		{
+			Node node;
+			node.push_back((uint64_t)uuid);
+			return node;
+		}
 
-	//	static bool decode(const Node& node, GT::UUID& uuid)
-	//	{
-	//		uuid = node.as<uint64_t>();
-	//		return true;
-	//	}
-	//};
+		static bool decode(const Node& node, GT::UUID& uuid)
+		{
+			uuid = node.as<uint64_t>();
+			return true;
+		}
+	};
 
 }
 
@@ -384,14 +385,6 @@ namespace GT
 					bc2d.Restitution = boxCollider2DComponent["Restitution"].as<float>();
 					bc2d.RestitutionThreshold = boxCollider2DComponent["RestitutionThreshold"].as<float>();
 				}
-
-				auto scriptComponent = entity["ScriptComponent"];
-				if (scriptComponent)
-				{
-					auto& sc = deserializedEntity.AddComponent<ScriptComponent>();
-					sc.ClassName = scriptComponent["ClassName"].as<std::string>();
-				}
-
 				auto circleCollider2DComponent = entity["CircleCollider2DComponent"];
 				if (circleCollider2DComponent)
 				{
@@ -446,6 +439,60 @@ namespace GT
 					pc.IsRegen = true;
 				}
 
+				auto scriptComponent = entity["ScriptComponent"];
+				if (scriptComponent)
+				{
+					auto& sc = deserializedEntity.AddComponent<ScriptComponent>();
+					sc.ClassName = scriptComponent["ClassName"].as<std::string>();
+
+					auto scriptFields = scriptComponent["ScriptFields"];
+					if (scriptFields)
+					{
+						Ref<ScriptClass> entityClass = ScriptEngine::GetEntityClass(sc.ClassName);
+						GT_CORE_ASSERT(entityClass,"");
+						const auto& fields = entityClass->GetFields();
+						auto& entityFields = ScriptEngine::GetScriptFieldMap(deserializedEntity);
+
+						for (auto scriptField : scriptFields)
+						{
+							std::string name = scriptField["Name"].as<std::string>();
+							std::string typeString = scriptField["Type"].as<std::string>();
+							ScriptFieldType type = Utils::ScriptFieldTypeFromString(typeString);
+
+							ScriptFieldInstance& fieldInstance = entityFields[name];
+
+
+							if (fields.find(name) == fields.end())
+							{
+								GT_CORE_ERROR("field name {0} not found.", name);
+								continue;
+							}
+
+							fieldInstance.Field = fields.at(name);
+
+							switch (type)
+							{
+								READ_SCRIPT_FIELD(Float, float);
+								READ_SCRIPT_FIELD(Double, double);
+								READ_SCRIPT_FIELD(Bool, bool);
+								READ_SCRIPT_FIELD(Char, char);
+								READ_SCRIPT_FIELD(Byte, int8_t);
+								READ_SCRIPT_FIELD(Short, int16_t);
+								READ_SCRIPT_FIELD(Int, int32_t);
+								READ_SCRIPT_FIELD(Long, int64_t);
+								READ_SCRIPT_FIELD(UByte, uint8_t);
+								READ_SCRIPT_FIELD(UShort, uint16_t);
+								READ_SCRIPT_FIELD(UInt, uint32_t);
+								READ_SCRIPT_FIELD(ULong, uint64_t);
+								READ_SCRIPT_FIELD(Vector2, glm::vec2);
+								READ_SCRIPT_FIELD(Vector3, glm::vec3);
+								READ_SCRIPT_FIELD(Vector4, glm::vec4);
+								READ_SCRIPT_FIELD(Entity, UUID);
+							}
+						}
+					}
+
+				}
 
 				//auto textComponent = entity["TextComponent"];
 				//if (textComponent)
@@ -505,15 +552,6 @@ namespace GT
 			out << YAML::EndMap; // TransformComponent
 		}
 
-		if (entity.HasComponent<ScriptComponent>())
-		{
-			auto& scriptComponent = entity.GetComponent<ScriptComponent>();
-
-			out << YAML::Key << "ScriptComponent";
-			out << YAML::BeginMap; // ScriptComponent
-			out << YAML::Key << "ClassName" << YAML::Value << scriptComponent.ClassName;
-			out << YAML::EndMap; // ScriptComponent
-		}
 
 		if (entity.HasComponent<CameraComponent>())
 		{
@@ -541,60 +579,60 @@ namespace GT
 			out << YAML::EndMap; // CameraComponent
 		}
 
-		//if (entity.HasComponent<ScriptComponent>())
-		//{
-		//	auto& scriptComponent = entity.GetComponent<ScriptComponent>();
+		if (entity.HasComponent<ScriptComponent>())
+		{
+			auto& scriptComponent = entity.GetComponent<ScriptComponent>();
 
-		//	out << YAML::Key << "ScriptComponent";
-		//	out << YAML::BeginMap; // ScriptComponent
-		//	out << YAML::Key << "ClassName" << YAML::Value << scriptComponent.ClassName;
+			out << YAML::Key << "ScriptComponent";
+			out << YAML::BeginMap; // ScriptComponent
+			out << YAML::Key << "ClassName" << YAML::Value << scriptComponent.ClassName;
 
-		//	// Fields
-		//	Ref<ScriptClass> entityClass = ScriptEngine::GetEntityClass(scriptComponent.ClassName);
-		//	const auto& fields = entityClass->GetFields();
-		//	if (fields.size() > 0)
-		//	{
-		//		out << YAML::Key << "ScriptFields" << YAML::Value;
-		//		auto& entityFields = ScriptEngine::GetScriptFieldMap(entity);
-		//		out << YAML::BeginSeq;
-		//		for (const auto& [name, field] : fields)
-		//		{
-		//			if (entityFields.find(name) == entityFields.end())
-		//				continue;
+			// Fields
+			Ref<ScriptClass> entityClass = ScriptEngine::GetEntityClass(scriptComponent.ClassName);
+			const auto& fields = entityClass->GetFields();
+			if (fields.size() > 0)
+			{
+				out << YAML::Key << "ScriptFields" << YAML::Value;
+				auto& entityFields = ScriptEngine::GetScriptFieldMap(entity);
+				out << YAML::BeginSeq;
+				for (const auto& [name, field] : fields)
+				{
+					if (entityFields.find(name) == entityFields.end())
+						continue;
 
-		//			out << YAML::BeginMap; // ScriptField
-		//			out << YAML::Key << "Name" << YAML::Value << name;
-		//			out << YAML::Key << "Type" << YAML::Value << Utils::ScriptFieldTypeToString(field.Type);
+					out << YAML::BeginMap; // ScriptField
+					out << YAML::Key << "Name" << YAML::Value << name;
+					out << YAML::Key << "Type" << YAML::Value << Utils::ScriptFieldTypeToString(field.Type);
 
-		//			out << YAML::Key << "Data" << YAML::Value;
-		//			ScriptFieldInstance& scriptField = entityFields.at(name);
+					out << YAML::Key << "Data" << YAML::Value;
+					ScriptFieldInstance& scriptField = entityFields.at(name);
 
-		//			switch (field.Type)
-		//			{
-		//				WRITE_SCRIPT_FIELD(Float, float);
-		//				WRITE_SCRIPT_FIELD(Double, double);
-		//				WRITE_SCRIPT_FIELD(Bool, bool);
-		//				WRITE_SCRIPT_FIELD(Char, char);
-		//				WRITE_SCRIPT_FIELD(Byte, int8_t);
-		//				WRITE_SCRIPT_FIELD(Short, int16_t);
-		//				WRITE_SCRIPT_FIELD(Int, int32_t);
-		//				WRITE_SCRIPT_FIELD(Long, int64_t);
-		//				WRITE_SCRIPT_FIELD(UByte, uint8_t);
-		//				WRITE_SCRIPT_FIELD(UShort, uint16_t);
-		//				WRITE_SCRIPT_FIELD(UInt, uint32_t);
-		//				WRITE_SCRIPT_FIELD(ULong, uint64_t);
-		//				WRITE_SCRIPT_FIELD(Vector2, glm::vec2);
-		//				WRITE_SCRIPT_FIELD(Vector3, glm::vec3);
-		//				WRITE_SCRIPT_FIELD(Vector4, glm::vec4);
-		//				WRITE_SCRIPT_FIELD(Entity, UUID);
-		//			}
-		//			out << YAML::EndMap; // ScriptFields
-		//		}
-		//		out << YAML::EndSeq;
-		//	}
+					switch (field.Type)
+					{
+						WRITE_SCRIPT_FIELD(Float, float);
+						WRITE_SCRIPT_FIELD(Double, double);
+						WRITE_SCRIPT_FIELD(Bool, bool);
+						WRITE_SCRIPT_FIELD(Char, char);
+						WRITE_SCRIPT_FIELD(Byte, int8_t);
+						WRITE_SCRIPT_FIELD(Short, int16_t);
+						WRITE_SCRIPT_FIELD(Int, int32_t);
+						WRITE_SCRIPT_FIELD(Long, int64_t);
+						WRITE_SCRIPT_FIELD(UByte, uint8_t);
+						WRITE_SCRIPT_FIELD(UShort, uint16_t);
+						WRITE_SCRIPT_FIELD(UInt, uint32_t);
+						WRITE_SCRIPT_FIELD(ULong, uint64_t);
+						WRITE_SCRIPT_FIELD(Vector2, glm::vec2);
+						WRITE_SCRIPT_FIELD(Vector3, glm::vec3);
+						WRITE_SCRIPT_FIELD(Vector4, glm::vec4);
+						WRITE_SCRIPT_FIELD(Entity, UUID);
+					}
+					out << YAML::EndMap; // ScriptFields
+				}
+				out << YAML::EndSeq;
+			}
 
-		//	out << YAML::EndMap; // ScriptComponent
-		//}
+			out << YAML::EndMap; // ScriptComponent
+		}
 
 		if (entity.HasComponent<SpriteRendererComponent>())
 		{
@@ -604,7 +642,7 @@ namespace GT
 			auto& spriteRendererComponent = entity.GetComponent<SpriteRendererComponent>();
 			out << YAML::Key << "Color" << YAML::Value << spriteRendererComponent.Color;
 			if (spriteRendererComponent.texture)
-				out << YAML::Key << "TexturePath" << YAML::Value << spriteRendererComponent.texture->GetPath().string();
+				out << YAML::Key << "TexturePath" << YAML::Value << spriteRendererComponent.texture->Get()->GetPath().string();
 
 			out << YAML::Key << "TilingFactor" << YAML::Value << spriteRendererComponent.TilingFactor;
 
@@ -617,6 +655,7 @@ namespace GT
 			out << YAML::BeginMap; 
 
 			auto& modelComponent = entity.GetComponent<ModelComponent>();
+			if(modelComponent.model)
 				out << YAML::Key << "ModelPath" << YAML::Value << modelComponent.model->Get()->filepath.string();
 
 			out << YAML::EndMap; 
@@ -629,7 +668,7 @@ namespace GT
 
 			auto& lightComponent = entity.GetComponent<LightRendererComponent>();
 			if (lightComponent.texture)
-				out << YAML::Key << "TexturePath" << YAML::Value << lightComponent.texture->GetPath().string();
+				out << YAML::Key << "TexturePath" << YAML::Value << lightComponent.texture->Get()->GetPath().string();
 
 			auto& light = lightComponent.light;
 			out << YAML::Key << "Type" << YAML::Value << (int)light.type;
@@ -659,7 +698,7 @@ namespace GT
 			out << YAML::Key << "Fade" << YAML::Value << circleRendererComponent.Fade;
 
 			if (circleRendererComponent.texture)
-				out << YAML::Key << "TexturePath" << YAML::Value << circleRendererComponent.texture->GetPath().string();
+				out << YAML::Key << "TexturePath" << YAML::Value << circleRendererComponent.texture->Get()->GetPath().string();
 
 			out << YAML::EndMap; // CircleRendererComponent
 		}

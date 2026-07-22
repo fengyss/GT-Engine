@@ -3,7 +3,9 @@
 #include "GT/Renderer/EditorCamera.h"
 #include "GT/Renderer/OrthographicCamera.h"
 #include "ParticleTypes.h"
-#include "GT/Assets/AssetsHandle.h"
+
+#include "GT/Core/Asset/Asset.h"
+#include "GT/Core/Asset/AssetHandle.h"
 namespace GT {
 
     struct ParticleGPUVertex {

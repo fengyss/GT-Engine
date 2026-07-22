@@ -1,45 +1,37 @@
 #pragma once
-#include <string>
-#include <atomic>
-#include <filesystem>
-#include "GT/Core/Log.h"
+
+#include "GT/Core/Base.h"
+
+#include "AssetMetadata.h"
+
+
 namespace GT {
 
-    // 所有资源的基类
-    class Asset {
+    // used to retrive asset from assetmanager
+    struct Handle
+    {
+        uint32_t slot = 0;  // asset's slot in AssetManager's assets
+        uint32_t generation = 0;
+
+        // 可选的比较运算符，用于放入 unordered_set/map
+        bool operator==(const Handle& other) const {
+            return slot == other.slot && generation == other.generation;
+        }
+    };
+
+
+    class Asset
+    {
     public:
         virtual ~Asset() = default;
 
-        // 同步加载（子类实现）
-        //virtual bool Load(const std::filesystem::path& path) = 0;
-        //virtual bool Get(const std::filesystem::path& path) = 0;
+        virtual AssetType _GetType() const = 0;
 
-        // 卸载资源
-        //virtual void Unload() {}
-
-
-        //inline const std::filesystem::path& GetPath() const { return m_Path; }
-
-    protected:
-        //std::filesystem::path m_Path;
-        //Ref<Asset> m_Cache = nullptr;
-    };
-
-    class AssetLibrary
-    {
-    public:
-
-        Ref<Asset> Load(uint32_t ID, const std::filesystem::path& filepath);
-        Ref<Asset> Reload(uint32_t ID, const std::filesystem::path& filepath);
-        void Clear() { m_Assets.clear(); }
-        Ref<Asset> Get(uint32_t ID);
-
-        bool Exists(uint32_t ID) const
-        {
-            return m_Assets.find(ID) != m_Assets.end();
-        }
-    private:
-        void Add(uint32_t ID, const Ref<Asset>& Asset);
-        std::unordered_map<uint32_t, Ref<Asset>> m_Assets;
+        AssetMetadata metadata;
+        uint32_t count = 0;
+        bool NeedReload = false;
     };
 }
+
+
+

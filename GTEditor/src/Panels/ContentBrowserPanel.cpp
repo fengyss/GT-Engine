@@ -4,7 +4,6 @@
 #include "GT/Project/Project.h"
 
 #include <imgui/imgui.h>
-#include "GT/Assets/AssetsManager.h"
 
 namespace GT {
 

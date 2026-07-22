@@ -77,6 +77,18 @@ namespace GT::Math {
 		return true;
 	}
 
+	std::string U64ToString(uint64_t num)
+	{
+		std::string s;
+		while (num)
+		{
+			s += num % 10 + '0';
+			num /= 10;
+		}
+		std::reverse(s.begin(),s.end());
+		return s;
+	}
+
 	uint32_t fnv1a(const char* str) {
 		uint32_t hash = 2166136261u;
 		while (*str) {

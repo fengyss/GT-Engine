@@ -86,6 +86,12 @@ struct fmt::formatter<glm::qua<T, Q>> {
     }
 };
 
+//template<typename OStream>
+//inline OStream& operator<<(OStream& os, const std::filesystem::path& path)
+//{
+//    return os << path.string();
+//}
+
 // Core log macros		
 #define GT_CORE_TRACE(...)       ::GT::Log::GetCoreLogger()->trace(__VA_ARGS__)
 #define GT_CORE_INFO(...)        ::GT::Log::GetCoreLogger()->info(__VA_ARGS__)

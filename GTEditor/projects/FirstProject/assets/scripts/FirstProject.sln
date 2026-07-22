@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FirstProject", "FirstProject.csproj", "{C40DD8BC-B070-6761-59F6-9F17453833E4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GT", "GT", "{E7390FDD-D306-6AE8-FC1F-5890E84B9F76}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GTScriptCore", "..\..\..\..\..\GTScriptCore\GTScriptCore.csproj", "{BE21A9DF-AA84-3884-530A-713A3F4C0407}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Dist|x64 = Dist|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C40DD8BC-B070-6761-59F6-9F17453833E4}.Debug|x64.ActiveCfg = Debug|x64
+		{C40DD8BC-B070-6761-59F6-9F17453833E4}.Debug|x64.Build.0 = Debug|x64
+		{C40DD8BC-B070-6761-59F6-9F17453833E4}.Dist|x64.ActiveCfg = Dist|x64
+		{C40DD8BC-B070-6761-59F6-9F17453833E4}.Dist|x64.Build.0 = Dist|x64
+		{C40DD8BC-B070-6761-59F6-9F17453833E4}.Release|x64.ActiveCfg = Release|x64
+		{C40DD8BC-B070-6761-59F6-9F17453833E4}.Release|x64.Build.0 = Release|x64
+		{BE21A9DF-AA84-3884-530A-713A3F4C0407}.Debug|x64.ActiveCfg = Debug|x64
+		{BE21A9DF-AA84-3884-530A-713A3F4C0407}.Debug|x64.Build.0 = Debug|x64
+		{BE21A9DF-AA84-3884-530A-713A3F4C0407}.Dist|x64.ActiveCfg = Dist|x64
+		{BE21A9DF-AA84-3884-530A-713A3F4C0407}.Dist|x64.Build.0 = Dist|x64
+		{BE21A9DF-AA84-3884-530A-713A3F4C0407}.Release|x64.ActiveCfg = Release|x64
+		{BE21A9DF-AA84-3884-530A-713A3F4C0407}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{BE21A9DF-AA84-3884-530A-713A3F4C0407} = {E7390FDD-D306-6AE8-FC1F-5890E84B9F76}
+	EndGlobalSection
+EndGlobal

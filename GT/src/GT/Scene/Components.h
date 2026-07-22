@@ -5,7 +5,6 @@
 #define GLM_ENABLE_EXPERIMENTAL
 #include "glm/gtx/quaternion.hpp"
 
-#include "GT/Assets/AssetsHandle.h"
 #include "GT/Renderer/Model.h"
 #include "SceneCamera.h"
 
@@ -15,6 +14,8 @@
 #include "GT/Particle/ParticleTypes.h"
 
 #include "GT/Core/Animation/AnimationTypes.h"
+
+#include "GT/Core/Asset/Asset.h"
 
 namespace GT
 {
@@ -325,8 +326,10 @@ namespace GT
     };
 
     using AllComponents =
-        ComponentGroup<TransformComponent, SpriteRendererComponent,
+        ComponentGroup<IDComponent,TransformComponent, SpriteRendererComponent,
         CircleRendererComponent, CameraComponent, NativeScriptComponent,
-        Rigidbody2DComponent, BoxCollider2DComponent, CircleCollider2DComponent>;
+        Rigidbody2DComponent, BoxCollider2DComponent, CircleCollider2DComponent,
+        AnimatorComponent,Animator2DComponent,LightRendererComponent,ModelComponent,
+        ParticleComponent,ScriptComponent>;
 
 }

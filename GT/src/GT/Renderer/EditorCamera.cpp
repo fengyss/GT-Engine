@@ -119,9 +119,13 @@ namespace GT {
 
 		
 
+		bool control = Input::IsKeyPressed(Key::LeftControl) || Input::IsKeyPressed(Key::RightControl);
+		bool shift = Input::IsKeyPressed(Key::LeftShift) || Input::IsKeyPressed(Key::RightShift);
+
 
 		float speed = 40.f;
 
+		if(!control && !shift)
 		switch (m_ProjectionType)
 		{
 		case ProjectionType::Perspective:

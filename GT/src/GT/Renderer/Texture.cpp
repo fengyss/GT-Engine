@@ -39,6 +39,11 @@ namespace GT
 		return nullptr;		
 	}
 
+	Ref<Texture2D> Texture2D::Create(TextureSpecification& spec, Buffer& data)
+	{
+		return Ref<Texture2D>();
+	}
+
 	void TextureLibrary::Clear()
 	{
 		for(auto& [id, texture] : m_Textures)

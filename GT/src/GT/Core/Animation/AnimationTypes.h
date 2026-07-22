@@ -1,7 +1,6 @@
 #pragma once
 
 #include "GT/Core/Base.h"
-#include "GT/Assets/AssetsHandle.h"
 
 #include <string>
 #include <vector>

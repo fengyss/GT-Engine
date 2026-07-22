@@ -33,6 +33,7 @@ namespace GT
 		fbSpec.Attachments = { FramebufferTextureFormate::RGBA8,FramebufferTextureFormate::RED_INTEGER,FramebufferTextureFormate::Depth };
 		fbSpec.Width = 1280;
 		fbSpec.Height = 720;
+
 		m_Framebuffer = Framebuffer::Create(fbSpec);
 
 		
@@ -49,7 +50,7 @@ namespace GT
 
 		m_SceneHierarchyPanel->SetContexts(m_SceneHistory);
 
-		OpenProject("project/default.hproj");
+		OpenProject("projects\\FirstProject\\FirstProject.hproj");
 
 
 		m_ContentBrowserPanel = CreateScope<ContentBrowserPanel>();
@@ -70,6 +71,8 @@ namespace GT
 
 	void EditorLayer::OnDetach()
 	{
+		if(m_ActiveScene->IsRunning())
+			OnSceneStop();
 	}
 
 
@@ -844,8 +847,8 @@ namespace GT
 	{
 		if (event.IsRepeat())
 			return false;
-		bool control = Input::IsKeyPressed(Key::LeftControl) || Input::IsKeyPressed(Key::LeftControl);
-		bool shift = Input::IsKeyPressed(Key::LeftControl) || Input::IsKeyPressed(Key::LeftControl);
+		bool control = Input::IsKeyPressed(Key::LeftControl) || Input::IsKeyPressed(Key::RightControl);
+		bool shift = Input::IsKeyPressed(Key::LeftShift) || Input::IsKeyPressed(Key::RightShift);
 		switch (event.GetKeyCode())
 		{
 
@@ -923,6 +926,7 @@ namespace GT
 		m_SceneHistory.clear();
 		OpenScene(m_Project->GetAssetDirectory() / m_Project->GetConfig().StartScene);
 		m_SceneHierarchyPanel->SetContexts(m_SceneHistory);
+
 	}
 
 

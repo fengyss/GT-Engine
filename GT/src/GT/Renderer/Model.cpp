@@ -1,11 +1,12 @@
 #include "gtpch.h"
 #include "Model.h"
 #include "GT/Project/Project.h"
-#include "GT/Assets/AssetsHandle.h"
 
 #include "GT/Renderer/RenderCommand.h"
 #include "GT/Renderer/Renderer2D.h"
 #include "GT/Renderer/Renderer3D.h"
+
+#include "GT/Core/Asset/AssetManager.h"
 
 namespace GT
 {
@@ -218,7 +219,7 @@ namespace GT
             bool skip = false;
             for (unsigned int j = 0; j < textures.size(); j++)
             {
-                if (std::strcmp(textures[j]->GetPath().filename().string().c_str(), path.C_Str()) == 0)
+                if (std::strcmp(textures[j]->Get()->GetPath().filename().string().c_str(), path.C_Str()) == 0)
                 {
                     skip = true; 
                     break;

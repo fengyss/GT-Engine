@@ -1,0 +1,44 @@
+Scene: cube
+Entities:
+  - Entity: 2439040476810992117
+    TagComponent:
+      Tag: Empty Entity
+      Type: None
+    TransformComponent:
+      Translation: [3.3278348, -0.46117783, -1.562301]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    ModelComponent:
+      ModelPath: projects\FirstProject\assets\obj\rock\rock.obj
+  - Entity: 17337834460955652274
+    TagComponent:
+      Tag: Empty Entity
+      Type: None
+    TransformComponent:
+      Translation: [-2.8544464, 5.302752, -0.38244626]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
+    LightComponent:
+      Type: 1
+      Ambient: [0.05, 0.05, 0.05]
+      Constant: 1.02
+      cutOff: 0.976296
+      outerCutOff: 0.95371693
+      Diffuse: [0.8, 0.8, 0.8]
+      Direction: [0, -1, 0]
+      Linear: 0.023
+      Position: [-2.8544464, 5.302752, -0.38244626]
+      Quadratic: 0.008
+      Specular: [1, 1, 1]
+  - Entity: 11358545675762791567
+    TagComponent:
+      Tag: Empty Entity
+      Type: None
+    TransformComponent:
+      Translation: [0, -130.9, 0]
+      Rotation: [1.5707964, 0, 0]
+      Scale: [999, 999, 999]
+    SpriteRendererComponent:
+      Color: [1, 1, 1, 1]
+      TexturePath: projects\FirstProject\assets\textures\Checkerboard.png
+      TilingFactor: 14

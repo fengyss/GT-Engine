@@ -18,6 +18,8 @@
 #include "GT/Particle/ParticleSystem.h"
 #include "GT/Core/Animation/AnimationSystem.h"
 
+#include "GT/Core/Asset/AssetManager.h"
+
 // Box2D
 #include "box2d/box2d.h"
 
@@ -43,6 +45,12 @@ namespace GT
     }
     Scene::~Scene()
     {
+
+        //void OnRuntimeStop();
+
+        //void OnSimulationStop();
+
+        //void OnPhysics2DStop();
     }
 
     template<typename Component>
@@ -130,6 +138,7 @@ namespace GT
 
     void Scene::OnRuntimeStart()
     {
+        m_IsRunning = true;
         OnPhysics2DStart();
 
 
@@ -151,6 +160,7 @@ namespace GT
     void Scene::OnRuntimeStop()
     {
 
+        m_IsRunning = false;
         ScriptEngine::OnRuntimeStop();
         OnPhysics2DStop();
     }
@@ -158,12 +168,27 @@ namespace GT
     void Scene::OnSimulationStart()
     {
 
+        m_IsRunning = true;
         OnPhysics2DStart();
+        // Scripting
+        {
+            ScriptEngine::OnRuntimeStart(this);
+            // Instantiate all script entities
+
+            auto view = m_Registry.view<ScriptComponent>();
+            for (auto e : view)
+            {
+                Entity entity = { e, this };
+                ScriptEngine::OnCreateEntity(entity);
+            }
+        }
     }
 
     void Scene::OnSimulationStop()
     {
+        m_IsRunning = false;
         OnPhysics2DStop();
+        ScriptEngine::OnRuntimeStop();
     }
 
     void Scene::OnPhysics2DStart()
@@ -396,6 +421,29 @@ namespace GT
     void Scene::OnUpdateSimulation(Timestep ts, EditorCamera& camera)
     {
 
+        // Update Scripts
+        {
+            // C# Entity OnUpdate
+            auto view = m_Registry.view<ScriptComponent>();
+            for (auto e : view)
+            {
+                Entity entity = { e, this };
+                ScriptEngine::OnUpdateEntity(entity, ts);
+            }
+
+            m_Registry.view<NativeScriptComponent>().each([=](auto entity, auto& nsc)
+                {
+                    //TODO: Move to Scene::OnScenePlay
+                    if (!nsc.Instance)
+                    {
+                        nsc.Instance = nsc.InstantiateScript();
+                        nsc.Instance->m_Entity = Entity{ entity,this };
+                        nsc.Instance->OnCreate();
+                    }
+                    nsc.Instance->OnUpdate(ts);
+                });
+        }
+
         OnPhysics2DUpdate(ts);
 
         SceneUpdate(ts);
@@ -516,8 +564,8 @@ namespace GT
     {
         if (e.HasComponent<ParticleComponent>()) e.RemoveComponent<ParticleComponent>();
        
-        m_Registry.destroy(e);
         m_EntityMap.erase(e.GetUUID());
+        m_Registry.destroy(e);
 
     }
 
@@ -644,9 +692,11 @@ namespace GT
     template<>
     void Scene::OnComponentAdded<Animator2DComponent>(Entity entity, Animator2DComponent& component)
     {
+        
         component.CurrentAnimation = CreateRef<AnimationClip>(component.name, component.duration);
-        auto& path = entity.GetComponent<SpriteRendererComponent>().texture->GetPath();
-        component.isEnable = component.CurrentAnimation->ImportSpriteSheet(path);
+        auto tex = entity.GetComponent<SpriteRendererComponent>().texture;
+        if(tex) component.isEnable = component.CurrentAnimation->ImportSpriteSheet(tex->Get()->GetPath());
+		else GT_CORE_ERROR("Animator2DComponent: SpriteRendererComponent texture path is empty!");
     }
     
     template<>

@@ -4,6 +4,7 @@
 #include <imgui/imgui_internal.h>
 #include "GT/Utils/PlatformUtils.h"
 #include "GT/Scripting/ScriptEngine.h"
+#include "GT/Core/Asset/AssetManager.h"
 
 namespace GT
 {
@@ -477,7 +478,7 @@ namespace GT
 						std::filesystem::path filepath(path);
 						RefHandle<Texture2D> texture = CreateHandle<Texture2D>(filepath);
 
-						if (texture->Get()) component.texture = texture;
+						if (texture) component.texture = texture;
 						else GT_CORE_WARN("Could not load texture {0}", filepath.string());
 					}
 					ImGui::EndDragDropTarget();
@@ -489,7 +490,7 @@ namespace GT
 					ImGui::DragFloat2("Size", glm::value_ptr(component.UVSize), 0.1f, 0.0f, 1.0f);
 				}
 
-				ImGui::SliderInt("Tiling Factor", &component.TilingFactor, 1, 10);
+				ImGui::SliderInt("Tiling Factor", &component.TilingFactor, 1, 100);
 			});
 
 		DrawComponent<CircleRendererComponent>("Circle Renderer", e, [](auto& component)
@@ -511,7 +512,7 @@ namespace GT
 						std::filesystem::path filepath(path);
 						RefHandle<Texture2D> texture = CreateHandle<Texture2D>(filepath);
 
-						if (texture->Get()) component.texture = texture;
+						if (texture) component.texture = texture;
 						else GT_CORE_WARN("Could not load texture {0}", filepath.string());
 					}
 					ImGui::EndDragDropTarget();
@@ -658,8 +659,8 @@ namespace GT
 						const wchar_t* path = (const wchar_t*)payload->Data;
 						std::filesystem::path filepath(path);
 						RefHandle<Model> model = CreateHandle<Model>(filepath);
-
-						component.model = model;
+						if(model)
+							component.model = model;
 						//GT_CORE_WARN("Could not load Model {0}", filepath.string());
 					}
 					ImGui::EndDragDropTarget();
@@ -812,7 +813,7 @@ namespace GT
 
 			});
 
-			DrawComponent<ScriptComponent>("Script", e, [](auto& component)
+			DrawComponent<ScriptComponent>("Script", e, [e,scene= m_ActiveContext](auto& component) mutable
 				{
 					bool scriptClassExists = ScriptEngine::EntityClassExists(component.ClassName);
 
@@ -824,6 +825,70 @@ namespace GT
 
 					if (ImGui::InputText("Class", buffer, sizeof(buffer)))
 						component.ClassName = buffer;
+
+					bool sceneRunning = scene->IsRunning();
+
+					if (sceneRunning)
+					{
+						// Fields
+						Ref<ScriptInstance> scriptInstance = ScriptEngine::GetEntityScriptInstance(e.GetUUID());
+						if (scriptInstance)
+						{
+							const auto& fields = scriptInstance->GetScriptClass()->GetFields();
+
+							for (const auto& [name, field] : fields)
+							{
+								if (field.Type == ScriptFieldType::Float)
+								{
+									float data = scriptInstance->GetFieldValue<float>(name);
+									if (ImGui::DragFloat(name.c_str(), &data))
+									{
+										scriptInstance->SetFieldValue(name, data);
+									}
+								}
+							}
+						}
+					}
+					else
+					{
+						Ref<ScriptClass> entityClass = ScriptEngine::GetEntityClass(component.ClassName);
+						if (entityClass)
+						{
+							const auto& fields = entityClass->GetFields();
+
+							auto& entityFields = ScriptEngine::GetScriptFieldMap(e);
+							for (const auto& [name, field] : fields)
+							{
+								// Field has been set in editor
+								if (entityFields.find(name) != entityFields.end())
+								{
+									ScriptFieldInstance& scriptField = entityFields.at(name);
+
+									// Display control to set it maybe
+									if (field.Type == ScriptFieldType::Float)
+									{
+										float data = scriptField.GetValue<float>();
+										if (ImGui::DragFloat(name.c_str(), &data))
+											scriptField.SetValue(data);
+									}
+								}
+								else
+								{
+									// Display control to set it maybe
+									if (field.Type == ScriptFieldType::Float)
+									{
+										float data = 0.0f;
+										if (ImGui::DragFloat(name.c_str(), &data))
+										{
+											ScriptFieldInstance& fieldInstance = entityFields[name];
+											fieldInstance.Field = field;
+											fieldInstance.SetValue(data);
+										}
+									}
+								}
+							}
+						}
+					}
 
 					if (!scriptClassExists)
 						ImGui::PopStyleColor();

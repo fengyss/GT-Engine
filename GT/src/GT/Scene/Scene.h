@@ -46,6 +46,7 @@ namespace GT
 		Entity GetEntityByUUID(UUID uuid);
 
 		Ref<Framebuffer> GetFramebuffer() { return m_Framebuffer; }
+
 		void SetFramebuffer(Ref<Framebuffer> framebuffer) { m_Framebuffer = framebuffer; }
 
 		void OnViewportResize(uint32_t width, uint32_t height);
@@ -66,6 +67,7 @@ namespace GT
 
 		Entity GetPrimaryCameraEntity();
 
+		bool IsRunning() const { return m_IsRunning; }
 
 		void SetName(const std::string& newName) { name = newName; }
 		void SetFilePath(const std::filesystem::path& path) { filepath = path; }
@@ -90,6 +92,8 @@ namespace GT
 		entt::registry m_Registry;
 		uint32_t m_ViewportWidth = 0;
 		uint32_t m_ViewportHeight = 0;
+
+		bool m_IsRunning = false;
 
 		b2WorldId m_WorldID = b2_nullWorldId;
 		

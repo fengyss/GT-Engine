@@ -1,0 +1,130 @@
+{
+    "MetaDatas": [
+        {
+            "FilePath": "Resources\\shaders\\Renderer2D_Text.glsl",
+            "Name": "Renderer2D_Text",
+            "Type": "AssetType::<Invalid>",
+            "UUID": 16580546073477241962
+        },
+        {
+            "FilePath": "Resources\\shaders\\Renderer2D_Quad.glsl",
+            "Name": "Renderer2D_Quad",
+            "Type": "AssetType::<Invalid>",
+            "UUID": 10359993004243263024
+        },
+        {
+            "FilePath": "Resources\\textures\\Checkerboard.png",
+            "Name": "Default",
+            "Type": "AssetType::Texture2D",
+            "UUID": 16014819892461722490
+        },
+        {
+            "FilePath": "Resources\\Icons\\FileIcon.png",
+            "Name": "FileIcon",
+            "Type": "AssetType::Texture2D",
+            "UUID": 16232609147478358506
+        },
+        {
+            "FilePath": "Resources\\Icons\\SimulateButton.png",
+            "Name": "IconSimulate",
+            "Type": "AssetType::Texture2D",
+            "UUID": 12203052479380899133
+        },
+        {
+            "FilePath": "projects\\FirstProject\\assets\\textures\\Checkerboard.png",
+            "Name": "7688526024815042908",
+            "Type": "AssetType::Texture2D",
+            "UUID": 7688526024815042908
+        },
+        {
+            "FilePath": "Resources\\Icons\\PlayButton.png",
+            "Name": "IconPlay",
+            "Type": "AssetType::Texture2D",
+            "UUID": 516430616124094694
+        },
+        {
+            "FilePath": "Resources\\Icons\\StopButton.png",
+            "Name": "IconStop",
+            "Type": "AssetType::Texture2D",
+            "UUID": 8726023882524413287
+        },
+        {
+            "FilePath": "Resources\\shaders\\Renderer2D_Circle.glsl",
+            "Name": "Renderer2D_Circle",
+            "Type": "AssetType::<Invalid>",
+            "UUID": 6246649058576788274
+        },
+        {
+            "FilePath": "Resources\\Icons\\DirectoryIcon.png",
+            "Name": "DirectoryIcon",
+            "Type": "AssetType::Texture2D",
+            "UUID": 9826623055280965415
+        },
+        {
+            "FilePath": "Resources\\shaders\\Renderer2D_Line.glsl",
+            "Name": "Renderer2D_Line",
+            "Type": "AssetType::<Invalid>",
+            "UUID": 15969436280560219680
+        },
+        {
+            "FilePath": "Resources\\shaders\\Model.glsl",
+            "Name": "Model",
+            "Type": "AssetType::<Invalid>",
+            "UUID": 10761110515436818606
+        },
+        {
+            "FilePath": "projects\\FirstProject\\assets\\obj\\backpack\\diffuse.jpg",
+            "Name": "6694103523939846690",
+            "Type": "AssetType::Texture2D",
+            "UUID": 6694103523939846690
+        },
+        {
+            "FilePath": "Resources\\shaders\\Particle.geom",
+            "Name": "Particles",
+            "Type": "AssetType::<Invalid>",
+            "UUID": 12851349878938416892
+        },
+        {
+            "FilePath": "Resources\\shaders\\ShadowMap.glsl",
+            "Name": "Shadow",
+            "Type": "AssetType::<Invalid>",
+            "UUID": 10026744696785271079
+        },
+        {
+            "FilePath": "Resources\\shaders\\Renderer2D_UI.glsl",
+            "Name": "Renderer2D_UI",
+            "Type": "AssetType::<Invalid>",
+            "UUID": 4520646689639010606
+        },
+        {
+            "FilePath": "projects\\FirstProject\\assets\\obj\\rock\\rock.png",
+            "Name": "7777902425629437083",
+            "Type": "AssetType::Texture2D",
+            "UUID": 7777902425629437083
+        },
+        {
+            "FilePath": "projects\\FirstProject\\assets\\obj\\rock\\rock.obj",
+            "Name": "8827181088396613871",
+            "Type": "AssetType::<Invalid>",
+            "UUID": 8827181088396613871
+        },
+        {
+            "FilePath": "projects\\FirstProject\\assets\\obj\\backpack\\specular.jpg",
+            "Name": "12188277421812220192",
+            "Type": "AssetType::Texture2D",
+            "UUID": 12188277421812220192
+        },
+        {
+            "FilePath": "projects\\FirstProject\\assets\\obj\\backpack\\normal.png",
+            "Name": "80580957009292872",
+            "Type": "AssetType::Texture2D",
+            "UUID": 80580957009292872
+        },
+        {
+            "FilePath": "projects\\FirstProject\\assets\\obj\\backpack\\backpack.obj",
+            "Name": "17297882866627345008",
+            "Type": "AssetType::<Invalid>",
+            "UUID": 17297882866627345008
+        }
+    ]
+}

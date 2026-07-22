@@ -1,7 +1,7 @@
 #include "gtpch.h"
 
 #ifdef GT_DEBUG
-//#include<vld/vld.h>
+#include<vld/vld.h>
 #endif 
 
 

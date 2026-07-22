@@ -7,9 +7,10 @@
 
 #include <string>
 #include <vector>
-#include "GT/Assets/AssetsHandle.h"
 #include "GT/Renderer/Frustum.h"
 #define MAX_BONE_INFLUENCE 4
+
+#include "GT/Core/Asset/AssetHandle.h"
 
 struct Vertex {
     // position

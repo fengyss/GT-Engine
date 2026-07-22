@@ -2,7 +2,6 @@
 
 #include <memory>
 
-
 #ifdef GT_PLATFORM_WINDOWS
 	#if GT_DYNAMIC_LINK
 		#ifdef GT_BUILD_DLL

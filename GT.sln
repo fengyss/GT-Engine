@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
+VisualStudioVersion = 17.14.37216.2 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{19274BB3-853D-4949-CEB4-D46A3A0A1AD1}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
@@ -41,6 +43,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "json", "GT\vendor\json\json.vcxproj", "{9F27997C-8B5E-9A0D-344B-80102061160F}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "yaml_cpp", "GT\vendor\yaml-cpp\yaml_cpp.vcxproj", "{7A5CBC57-6629-1763-8F42-050B7B6E4CF1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FirstProject", "GTEditor\projects\FirstProject\assets\scripts\FirstProject.csproj", "{C40DD8BC-B070-6761-59F6-9F17453833E4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -139,6 +143,12 @@ Global
 		{7A5CBC57-6629-1763-8F42-050B7B6E4CF1}.Dist|x64.Build.0 = Dist|x64
 		{7A5CBC57-6629-1763-8F42-050B7B6E4CF1}.Release|x64.ActiveCfg = Release|x64
 		{7A5CBC57-6629-1763-8F42-050B7B6E4CF1}.Release|x64.Build.0 = Release|x64
+		{C40DD8BC-B070-6761-59F6-9F17453833E4}.Debug|x64.ActiveCfg = Debug|x64
+		{C40DD8BC-B070-6761-59F6-9F17453833E4}.Debug|x64.Build.0 = Debug|x64
+		{C40DD8BC-B070-6761-59F6-9F17453833E4}.Dist|x64.ActiveCfg = Dist|x64
+		{C40DD8BC-B070-6761-59F6-9F17453833E4}.Dist|x64.Build.0 = Dist|x64
+		{C40DD8BC-B070-6761-59F6-9F17453833E4}.Release|x64.ActiveCfg = Release|x64
+		{C40DD8BC-B070-6761-59F6-9F17453833E4}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

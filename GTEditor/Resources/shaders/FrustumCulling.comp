@@ -1,0 +1,38 @@
+
+#version 460 core
+layout(local_size_x = 64) in;
+
+layout(std430, binding = 0) readonly buffer InstanceBuffer {
+    GPUInstance instances[];
+};
+
+layout(std430, binding = 1) writeonly buffer DrawCommandBuffer {
+    DrawIndexedIndirectCommand drawCommands[];
+};
+
+layout(binding = 2) uniform atomic_uint drawCallCount;
+
+uniform mat4 viewProjMatrix;
+
+bool IsInFrustum(GPUInstance instance) {
+    return true; // 伪代码，实际需计算 6 个平面
+}
+
+void main() {
+    uint idx = gl_GlobalInvocationID.x;
+    if (idx >= instances.length()) return;
+
+    GPUInstance inst = instances[idx];
+    
+    if (!IsInFrustum(inst)) return;
+
+    // if (distanceTooFar) return;
+
+    uint drawCmdIdx = atomicCounterIncrement(drawCallCount);
+    
+    drawCommands[drawCmdIdx].indexCount = meshes[inst.meshID].indexCount;
+    drawCommands[drawCmdIdx].instanceCount = 1;
+    drawCommands[drawCmdIdx].firstIndex = meshes[inst.meshID].indexOffset;
+    drawCommands[drawCmdIdx].baseVertex = meshes[inst.meshID].vertexOffset;
+    drawCommands[drawCmdIdx].baseInstance = idx; // 关键：把 Instance ID 传进去
+}

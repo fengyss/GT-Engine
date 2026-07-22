@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include "glm/glm.hpp"
+#include "GT/Core/Asset/Asset.h"
 
 namespace GT
 {
@@ -105,7 +106,7 @@ namespace GT
 			return light;
 		}
 	};
-	class Shader
+	class Shader : public Asset
 	{
 	public:
 		virtual ~Shader() = default;
@@ -140,6 +141,11 @@ namespace GT
 		static Ref<Shader> Create(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc);
 		static Ref<Shader> CreateCompute(const std::filesystem::path& filepath);
 		static Ref<Shader> CreateGeometry(const std::filesystem::path& filepath);
+
+
+		static AssetType GetStaticType() { return AssetType::Shader; }
+
+		virtual AssetType _GetType() const { return GetStaticType(); }
 
 	private:
 		uint32_t m_RendererID;

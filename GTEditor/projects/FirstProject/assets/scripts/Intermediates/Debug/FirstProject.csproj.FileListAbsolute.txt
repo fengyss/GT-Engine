@@ -1,0 +1,9 @@
+C:\Dev\GT\GTEditor\projects\FirstProject\assets\scripts\Binaries\FirstProject.dll
+C:\Dev\GT\GTEditor\projects\FirstProject\assets\scripts\Binaries\FirstProject.pdb
+C:\Dev\GT\GTEditor\projects\FirstProject\assets\scripts\Binaries\GTScriptCore.dll
+C:\Dev\GT\GTEditor\projects\FirstProject\assets\scripts\Binaries\GTScriptCore.pdb
+C:\Dev\GT\GTEditor\projects\FirstProject\assets\scripts\Intermediates\Debug\FirstProject.csproj.AssemblyReference.cache
+C:\Dev\GT\GTEditor\projects\FirstProject\assets\scripts\Intermediates\Debug\FirstProject.csproj.CoreCompileInputs.cache
+C:\Dev\GT\GTEditor\projects\FirstProject\assets\scripts\Intermediates\Debug\FirstPro.5031491B.Up2Date
+C:\Dev\GT\GTEditor\projects\FirstProject\assets\scripts\Intermediates\Debug\FirstProject.dll
+C:\Dev\GT\GTEditor\projects\FirstProject\assets\scripts\Intermediates\Debug\FirstProject.pdb

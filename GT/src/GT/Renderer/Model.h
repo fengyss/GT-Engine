@@ -8,18 +8,27 @@
 #include "Mesh.h"
 #include "Shader.h"
 
-#include "GT/Assets/AssetsHandle.h"
 #include "GT/Renderer/Frustum.h"
+
+#include "GT/Core/Asset/AssetHandle.h"
+#include "GT/Core/Asset/Asset.h"
 
 namespace GT
 {
-    class Model
+    class Model : public Asset
     {
     public:
+
+        static AssetType GetStaticType() { return AssetType::Model; }
+
+        virtual AssetType _GetType() const { return GetStaticType(); }
+
         // model data 
         std::vector<RefHandle<Texture2D>> textures;
 		RefHandle<Shader> shader;
 
+        //std::vector<AssetHandle> textures;
+        //AssetHandle shader;
         
         std::vector<Mesh>    meshes;
         std::filesystem::path filepath;
@@ -50,6 +59,10 @@ namespace GT
             this->shader = shader; 
             hasShader = true;
         }
+        //void SetShader(AssetHandle shader) {
+            //this->shader = shader;
+            //hasShader = true;
+        //}
         const std::vector<Mesh> GetMeshes() { return meshes; }
 		uint32_t GetMeshCount() const { return meshes.size(); }
         void CalculateVertexCount() 

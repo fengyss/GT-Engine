@@ -1,9 +1,9 @@
 #pragma once
 
 #include "GT/Renderer/Texture.h"
-#include "GT/Assets/AssetsHandle.h"
 #include <filesystem>
 
+#include "GT/Core/Asset/AssetHandle.h"
 namespace GT {
 
 	class ContentBrowserPanel

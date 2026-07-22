@@ -2,8 +2,6 @@
 #include "Renderer2D.h"
 #include "RenderCommand.h"
 #include <glm/gtc/matrix_transform.hpp>
-#include "GT/Assets/AssetsHandle.h"
-#include "GT/Assets/AssetsManager.h"
 
 #include "glad/glad.h"
 
@@ -91,7 +89,6 @@ namespace GT
 	};
 
 	std::map<GLchar, Character> Characters;
-
 	void Renderer2D::Init()
 	{
 		GT_PROFILE_FUNCTION();
@@ -190,11 +187,6 @@ namespace GT
 		s_Data.WhiteTexture->SetData(&whiteTextureData, sizeof(uint32_t));
 
 
-		int32_t samplers[s_Data.MaxTextureSlots];
-		for (uint32_t i = 0;i < s_Data.MaxTextureSlots;i++)
-		{
-			samplers[i] = i;
-		}
 
 		
 		s_Data.QuadShader = CreateHandle<Shader>("Renderer2D_Quad");
@@ -202,14 +194,7 @@ namespace GT
 		s_Data.LineShader = CreateHandle<Shader>("Renderer2D_Line");
 		s_Data.UIShader = CreateHandle<Shader>("Renderer2D_UI");
 
-		s_Data.QuadShader->Get()->Bind();
-		s_Data.QuadShader->Get()->SetUniformiv("u_Textures", samplers, s_Data.MaxTextureSlots);
 
-		s_Data.CircleShader->Get()->Bind();
-		s_Data.CircleShader->Get()->SetUniformiv("u_Textures", samplers, s_Data.MaxTextureSlots);
-
-		s_Data.UIShader->Get()->Bind();
-		s_Data.UIShader->Get()->SetUniformiv("u_Textures", samplers, s_Data.MaxTextureSlots);
 
 
 

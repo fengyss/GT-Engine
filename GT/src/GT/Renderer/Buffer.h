@@ -1,4 +1,6 @@
 #pragma once
+#include <cstdint>
+#include "GT/Core/Base.h"
 namespace GT
 {
 	enum class ShaderDataType

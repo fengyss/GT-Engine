@@ -17,6 +17,10 @@
 namespace GT {
 	
 static std::unordered_map<MonoType*, std::function<bool(Entity)>> s_EntityHasComponentFuncs;
+
+// InternalCalls是Mono提供的一种机制，允许C#代码调用C++代码。
+// 通过在C#中声明一个方法，并使用[MethodImpl(MethodImplOptions.InternalCall)]特性标记它。
+// mono_add_internal_call会将C#中的方法名和C++中的函数指针进行绑定，使得C#可以直接调用C++的实现。
 #define GT_ADD_INTERNAL_CALL(Name) mono_add_internal_call("GT.InternalCalls::" #Name, Name)
 
 	static void NativeLog(MonoString* string, int parameter)

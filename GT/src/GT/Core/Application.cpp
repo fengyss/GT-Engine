@@ -1,7 +1,9 @@
 #include "gtpch.h"
 #include "Application.h"
 
-#include "GT/Assets/AssetsManager.h"
+
+#include "GT/Core/Asset/AssetManager.h"
+
 #include "Input.h"
 
 #include "imgui.h"
@@ -72,19 +74,17 @@ namespace GT
 	Application::~Application()
 	{
 
-		AssetsManager::ShutDown();
+		AssetManager::ShutDown();
 		Renderer::ShutDown();
 		ScriptEngine::Shutdown();
 
-		for(auto layer : m_LayerStack)
-			layer->OnDetach();
 		m_Window.reset();
 	}
 
 
 	void Application::Init()
 	{
-		AssetsManager::Init();
+		AssetManager::Init();
 		Renderer::Init();
 		ScriptEngine::Init();
 		Random::Init();
@@ -162,6 +162,9 @@ namespace GT
 
 			m_Window->OnRender();
 		}
+
+		for (auto layer : m_LayerStack)
+			layer->OnDetach();
 
 
 	}

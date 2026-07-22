@@ -3,8 +3,8 @@ project "GTScriptCore"
 	language "C#"
 	dotnetframework "4.7.2"
 
-	targetdir ("%{wks.location}/GTEditor/Resources/Scripts")
-	objdir ("%{wks.location}/GTEditor/Resources/Scripts/Intermediates")
+	targetdir ("../GTEditor/Resources/Scripts")
+	objdir ("../GTEditor/Resources/Scripts/Intermediates")
 
 	files 
 	{

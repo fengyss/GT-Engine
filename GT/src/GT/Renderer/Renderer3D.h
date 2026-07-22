@@ -5,7 +5,6 @@
 
 #include "Shader.h"
 #include "Model.h"
-#include "GT/Assets/AssetsHandle.h"
 #include "Framebuffer.h"
 namespace GT
 {

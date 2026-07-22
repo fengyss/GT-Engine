@@ -45,8 +45,8 @@ namespace GT
         //set up Dear ImGui style
 		//ImGui::StyleColorsClassic();
 
-		io.FontDefault = io.Fonts->AddFontFromFileTTF("project/assets/fonts/opensans/OpenSans-Regular.ttf", 18.0f);
-        io.Fonts->AddFontFromFileTTF("project/assets/fonts/opensans/OpenSans-Bold.ttf", 18.0f);
+		io.FontDefault = io.Fonts->AddFontFromFileTTF("Resources/fonts/opensans/OpenSans-Regular.ttf", 18.0f);
+        io.Fonts->AddFontFromFileTTF("Resources/fonts/opensans/OpenSans-Bold.ttf", 18.0f);
 
 
 

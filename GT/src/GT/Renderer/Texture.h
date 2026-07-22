@@ -1,7 +1,9 @@
 #pragma once
 #include "glm/glm.hpp"
+
 #include "GT/Core/Log.h"
-#include <string>
+#include "GT/Core/Buffer.h"
+#include "GT/Core/Asset/Asset.h"
 namespace GT
 {
 	struct TexCoords
@@ -23,6 +25,21 @@ namespace GT
 	{
 		unsigned char* data;
 		int height, width, channels;
+	};
+	enum class ImageFormat
+	{
+		None = 0,
+		R8,
+		RGB8,
+		RGBA8,
+		RGBA32F
+	};
+	struct TextureSpecification
+	{
+		uint32_t Width = 1;
+		uint32_t Height = 1;
+		ImageFormat Format = ImageFormat::RGBA8;
+		bool GenerateMips = true;
 	};
 	static std::string GetStrOfType(TextureType type)
 	{
@@ -48,7 +65,7 @@ namespace GT
 			break;
 		}
 	}
-	class Texture
+	class Texture 
 	{
 	public:
 		virtual ~Texture() = default;
@@ -76,14 +93,18 @@ namespace GT
 
 
 	};
-	class Texture2D : public Texture
+	class Texture2D : public Texture , public Asset
 	{
 	public:
 		virtual ~Texture2D() = default;
 
+		static AssetType GetStaticType() { return AssetType::Texture2D; }
+		
+		virtual AssetType _GetType() const { return GetStaticType(); }
 
 		static Ref<Texture2D> Create(const std::filesystem::path& path);
 		static Ref<Texture2D> Create(const int width,const int height);
+		static Ref<Texture2D> Create(TextureSpecification& spec, Buffer& data);
 	};
 
 

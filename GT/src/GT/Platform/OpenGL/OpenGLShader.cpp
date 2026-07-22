@@ -56,7 +56,10 @@ namespace GT
 	{
 		GT_PROFILE_FUNCTION();
 		std::string source = ReadFile(filepath);
-		
+		if (source.empty())
+		{
+			GT_CORE_ASSERT(false,"Creat opengl shader failed {0}!", filepath.string());
+		}
 		switch (type)
 		{
 		case ShaderType::Normal:

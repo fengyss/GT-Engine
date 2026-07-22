@@ -1,9 +1,8 @@
 #include "gtpch.h"
 #include "AnimationSystem.h"
 #include "GT/Scene/Components.h"
-#include "GT/Assets/AssetsManager.h"
 #include "AnimationTypes.h"
-//
+
 namespace GT {
 
     void Animation2DSystem::OnUpdate(Scene* scene, Timestep ts)

@@ -1,6 +1,7 @@
 #pragma once
-#include"GT/Assets/AssetsHandle.h"
 #include"GT/Renderer/Buffer.h"
+#include "GT/Core/Asset/Asset.h"
+#include "GT/Renderer/Shader.h"
 namespace GT
 {
     struct Plane
