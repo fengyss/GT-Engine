@@ -5,7 +5,7 @@ pause
 git add .
 pause
 
-git commit -m "feat: start script engine, add imgui theme change."
+git commit -m "feat: Refactor Asset system. Add C# Script system"
 
 pause
 

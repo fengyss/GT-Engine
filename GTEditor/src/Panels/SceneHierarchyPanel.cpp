@@ -478,7 +478,7 @@ namespace GT
 						std::filesystem::path filepath(path);
 						RefHandle<Texture2D> texture = CreateHandle<Texture2D>(filepath);
 
-						if (texture) component.texture = texture;
+						if (texture && texture->IsValid()) component.texture = texture;
 						else GT_CORE_WARN("Could not load texture {0}", filepath.string());
 					}
 					ImGui::EndDragDropTarget();

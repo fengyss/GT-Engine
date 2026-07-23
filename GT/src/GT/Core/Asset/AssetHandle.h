@@ -17,13 +17,15 @@ namespace GT
         AssetHandle(const std::filesystem::path& path, bool IsWatch = false);
         AssetHandle(const std::filesystem::path& path, const char* name, bool IsWatch = false);
 
+        ~AssetHandle() { AssetManager::ReleaseAsset(handle); };
+
         Handle handle;
 
         bool IsValid() const { return handle.generation != 0; }
 
         Ref<T> Get();
 
-
+        operator bool() const { return IsValid(); }
     };
 
     // Assets Handle Ref

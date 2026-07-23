@@ -642,7 +642,7 @@ namespace GT
 		quadState.Color = sprite.Color;
 
 
-		if (sprite.texture)
+		if (sprite.texture && sprite.texture->IsValid())
 		{
 			SetTextureCoords(sprite.UVOffset, sprite.UVSize);
 			quadState.TextureIndex = GetTextureSlotIndex(sprite.texture->Get());

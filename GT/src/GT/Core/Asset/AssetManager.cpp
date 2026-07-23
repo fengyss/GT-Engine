@@ -118,9 +118,13 @@ namespace GT
 		for (auto& asset : json["Assets"])
 		{
 			Ref<AssetMetadata> meta = CreateRef<AssetMetadata>();
-			meta->FilePath = std::filesystem::path(std::string(asset["FilePath"]));
+
 			meta->Name = asset["Name"];
+			meta->ID = uint64_t(asset["ID"]);
 			meta->Type = AssetTypeFromString(asset["Type"]);
+			meta->FilePath = std::filesystem::path(std::string(asset["FilePath"]));
+			meta->IsWatch = asset["IsWatch"];
+
 			MetaTable.emplace(meta->Name,meta);
 		}
 	}
@@ -148,9 +152,11 @@ namespace GT
 		{
 			json data;
 			data["Name"] = name;
-			data["FilePath"] = meta->FilePath.string();
-			data["UUID"] = uint64_t(meta->ID);
+			data["ID"] = uint64_t(meta->ID);
 			data["Type"] = AssetTypeToString(meta->Type);
+			data["FilePath"] = meta->FilePath.string();
+			data["IsWatch"] = meta->IsWatch;
+
 			root["MetaDatas"].push_back(data);
 		}
 		Utils::SaveJSON(root, Project::GetAssetDirectory() / "AssetsMetadata.json");
@@ -239,7 +245,7 @@ namespace GT
 				GT_CORE_ERROR("Can't load asset:{0} from {1}!", meta->Name, meta->FilePath.string());
 				return false;
 			}
-			asset->count = 1;
+			asset->count = 0;
 			AssetSlots[slot].second = asset;
 			ResourceTable[name] = out;
 			if(meta->IsWatch)
@@ -289,7 +295,7 @@ namespace GT
 		auto& count = AssetSlots[slot].second->count;
 		if (count == 0)
 		{
-			GT_CORE_ERROR("Try to release a asset handle which asset already inactive(might released)!");
+			GT_CORE_ERROR("Try to release a asset handle which asset already inactive(might released or not existed)!");
 			return false;
 		}
 
@@ -313,7 +319,7 @@ namespace GT
 		auto& assetslot = AssetSlots[handle.slot];
 		if (assetslot.first == handle)
 		{
-			assetslot.second->count++;
+			//assetslot.second->count++;
 			if (assetslot.second->NeedReload) 
 			{
 				assetslot.second = AssetImporter::ImportAsset(assetslot.second->metadata);
@@ -351,7 +357,7 @@ namespace GT
 
 		auto asset = AssetImporter::ImportAsset(*meta);
 
-		if (asset) asset->count = 1;
+		if (asset) asset->count = 0;
 		else return Handle();
 
 		Handle handle = GetNextAvialHandle();
@@ -359,6 +365,7 @@ namespace GT
 		meta->IsWatch = IsWatch;
 		ResourceTable[name] = handle;
 		MetaTable[meta->Name] = meta;
+		asset->count = 1;
 		AssetSlots[handle.slot].second = asset;
 		m_Paths.insert({ path,name });
 
@@ -372,7 +379,7 @@ namespace GT
 		uint32_t slot = TheLastSlot;
 		if (AvailSlots.size() > 0)
 		{
-			slot = *AvailSlots.cend();
+			slot = AvailSlots.back();
 			AvailSlots.pop_back();
 			ResourceTable.erase(AssetSlots[slot].second->metadata.Name);
 		}
