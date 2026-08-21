@@ -23,14 +23,15 @@ namespace GT
 
 	};
 
-	std::unordered_map<std::string, Ref<AssetMetadata>> MetaTable; // using name to retrive AssetMetadata
-	std::unordered_map<std::string, Handle> ResourceTable; // using name to retrive AssetMetadata
-	static std::unordered_multimap<std::filesystem::path, std::string> m_Paths; // use path to retrive metadata, and make sure not load same path
+	std::unordered_map<std::string, Ref<AssetMetadata>> AssetManager::MetaTable; 
+	std::unordered_map<std::string, Handle> AssetManager::ResourceTable; 
+	std::unordered_multimap<std::filesystem::path, std::string> AssetManager::m_Paths;  
 
-	std::vector<AssetSlot> AssetSlots;
+	std::vector<AssetSlot> AssetManager::AssetSlots;
 
-	uint32_t TheLastSlot = 0; // refer the minimal index of Assets' unused slots
-	std::vector<uint32_t> AvailSlots; // store cycled slots of Assets
+	uint32_t AssetManager::TheLastSlot = 0; 
+	std::vector<uint32_t> AssetManager::AvailSlots;
+
 
 	void AssetManager::WhenFileChanged(const std::filesystem::path& path, FileAction action)
 	{
@@ -101,9 +102,15 @@ namespace GT
 	{
 		SaveAssetsMetadata();
 
-		AssetSlots.clear();
-		AvailSlots.clear();
+		for (auto& slot : AssetSlots)
+		{
+			if (slot.second->GetType() == AssetType::Model)
+				slot.second.reset();
+		}
 
+		AssetSlots.clear();
+
+		AvailSlots.clear();
 		MetaTable.clear();
 		ResourceTable.clear();
 	}
@@ -159,7 +166,8 @@ namespace GT
 
 			root["MetaDatas"].push_back(data);
 		}
-		Utils::SaveJSON(root, Project::GetAssetDirectory() / "AssetsMetadata.json");
+		if(Project::GetActive())
+			Utils::SaveJSON(root, Project::GetAssetDirectory() / "AssetsMetadata.json");
 	}
 
 	Ref<AssetMetadata> AssetManager::GetMetaFromName(const std::string& name)
@@ -195,6 +203,11 @@ namespace GT
 		AddAssetMetadata({ AssetType::Texture2D,"DirectoryIcon",UUID(), "Resources\\Icons\\DirectoryIcon.png", true });
 		AddAssetMetadata({ AssetType::Texture2D,"FileIcon",UUID(), "Resources\\Icons\\FileIcon.png", true });
 
+		AddAssetMetadata({ AssetType::Texture2D,"ModelIcon",UUID(), "Resources\\Icons\\ModelIcon.png", true });
+		AddAssetMetadata({ AssetType::Texture2D,"ShaderIcon",UUID(), "Resources\\Icons\\ShaderIcon.png", true });
+		AddAssetMetadata({ AssetType::Texture2D,"TextureIcon",UUID(), "Resources\\Icons\\TextureIcon.png", true });
+		AddAssetMetadata({ AssetType::Texture2D,"SceneIcon",UUID(), "Resources\\Icons\\SceneIcon.png", true });
+
 
 		AddAssetMetadata({ AssetType::Shader,"Renderer2D_Quad",UUID(), "Resources\\shaders\\Renderer2D_Quad.glsl", true });
 		AddAssetMetadata({ AssetType::Shader,"Renderer2D_Circle",UUID(), "Resources\\shaders\\Renderer2D_Circle.glsl" , true });
@@ -210,19 +223,26 @@ namespace GT
 	{
 		switch (type)
 		{
-		case AssetType::None:
-			return nullptr;
-		case AssetType::Texture2D:
-			return nullptr;
-		case AssetType::Scene:
-			return nullptr;
-		case AssetType::Shader:
-			return nullptr;
-		case AssetType::Texture3D:
-			return nullptr;
-		case AssetType::Model:
-			return nullptr;
+		case GT::AssetType::Scene:
+			break;
+		case GT::AssetType::Texture2D:
 
+			break;
+		case GT::AssetType::Texture3D:
+
+			break;
+		case GT::AssetType::Shader:
+
+			break;
+		case GT::AssetType::ComputeShader:
+
+			break;
+		case GT::AssetType::GeometryShader:
+
+			break;
+		case GT::AssetType::Model:
+
+			break;
 		}
 		GT_CORE_ERROR("Unknow AssetType {0}!", AssetTypeToString(type));
 		return nullptr;
@@ -235,8 +255,8 @@ namespace GT
 		{
 			auto& meta = MetaTable.at(name);
 
-			uint32_t slot = GetNextAvialHandle().slot;
-			out = AssetSlots[slot].first;
+			out = GetNextAvialHandle();
+			uint32_t slot = out.slot;
 
 			auto asset = AssetImporter::ImportAsset(*meta);
 			if (!asset)
@@ -263,23 +283,25 @@ namespace GT
 	{
 		// if already loaded, get it from ResourceTable
 		// else if it in MetaTable, load it
+		Handle handle;
+		bool succeed = true;
 		if (ResourceTable.find(name) != ResourceTable.end())
 		{
-			auto& handle = ResourceTable.at(name);
-
-			uint32_t slot = handle.slot;
-			auto asset = AssetSlots[slot].second;
-			asset->count++;
-
-			return handle;
+			handle = ResourceTable.at(name);
 		}
 		else
 		{
-			Handle handle;
-			bool succeed = LoadAsset(name, handle);
-			if (succeed) return handle;
-			else return Handle();
+			succeed = LoadAsset(name, handle);
 		}
+
+		if(succeed)
+		{
+			uint32_t slot = handle.slot;
+			auto asset = AssetSlots[slot].second;
+			asset->count++;
+			return handle;
+		}
+		return Handle();
 	}
 	// if asset released succeedly return true
 	// and will set handle.generation = 0, which means
@@ -307,6 +329,18 @@ namespace GT
 		}
 		handle.generation = 0;
 		return true;
+	}
+	void AssetManager::CopyHandle(Handle& handle)
+	{
+		uint32_t slot = handle.slot;
+		if (slot >= TheLastSlot)
+		{
+			GT_CORE_ERROR("Try to copy a asset handle which slot out of boundary!");
+			return;
+		}
+		auto& count = AssetSlots[slot].second->count;
+
+		count++;
 	}
 	Ref<Asset> AssetManager::GetAsset(const Handle& handle)
 	{
@@ -337,7 +371,7 @@ namespace GT
 		if (m_Paths.find(path) != m_Paths.end())
 		{
 			std::string before = m_Paths.find(path)->second;
-			if (name != before)
+			if (!name.empty() && name != before)
 			{
 				m_Paths.insert({ path,name });
 				MetaTable[name] = GetMetaFromName(before);
@@ -353,7 +387,9 @@ namespace GT
 		else return Handle();
 
 		meta->FilePath = path;
+
 		if (name.empty()) meta->Name = Math::U64ToString(meta->ID);
+		else meta->Name = name;
 
 		auto asset = AssetImporter::ImportAsset(*meta);
 
@@ -363,11 +399,11 @@ namespace GT
 		Handle handle = GetNextAvialHandle();
 
 		meta->IsWatch = IsWatch;
-		ResourceTable[name] = handle;
+		ResourceTable[meta->Name] = handle;
 		MetaTable[meta->Name] = meta;
 		asset->count = 1;
 		AssetSlots[handle.slot].second = asset;
-		m_Paths.insert({ path,name });
+		m_Paths.insert({ path,meta->Name });
 
 		if (IsWatch) s_ReloadCallbacks[path].push_back(ReloadAsset);
 

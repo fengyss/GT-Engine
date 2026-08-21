@@ -35,6 +35,12 @@ namespace GT
         return glm::dot(glm::vec3(plane), positive) + plane.w >= 0.0;
     }
     
+    Model::~Model()
+    {
+        meshes.clear();
+		shader.reset();
+    }
+
     void Model::Draw(const glm::mat4& transform)
     {
         for (unsigned int i = 0; i < meshes.size(); i++)
@@ -233,7 +239,7 @@ namespace GT
                 textures.push_back(handle);
 
                 auto tex = handle->Get();
-                tex->SetType(GetTypeFromAssimpType(type));
+                tex->SetTextureType(GetTypeFromAssimpType(type));
             }
         }
     }

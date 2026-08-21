@@ -1,5 +1,6 @@
 #include "gtpch.h"
 #include "OpenGLRendererAPI.h"
+
 #include <glad/glad.h>
 
 namespace GT
@@ -133,6 +134,19 @@ namespace GT
 			GT_CORE_WARN("Unknown memory barrier type");
 			break;
 		}
+	}
+	void OpenGLRendererAPI::GetMemoryUsage(uint64_t& totalMemory, uint64_t& usedMemory)
+	{
+		// NVIDIA À©Õ¹
+		GLint totalMemKB = 0, availMemKB = 0;
+
+	//#ifdef GL_GPU_MEMORY_INFO
+		glGetIntegerv(GL_GPU_MEMORY_INFO_TOTAL_AVAILABLE_MEMORY_NVX, &totalMemKB);
+		glGetIntegerv(GL_GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX, &availMemKB);
+	//#endif
+
+		totalMemory = static_cast<uint64_t>(totalMemKB) / 1024;
+		usedMemory = totalMemory - static_cast<uint64_t>(availMemKB) / 1024;
 	}
 }
 

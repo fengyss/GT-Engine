@@ -22,6 +22,8 @@ namespace GT
 
 		virtual void DispatchCompute(uint32_t groupsX, uint32_t groupsY, uint32_t groupsZ) override;
 		virtual void SetMemoryBarrier(MemoryBarrierType barrier) override;
+
+		virtual void GetMemoryUsage(uint64_t& totalMemory, uint64_t& usedMemory) override;
 	private:
 	};
 }

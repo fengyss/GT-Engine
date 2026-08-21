@@ -65,7 +65,7 @@ namespace GT
 			break;
 		}
 	}
-	class Texture 
+	class Texture : public Asset
 	{
 	public:
 		virtual ~Texture() = default;
@@ -83,9 +83,9 @@ namespace GT
 		virtual Image GetData() const = 0;
 
 
-		virtual void SetType(TextureType type) = 0;
+		virtual void SetTextureType(TextureType type) = 0;
 
-		virtual TextureType GetType() const = 0;
+		virtual TextureType GetTextureType() const = 0;
 
 		virtual void SetData(void* data, unsigned int size) = 0;
 
@@ -93,14 +93,15 @@ namespace GT
 
 
 	};
-	class Texture2D : public Texture , public Asset
+	class Texture2D : public Texture 
 	{
 	public:
 		virtual ~Texture2D() = default;
 
 		static AssetType GetStaticType() { return AssetType::Texture2D; }
 		
-		virtual AssetType _GetType() const { return GetStaticType(); }
+		virtual AssetType GetType() const { return GetStaticType(); }
+		virtual uint32_t GetMemorySize() const override { return GetWidth() * GetHeight() * 4; }
 
 		static Ref<Texture2D> Create(const std::filesystem::path& path);
 		static Ref<Texture2D> Create(const int width,const int height);

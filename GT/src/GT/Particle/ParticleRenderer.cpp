@@ -52,6 +52,7 @@ namespace GT {
     {
         vertexArray.reset();
 		vbo.reset();
+        ParticleShader.reset();
     }
     void ParticleRenderer::BeginScene(Camera& camera)
 	{

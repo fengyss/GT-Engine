@@ -1,21 +1,16 @@
 #pragma once
 
 #include "GT/Core/Base.h"
-#include "GT/Events/Event.h"
-#include "GT/Events/ApplicationEvent.h"
-#include "GT/Events/KeyEvent.h"
-#include "GT/Events/MouseEvent.h"
+
 #include "GT/Core/Window.h"
 #include "GT/Core/LayerStack.h"
 #include "GT/ImGui/ImGuiLayer.h"
 
-#include "GT/Renderer/Shader.h"
-#include "GT/Renderer/Buffer.h"
-#include "GT/Renderer/VertexArray.h"
-#include "GT/Renderer/Renderer.h"
-#include "GT/Renderer/OrthographicCamera.h"
 
-#include "GT/Scripting/ScriptEngine.h"
+#include "GT/Events/Event.h"
+#include "GT/Events/ApplicationEvent.h"
+#include "GT/Events/KeyEvent.h"
+#include "GT/Events/MouseEvent.h"
 
 namespace GT {
 
@@ -66,6 +61,7 @@ namespace GT {
 
 	private:
 		bool OnWindowClose(WindowCloseEvent& e);
+
 		bool OnWindowResize(WindowResizeEvent& e);
 
 		Scope<Window> m_Window;

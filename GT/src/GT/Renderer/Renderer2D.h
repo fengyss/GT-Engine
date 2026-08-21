@@ -28,11 +28,11 @@ namespace GT
 
 		static void BeginScene(Camera& camera);
 
+		static void SetCurrentEntityID(int entityID);
 		static void SetViewProjection(const glm::mat4& viewProjection, const glm::mat4& Projection);
 
 		static void EndScene();
 
-		static void SetCurrentEntityID(int entityID);
 
 		static void UI(const Rect& rect, const glm::vec4& color, const Ref<Texture2D>& texture = nullptr);
 		static void Text(const std::string& text, glm::vec2 position, const glm::vec4& color);

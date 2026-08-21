@@ -16,7 +16,7 @@ namespace GT
 
 	struct Renderer2DData
 	{
-		const uint32_t MaxQuads = 5000;
+		const uint32_t MaxQuads = 2000;
 		const uint32_t MaxVertices = MaxQuads * 4;
 		const uint32_t MaxIndices = MaxQuads * 6;
 		static const uint32_t MaxTextureSlots = 32; // TODO: RenderCaps
@@ -373,7 +373,6 @@ namespace GT
 		s_Data.TextShader.reset();
 		s_Data.TextVertexArray.reset();
 		s_Data.TextVertexBuffer.reset();
-
 
 
     }

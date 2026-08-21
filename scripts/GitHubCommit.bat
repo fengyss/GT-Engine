@@ -5,7 +5,7 @@ pause
 git add .
 pause
 
-git commit -m "feat: Refactor Asset system. Add C# Script system"
+git commit -m "fix: fix some issue about assetmanager."
 
 pause
 

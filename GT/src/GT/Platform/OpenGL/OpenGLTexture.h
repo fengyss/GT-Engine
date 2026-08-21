@@ -17,7 +17,7 @@ namespace GT
 		virtual unsigned int GetRendererID() const override { return m_RendererID; }
 		virtual const std::filesystem::path& GetPath() const override { return m_Path; }
 		virtual const std::string& GetName() const override { return m_Name; }
-		virtual TextureType GetType() const override { return m_TextureType; }
+		virtual TextureType GetTextureType() const override { return m_TextureType; }
 
 		virtual Image GetData() const override;
 
@@ -25,7 +25,8 @@ namespace GT
 		virtual unsigned int GetHeight() const override { return m_Height; }
 
 		virtual void SetData(void* data, unsigned int size) override;
-		virtual void SetType(TextureType type) override { m_TextureType = type; }
+		virtual void SetTextureType(TextureType type) override { m_TextureType = type; }
+
 
 		virtual bool operator==(const Texture& other) const override
 		{

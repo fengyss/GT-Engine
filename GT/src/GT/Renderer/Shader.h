@@ -143,9 +143,11 @@ namespace GT
 		static Ref<Shader> CreateGeometry(const std::filesystem::path& filepath);
 
 
+		virtual uint32_t GetMemorySize() const override { return 0; }
+
 		static AssetType GetStaticType() { return AssetType::Shader; }
 
-		virtual AssetType _GetType() const { return GetStaticType(); }
+		virtual AssetType GetType() const { return GetStaticType(); }
 
 	private:
 		uint32_t m_RendererID;

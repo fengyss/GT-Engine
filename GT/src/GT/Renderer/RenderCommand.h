@@ -55,6 +55,11 @@ namespace GT
 		{
 			s_RendererAPI->DrawArrays(vertexArray, count);
 		}
+
+		inline static void GetMemoryUsage(uint64_t& totalMemory, uint64_t& usedMemory)
+		{
+			return s_RendererAPI->GetMemoryUsage(totalMemory, usedMemory);
+		}
 	private:
 		static RendererAPI* s_RendererAPI;
 	};

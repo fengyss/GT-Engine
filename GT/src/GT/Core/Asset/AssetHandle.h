@@ -26,6 +26,7 @@ namespace GT
         Ref<T> Get();
 
         operator bool() const { return IsValid(); }
+        AssetHandle<T> operator= (const AssetHandle<T>& other) { handle = other.handle; AssetManager::CopyHandle(handle); return *this; }
     };
 
     // Assets Handle Ref
@@ -55,10 +56,23 @@ namespace GT
         handle = AssetManager::LoadAsset(path,name, IsWatch);
     }
 
+    // if failed will return default type asset based on T
     template<typename T>
     Ref<T> AssetHandle<T>::Get()
     {
-        return std::dynamic_pointer_cast<T>(AssetManager::GetAsset(this->handle));
+        auto asset = AssetManager::GetAsset(this->handle);
+        if(asset) return std::dynamic_pointer_cast<T>(asset);
+
+        GT_CORE_ERROR("Try to get a not exited asset, returned a default asset!");
+
+        AssetType type = AssetType::Shader;
+        if constexpr (std::is_same<T,GT::Shader>::value) type = AssetType::Shader;
+        if constexpr (std::is_same<T, GT::Texture2D>::value) type = AssetType::Texture2D;
+        //if (std::is_same<T, GT::Texture3D>::value) type = AssetType::Texture3D;
+
+        asset = AssetManager::GetDefaultAsset(type);
+
+        return std::dynamic_pointer_cast<T>(asset);
     }
 
 }

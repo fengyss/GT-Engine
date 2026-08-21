@@ -21,7 +21,10 @@ namespace GT
 
         static AssetType GetStaticType() { return AssetType::Model; }
 
-        virtual AssetType _GetType() const { return GetStaticType(); }
+        virtual AssetType GetType() const { return GetStaticType(); }
+
+
+        virtual uint32_t GetMemorySize() const override { return 0; }
 
         // model data 
         std::vector<RefHandle<Texture2D>> textures;
@@ -48,7 +51,7 @@ namespace GT
 				name = filepath.stem().string();
             }
         }
-        ~Model() { meshes.clear(); };
+        ~Model();
 
         // draws the model, and thus all its meshes
         void Draw(const glm::mat4& transform);

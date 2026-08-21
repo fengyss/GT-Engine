@@ -11,7 +11,13 @@
 #include "GT/Utils/PlatformUtils.h"
 #include "GT/Math/Random.h"
 
-#define EnableImGui
+
+
+#include "GT/Renderer/Renderer.h"
+#include "GT/Scripting/ScriptEngine.h"
+
+
+//#define EnableImGui
 
 
 namespace GT
@@ -74,10 +80,9 @@ namespace GT
 	Application::~Application()
 	{
 
-		AssetManager::ShutDown();
 		Renderer::ShutDown();
 		ScriptEngine::Shutdown();
-
+		AssetManager::ShutDown();
 		m_Window.reset();
 	}
 
@@ -165,6 +170,7 @@ namespace GT
 
 		for (auto layer : m_LayerStack)
 			layer->OnDetach();
+
 
 
 	}

@@ -74,9 +74,9 @@ namespace GT
 	Ref<Texture2D> TextureLibrary::Reload(uint32_t ID, const std::filesystem::path& filepath)
 	{
 		GT_CORE_WARN("Texture {1} with ID {0} reloaded!", ID,filepath.filename().string());
-		auto type = m_Textures[ID]->GetType();
+		auto type = m_Textures[ID]->GetTextureType();
 		m_Textures[ID] = Texture2D::Create(filepath);
-		m_Textures[ID]->SetType(type);
+		m_Textures[ID]->SetTextureType(type);
 		return m_Textures[ID];
 	}
 

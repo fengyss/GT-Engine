@@ -20,6 +20,10 @@ namespace GT
 
 	}
 
+	EditorLayer::~EditorLayer()
+	{
+	}
+
 	void EditorLayer::OnAttach()
 	{
 		GT_CORE_INFO("EditorLayer Layer Attached!");
@@ -54,6 +58,7 @@ namespace GT
 
 
 		m_ContentBrowserPanel = CreateScope<ContentBrowserPanel>();
+		m_AssetsPanel = CreateScope<AssetsPanel>();
 
 		Renderer2D::SetLineWidth(4.0f);
 
@@ -73,6 +78,19 @@ namespace GT
 	{
 		if(m_ActiveScene->IsRunning())
 			OnSceneStop();
+
+		m_IconPlay.reset();
+		m_IconStop.reset();
+		m_IconSimulate.reset();
+
+		m_ContentBrowserPanel.reset();
+		m_AssetsPanel.reset();
+		m_SceneHierarchyPanel.reset();
+		m_SpriteSheetPanel.reset();
+
+		m_ActiveScene.reset();
+		m_EditorScene.reset();
+		m_SceneHistory.clear();
 	}
 
 
@@ -90,6 +108,12 @@ namespace GT
 	glm::vec4 _color(1.0f, 0.0f, 0.0f, 1.0f);
 	void EditorLayer::OnUpdate(Timestep ts)
 	{
+		//for(auto& scene : m_SceneHistory)
+		//{
+		//	if (scene->IsRunning())
+		//		scene->OnUpdateRuntime(ts);
+		//}
+
 		//m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
 		if (IsResized)
 		{
@@ -251,6 +275,7 @@ namespace GT
 		OnSceneHierarchyPanelRender();
 
 		m_ContentBrowserPanel->OnImGuiRender();
+		m_AssetsPanel->OnImGuiRender();
 
 		OnStatusBarRender();
 
@@ -384,6 +409,15 @@ namespace GT
 		ImGui::SliderFloat2("UI Size", (float*)&size, -1.0f, 1.0f);
 		ImGui::ColorEdit4("UI Color", (float*)&_color);
 		
+
+		ImGui::Separator();
+
+		uint64_t m_TotalMemory , m_UsedMemory;
+		RenderCommand::GetMemoryUsage(m_TotalMemory, m_UsedMemory);
+		ImGui::Text("GPU Memory Usage :");
+		ImGui::Text("total memory : %d Mb", m_TotalMemory);
+		ImGui::Text("used memory : %d Mb", m_UsedMemory);
+
 
 		ImGui::Separator();
 

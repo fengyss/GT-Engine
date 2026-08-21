@@ -12,12 +12,12 @@ namespace GT
 	Renderer3DState Renderer3D::state = Renderer3DState::None;
 	int Renderer3D::s_CurrentEntityID = -1;
 	RefHandle<Shader> Renderer3D::s_ModelShader;
+	RefHandle<Shader> Renderer3D::m_ShadowShader;
 	glm::mat4 Renderer3D::s_ViewProjectionMatrix = glm::mat4(1.0f);
 	bool Renderer3D::IsShowAABB=false;
 	glm::vec3& Renderer3D::s_viewPos = glm::vec3(0.0f);
 	std::vector<Light_Matrix> Renderer3D::s_Lights;
 	static Renderer3D::Statistics s_stats;
-	RefHandle<Shader> m_ShadowShader;
 	ShadowMap Renderer3D::shadowmap;
 
 	struct Trans_model
@@ -40,6 +40,7 @@ namespace GT
 		GT_PROFILE_FUNCTION();
 		// Clean up opengl resources before opengl context is destroyed
 		s_ModelShader.reset();
+		m_ShadowShader.reset();
 		models.clear();
 	}
 

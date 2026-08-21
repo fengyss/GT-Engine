@@ -7,6 +7,7 @@
 #include "entt/entt.hpp"
 
 #include "box2d/id.h"
+#include "GT/Core/Asset/Asset.h"
 
 namespace GT
 {
@@ -14,13 +15,21 @@ namespace GT
 	class ParticleSystem;
 	class Framebuffer;
 
-	class Scene 
+	class Scene : public Asset
 	{
 	public:
 		Scene();
 		~Scene();
 
 		static Ref<Scene> Copy(Ref<Scene> other);
+
+
+		static AssetType GetStaticType() { return AssetType::Scene; }
+
+		virtual AssetType GetType() const { return GetStaticType(); }
+
+
+		virtual uint32_t GetMemorySize() const override { return 0; }
 
 
 		void OnUpdateEditor(Timestep ts, EditorCamera& camera);

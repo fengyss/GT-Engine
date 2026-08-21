@@ -1,130 +1,158 @@
 {
     "MetaDatas": [
         {
-            "FilePath": "Resources\\shaders\\Renderer2D_Text.glsl",
-            "Name": "Renderer2D_Text",
-            "Type": "AssetType::<Invalid>",
-            "UUID": 16580546073477241962
-        },
-        {
-            "FilePath": "Resources\\shaders\\Renderer2D_Quad.glsl",
-            "Name": "Renderer2D_Quad",
-            "Type": "AssetType::<Invalid>",
-            "UUID": 10359993004243263024
-        },
-        {
             "FilePath": "Resources\\textures\\Checkerboard.png",
+            "ID": 3326743519856005140,
+            "IsWatch": true,
             "Name": "Default",
-            "Type": "AssetType::Texture2D",
-            "UUID": 16014819892461722490
+            "Type": "AssetType::Texture2D"
         },
         {
             "FilePath": "Resources\\Icons\\FileIcon.png",
+            "ID": 13998072835160668754,
+            "IsWatch": true,
             "Name": "FileIcon",
-            "Type": "AssetType::Texture2D",
-            "UUID": 16232609147478358506
+            "Type": "AssetType::Texture2D"
         },
         {
             "FilePath": "Resources\\Icons\\SimulateButton.png",
+            "ID": 14691750792171679268,
+            "IsWatch": true,
             "Name": "IconSimulate",
-            "Type": "AssetType::Texture2D",
-            "UUID": 12203052479380899133
-        },
-        {
-            "FilePath": "projects\\FirstProject\\assets\\textures\\Checkerboard.png",
-            "Name": "7688526024815042908",
-            "Type": "AssetType::Texture2D",
-            "UUID": 7688526024815042908
+            "Type": "AssetType::Texture2D"
         },
         {
             "FilePath": "Resources\\Icons\\PlayButton.png",
+            "ID": 16857579755793759336,
+            "IsWatch": true,
             "Name": "IconPlay",
-            "Type": "AssetType::Texture2D",
-            "UUID": 516430616124094694
+            "Type": "AssetType::Texture2D"
         },
         {
             "FilePath": "Resources\\Icons\\StopButton.png",
+            "ID": 14471457524489576307,
+            "IsWatch": true,
             "Name": "IconStop",
-            "Type": "AssetType::Texture2D",
-            "UUID": 8726023882524413287
+            "Type": "AssetType::Texture2D"
         },
         {
-            "FilePath": "Resources\\shaders\\Renderer2D_Circle.glsl",
-            "Name": "Renderer2D_Circle",
-            "Type": "AssetType::<Invalid>",
-            "UUID": 6246649058576788274
+            "FilePath": "Resources\\Icons\\ShaderIcon.png",
+            "ID": 898001085818780487,
+            "IsWatch": true,
+            "Name": "ShaderIcon",
+            "Type": "AssetType::Texture2D"
         },
         {
             "FilePath": "Resources\\Icons\\DirectoryIcon.png",
+            "ID": 15720128539417621834,
+            "IsWatch": true,
             "Name": "DirectoryIcon",
-            "Type": "AssetType::Texture2D",
-            "UUID": 9826623055280965415
+            "Type": "AssetType::Texture2D"
+        },
+        {
+            "FilePath": "Resources\\Icons\\ModelIcon.png",
+            "ID": 8880646967190563725,
+            "IsWatch": true,
+            "Name": "ModelIcon",
+            "Type": "AssetType::Texture2D"
+        },
+        {
+            "FilePath": "Resources\\Icons\\TextureIcon.png",
+            "ID": 1346599633074707839,
+            "IsWatch": true,
+            "Name": "TextureIcon",
+            "Type": "AssetType::Texture2D"
+        },
+        {
+            "FilePath": "Resources\\Icons\\SceneIcon.png",
+            "ID": 16824788461290146505,
+            "IsWatch": true,
+            "Name": "SceneIcon",
+            "Type": "AssetType::Texture2D"
+        },
+        {
+            "FilePath": "Resources\\shaders\\Renderer2D_Text.glsl",
+            "ID": 14276014552213218733,
+            "IsWatch": true,
+            "Name": "Renderer2D_Text",
+            "Type": "AssetType::<Invalid>"
+        },
+        {
+            "FilePath": "Resources\\shaders\\Renderer2D_Quad.glsl",
+            "ID": 6928520368927061299,
+            "IsWatch": true,
+            "Name": "Renderer2D_Quad",
+            "Type": "AssetType::<Invalid>"
+        },
+        {
+            "FilePath": "Resources\\shaders\\Renderer2D_Circle.glsl",
+            "ID": 12492885013099712429,
+            "IsWatch": true,
+            "Name": "Renderer2D_Circle",
+            "Type": "AssetType::<Invalid>"
         },
         {
             "FilePath": "Resources\\shaders\\Renderer2D_Line.glsl",
+            "ID": 12951151283985292953,
+            "IsWatch": true,
             "Name": "Renderer2D_Line",
-            "Type": "AssetType::<Invalid>",
-            "UUID": 15969436280560219680
+            "Type": "AssetType::<Invalid>"
         },
         {
             "FilePath": "Resources\\shaders\\Model.glsl",
+            "ID": 12177672389502620800,
+            "IsWatch": true,
             "Name": "Model",
-            "Type": "AssetType::<Invalid>",
-            "UUID": 10761110515436818606
-        },
-        {
-            "FilePath": "projects\\FirstProject\\assets\\obj\\backpack\\diffuse.jpg",
-            "Name": "6694103523939846690",
-            "Type": "AssetType::Texture2D",
-            "UUID": 6694103523939846690
+            "Type": "AssetType::<Invalid>"
         },
         {
             "FilePath": "Resources\\shaders\\Particle.geom",
+            "ID": 13296274387892494359,
+            "IsWatch": true,
             "Name": "Particles",
-            "Type": "AssetType::<Invalid>",
-            "UUID": 12851349878938416892
+            "Type": "AssetType::<Invalid>"
         },
         {
             "FilePath": "Resources\\shaders\\ShadowMap.glsl",
+            "ID": 5485575544658962490,
+            "IsWatch": true,
             "Name": "Shadow",
-            "Type": "AssetType::<Invalid>",
-            "UUID": 10026744696785271079
+            "Type": "AssetType::<Invalid>"
         },
         {
             "FilePath": "Resources\\shaders\\Renderer2D_UI.glsl",
+            "ID": 5518131846687546303,
+            "IsWatch": true,
             "Name": "Renderer2D_UI",
-            "Type": "AssetType::<Invalid>",
-            "UUID": 4520646689639010606
+            "Type": "AssetType::<Invalid>"
         },
         {
             "FilePath": "projects\\FirstProject\\assets\\obj\\rock\\rock.png",
-            "Name": "7777902425629437083",
-            "Type": "AssetType::Texture2D",
-            "UUID": 7777902425629437083
+            "ID": 8601464611497030066,
+            "IsWatch": false,
+            "Name": "8601464611497030066",
+            "Type": "AssetType::Texture2D"
         },
         {
             "FilePath": "projects\\FirstProject\\assets\\obj\\rock\\rock.obj",
-            "Name": "8827181088396613871",
-            "Type": "AssetType::<Invalid>",
-            "UUID": 8827181088396613871
+            "ID": 1940785174468371229,
+            "IsWatch": false,
+            "Name": "1940785174468371229",
+            "Type": "AssetType::<Invalid>"
         },
         {
-            "FilePath": "projects\\FirstProject\\assets\\obj\\backpack\\specular.jpg",
-            "Name": "12188277421812220192",
-            "Type": "AssetType::Texture2D",
-            "UUID": 12188277421812220192
+            "FilePath": "projects\\FirstProject\\assets\\textures\\Basic Charakter Spritesheet.png",
+            "ID": 1884058423431469621,
+            "IsWatch": false,
+            "Name": "1884058423431469621",
+            "Type": "AssetType::Texture2D"
         },
         {
-            "FilePath": "projects\\FirstProject\\assets\\obj\\backpack\\normal.png",
-            "Name": "80580957009292872",
-            "Type": "AssetType::Texture2D",
-            "UUID": 80580957009292872
-        },
-        {
-            "FilePath": "projects\\FirstProject\\assets\\obj\\backpack\\backpack.obj",
-            "Name": "17297882866627345008",
-            "Type": "AssetType::<Invalid>",
-            "UUID": 17297882866627345008
+            "FilePath": "projects\\FirstProject\\assets\\textures\\Checkerboard.png",
+            "ID": 7278703549392206352,
+            "IsWatch": false,
+            "Name": "7278703549392206352",
+            "Type": "AssetType::Texture2D"
         }
     ]
 }

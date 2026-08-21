@@ -15,8 +15,8 @@
 #include <unordered_map>
 #include <unordered_set>
 
-#include "GT/Core/Log.h"	
-#include "GT/Core/Base.h"
+//#include "GT/Core/Log.h"	
+//#include "GT/Core/Base.h"
 
 
 #include "GT/Debug/Instrumentor.h"

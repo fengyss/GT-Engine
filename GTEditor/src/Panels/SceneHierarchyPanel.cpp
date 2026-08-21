@@ -477,7 +477,6 @@ namespace GT
 						const wchar_t* path = (const wchar_t*)payload->Data;
 						std::filesystem::path filepath(path);
 						RefHandle<Texture2D> texture = CreateHandle<Texture2D>(filepath);
-
 						if (texture && texture->IsValid()) component.texture = texture;
 						else GT_CORE_WARN("Could not load texture {0}", filepath.string());
 					}

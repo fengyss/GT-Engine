@@ -94,7 +94,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>..\GT\vendor\assimp\lib\assimp-vc143-mt.lib;..\GT\vendor\mono\lib\Debug\mono-2.0-sgen.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\GT\vendor\assimp\lib;..\GT\vendor\vld;..\GT\vendor\mono\lib\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalOptions>/NODEFAULTLIB:MSVCRTD /NODEFAULTLIB:libcmt /NODEFAULTLIB:MSVCRT /NODEFAULTLIB:libcm /ignore:4099 /ignore:4006 /ignore:4286 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/ignore:4099 /ignore:4006 /ignore:4286 %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -120,7 +120,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>..\GT\vendor\assimp\lib\assimp-vc143-mt.lib;..\GT\vendor\mono\lib\Release\mono-2.0-sgen.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\GT\vendor\assimp\lib;..\GT\vendor\vld;..\GT\vendor\mono\lib\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalOptions>/NODEFAULTLIB:MSVCRTD /NODEFAULTLIB:libcmt /NODEFAULTLIB:MSVCRT /NODEFAULTLIB:libcm /ignore:4099 /ignore:4006 /ignore:4286 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/ignore:4099 /ignore:4006 /ignore:4286 %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
@@ -146,18 +146,21 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>..\GT\vendor\assimp\lib\assimp-vc143-mt.lib;..\GT\vendor\mono\lib\Dist\mono-2.0-sgen.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\GT\vendor\assimp\lib;..\GT\vendor\vld;..\GT\vendor\mono\lib\Dist;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalOptions>/NODEFAULTLIB:MSVCRTD /NODEFAULTLIB:libcmt /NODEFAULTLIB:MSVCRT /NODEFAULTLIB:libcm /ignore:4099 /ignore:4006 /ignore:4286 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/ignore:4099 /ignore:4006 /ignore:4286 %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\EditorLayer.h" />
+    <ClInclude Include="src\Panels\AssetsPanel.h" />
     <ClInclude Include="src\Panels\ContentBrowserPanel.h" />
+    <ClInclude Include="src\Panels\Panel.h" />
     <ClInclude Include="src\Panels\SceneHierarchyPanel.h" />
     <ClInclude Include="src\Panels\SpriteSheetPanel.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\EditorLayer.cpp" />
     <ClCompile Include="src\HazelEditorApp.cpp" />
+    <ClCompile Include="src\Panels\AssetsPanel.cpp" />
     <ClCompile Include="src\Panels\ContentBrowserPanel.cpp" />
     <ClCompile Include="src\Panels\SceneHierarchyPanel.cpp" />
     <ClCompile Include="src\Panels\SpriteSheetPanel.cpp" />

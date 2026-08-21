@@ -2,7 +2,7 @@ Scene: cube
 Entities:
   - Entity: 2439040476810992117
     TagComponent:
-      Tag: Empty Entity
+      Tag: rock
       Type: None
     TransformComponent:
       Translation: [3.3278348, -0.46117783, -1.562301]
@@ -15,10 +15,11 @@ Entities:
       Tag: Empty Entity
       Type: None
     TransformComponent:
-      Translation: [-2.8544464, 5.302752, -0.38244626]
+      Translation: [-1.6116802, 0.11199057, -0.3823242]
       Rotation: [0, -0, 0]
       Scale: [1, 1, 1]
     LightComponent:
+      TexturePath: projects\FirstProject\assets\textures\Basic Charakter Spritesheet.png
       Type: 1
       Ambient: [0.05, 0.05, 0.05]
       Constant: 1.02
@@ -27,7 +28,7 @@ Entities:
       Diffuse: [0.8, 0.8, 0.8]
       Direction: [0, -1, 0]
       Linear: 0.023
-      Position: [-2.8544464, 5.302752, -0.38244626]
+      Position: [-1.6116802, 0.11199057, -0.3823242]
       Quadratic: 0.008
       Specular: [1, 1, 1]
   - Entity: 11358545675762791567

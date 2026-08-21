@@ -4,7 +4,7 @@
 namespace GT
 { 
 
-    enum class AssetType : uint16_t
+    enum class AssetType : uint8_t
     {
         None = 0,
         Scene,

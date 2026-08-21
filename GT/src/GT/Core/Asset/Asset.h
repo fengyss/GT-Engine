@@ -25,7 +25,8 @@ namespace GT {
     public:
         virtual ~Asset() = default;
 
-        virtual AssetType _GetType() const = 0;
+        virtual AssetType GetType() const = 0;
+		virtual uint32_t GetMemorySize() const = 0;
 
         AssetMetadata metadata;
         uint32_t count = 0;

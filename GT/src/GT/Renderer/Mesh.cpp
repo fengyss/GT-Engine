@@ -23,7 +23,7 @@ namespace GT
         for (unsigned int i = 0; i < textures.size(); i++)
         {
 			auto tex = textures[i]->Get();
-			auto type = tex->GetType();
+			auto type = tex->GetTextureType();
 
             texslot |= type;
             shader->SetUniform1i(GetStrOfType(type), i);

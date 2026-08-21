@@ -33,12 +33,24 @@ namespace GT
 
 		static Handle GetHandle(const std::string& name);
 		static bool ReleaseAsset(Handle& handle);
+		static void CopyHandle(Handle& handle);
 		static Ref<Asset> GetAsset(const Handle& handle);
 		static Handle LoadAsset(const std::filesystem::path& path, const std::string& name, bool IsWatch);
 
+
+		static Ref<Asset> GetDefaultAsset(AssetType type);
+
+
+
+
+		static const std::vector<AssetSlot>& GetAssetSlots() { return AssetSlots; }
+		static const std::unordered_map<std::string, Ref<AssetMetadata>>& GetMetaTable() { return MetaTable; }
+		static const std::unordered_map<std::string, Handle>& GetResourceTable() { return ResourceTable; }
+		static const std::unordered_multimap<std::filesystem::path, std::string>& GetPathTable() { return m_Paths; }
+		static const std::vector<uint32_t>& GetAvailSlots() { return AvailSlots; }
+
 	private:
 		static void LoadInternalAssetsMetadata();
-		static Ref<Asset> GetDefaultAsset(AssetType type);
 		static bool LoadAsset(const std::string& name, Handle& out);
 		static Handle GetNextAvialHandle();
 
@@ -46,6 +58,17 @@ namespace GT
 		
 		static Scope<FileWatcher> s_FileWatcher;
 		static std::unordered_map<std::filesystem::path, std::vector<std::function<void(const std::filesystem::path&)>>> s_ReloadCallbacks;
+
+	private:
+
+		static std::unordered_map<std::string, Ref<AssetMetadata>> MetaTable; // using name to retrive AssetMetadata
+		static std::unordered_map<std::string, Handle> ResourceTable; // using name to retrive AssetMetadata
+		static std::unordered_multimap<std::filesystem::path, std::string> m_Paths; // use path to retrive metadata, and make sure not load same path
+
+		static std::vector<AssetSlot> AssetSlots;
+
+		static uint32_t TheLastSlot; // refer the minimal index of Assets' unused slots
+		static std::vector<uint32_t> AvailSlots; // store cycled slots of Assets
 
 	};
 }

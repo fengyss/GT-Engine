@@ -131,6 +131,6 @@ project "GT"
 		 optimize "On"
 		 runtime "Release"
 
-    filter {"system:windows", "configurations:Release" }
-		buildoptions "/MT"
+    --filter {"system:windows", "configurations:Release" }
+		--buildoptions "/MT"
 		

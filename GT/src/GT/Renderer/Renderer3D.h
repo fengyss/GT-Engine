@@ -34,14 +34,22 @@ namespace GT
 		static void BeginScene(EditorCamera& camera);
 		static void BeginScene(OrthographicCamera& camera);
 
+		static void SetCurrentEntityID(int entityID);
 		static void SetViewProjection(const glm::mat4& viewProjection, const glm::vec3& viewPos);
+
+
+
+
+
+
+
+
 		static void SetLight(const glm::vec3& lightpos, const glm::vec3& lightcolor);
 		static void AddLight(const Light& light, const glm::mat4& lightSpaceMatrix);
 		static void EndScene();
 
 		static void DrawModel(const glm::mat4& transform, Ref<Model>& model);
 
-		static void SetCurrentEntityID(int entityID);
 
 		static void RenderShadowMap(ShadowMap& shadowMap);
 
@@ -77,6 +85,7 @@ namespace GT
 		static glm::mat4 s_ViewProjectionMatrix;
 		static glm::vec3& s_viewPos;
 		static RefHandle<Shader> s_ModelShader;
+		static RefHandle<Shader> m_ShadowShader;
 	};
 }
 

@@ -2,6 +2,7 @@
 #include "Panels/SceneHierarchyPanel.h"
 #include "Panels/ContentBrowserPanel.h"
 #include "Panels/SpriteSheetPanel.h"
+#include "Panels/AssetsPanel.h"
 #include "GT/Project/Project.h"
 #include "GT/Renderer/Model.h"
 #include "imgui/imgui.h"
@@ -14,6 +15,7 @@ namespace GT
 	{
 	public:
 		EditorLayer();
+		~EditorLayer();
 
 		void OnAttach() override;
 		void OnDetach() override;
@@ -104,6 +106,7 @@ namespace GT
 		Scope<SceneHierarchyPanel> m_SceneHierarchyPanel;
 		Scope<ContentBrowserPanel> m_ContentBrowserPanel;
 		Scope<SpriteSheetPanel> m_SpriteSheetPanel;
+		Scope<AssetsPanel> m_AssetsPanel;
 
 		Ref<Project> m_Project;
 

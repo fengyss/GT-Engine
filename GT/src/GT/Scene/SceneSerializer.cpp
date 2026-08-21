@@ -195,7 +195,7 @@ namespace GT
 
 
 
-	void SceneSerializer::Serialize(std::filesystem::path& filepath)
+	void SceneSerializer::Serialize(const std::filesystem::path& filepath)
 	{
 		YAML::Emitter out;
 
@@ -216,7 +216,7 @@ namespace GT
 		std::ofstream fout(filepath);
 		fout << out.c_str();
 	}
-	bool SceneSerializer::Deserialize(std::filesystem::path& filepath)
+	bool SceneSerializer::Deserialize(const std::filesystem::path& filepath)
 	{
 		YAML::Node data;
 		try
@@ -509,14 +509,14 @@ namespace GT
 		}
 		return true;
 	}
-	bool SceneSerializer::DeserializeRuntime(std::filesystem::path& filepath)
+	bool SceneSerializer::DeserializeRuntime(const std::filesystem::path& filepath)
 	{
 		//not implemented
 		GT_CORE_ASSERT(false, "Not implemented");
 		return false;
 	}
 
-	void SceneSerializer::SerializeRuntime(std::filesystem::path& filepath)
+	void SceneSerializer::SerializeRuntime(const std::filesystem::path& filepath)
 	{
 	}
 

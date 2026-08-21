@@ -40,8 +40,6 @@ project "GTEditor"
     }
 	links 
 	{
-        --"assimp-vc143-mt.lib",
-		--"libmono-static-sgen.lib",
         "%{Library.assimp}",
         "%{Library.mono}",
     }
@@ -65,13 +63,13 @@ project "GTEditor"
 		"yaml_cpp",
 		
 	}
-
+	
 	linkoptions 
 	{
-        "/NODEFAULTLIB:MSVCRTD",  
-        "/NODEFAULTLIB:libcmt",   
-        "/NODEFAULTLIB:MSVCRT",  
-        "/NODEFAULTLIB:libcm",   
+        --"/NODEFAULTLIB:MSVCRTD",  
+        --"/NODEFAULTLIB:libcmt",   
+        --"/NODEFAULTLIB:MSVCRT",  
+        --"/NODEFAULTLIB:libcm",   
     }
 
 

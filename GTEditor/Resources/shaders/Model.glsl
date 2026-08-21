@@ -61,7 +61,7 @@ uniform vec3 u_LightPos = vec3(10.0, 10.0, 10.0);
 uniform vec3 u_LightColor = vec3(1.0, 1.0, 1.0);
 
 
-int MAX_TEXTURES = 1; // ¸ù¾ÝÊµ¼ÊÊ¹ÓÃµÄÎÆÀíÊýÁ¿µ÷Õû
+int MAX_TEXTURES = 1; // ï¿½ï¿½ï¿½ï¿½Êµï¿½ï¿½Ê¹ï¿½Ãµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 uniform sampler2D texture_diffuse;       //32
 uniform sampler2D texture_specular;      //31
 uniform sampler2D texture_normal;        //30
@@ -81,7 +81,7 @@ struct Material {
     float shininess;
 };
 
-/* ---------- ¹âÔ´ ---------- */
+/* ---------- ï¿½ï¿½Ô´ ---------- */
 struct DirectionalLight {
     vec3 direction;
     vec3 ambient;
@@ -107,8 +107,8 @@ struct SpotLight {
     vec3 diffuse;
     vec3 specular;
 
-    float cutOff;       // ÄÚ×¶½Ç
-    float outerCutOff;  // Íâ×¶½Ç
+    float cutOff;       // ï¿½ï¿½×¶ï¿½ï¿½
+    float outerCutOff;  // ï¿½ï¿½×¶ï¿½ï¿½
 };
 
 /* ---------- Uniforms ---------- */
@@ -134,7 +134,7 @@ void main()
     vec4 emissionColor = vec4(0.0f);
 
 
-     // 1. ²ÉÑù»ù´¡ÎÆÀí
+     // 1. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     if(((u_TexSlot >> 31u) & 1u) > 0)
         diffuseColor = texture(texture_diffuse, v_TexCoord);
     if(((u_TexSlot >> 30u) & 1u) > 0)
@@ -148,12 +148,12 @@ void main()
     material.shininess = 0.2f;
 
 
-    // 3. ¼òµ¥¹âÕÕ¼ÆËã£¨Blinn-Phong£©
+    // 3. ï¿½òµ¥¹ï¿½ï¿½Õ¼ï¿½ï¿½ã£¨Blinn-Phongï¿½ï¿½
     vec3 viewDir = normalize(u_ViewPos - v_FragPos);
 
 
 
-     // 2. ´¦Àí·¨ÏßÌùÍ¼£¨¹Ø¼ü²¿·Ö£©
+     // 2. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½ï¿½Ø¼ï¿½ï¿½ï¿½ï¿½Ö£ï¿½
     vec3 worldNormal = normalize(v_Normal);
     //worldNormal = v_Normal;
     
@@ -187,7 +187,7 @@ void main()
 
 }
 
-/* ---------- ·½Ïò¹â ---------- */
+/* ---------- ï¿½ï¿½ï¿½ï¿½ï¿½ ---------- */
 vec3 CalcDirectionalLight(DirectionalLight light, vec3 normal, vec3 viewDir)
 {
     vec3 lightDir = normalize(light.direction);
@@ -207,28 +207,28 @@ vec3 CalcDirectionalLight(DirectionalLight light, vec3 normal, vec3 viewDir)
 float CalculateShadow(vec4 fragPosLightSpace, vec3 lightDir)
 {
     lightDir = normalize(lightDir);
-    // 1. Í¸ÊÓ³ý·¨
+    // 1. Í¸ï¿½Ó³ï¿½ï¿½ï¿½
     vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
 
-    // 2. NDC ¡ú UV
+    // 2. NDC ï¿½ï¿½ UV
     projCoords = projCoords * 0.5 + 0.5;
 
-    // 3. ³¬³öÔ¶Æ½Ãæ ¡ú ÎÞÒõÓ°
+    // 3. ï¿½ï¿½ï¿½ï¿½Ô¶Æ½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ó°
     //if (projCoords.z > 1.0)
         //return 0.0;
 
-    // 4. ²ÉÑù×î½üÉî¶È
+    // 4. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     float closestDepth = texture(u_ShadowMap, projCoords.xy).r;
     float currentDepth = projCoords.z;
 
-    // 5. »ù´¡ Bias£¨·ÀÖ¹ acne£©
+    // 5. ï¿½ï¿½ï¿½ï¿½ Biasï¿½ï¿½ï¿½ï¿½Ö¹ acneï¿½ï¿½
     float bias = max(0.05 * (1.0 - dot(v_Normal, lightDir)), 0.05);
 
-    // 6. ÒõÓ°ÅÐ¶Ï
+    // 6. ï¿½ï¿½Ó°ï¿½Ð¶ï¿½
     return currentDepth - bias > closestDepth ? 1.0 : 0.0;
 }
 
-/* ---------- µã¹âÔ´ ---------- */
+/* ---------- ï¿½ï¿½ï¿½Ô´ ---------- */
 vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
 {
     vec3 lightDir = normalize(light.position - fragPos);
@@ -250,12 +250,12 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
     return (ambient + diffuse + specular) * attenuation;
 }
 
-/* ---------- ¾Û¹âµÆ ---------- */
+/* ---------- ï¿½Û¹ï¿½ï¿½ ---------- */
 vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
 {
     vec3 lightDir = normalize(light.position - fragPos);
 
-    // Âþ·´Éä
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     float diff = max(dot(normal, lightDir), 0.0);
 
     vec3 halfwayDir = normalize(lightDir + viewDir);
@@ -282,7 +282,7 @@ void save()
     vec4 specularColor = vec4(0.0f);
     vec4 emissionColor = vec4(0.0f);
 
-         // 1. ²ÉÑù»ù´¡ÎÆÀí
+         // 1. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     if(((u_TexSlot >> 31u) & 1u) > 0)
         diffuseColor = texture(texture_diffuse, v_TexCoord);
     if(((u_TexSlot >> 30u) & 1u) > 0)
@@ -291,14 +291,14 @@ void save()
         emissionColor = texture(texture_emission, v_TexCoord);
 
 
-     // 3. ¼òµ¥¹âÕÕ¼ÆËã£¨Blinn-Phong£©
+     // 3. ï¿½òµ¥¹ï¿½ï¿½Õ¼ï¿½ï¿½ã£¨Blinn-Phongï¿½ï¿½
     vec3 viewDir = normalize(u_ViewPos - v_FragPos);
     vec3 lightDir = normalize(u_LightPos - v_FragPos);
     vec3 halfwayDir = normalize(lightDir + viewDir);
 
 
 
-     // 2. ´¦Àí·¨ÏßÌùÍ¼£¨¹Ø¼ü²¿·Ö£©
+     // 2. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½ï¿½Ø¼ï¿½ï¿½ï¿½ï¿½Ö£ï¿½
     vec3 worldNormal = normalize(v_Normal);
     //worldNormal = v_Normal;
     
@@ -315,23 +315,23 @@ void save()
         worldNormal = normalize(TBN * worldNormal);
     }
 
-    // »·¾³¹â
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     float ambientStrength = 0.2;
     vec3 ambient = ambientStrength * u_LightColor;
     
-    // Âþ·´Éä
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     float diff = max(dot(worldNormal, lightDir), 0.0);
     vec3 diffuse = diff * u_LightColor;
     
-    // ¾µÃæ·´Éä
+    // ï¿½ï¿½ï¿½æ·´ï¿½ï¿½
     float spec = pow(max(dot(worldNormal, halfwayDir), 0.0), 32.0);
     vec3 specular = spec * specularColor.rgb * u_LightColor;
     
-    // 4. ×éºÏ½á¹û
+    // 4. ï¿½ï¿½Ï½ï¿½ï¿½
     vec3 result = (ambient + diffuse + specular + emissionColor.rgb) * diffuseColor.rgb;
-    // È·±£ Alpha ²»µÍÓÚÄ³¸öãÐÖµ
+    // È·ï¿½ï¿½ Alpha ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä³ï¿½ï¿½ï¿½ï¿½Öµ
     float alpha = diffuseColor.a;
-    if (alpha < 0.1) alpha = 1.0;  // µÍÓÚ 0.1 µÄÉèÎª²»Í¸Ã÷
+    //if (alpha < 0.1) alpha = 1.0;  // ï¿½ï¿½ï¿½ï¿½ 0.1 ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½Í¸ï¿½ï¿½
 
 
     o_Color = vec4(result, alpha);

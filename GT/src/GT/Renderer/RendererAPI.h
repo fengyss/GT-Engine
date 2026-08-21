@@ -37,6 +37,8 @@ namespace GT
 		
 		virtual void DispatchCompute(uint32_t groupsX, uint32_t groupsY, uint32_t groupsZ) = 0;
 		virtual void SetMemoryBarrier(MemoryBarrierType barrier) = 0;
+
+		virtual void GetMemoryUsage(uint64_t& totalMemory, uint64_t& usedMemory) = 0;
 		
 		inline static API GetAPI() { return s_API; }
 
