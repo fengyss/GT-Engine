@@ -1,8 +1,8 @@
 #pragma once
-#include "GT/Renderer/Texture.h"
+#include "GT/Core/Asset/TextureAsset.h"
 namespace GT
 {
-	class OpenGLTexture2D : public Texture2D
+	class OpenGLTexture2D : public Texture2DAsset
 	{
 	public:
 		OpenGLTexture2D(const std::filesystem::path& path);
@@ -12,30 +12,32 @@ namespace GT
 		virtual void Bind(unsigned int slot = 0) const override;
 		virtual void Unbind() const override;
 
+		virtual uint32_t GetMemorySize() const override;
+
 		virtual bool IsLoaded() const override { return m_IsLoaded; };
 
 		virtual unsigned int GetRendererID() const override { return m_RendererID; }
 		virtual const std::filesystem::path& GetPath() const override { return m_Path; }
-		virtual const std::string& GetName() const override { return m_Name; }
-		virtual TextureType GetTextureType() const override { return m_TextureType; }
+
+		virtual const std::string& GetName() const override { return Name; }
 
 		virtual Image GetData() const override;
 
 		virtual unsigned int GetWidth() const override { return m_Width; }
 		virtual unsigned int GetHeight() const override { return m_Height; }
 
-		virtual void SetData(void* data, unsigned int size) override;
-		virtual void SetTextureType(TextureType type) override { m_TextureType = type; }
+		virtual void SetData(void* data, unsigned int size) const override;
 
 
-		virtual bool operator==(const Texture& other) const override
+		virtual bool operator==(const TextureAsset& other) const override
 		{
 			return m_RendererID == other.GetRendererID();
 		}
+
+		
 	private:
 		bool m_IsLoaded = false;
 		std::filesystem::path m_Path;
-		std::string m_Name;
 
 		uint32_t ID = 0;
 

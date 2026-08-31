@@ -7,6 +7,9 @@
 #include <algorithm>
 #include <functional>
 #include <filesystem>
+#include <optional>
+
+#include <cstdint>
 
 #include <string>
 #include <sstream>
@@ -14,6 +17,7 @@
 #include <vector>
 #include <unordered_map>
 #include <unordered_set>
+#include <queue>
 
 //#include "GT/Core/Log.h"	
 //#include "GT/Core/Base.h"

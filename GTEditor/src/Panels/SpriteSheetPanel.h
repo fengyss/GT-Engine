@@ -17,7 +17,7 @@ namespace GT {
         bool IsOpen() { return m_IsOpen; }
 
     private:
-        Ref<Texture2D> m_Texture;
+        Texture2D m_Texture;
         std::vector<SpriteRegion> m_Regions;
 
         bool m_IsOpen = false;

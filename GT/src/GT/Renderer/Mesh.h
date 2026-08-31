@@ -39,21 +39,21 @@ namespace GT
         std::vector<Vertex>       vertices;
         std::vector<unsigned int> indices;
 
-        std::vector<RefHandle<Texture2D>>    textures;
+        std::vector<Texture2D>    textures;
         unsigned int VAO;
 
         // constructor
         Mesh() {};
-        Mesh(std::vector<Vertex> _vertices, std::vector<unsigned int> _indices, std::vector<RefHandle<Texture2D>> _textures);
+        Mesh(std::vector<Vertex> _vertices, std::vector<unsigned int> _indices, const std::vector<Texture2D>& _textures);
         ~Mesh()
         {
             m_VertexArray.reset();
 			VBuffer.reset();
         }
         // render the mesh
-        void Draw(Ref<Shader> shader);
-        void Draw(const glm::mat4& transform, Ref<Shader> shader);
-        void DrawForShadowMap(const glm::mat4& transform, Ref<Shader> shader);
+        void Draw(Shader& shader);
+        void Draw(const glm::mat4& transform, const Shader& shader);
+        void DrawForShadowMap(const glm::mat4& transform, const Shader& shader);
 		uint32_t GetVertexCount() { return vertices.size(); }
 
         const glm::vec3& GetMin() const { return m_Min; }

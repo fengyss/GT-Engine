@@ -23,6 +23,7 @@
 // Box2D
 #include "box2d/box2d.h"
 
+#include "GT/Project/Project.h"
 
 namespace GT
 {
@@ -41,6 +42,20 @@ namespace GT
 
     Scene::Scene()
     {
+        FramebufferSpecification fbSpec;
+        fbSpec.Attachments = { FramebufferTextureFormate::RGBA8,FramebufferTextureFormate::RED_INTEGER,FramebufferTextureFormate::Depth };
+        fbSpec.Width = 1280;
+        fbSpec.Height = 720;
+
+        m_Framebuffer = Framebuffer::Create(fbSpec);
+
+        //AssetMetadata meta;
+        //meta.FilePath = Project::GetAssetDirectory() / "Scene.hazel";
+        //meta.Name = "Scene";
+        //meta.ID = UUID();
+        //meta.Type = AssetType::Scene;
+
+        //AssetManager::RegisterMetadata(meta);
 
     }
     Scene::~Scene()
@@ -75,13 +90,53 @@ namespace GT
             dst.AddOrReplaceComponent<Component>(src.GetComponent<Component>());
     }
 
-    Ref<Scene> Scene::Copy(Ref<Scene> other)
+    void Scene::Copy(Ref<Scene> other)
+    {
+
+        m_ViewportWidth = other->m_ViewportWidth;
+        m_ViewportHeight = other->m_ViewportHeight;
+        Name = other->Name;
+        filepath = other->filepath;
+
+        auto& srcSceneRegistry = other->m_Registry;
+        auto& dstSceneRegistry = m_Registry;
+        std::unordered_map<UUID, entt::entity> enttMap;
+
+        // Create entities in new scene
+        auto idView = srcSceneRegistry.view<IDComponent>();
+        for (auto e : idView)
+        {
+            UUID uuid = srcSceneRegistry.get<IDComponent>(e).ID;
+            const auto& name = srcSceneRegistry.get<TagComponent>(e).Tag;
+            Entity newEntity = CreateEntityWithUUID(uuid, name);
+            enttMap[uuid] = (entt::entity)newEntity;
+        }
+
+
+        // Copy components (except IDComponent and TagComponent)
+        CopyComponent<TransformComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
+        CopyComponent<SpriteRendererComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
+        CopyComponent<CircleRendererComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
+        CopyComponent<CameraComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
+        CopyComponent<NativeScriptComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
+        CopyComponent<Rigidbody2DComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
+        CopyComponent<BoxCollider2DComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
+        CopyComponent<CircleCollider2DComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
+        CopyComponent<ParticleComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
+        CopyComponent<LightRendererComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
+        CopyComponent<ModelComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
+        CopyComponent<Animator2DComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
+        CopyComponent<ScriptComponent>(dstSceneRegistry, srcSceneRegistry, enttMap);
+
+    }
+
+    Ref<Scene> Scene::MakeCopy(Ref<Scene> other)
     {
         Ref<Scene> newScene = CreateRef<Scene>();
 
         newScene->m_ViewportWidth = other->m_ViewportWidth;
         newScene->m_ViewportHeight = other->m_ViewportHeight;
-		newScene->name = other->name;
+		newScene->Name = other->Name;
 		newScene->filepath = other->filepath;
 
         auto& srcSceneRegistry = other->m_Registry;
@@ -283,7 +338,14 @@ namespace GT
 
     void Scene::RenderScene(Camera& camera)
     {
-        //float time = Time::GetTime();
+
+        float time = Time::GetTime();
+
+        m_Framebuffer->Bind();
+
+        //RenderCommand::SetClearColor({ 0.2,0.5,0.7,1.0 });
+        RenderCommand::Clear();
+        m_Framebuffer->ClearAttachment(1,-1);
 
         Renderer2D::BeginScene(camera);
         Renderer3D::BeginScene(camera);
@@ -293,18 +355,25 @@ namespace GT
         RenderScene3D();
         ParticleSystem::OnRender(this);
 
-        Renderer3D::RenderShadowMap(Renderer3D::GetShadowMap());
+        //Renderer3D::RenderShadowMap(Renderer3D::GetShadowMap());
 
-        m_Framebuffer->Bind();
 
         ParticleRenderer::EndScene();
+
         ParticleRenderer::Flush(BlendMode::Alpha);
+
+
         Renderer3D::EndScene();
+
+
         Renderer2D::EndScene();
 
 
+        m_Framebuffer->Unbind();
+
+
         //time = Time::GetTime() - time;
-        //GT_CORE_CRITICAL("GPU time : {0} ms!", time);
+        //GT_CORE_CRITICAL("GPU time4 : {0} ms!", time);
     }
 
     void Scene::RenderScene2D()
@@ -329,7 +398,7 @@ namespace GT
                 Renderer2D::SetCurrentEntityID(int(entity));
                 auto [transform, circle] = view.get<TransformComponent, CircleRendererComponent>(entity);
                 if(circle.texture) 
-                    Renderer2D::DrawCircle(transform.GetTransform(), circle.Color, circle.texture->Get(), circle.Thickness, circle.Fade);
+                    Renderer2D::DrawCircle(transform.GetTransform(), circle.Color, circle.texture, circle.Thickness, circle.Fade);
                 else
                     Renderer2D::DrawCircle(transform.GetTransform(), circle.Color, circle.Thickness, circle.Fade);
                 Renderer2D::SetCurrentEntityID(-1);
@@ -343,7 +412,7 @@ namespace GT
                 Renderer2D::SetCurrentEntityID(int(entity));
                 auto [transform, light] = view.get<TransformComponent, LightRendererComponent>(entity);
 
-                if (light.texture) Renderer2D::DrawCube(transform.GetTransform(), glm::vec4(1.0f), light.texture->Get());
+                if (light.texture) Renderer2D::DrawCube(transform.GetTransform(), glm::vec4(1.0f), light.texture);
                 else Renderer2D::DrawCube(transform.GetTransform(), glm::vec4(1.0f));
                 Renderer2D::SetCurrentEntityID(-1);
 
@@ -385,7 +454,7 @@ namespace GT
                 if (!model.model) continue;
 
                 Renderer3D::SetCurrentEntityID(int(entity));
-				Renderer3D::DrawModel(transform.GetTransform(), model.model->Get());
+				Renderer3D::DrawModel(transform.GetTransform(), model.model);
                 Renderer3D::SetCurrentEntityID(-1);
 
             }
@@ -538,6 +607,8 @@ namespace GT
                 cameraComponent.Camera.SetViewportSize(width, height);
             }
         }
+
+        m_Framebuffer->Resize(width, height);
 
     }
     Entity Scene::CreateEntity(const char* name)
@@ -695,7 +766,7 @@ namespace GT
         
         component.CurrentAnimation = CreateRef<AnimationClip>(component.name, component.duration);
         auto tex = entity.GetComponent<SpriteRendererComponent>().texture;
-        if(tex) component.isEnable = component.CurrentAnimation->ImportSpriteSheet(tex->Get()->GetPath());
+        if(tex) component.isEnable = component.CurrentAnimation->ImportSpriteSheet(tex->GetPath());
 		else GT_CORE_ERROR("Animator2DComponent: SpriteRendererComponent texture path is empty!");
     }
     

@@ -26,7 +26,7 @@ namespace GT {
 		{
 			auto& p = view.get<ParticleComponent>(e);
 			if (p.IsEmitting == false) continue;
-			RefHandle<Texture2D> tex = nullptr;
+			Texture2D tex;
 			Entity entity = { e,scene };
 			if (entity.HasComponent<SpriteRendererComponent>())
 			{

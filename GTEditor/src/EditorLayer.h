@@ -76,10 +76,10 @@ namespace GT
 
 		EditorCamera m_EditorCamera;
 
-		RefHandle<Texture2D> m_IconPlay, m_IconSimulate, m_IconStop;
+		Texture2D m_IconPlay, m_IconSimulate, m_IconStop;
 
 
-		Ref<Framebuffer> m_Framebuffer;
+		//Ref<Framebuffer> m_Framebuffer;
 
 		Ref<Scene> m_ActiveScene;
 		Ref<Scene> m_EditorScene;

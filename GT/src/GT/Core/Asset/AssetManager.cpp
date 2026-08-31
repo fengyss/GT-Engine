@@ -1,70 +1,90 @@
 #include "gtpch.h"
 #include "AssetManager.h"
-#include "AssetImporter.h"
+#include "AssetImporter/AssetImporter.h"
 #include "GT/Utils/JsonUtils.h"
 #include "GT/Project/Project.h"
 #include "GT/Math/Math.h"
+#include "Handle.h"
 
+
+#include "GT/Project/Project.h"
 
 namespace GT
 {
 	Scope<FileWatcher> AssetManager::s_FileWatcher;
-	std::unordered_map<std::filesystem::path, std::vector<std::function<void(const std::filesystem::path&)>>> AssetManager::s_ReloadCallbacks;
+	std::unordered_map<UUID, std::vector<std::function<void(uint32_t)>>> AssetManager::s_ReloadCallbacks;
 
 	// From files's extension to get AssetType
 	std::unordered_map<std::string, AssetType> AssetExt = {
+
 		{".glsl",AssetType::Shader},
 		{".comp",AssetType::ComputeShader},
 		{".geom",AssetType::GeometryShader},
+
 		{".png",AssetType::Texture2D},
 		{".jpg",AssetType::Texture2D},
+
 		{".dae",AssetType::Model},
 		{".obj",AssetType::Model},
 
 	};
-
-	std::unordered_map<std::string, Ref<AssetMetadata>> AssetManager::MetaTable; 
-	std::unordered_map<std::string, Handle> AssetManager::ResourceTable; 
-	std::unordered_multimap<std::filesystem::path, std::string> AssetManager::m_Paths;  
-
-	std::vector<AssetSlot> AssetManager::AssetSlots;
-
-	uint32_t AssetManager::TheLastSlot = 0; 
-	std::vector<uint32_t> AssetManager::AvailSlots;
+	
+	std::unordered_map<UUID, Ref<AssetInfo>> AssetManager::m_UUIDToAssetsInfo;
+	std::unordered_map<std::filesystem::path, UUID> AssetManager::m_PathToUUID;
+	std::unordered_multimap<std::string, UUID> AssetManager::m_NameToUUID;
+	
+	std::queue<uint32_t> AssetManager::AvailIndices;
+	std::vector<AssetSlot> AssetManager::Assets;
 
 
 	void AssetManager::WhenFileChanged(const std::filesystem::path& path, FileAction action)
 	{
-		switch (action)
+		if (std::filesystem::is_directory(path)) return;
+
+		auto it = m_PathToUUID.find(path);
+
+		if (it == m_PathToUUID.end())
 		{
-		case FileAction::Added:
-			GT_CORE_INFO("File added: {0}", path.string());
-			if (s_ReloadCallbacks.count(path))
+			GT_CORE_INFO("File {0} changed under asset dir and is not a registered asset.", path.string());
+			return;
+		}
+		UUID id = it->second;
+		Ref<AssetInfo> info;
+		if (Existed(id, info))
+		{
+			switch (action)
 			{
-				for (auto& fn : s_ReloadCallbacks[path])
-					fn(path);
+			case FileAction::Added:
+				GT_CORE_INFO("File added: {0}", path.string());
+				//if (s_ReloadCallbacks.count(id))
+				//{
+				//	for (auto& fn : s_ReloadCallbacks[id])
+				//		fn();
+				//}
+				break;
+
+
+			case FileAction::Removed:
+				GT_CORE_WARN("File removed: {0}", path.string());
+				break;
+
+
+			case FileAction::Modified:
+				GT_CORE_INFO("File modified: {0}", path.string());
+
+				if (s_ReloadCallbacks.count(id))
+				{
+					for (auto& fn : s_ReloadCallbacks[id])
+						fn(info->Index);
+				}
+
+				break;
+
+
+			case FileAction::Renamed:
+				GT_CORE_TRACE("File renamed: {0}", path.string());
+				break;
 			}
-			break;
-
-
-		case FileAction::Removed:
-			GT_CORE_WARN("File removed: {0}", path.string());
-			break;
-
-
-		case FileAction::Modified:
-			GT_CORE_INFO("File modified: {0}", path.string());
-			if (s_ReloadCallbacks.count(path))
-			{
-				for (auto& fn : s_ReloadCallbacks[path])
-					fn(path);
-			}
-			break;
-
-
-		case FileAction::Renamed:
-			GT_CORE_TRACE("File renamed: {0}", path.string());
-			break;
 		}
 	}
 
@@ -73,9 +93,9 @@ namespace GT
 		s_FileWatcher->Watch(path, callback);
 	}
 
-	void AssetManager::RegisterReloadCallback(const std::filesystem::path& path, std::function<void(const std::filesystem::path&)> callback)
+	void AssetManager::RegisterReloadCallback(const UUID& id, std::function<void(uint32_t)> callback)
 	{
-		s_ReloadCallbacks[path].push_back(callback);
+		s_ReloadCallbacks[id].push_back(callback);
 	}
 
 	void AssetManager::Init()
@@ -86,147 +106,103 @@ namespace GT
 
 		WatchFiles("Resources");
 
-		AssetSlots.clear();
-		AvailSlots.clear();
+		Assets.reserve(300);
 
-		MetaTable.clear();
-		ResourceTable.clear();
-
-		AssetSlots.reserve(1000);
-		AvailSlots.reserve(1000);
-
-		LoadInternalAssetsMetadata();
+		LoadInternalAssets();
 	}
 
 	void AssetManager::ShutDown()
 	{
-		SaveAssetsMetadata();
-
-		for (auto& slot : AssetSlots)
-		{
-			if (slot.second->GetType() == AssetType::Model)
-				slot.second.reset();
-		}
-
-		AssetSlots.clear();
-
-		AvailSlots.clear();
-		MetaTable.clear();
-		ResourceTable.clear();
+		Assets.clear();
 	}
-	void AssetManager::LoadAssetsMetadata(const std::filesystem::path& path)
+	Ref<AssetMetadata> AssetManager::LoadAssetMetadata(const std::filesystem::path& path)
 	{
 		auto json = Utils::LoadJSON(path);
 		if (json.empty())
 		{
-			GT_CORE_ERROR("Can't load correctly of AssetsMetadata file {0}!",path.string());
-			return;
+			GT_CORE_ERROR("Can't load correctly of AssetsMetadata file {0}!", path.string());
+			return nullptr;
 		}
-		for (auto& asset : json["Assets"])
+
+		Ref<AssetMetadata> meta = CreateRef<AssetMetadata>();
+
+		meta->Name = json["Name"];
+		meta->ID = uint64_t(json["ID"]);
+		meta->Type = AssetTypeFromString(json["Type"]);
+		meta->FilePath = std::filesystem::path(std::string(json["FilePath"]));
+		meta->IsWatch = json["IsWatch"];
+
+		return meta;
+	}
+
+	void AssetManager::LoadInternalAssets()
+	{
+		RegisterTexture2DAsset("Resources\\textures\\Checkerboard.png");
+		RegisterTexture2DAsset("Resources\\Icons\\PlayButton.png");
+		RegisterTexture2DAsset("Resources\\Icons\\StopButton.png");
+		RegisterTexture2DAsset("Resources\\Icons\\SimulateButton.png");
+		RegisterTexture2DAsset("Resources\\Icons\\DirectoryIcon.png");
+		RegisterTexture2DAsset("Resources\\Icons\\FileIcon.png");
+		RegisterTexture2DAsset("Resources\\Icons\\ModelIcon.png");
+		RegisterTexture2DAsset("Resources\\Icons\\ShaderIcon.png");
+		RegisterTexture2DAsset("Resources\\Icons\\TextureIcon.png");
+		RegisterTexture2DAsset("Resources\\Icons\\SceneIcon.png");
+
+		RegisterShaderAsset("Resources\\shaders\\Renderer2D_Quad.glsl");
+		RegisterShaderAsset("Resources\\shaders\\Renderer2D_Circle.glsl");
+		RegisterShaderAsset("Resources\\shaders\\Renderer2D_Line.glsl");
+		RegisterShaderAsset("Resources\\shaders\\Model.glsl");
+		RegisterShaderAsset("Resources\\shaders\\Particle.geom");
+		RegisterShaderAsset("Resources\\shaders\\ShadowMap.glsl");
+		RegisterShaderAsset("Resources\\shaders\\Renderer2D_UI.glsl");
+		RegisterShaderAsset("Resources\\shaders\\Renderer2D_Text.glsl");
+
+	}
+
+
+	Handle AssetManager::GetAssetHandle(const std::string& name)
+	{
+
+		auto it = m_NameToUUID.find(name);
+		if (it != m_NameToUUID.end())
 		{
-			Ref<AssetMetadata> meta = CreateRef<AssetMetadata>();
-
-			meta->Name = asset["Name"];
-			meta->ID = uint64_t(asset["ID"]);
-			meta->Type = AssetTypeFromString(asset["Type"]);
-			meta->FilePath = std::filesystem::path(std::string(asset["FilePath"]));
-			meta->IsWatch = asset["IsWatch"];
-
-			MetaTable.emplace(meta->Name,meta);
+			UUID id = it->second;
+			return GetAssetHandle(id);
 		}
+		else GT_CORE_WARN("Try to get asset from a not existed name->{0}.", name);
+
+		return Handle();
 	}
-	void AssetManager::AddAssetMetadata(AssetMetadata meta)
+
+	Handle AssetManager::GetAssetHandle(const UUID& id)
 	{
-		GT_CORE_ASSERT(!meta.Name.empty(), "assetmeta name can't be empty!");
-		if (MetaTable.find(meta.Name) != MetaTable.end())
+		Handle handle;
+
+		if (m_UUIDToAssetsInfo.find(id) != m_UUIDToAssetsInfo.end())
 		{
-			GT_CORE_WARN("Metadata with name '{}' already exists, ignoring.", meta.Name);
+			auto it = m_UUIDToAssetsInfo.find(id);
+
+			it->second->Refcount++;
+			handle.index = it->second->Index;
+			handle.ID = id;
+			handle.generation = Assets[handle.index].generation;
+
 		}
-
-		//MetaTable[meta.Name] = std::make_shared<AssetMetadata>(meta);
-		MetaTable.emplace(meta.Name, std::make_shared<AssetMetadata>(meta));
-
-		m_Paths.insert({ meta.FilePath,meta.Name });
-	}
-	void AssetManager::SaveAssetsMetadata()
-	{
-		using json = nlohmann::json;
-
-		json root;
-		root["MetaDatas"] = json::array();
-
-		for (auto& [name, meta] : MetaTable)
-		{
-			json data;
-			data["Name"] = name;
-			data["ID"] = uint64_t(meta->ID);
-			data["Type"] = AssetTypeToString(meta->Type);
-			data["FilePath"] = meta->FilePath.string();
-			data["IsWatch"] = meta->IsWatch;
-
-			root["MetaDatas"].push_back(data);
-		}
-		if(Project::GetActive())
-			Utils::SaveJSON(root, Project::GetAssetDirectory() / "AssetsMetadata.json");
+		else GT_CORE_WARN("AssetManager::GetAssetHandle Try to get asset from a not existed uuid->{0}.", uint64_t(id));
+		
+		return handle;
 	}
 
-	Ref<AssetMetadata> AssetManager::GetMetaFromName(const std::string& name)
+	const Ref<Asset> AssetManager::GetDefaultAsset(AssetType type)
 	{
-
-		if (MetaTable.find(name) != MetaTable.end()) return MetaTable.at(name);
-		else NULL;
-	}
-
-	void AssetManager::DeleteMetaFromName(const std::string& name)
-	{
-		if (MetaTable.find(name) != MetaTable.end()) MetaTable.erase(name);
-	}
-
-	void AssetManager::DeleteMetaFromPath(const std::filesystem::path& path)
-	{
-		auto range = m_Paths.equal_range(path);
-		for (auto it = range.first; it != range.second; ++it) {
-			DeleteMetaFromName(it->second);
-		}
-		m_Paths.erase(path);
-	}
-
-	void AssetManager::LoadInternalAssetsMetadata()
-	{
-
-		AddAssetMetadata({ AssetType::Texture2D,"Default",UUID(), "Resources\\textures\\Checkerboard.png", true });
-
-		AddAssetMetadata({ AssetType::Texture2D,"IconPlay",UUID(), "Resources\\Icons\\PlayButton.png", true });
-		AddAssetMetadata({ AssetType::Texture2D,"IconStop",UUID(), "Resources\\Icons\\StopButton.png", true });
-		AddAssetMetadata({ AssetType::Texture2D,"IconSimulate",UUID(), "Resources\\Icons\\SimulateButton.png", true });
-
-		AddAssetMetadata({ AssetType::Texture2D,"DirectoryIcon",UUID(), "Resources\\Icons\\DirectoryIcon.png", true });
-		AddAssetMetadata({ AssetType::Texture2D,"FileIcon",UUID(), "Resources\\Icons\\FileIcon.png", true });
-
-		AddAssetMetadata({ AssetType::Texture2D,"ModelIcon",UUID(), "Resources\\Icons\\ModelIcon.png", true });
-		AddAssetMetadata({ AssetType::Texture2D,"ShaderIcon",UUID(), "Resources\\Icons\\ShaderIcon.png", true });
-		AddAssetMetadata({ AssetType::Texture2D,"TextureIcon",UUID(), "Resources\\Icons\\TextureIcon.png", true });
-		AddAssetMetadata({ AssetType::Texture2D,"SceneIcon",UUID(), "Resources\\Icons\\SceneIcon.png", true });
-
-
-		AddAssetMetadata({ AssetType::Shader,"Renderer2D_Quad",UUID(), "Resources\\shaders\\Renderer2D_Quad.glsl", true });
-		AddAssetMetadata({ AssetType::Shader,"Renderer2D_Circle",UUID(), "Resources\\shaders\\Renderer2D_Circle.glsl" , true });
-		AddAssetMetadata({ AssetType::Shader,"Renderer2D_Line",UUID(), "Resources\\shaders\\Renderer2D_Line.glsl" , true });
-		AddAssetMetadata({ AssetType::Shader,"Model",UUID(), "Resources\\shaders\\Model.glsl" , true });
-		AddAssetMetadata({ AssetType::GeometryShader,"Particles",UUID(), "Resources\\shaders\\Particle.geom" , true });
-		AddAssetMetadata({ AssetType::Shader,"Shadow",UUID(), "Resources\\shaders\\ShadowMap.glsl" , true });
-		AddAssetMetadata({ AssetType::Shader,"Renderer2D_UI",UUID(), "Resources\\shaders\\Renderer2D_UI.glsl" , true });
-		AddAssetMetadata({ AssetType::Shader,"Renderer2D_Text",UUID(), "Resources\\shaders\\Renderer2D_Text.glsl", true });
-	}
-
-	Ref<Asset> AssetManager::GetDefaultAsset(AssetType type)
-	{
+		UUID id;
+		uint32_t index;
 		switch (type)
 		{
 		case GT::AssetType::Scene:
 			break;
 		case GT::AssetType::Texture2D:
-
+			return GetAsset("Checkerboard.png");
 			break;
 		case GT::AssetType::Texture3D:
 
@@ -247,196 +223,309 @@ namespace GT
 		GT_CORE_ERROR("Unknow AssetType {0}!", AssetTypeToString(type));
 		return nullptr;
 	}
-	// return false if failed
-	// else return true  out will be this asset's handle
-	bool AssetManager::LoadAsset(const std::string& name, Handle& out)
+
+
+	void AssetManager::LoadDependenciesOfUUID(UUID id)
 	{
-		if (MetaTable.find(name) != MetaTable.end())
+	}
+
+	const Ref<Asset> AssetManager::GetAsset(const Handle& handle)
+	{
+		if(Existed(handle.ID))
 		{
-			auto& meta = MetaTable.at(name);
-
-			out = GetNextAvialHandle();
-			uint32_t slot = out.slot;
-
-			auto asset = AssetImporter::ImportAsset(*meta);
-			if (!asset)
+			if (Assets[handle.index].asset->Info->NeedReload)
 			{
-				ReleaseAsset(out);
-				GT_CORE_ERROR("Can't load asset:{0} from {1}!", meta->Name, meta->FilePath.string());
-				return false;
+				Ref<Asset> asset = ReloadAsset(handle);
+
+				Assets[handle.index].asset->Info->NeedReload = false;
+				asset->Info = Assets[handle.index].asset->Info;
+
+				Assets[handle.index].asset = asset;
 			}
-			asset->count = 0;
-			AssetSlots[slot].second = asset;
-			ResourceTable[name] = out;
-			if(meta->IsWatch)
-				AssetManager::s_ReloadCallbacks[meta->FilePath].push_back(ReloadAsset);
-			return true;
+			return Assets[handle.index].asset;
 		}
 		else
 		{
-			GT_CORE_ERROR("Try to get a handle of {0}, while is not exited!", name);
-			return false;
-		}
-	}
-	// return Handle(), If asset not exited or can't load correctly
-	Handle AssetManager::GetHandle(const std::string& name)
-	{
-		// if already loaded, get it from ResourceTable
-		// else if it in MetaTable, load it
-		Handle handle;
-		bool succeed = true;
-		if (ResourceTable.find(name) != ResourceTable.end())
-		{
-			handle = ResourceTable.at(name);
-		}
-		else
-		{
-			succeed = LoadAsset(name, handle);
-		}
-
-		if(succeed)
-		{
-			uint32_t slot = handle.slot;
-			auto asset = AssetSlots[slot].second;
-			asset->count++;
-			return handle;
-		}
-		return Handle();
-	}
-	// if asset released succeedly return true
-	// and will set handle.generation = 0, which means
-	// this handle invalid
-	bool AssetManager::ReleaseAsset(Handle& handle)
-	{
-		uint32_t slot = handle.slot;
-		if (slot >= TheLastSlot) 
-		{ 
-			GT_CORE_ERROR("Try to release a asset handle which slot out of boundary!"); 
-			return false; 
-		}
-		auto& count = AssetSlots[slot].second->count;
-		if (count == 0)
-		{
-			GT_CORE_ERROR("Try to release a asset handle which asset already inactive(might released or not existed)!");
-			return false;
-		}
-
-		count--;
-
-		if (count == 0)
-		{
-			AvailSlots.push_back(slot);
-		}
-		handle.generation = 0;
-		return true;
-	}
-	void AssetManager::CopyHandle(Handle& handle)
-	{
-		uint32_t slot = handle.slot;
-		if (slot >= TheLastSlot)
-		{
-			GT_CORE_ERROR("Try to copy a asset handle which slot out of boundary!");
-			return;
-		}
-		auto& count = AssetSlots[slot].second->count;
-
-		count++;
-	}
-	Ref<Asset> AssetManager::GetAsset(const Handle& handle)
-	{
-		uint32_t slot = handle.slot;
-		if (slot >= TheLastSlot)
-		{
-			GT_CORE_ERROR("Try to get a asset which handle.slot out of boundary!");
+			GT_CORE_ERROR("AssetManager::GetAsset: Invalid handle for asset with UUID {0}", uint64_t(handle.ID));
 			return nullptr;
 		}
-		auto& assetslot = AssetSlots[handle.slot];
-		if (assetslot.first == handle)
-		{
-			//assetslot.second->count++;
-			if (assetslot.second->NeedReload) 
-			{
-				assetslot.second = AssetImporter::ImportAsset(assetslot.second->metadata);
-			}
-			return assetslot.second;
-		}
-
-		GT_CORE_ERROR("Try to Get asset from a not matched handle!");
-		return GetDefaultAsset(assetslot.second->metadata.Type);
 	}
-	// if this is not given a name, it's name will be uuid
-	Handle AssetManager::LoadAsset(const std::filesystem::path& path, const std::string& name, bool IsWatch)
+
+	const Ref<Asset> AssetManager::GetAsset(const std::string& name)
 	{
-		// if loaded not load again
-		if (m_Paths.find(path) != m_Paths.end())
+		auto it = m_NameToUUID.find(name);
+
+		if (it != m_NameToUUID.end())
+			return GetAsset(it->second);
+		
+		GT_CORE_ERROR("AssetManager::GetAssetFromName name:{0} is not existed.", name);
+		return Ref<Asset>();
+	}
+
+	const Ref<Asset> AssetManager::GetAsset(const UUID& id)
+	{
+		auto it = m_UUIDToAssetsInfo.find(id);
+
+		if (it != m_UUIDToAssetsInfo.end())
 		{
-			std::string before = m_Paths.find(path)->second;
-			if (!name.empty() && name != before)
-			{
-				m_Paths.insert({ path,name });
-				MetaTable[name] = GetMetaFromName(before);
-			}
-			return GetHandle(before);
+			Ref<AssetInfo> info = it->second;
+			return Assets[info->Index].asset;
 		}
 
-
-		Ref<AssetMetadata> meta = CreateRef<AssetMetadata>();
-
-		std::string extension = path.extension().string();
-		if (AssetExt.find(extension) != AssetExt.end()) meta->Type = AssetExt.at(extension);
-		else return Handle();
-
-		meta->FilePath = path;
-
-		if (name.empty()) meta->Name = Math::U64ToString(meta->ID);
-		else meta->Name = name;
-
-		auto asset = AssetImporter::ImportAsset(*meta);
-
-		if (asset) asset->count = 0;
-		else return Handle();
-
-		Handle handle = GetNextAvialHandle();
-
-		meta->IsWatch = IsWatch;
-		ResourceTable[meta->Name] = handle;
-		MetaTable[meta->Name] = meta;
-		asset->count = 1;
-		AssetSlots[handle.slot].second = asset;
-		m_Paths.insert({ path,meta->Name });
-
-		if (IsWatch) s_ReloadCallbacks[path].push_back(ReloadAsset);
-
-		return handle;
+		GT_CORE_ERROR("AssetManager::GetAssetFromUUID uuid:{0} is not existed.", uint64_t(id));
+		return Ref<Asset>();
 	}
+
+	void AssetManager::LoadAssets(const Project& project)
+	{
+		auto paths = GetAllAssetPathsInDirectory(project.GetAssetDirectory());
+
+		for(auto& path : paths)
+		{
+			
+		}
+	}
+
+
+	bool AssetManager::Existed(const UUID& id, Ref<AssetInfo> info)
+	{
+		auto it = m_UUIDToAssetsInfo.find(id);
+		if (it != m_UUIDToAssetsInfo.end())
+		{
+			info = it->second;
+			return true;
+		}
+		info = nullptr;
+		return false;
+	}
+
+	bool AssetManager::Existed(const Handle& handle, Ref<AssetInfo> info)
+	{
+		return Existed(handle.ID);
+	}
+
+	UUID AssetManager::RegisterAsset(const Ref<Asset> asset)
+	{
+		uint32_t index = GetNextAvialIndex();
+
+		Ref<AssetInfo> info = m_UUIDToAssetsInfo.find(asset->ID)->second;
+		AssetMetadata& meta = info->metadata;
+
+
+		asset->Info = info;
+		Assets[index].asset = asset;
+
+
+		m_NameToUUID.emplace(meta.Name, meta.ID);
+		m_PathToUUID.emplace(meta.FilePath, meta.ID);
+		info->Index = index;
+
+
+
+		RegisterReloadCallback(meta.ID, [](uint32_t index) {
+			Assets[index].asset->Info->NeedReload = true;;
+			});
+
+		return meta.ID;
+	}
+	UUID AssetManager::RegisterShaderAsset(const std::filesystem::path& path)
+	{
+		auto it = m_PathToUUID.find(path);
+		if (it != m_PathToUUID.end())
+		{
+			GT_CORE_WARN("AssetManager::RegisterShaderAsset asset {0} already registered.",path.string());
+			return it->second;
+		}
+
+		auto asset = ShaderImporter::ImportShader(path);
+		return RegisterAsset(asset);
+	}
+	UUID AssetManager::RegisterTexture2DAsset(const std::filesystem::path& path)
+	{
+		auto it = m_PathToUUID.find(path);
+		if (it != m_PathToUUID.end())
+		{
+			GT_CORE_WARN("AssetManager::RegisterShaderAsset asset {0} already registered.", path.string());
+			return it->second;
+		}
+
+		auto asset = TextureImporter::ImportTexture2D(path);
+		return RegisterAsset(asset);
+	}
+	UUID AssetManager::RegisterTexture3DAsset(const std::filesystem::path& path)
+	{
+		auto it = m_PathToUUID.find(path);
+		if (it != m_PathToUUID.end())
+		{
+			GT_CORE_WARN("AssetManager::RegisterShaderAsset asset {0} already registered.", path.string());
+			return it->second;
+		}
+		return 0;
+	}
+	UUID AssetManager::RegisterModelAsset(const std::filesystem::path& path)
+	{
+		auto it = m_PathToUUID.find(path);
+		if (it != m_PathToUUID.end())
+		{
+			GT_CORE_WARN("AssetManager::RegisterShaderAsset asset {0} already registered.", path.string());
+			return it->second;
+		}
+		return 0;
+	}
+	UUID AssetManager::RegisterSceneAsset(const std::filesystem::path& path)
+	{
+		auto it = m_PathToUUID.find(path);
+		if (it != m_PathToUUID.end())
+		{
+			GT_CORE_WARN("AssetManager::RegisterShaderAsset asset {0} already registered.", path.string());
+			return it->second;
+		}
+		auto asset = SceneImporter::ImportScene(path);
+		return RegisterAsset(asset);
+	}
+
+
+
+	void AssetManager::RegisterMetadata(AssetMetadata& meta)
+	{
+		Ref<AssetInfo> info = CreateRef<AssetInfo>();
+
+		info->metadata = meta;
+		m_UUIDToAssetsInfo.emplace(meta.ID, info);
+	}
+
+	void AssetManager::SaveMetadata(const Ref<AssetMetadata> Metadata)
+	{
+		//auto json = Utils::MetadataToJson(*Metadata);
+		//auto jsonPath = Metadata->FilePath;
+		//jsonPath.replace_extension(".meta");
+		//Utils::SaveJSON(json, jsonPath);
+	}
+
+	UUID AssetManager::GetUUIDFromPath(const std::filesystem::path& path)
+	{
+		return m_PathToUUID.at(path);
+	}
+	const Ref<AssetInfo> AssetManager::GetAssetInfoFromUUID(const UUID& id)
+	{
+		return m_UUIDToAssetsInfo.at(id);
+	}
+	bool AssetManager::ReleaseHandle(const Handle& handle)
+	{
+		if (Existed(handle.ID))
+		{
+			auto& count = Assets[handle.index].asset->Info->Refcount;
+
+			if (count == 0)
+			{
+				GT_CORE_ERROR("AssetManager::ReleaseHandle: Refcount for asset with UUID {0} is negative!", uint64_t(handle.ID));
+				count = 1;
+			}
+
+			count--;
+			//if (count == 0)
+			//{
+			//	// Unload asset
+			//	Assets[handle.index].asset->Info->IsLoaded = false;
+			//	Assets[handle.index].asset.reset();
+			//	Assets[handle.index].asset = nullptr;
+			//	Assets[handle.index].generation++;
+			//	AvailIndices.push(handle.index);
+			//}
+
+		}
+		return true;
+	}
+
+
 	// if next handle is a cycled one, ResourceTable erease unload asset
-	Handle AssetManager::GetNextAvialHandle()
+	uint32_t AssetManager::GetNextAvialIndex()
 	{
-		uint32_t slot = TheLastSlot;
-		if (AvailSlots.size() > 0)
+		uint32_t slot;
+
+		if (AvailIndices.size() > 0)
 		{
-			slot = AvailSlots.back();
-			AvailSlots.pop_back();
-			ResourceTable.erase(AssetSlots[slot].second->metadata.Name);
+			slot = AvailIndices.front();
+			AvailIndices.pop();
 		}
 		else 
 		{
-			AssetSlot slot;
-			AssetSlots.push_back(slot);
-			TheLastSlot++;
+			slot = Assets.size();
+			Assets.emplace_back();
 		}
 
-		Handle& handle = AssetSlots[slot].first;
-		handle.generation++;
-		handle.slot = slot;
-
-		return handle;
+		return slot;
 	}
-	void AssetManager::ReloadAsset(const std::filesystem::path& path)
+
+	
+	std::vector<std::filesystem::path> AssetManager::GetAllAssetPathsInDirectory(const std::filesystem::path& directory)
 	{
-		auto name = m_Paths.find(path)->second;
-		auto handle = GetHandle(name);
-
-		AssetSlots[handle.slot].second->NeedReload = true;;
+		std::vector<std::filesystem::path> paths;
+		for (auto& p : std::filesystem::recursive_directory_iterator(directory))
+		{
+			if (std::filesystem::is_regular_file(p))
+			{
+				if (p.path().extension() == ".meta")
+					paths.push_back(p.path());
+			}
+			if (std::filesystem::is_directory(p))
+			{
+				auto b = GetAllAssetPathsInDirectory(p.path());
+				std::move(b.begin(), b.end(), std::back_inserter(paths));
+			}
+		}
+		return paths;
 	}
+
+
+	std::vector<std::filesystem::path> AssetManager::GetAllItemPathsInDirectory(const std::filesystem::path& directory)
+	{
+		std::vector<std::filesystem::path> paths;
+		for(auto& p : std::filesystem::recursive_directory_iterator(directory))
+		{
+			if (std::filesystem::is_regular_file(p))
+			{
+				paths.push_back(p.path());
+			}
+			if(std::filesystem::is_directory(p))
+			{
+				auto b = GetAllItemPathsInDirectory(p.path());
+				std::move(b.begin(), b.end(), std::back_inserter(paths));
+			}
+		}
+		return paths;
+	}
+
+	Ref<Asset> AssetManager::ReloadAsset(const Handle& handle)
+	{
+		auto info = GetAssetInfo(handle.ID);
+		Ref<Asset> asset;
+		switch (info->metadata.Type)
+		{
+		case GT::AssetType::Scene:
+			break;
+		case GT::AssetType::Texture2D:
+			asset = TextureImporter::ReloadTexture2D(info->metadata.FilePath);
+			break;
+		case GT::AssetType::Texture3D:
+			break;
+		case GT::AssetType::Shader:
+			asset = ShaderImporter::ReloadShader(info->metadata.FilePath);
+			break;
+		case GT::AssetType::ComputeShader:
+			asset = ShaderImporter::ReloadShader(info->metadata.FilePath);
+			break;
+		case GT::AssetType::GeometryShader:
+			asset = ShaderImporter::ReloadShader(info->metadata.FilePath);
+			break;
+		case GT::AssetType::Model:
+			break;
+		}
+
+		asset->Name = info->metadata.Name;
+		asset->ID = handle.ID;
+
+		return asset;
+	}
+
 }

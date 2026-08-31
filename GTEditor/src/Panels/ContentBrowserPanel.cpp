@@ -10,8 +10,8 @@ namespace GT {
 	ContentBrowserPanel::ContentBrowserPanel()
 		: m_BaseDirectory(Project::GetAssetDirectory()), m_CurrentDirectory(m_BaseDirectory)
 	{
-		m_DirectoryIcon = CreateHandle<Texture2D>("DirectoryIcon");
-		m_FileIcon = CreateHandle<Texture2D>("FileIcon");
+		m_DirectoryIcon = Texture2D("DirectoryIcon");
+		m_FileIcon = Texture2D("FileIcon");
 			
 	}
 
@@ -47,7 +47,7 @@ namespace GT {
 			std::string extensionString = path.extension().string();
 
 			//ImGui::PushID(filenameString.c_str());
-			Ref<Texture2D> icon = (directoryEntry.is_directory() ? m_DirectoryIcon : m_FileIcon)->Get();
+			Texture2D& icon = (directoryEntry.is_directory() ? m_DirectoryIcon : m_FileIcon);
 			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
 			ImGui::ImageButton(filenameString.c_str(),(ImTextureID)icon->GetRendererID(), {thumbnailSize, thumbnailSize}, {0, 1}, {1, 0});
 

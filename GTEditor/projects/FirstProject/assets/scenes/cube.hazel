@@ -1,45 +1,26 @@
 Scene: cube
 Entities:
-  - Entity: 2439040476810992117
-    TagComponent:
-      Tag: rock
-      Type: None
-    TransformComponent:
-      Translation: [3.3278348, -0.46117783, -1.562301]
-      Rotation: [0, -0, 0]
-      Scale: [1, 1, 1]
-    ModelComponent:
-      ModelPath: projects\FirstProject\assets\obj\rock\rock.obj
-  - Entity: 17337834460955652274
+  - Entity: 16564027514784249681
     TagComponent:
       Tag: Empty Entity
       Type: None
     TransformComponent:
-      Translation: [-1.6116802, 0.11199057, -0.3823242]
+      Translation: [1.661978, 1.2847695, -13.726122]
       Rotation: [0, -0, 0]
       Scale: [1, 1, 1]
-    LightComponent:
-      TexturePath: projects\FirstProject\assets\textures\Basic Charakter Spritesheet.png
-      Type: 1
-      Ambient: [0.05, 0.05, 0.05]
-      Constant: 1.02
-      cutOff: 0.976296
-      outerCutOff: 0.95371693
-      Diffuse: [0.8, 0.8, 0.8]
-      Direction: [0, -1, 0]
-      Linear: 0.023
-      Position: [-1.6116802, 0.11199057, -0.3823242]
-      Quadratic: 0.008
-      Specular: [1, 1, 1]
-  - Entity: 11358545675762791567
+    CircleRendererComponent:
+      Color: [1, 1, 1, 1]
+      Thickness: 1
+      Fade: 0.005
+  - Entity: 1273981380894433849
     TagComponent:
       Tag: Empty Entity
       Type: None
     TransformComponent:
-      Translation: [0, -130.9, 0]
-      Rotation: [1.5707964, 0, 0]
-      Scale: [999, 999, 999]
+      Translation: [-2.3495827, 1.3454176, -11.110605]
+      Rotation: [0, -0, 0]
+      Scale: [1, 1, 1]
     SpriteRendererComponent:
       Color: [1, 1, 1, 1]
-      TexturePath: projects\FirstProject\assets\textures\Checkerboard.png
-      TilingFactor: 14
+      TexturePath: projects\FirstProject\assets\textures\Ship.png
+      TilingFactor: 1

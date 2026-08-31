@@ -48,7 +48,7 @@ namespace GT
 		static void AddLight(const Light& light, const glm::mat4& lightSpaceMatrix);
 		static void EndScene();
 
-		static void DrawModel(const glm::mat4& transform, Ref<Model>& model);
+		static void DrawModel(const glm::mat4& transform, Model& model);
 
 
 		static void RenderShadowMap(ShadowMap& shadowMap);
@@ -84,8 +84,8 @@ namespace GT
 		static std::vector<Light_Matrix> s_Lights;
 		static glm::mat4 s_ViewProjectionMatrix;
 		static glm::vec3& s_viewPos;
-		static RefHandle<Shader> s_ModelShader;
-		static RefHandle<Shader> m_ShadowShader;
+		static Shader s_ModelShader;
+		static Shader m_ShadowShader;
 	};
 }
 

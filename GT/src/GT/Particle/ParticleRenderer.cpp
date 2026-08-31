@@ -9,30 +9,32 @@
 #include "glm/gtx/quaternion.hpp"
 #include <algorithm>
 
+#include "GT/Utils/PlatformUtils.h"
+
 namespace GT {
 
     static glm::mat4 s_viewProjection;
-    RefHandle<Shader> ParticleShader;
+    Shader ParticleShader;
     Ref<VertexArray> vertexArray;
     Ref<VertexBuffer> vbo;
     std::vector<ParticleGPUVertex> Vertices;
     std::vector<ParticleGPUVertex> Alp_Vertices;
     std::vector<ParticleGPUVertex> Add_Vertices;
     std::vector<ParticleGPUVertex> Mul_Vertices;
-    Ref<Texture> TextureSlots[32];
+    Texture2D TextureSlots[32];
     int TextureSlotIndex = 1;
 
     void ParticleRenderer::Init()
     { 
-        ParticleShader = CreateHandle<Shader>("Particles");
+        ParticleShader = Shader("Particle");
 
         int32_t samplers[32];
         for (uint32_t i = 0;i < 32;i++)
         {
             samplers[i] = i;
         }
-        ParticleShader->Get()->Bind();
-        ParticleShader->Get()->SetUniformiv("u_Textures", samplers, 32);
+        ParticleShader->Bind();
+        ParticleShader->SetUniformiv("u_Textures", samplers, 32);
 
         vertexArray = VertexArray::Create();
         vbo = VertexBuffer::Create(nullptr, sizeof(ParticleGPUVertex) * 10000);
@@ -43,16 +45,21 @@ namespace GT {
                 { ShaderDataType::Float, "a_TexIndex"  },
             });
         vertexArray->AddVertexBuffer(vbo);
-        TextureSlots[0] = Texture2D::Create(1, 1);
-        uint32_t whiteTextureData = 0xffffffff;
-        TextureSlots[0]->SetData(&whiteTextureData, sizeof(uint32_t));
+        TextureSlots[0] = Texture2D("Checkerboard");
+
+
+        Vertices.clear();
+        Alp_Vertices.clear();
+        Add_Vertices.clear();
+        Mul_Vertices.clear();
+        for (int i = 0;i < 32;i++) TextureSlots[i].~Texture2D();
     }
 
     void ParticleRenderer::ShutDown()
     {
         vertexArray.reset();
 		vbo.reset();
-        ParticleShader.reset();
+        ParticleShader.~Shader();
     }
     void ParticleRenderer::BeginScene(Camera& camera)
 	{
@@ -64,9 +71,13 @@ namespace GT {
 
 	void  ParticleRenderer::EndScene()
     {
-        Ref<Shader> shader = ParticleShader->Get();
-        shader->Bind();
-        shader->SetUniformMat4("u_ViewProjection", s_viewProjection);
+
+
+
+        ParticleShader->Bind();
+        ParticleShader->SetUniformMat4("u_ViewProjection", s_viewProjection);
+
+
 
         for (int i = 0;i < TextureSlotIndex;i++)
         {
@@ -106,18 +117,20 @@ namespace GT {
             Add_Vertices.clear();
         }
         TextureSlotIndex = 1;
+
+
 	}
     void ParticleRenderer::SetViewProjection(const glm::mat4& viewProjection)
     {
         s_viewProjection = viewProjection;
     }
 
-    float ParticleRenderer::GetTextureSlotIndex(const Ref<Texture2D>& texture)
+    float ParticleRenderer::GetTextureSlotIndex(const Texture2D& texture)
     {
         float textureIndex = 0.0f;
         for (uint32_t i = 1; i < TextureSlotIndex; i++)
         {
-            if (*TextureSlots[i].get() == *texture.get())
+            if (TextureSlots[i] == texture)
             {
                 textureIndex = (float)i;
                 break;
@@ -132,13 +145,13 @@ namespace GT {
         //std::cout << textureIndex << '\n';
         return textureIndex;
     }
-    void ParticleRenderer::RenderParticles(BlendMode mode, const std::vector<Ref<Particle>> particles, const RefHandle<Texture2D> tex)
+    void ParticleRenderer::RenderParticles(BlendMode mode, const std::vector<Ref<Particle>> particles, const Texture2D& tex)
     {
         ParticleGPUVertex vertex;
         float Texindex = 0;
         if (tex)
         {
-            Texindex = GetTextureSlotIndex(tex->Get());
+            Texindex = GetTextureSlotIndex(tex);
         }
         switch (mode)
         {

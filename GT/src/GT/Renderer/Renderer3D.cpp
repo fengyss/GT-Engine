@@ -11,8 +11,8 @@ namespace GT
 {
 	Renderer3DState Renderer3D::state = Renderer3DState::None;
 	int Renderer3D::s_CurrentEntityID = -1;
-	RefHandle<Shader> Renderer3D::s_ModelShader;
-	RefHandle<Shader> Renderer3D::m_ShadowShader;
+	Shader Renderer3D::s_ModelShader;
+	Shader Renderer3D::m_ShadowShader;
 	glm::mat4 Renderer3D::s_ViewProjectionMatrix = glm::mat4(1.0f);
 	bool Renderer3D::IsShowAABB=false;
 	glm::vec3& Renderer3D::s_viewPos = glm::vec3(0.0f);
@@ -23,25 +23,26 @@ namespace GT
 	struct Trans_model
 	{
 		glm::mat4 transform;
-		Ref<Model> model;
+		Model model;
 		int entityID;
 	};
 	std::vector<Trans_model> models;
 
 	void Renderer3D::Init()
 	{
-		s_ModelShader = CreateHandle<Shader>("Model");
-		m_ShadowShader = CreateHandle<Shader>("Shadow");
+		s_ModelShader = Shader("Model");
+		m_ShadowShader = Shader("ShadowMap");
 		shadowmap = ShadowMap(4096, 4096);
 	}
 
 	void Renderer3D::ShutDown()
 	{
 		GT_PROFILE_FUNCTION();
+
 		// Clean up opengl resources before opengl context is destroyed
-		s_ModelShader.reset();
-		m_ShadowShader.reset();
 		models.clear();
+		m_ShadowShader.~Shader();
+		s_ModelShader.~Shader();
 	}
 
 	void Renderer3D::BeginScene(Camera& camera)
@@ -64,9 +65,9 @@ namespace GT
 	}
 	void Renderer3D::SetLight(const glm::vec3& lightpos, const glm::vec3& lightcolor)
 	{
-		s_ModelShader->Get()->Bind();
-		s_ModelShader->Get()->SetUniform3f("u_LightPos", lightpos);
-		s_ModelShader->Get()->SetUniform3f("u_LightColor", lightcolor);
+		s_ModelShader->Bind();
+		s_ModelShader->SetUniform3f("u_LightPos", lightpos);
+		s_ModelShader->SetUniform3f("u_LightColor", lightcolor);
 	}
 	void Renderer3D::AddLight(const Light& light, const glm::mat4& lightSpaceMatrix)
 	{
@@ -89,7 +90,7 @@ namespace GT
 	void Renderer3D::Flush()
 	{
 
-		Ref<Shader> shader = s_ModelShader->Get();
+		Shader& shader = s_ModelShader;
 		shader->Bind();
 
 		glActiveTexture(GL_TEXTURE7);
@@ -134,11 +135,11 @@ namespace GT
 			shader->SetUniform1i("u_EntityID", ID);
 			shader->SetUniformMat4("u_ViewProjection", s_ViewProjectionMatrix);
 
-			model->Draw(transform, ExtractFrustum(s_ViewProjectionMatrix));
+			model.Draw(transform, ExtractFrustum(s_ViewProjectionMatrix));
 
 			if (IsShowAABB)
 			{
-				GPUAABB aabb = model->GetAABB();
+				GPUAABB aabb = model.GetAABB();
 				DrawAABB(transform, aabb);
 			}
 		}
@@ -172,9 +173,9 @@ namespace GT
 			Renderer2D::DrawLine(corners[j], corners[j + 4], color);
 	}
 	void Renderer3D::ShowAABB(bool show) { IsShowAABB = show; }
-	void Renderer3D::DrawModel(const glm::mat4& transform, Ref<Model>& model)
+	void Renderer3D::DrawModel(const glm::mat4& transform, Model& model)
 	{
-		if (!model->hasShader) model->SetShader(s_ModelShader);
+		if (!model.hasShader) model.SetShader(s_ModelShader);
 		models.push_back({ transform, model,s_CurrentEntityID });
 	}
 	void Renderer3D::SetCurrentEntityID(int entityID)
@@ -192,7 +193,7 @@ namespace GT
 		// 3. 清空深度缓冲
 		glClear(GL_DEPTH_BUFFER_BIT);
 
-		Ref<Shader> shader = m_ShadowShader->Get();
+		Shader shader = m_ShadowShader;
 		// 4. 使用深度着色器
 		shader->Bind();
 
@@ -216,7 +217,7 @@ namespace GT
 		for (auto& [transform, model, ID] : models)
 		{
 			shader->SetUniformMat4("u_Model", transform);
-			model->DrawForShadowMap(transform,shader);
+			model.DrawForShadowMap(transform,shader);
 		}
 
 		// 6. 恢复默认 FBO

@@ -1,5 +1,6 @@
 #pragma once
 #include "GT/Renderer/Camera.h"
+#include "GT/Renderer/Texture.h"
 #include "GT/Renderer/EditorCamera.h"
 #include "GT/Renderer/OrthographicCamera.h"
 #include "ParticleTypes.h"
@@ -24,9 +25,9 @@ namespace GT {
         static void EndScene();
         static void SetViewProjection(const glm::mat4& viewProjection);
 
-        static void RenderParticles(BlendMode mode, const std::vector<Ref<Particle>> particles, const RefHandle<Texture2D> tex = nullptr);
+        static void RenderParticles(BlendMode mode, const std::vector<Ref<Particle>> particles, const Texture2D& tex);
 
-        static float GetTextureSlotIndex(const Ref<Texture2D>& texture);
+        static float GetTextureSlotIndex(const Texture2D& texture);
 
         static void Flush(BlendMode mode);
     private:

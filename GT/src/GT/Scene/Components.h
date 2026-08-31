@@ -77,7 +77,7 @@ namespace GT
     {
         const char* name = "Sprite Renderer";
         glm::vec4 Color = { 1.0f, 1.0f, 1.0f, 1.0f };
-        RefHandle<Texture2D> texture;
+        Texture2D texture;
 		int TilingFactor = 1;
 
         glm::vec2 UVOffset = { 0.0f, 0.0f };
@@ -116,7 +116,7 @@ namespace GT
     struct LightRendererComponent
     {
         const char* name = "Light Renderer";
-        RefHandle<Texture2D> texture;
+        Texture2D texture;
 
         Light light;
 
@@ -143,7 +143,7 @@ namespace GT
     struct ModelComponent
     {
         const char* name = "Model Renderer";
-        RefHandle<Model> model;
+        Model model;
 
         ModelComponent() = default;
         ModelComponent(const ModelComponent&) = default;
@@ -156,7 +156,7 @@ namespace GT
         float Thickness = 1.0f;
         float Fade = 0.005f;
 
-        RefHandle<Texture2D> texture;
+        Texture2D texture;
 
         CircleRendererComponent() = default;
         CircleRendererComponent(const CircleRendererComponent&) = default;
@@ -257,37 +257,6 @@ namespace GT
         CircleCollider2DComponent(const CircleCollider2DComponent&) = default;
     };
 
-    class SkeletalMesh;
-
-    struct AnimatorComponent
-    {
-        // 引用的骨骼网格体资源
-        RefHandle<SkeletalMesh> SkeletalMeshHandle;
-
-        // 当前播放的动画
-        RefHandle<AnimationClip> CurrentAnimationHandle;
-
-        // 运行时数据：当前时间
-        float CurrentTime = 0.0f;
-
-        // 骨骼最终变换矩阵 (用于传入 Shader)
-        // 注意：这里使用 Vector 而不是 Map，因为 Shader 需要连续数组
-        std::vector<glm::mat4> FinalBoneMatrices;
-
-        // 骨骼名称到索引的映射 (用于查找)
-        std::unordered_map<std::string, uint32_t> BoneNameToIndexMap;
-
-        // 构造函数
-        AnimatorComponent() = default;
-        AnimatorComponent(RefHandle<SkeletalMesh> meshHandle)
-            : SkeletalMeshHandle(meshHandle)
-        {
-            FinalBoneMatrices.resize(100); // 预留空间，实际应根据骨骼数量调整
-        }
-
-        // 获取骨骼矩阵数组指针 (供 Renderer 使用)
-        const std::vector<glm::mat4>& GetFinalBoneMatrices() const { return FinalBoneMatrices; }
-    };
 
     struct Animator2DComponent
     {
@@ -329,7 +298,7 @@ namespace GT
         ComponentGroup<IDComponent,TransformComponent, SpriteRendererComponent,
         CircleRendererComponent, CameraComponent, NativeScriptComponent,
         Rigidbody2DComponent, BoxCollider2DComponent, CircleCollider2DComponent,
-        AnimatorComponent,Animator2DComponent,LightRendererComponent,ModelComponent,
+        Animator2DComponent,LightRendererComponent,ModelComponent,
         ParticleComponent,ScriptComponent>;
 
 }

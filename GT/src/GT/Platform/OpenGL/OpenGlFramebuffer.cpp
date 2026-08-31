@@ -194,6 +194,8 @@ namespace GT
 			GT_CORE_WARN("Attemted to resize framebuffer to {0}, {1}", Width, Height);
 			return;
 		}
+		if (m_Specification.Width == Width, m_Specification.Height == Height) return;
+
 		m_Specification.Width = Width;
 		m_Specification.Height = Height;
 		Invalidate();

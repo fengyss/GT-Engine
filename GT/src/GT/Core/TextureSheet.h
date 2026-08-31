@@ -4,10 +4,10 @@
 namespace GT
 {
 
-	class TextureSheet  : public Texture2D
+	class TextureSheet  : public Texture2DAsset
 	{
 	public:
-		TextureSheet(const Ref<Texture2D>& texture);
+		TextureSheet(const Texture2D& texture);
 		TextureSheet(const std::string& path);
 
 
@@ -19,7 +19,7 @@ namespace GT
 
 		virtual bool IsLoaded() const override { return m_Texture->IsLoaded(); };
 
-		virtual void SetData(void* data, unsigned int size) override {};
+		virtual void SetData(void* data, unsigned int size) const override {};
 
 		virtual unsigned int GetRendererID() const override;
 		virtual const std::filesystem::path& GetPath() const override { return m_Texture->GetPath(); };
@@ -28,14 +28,14 @@ namespace GT
 		void AddSpriteCoords(const char* name, const TexCoords& coords);
 		void AddSpriteCoords(const char* name, int x, int y, int width, int height);
 
-		Ref<Texture2D> GetTexture() const { return m_Texture; }
+		const Texture2D& GetTexture() const { return m_Texture; }
 		TexCoords GetSpriteCoords(const std::string& name) const;
 
 
-		virtual bool operator==(const Texture& other) const override;
-		virtual bool operator==(const TextureSheet& other) const ;
+		virtual bool operator==(const Texture2D& other);
+		virtual bool operator==(const TextureSheet& other) ;
 	private:
-		Ref<Texture2D> m_Texture;
+		Texture2D m_Texture;
 		std::unordered_map<std::string, TexCoords> m_TexCoords;
 	};
 }

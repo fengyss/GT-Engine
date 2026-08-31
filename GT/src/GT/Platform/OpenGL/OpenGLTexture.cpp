@@ -31,7 +31,7 @@ namespace GT
 		:m_Path(path)
 	{
 		GT_PROFILE_FUNCTION();
-		m_Name = path.stem().string();
+		Name = path.stem().string();
 
 		// Load image data using stb_image or similar library
 		int width, height, channels;
@@ -110,6 +110,11 @@ namespace GT
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
+	uint32_t OpenGLTexture2D::GetMemorySize() const
+	{
+		return GetWidth() * GetHeight() * 4;
+	}
+
 	Image OpenGLTexture2D::GetData() const
 	{
 		Image image;
@@ -118,7 +123,7 @@ namespace GT
 		return image;
 	}
 
-	void OpenGLTexture2D::SetData(void* data, unsigned int size)
+	void OpenGLTexture2D::SetData(void* data, unsigned int size) const
 	{
 		GT_PROFILE_FUNCTION();
 		unsigned int bpp = m_DataFormat == GL_RGBA ? 4 : 3;

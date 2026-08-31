@@ -1,5 +1,6 @@
 #pragma once
 
+#include "GT/Core/Base.h"
 #include "GT/Core/Timestep.h"
 #include "GT/Renderer/EditorCamera.h"
 #include "GT/Core/UUID.h"
@@ -21,7 +22,8 @@ namespace GT
 		Scene();
 		~Scene();
 
-		static Ref<Scene> Copy(Ref<Scene> other);
+		static Ref<Scene> MakeCopy(Ref<Scene> other);
+		void Copy(Ref<Scene> other);
 
 
 		static AssetType GetStaticType() { return AssetType::Scene; }
@@ -78,13 +80,16 @@ namespace GT
 
 		bool IsRunning() const { return m_IsRunning; }
 
-		void SetName(const std::string& newName) { name = newName; }
+		void SetName(const std::string& newName) { Name = newName; }
 		void SetFilePath(const std::filesystem::path& path) { filepath = path; }
 
 
-		const std::string& GetName() const { return name; }
+		virtual const std::string& GetName() const override { return Name; }
 		const std::filesystem::path& GetFilePath() { return filepath; }
 		int substepcount = 4;
+
+		Ref<Framebuffer> m_Framebuffer;
+
 	private:
 		template<typename T>
 		void OnComponentAdded(Entity entity, T& component);
@@ -96,7 +101,6 @@ namespace GT
 
 		std::unordered_map<UUID, entt::entity> m_EntityMap;
 
-		std::string name = "New Scene";
 		std::filesystem::path filepath;
 		entt::registry m_Registry;
 		uint32_t m_ViewportWidth = 0;
@@ -106,7 +110,6 @@ namespace GT
 
 		b2WorldId m_WorldID = b2_nullWorldId;
 		
-		Ref<Framebuffer> m_Framebuffer;
 
 		friend class Entity;
 		friend class SceneSerializer;

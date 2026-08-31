@@ -21,6 +21,9 @@ int main(int argc, char** argv)
 	GT_PROFILE_BEGIN_SESSION("Shutdown", "GTProfile-Shutdown.json");
 	delete app;
 	GT_PROFILE_END_SESSION();
+
+	GT::Log::ShutDown();
+
 	return 0;
 }
 #endif

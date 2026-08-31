@@ -11,7 +11,7 @@ namespace GT {
     // 2D 动画帧 (用于帧动画)
     struct SpriteFrame
     {
-        //RefHandle<Texture2D> TextureHandle; // 指向 Texture2D 的句柄
+        //Texture2D TextureHandle; // 指向 Texture2D 的句柄
         glm::vec2   UVOffset;      // 纹理偏移 (如果是图集)
         glm::vec2   UVSize;        // 纹理尺寸
         glm::vec2   Pivot;         // 轴心点 (用于旋转)

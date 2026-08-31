@@ -40,7 +40,7 @@ namespace GT
 		{
 			ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{ 4,4 });
 			ImGui::Separator();
-			bool open = ImGui::TreeNodeEx(scene->name.c_str(), treeNodeFlags, scene->name.c_str());
+			bool open = ImGui::TreeNodeEx(scene->Name.c_str(), treeNodeFlags, scene->Name.c_str());
 			ImGui::PopStyleVar();
 
 			if (ImGui::BeginPopupContextItem())
@@ -463,7 +463,7 @@ namespace GT
 			{
 				ImGui::ColorEdit4("Render Color", glm::value_ptr(component.Color));
 				const char* name = "None";
-				if (component.texture) name = component.texture->Get()->GetName().c_str();
+				if (component.texture) name = component.texture->GetName().c_str();
 				ImGui::Text("Texture: %s", name);
 				ImGui::SameLine();
 				ImGui::Columns(1);
@@ -476,8 +476,8 @@ namespace GT
 					{
 						const wchar_t* path = (const wchar_t*)payload->Data;
 						std::filesystem::path filepath(path);
-						RefHandle<Texture2D> texture = CreateHandle<Texture2D>(filepath);
-						if (texture && texture->IsValid()) component.texture = texture;
+						Texture2D texture = Texture2D(filepath);
+						if (texture) component.texture = texture;
 						else GT_CORE_WARN("Could not load texture {0}", filepath.string());
 					}
 					ImGui::EndDragDropTarget();
@@ -500,7 +500,7 @@ namespace GT
 
 
 				const char* name = "None";
-				if (component.texture) name = component.texture->Get()->GetName().c_str();
+				if (component.texture) name = component.texture->GetName().c_str();
 				ImGui::Text("Texture: %s", name);
 				ImGui::Button("Texture");  //Target for drag and drop
 				if (ImGui::BeginDragDropTarget())
@@ -509,7 +509,7 @@ namespace GT
 					{
 						const wchar_t* path = (const wchar_t*)payload->Data;
 						std::filesystem::path filepath(path);
-						RefHandle<Texture2D> texture = CreateHandle<Texture2D>(filepath);
+						Texture2D texture = Texture2D(filepath);
 
 						if (texture) component.texture = texture;
 						else GT_CORE_WARN("Could not load texture {0}", filepath.string());
@@ -566,7 +566,7 @@ namespace GT
 		DrawComponent<LightRendererComponent>("Light Renderer", e, [](auto& component)
 			{
 				const char* name = "None";
-				if (component.texture) name = component.texture->Get()->GetName().c_str();
+				if (component.texture) name = component.texture->GetName().c_str();
 				ImGui::Text("Texture: %s", name);
 				ImGui::SameLine();
 				ImGui::Columns(1);
@@ -579,9 +579,9 @@ namespace GT
 					{
 						const wchar_t* path = (const wchar_t*)payload->Data;
 						std::filesystem::path filepath(path);
-						RefHandle<Texture2D> texture = CreateHandle<Texture2D>(filepath);
+						Texture2D texture = Texture2D(filepath);
 
-						if (texture->Get()) component.texture = texture;
+						if (texture) component.texture = texture;
 						else GT_CORE_WARN("Could not load texture {0}", filepath.string());
 					}
 					ImGui::EndDragDropTarget();
@@ -645,7 +645,7 @@ namespace GT
 		DrawComponent<ModelComponent>("Model Renderer", e, [](auto& component)
 			{
 				if (!component.model) ImGui::Text("Model: %s", component.name);
-				else ImGui::Text("Model: %s", component.model->Get()->name.c_str());
+				else ImGui::Text("Model: %s", component.model.Name.c_str());
 				ImGui::SameLine();
 				ImGui::Columns(1);
 				//ImGui::PushItemWidth(-1);
@@ -657,7 +657,7 @@ namespace GT
 					{
 						const wchar_t* path = (const wchar_t*)payload->Data;
 						std::filesystem::path filepath(path);
-						RefHandle<Model> model = CreateHandle<Model>(filepath);
+						Model model = Model(filepath);
 						if(model)
 							component.model = model;
 						//GT_CORE_WARN("Could not load Model {0}", filepath.string());

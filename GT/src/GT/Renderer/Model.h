@@ -18,17 +18,21 @@ namespace GT
     class Model : public Asset
     {
     public:
-
+        Model() = default;
         static AssetType GetStaticType() { return AssetType::Model; }
 
         virtual AssetType GetType() const { return GetStaticType(); }
+
+        virtual const std::string& GetName() const override { return Name; }
+
+
 
 
         virtual uint32_t GetMemorySize() const override { return 0; }
 
         // model data 
-        std::vector<RefHandle<Texture2D>> textures;
-		RefHandle<Shader> shader;
+        std::vector<Texture2D> textures;
+		Shader shader;
 
         //std::vector<AssetHandle> textures;
         //AssetHandle shader;
@@ -39,8 +43,12 @@ namespace GT
 		bool isLoaded = false;
 		bool hasShader = false;
 		uint32_t VertexCount = 0;
-        std::string name = "NONE";
         // constructor, expects a filepath to a 3D model.
+
+        operator bool()
+        {
+            return false;
+        }
        
         Model(const std::filesystem::path& path, bool gamma = false) : gammaCorrection(gamma)
         {
@@ -48,17 +56,17 @@ namespace GT
             if (isLoaded) 
             {
                 CalculateVertexCount();
-				name = filepath.stem().string();
+				Name = filepath.stem().string();
             }
         }
         ~Model();
 
         // draws the model, and thus all its meshes
         void Draw(const glm::mat4& transform);
-        void Draw(const glm::mat4& transform, const Ref<Shader> shader);
-        void DrawForShadowMap(const glm::mat4& transform, const Ref<Shader> shader);
+        void Draw(const glm::mat4& transform, const Shader& shader);
+        void DrawForShadowMap(const glm::mat4& transform, const Shader& shader);
         void Draw(const glm::mat4& transform,const Frustum& frustum);
-        void SetShader(RefHandle<Shader> shader) {
+        void SetShader(const Shader& shader) {
             this->shader = shader; 
             hasShader = true;
         }
@@ -78,7 +86,6 @@ namespace GT
         {
             return VertexCount;
 		}
-        const std::string& GetName() { return name; }
         GPUAABB GetAABB() { return aabb; }
     private:
         GPUAABB aabb = { glm::vec3(std::numeric_limits<float>::max()), glm::vec3(std::numeric_limits<float>::lowest()) };
@@ -92,26 +99,9 @@ namespace GT
 
         // checks all material textures of a given type and loads the textures if they're not loaded yet.
         // the required info is returned as a Texture struct.
-        std::vector<Ref<Texture>> loadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName);
+        std::vector<Texture2D> loadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName);
         void Model::LoadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName);
     };
 
-    class ModelLibrary
-    {
-    public:
-
-        Ref<Model> Load(uint32_t ID, const std::filesystem::path& filepath);
-        Ref<Model> Reload(uint32_t ID, const std::filesystem::path& filepath);
-        void Clear();
-        Ref<Model> Get(uint32_t ID);
-
-        bool Exists(uint32_t ID) const
-        {
-            return m_Models.find(ID) != m_Models.end();
-        }
-    private:
-        void Add(uint32_t ID, const Ref<Model>& model);
-        std::unordered_map<uint32_t, Ref<Model>> m_Models;
-    };
 
 }

@@ -11,7 +11,7 @@
 
 namespace GT {
 
-    std::vector<SpriteRegion> SpriteSheetCropper::SliceByGrid(Ref<Texture2D> texture, uint32_t rows, uint32_t cols)
+    std::vector<SpriteRegion> SpriteSheetCropper::SliceByGrid(Texture2D& texture, uint32_t rows, uint32_t cols)
     {
         std::vector<SpriteRegion> regions;
         if (!texture) return regions;
@@ -39,7 +39,7 @@ namespace GT {
         return regions;
     }
 
-    std::vector<SpriteRegion> SpriteSheetCropper::SliceByContent(Ref<Texture2D> texture, uint32_t padding, float alphaThreshold)
+    std::vector<SpriteRegion> SpriteSheetCropper::SliceByContent(Texture2D& texture, uint32_t padding, float alphaThreshold)
     {
         std::vector<SpriteRegion> regions;
         if (!texture) return regions;

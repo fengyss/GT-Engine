@@ -38,13 +38,13 @@ namespace GT
 		vertexArray->Bind();
 		RenderCommand::DrawIndexed(vertexArray);
 	}
-	void Renderer::Submit(const Ref<Shader>& shader, 
+	void Renderer::Submit(const Shader&& shader, 
 		const Ref<VertexArray>& vertexArray, 
 		const glm::mat4& transform)
 	{
 		shader->Bind();
-		std::dynamic_pointer_cast<OpenGLShader>(shader)->SetUniformMat4("u_ViewProjection", m_SceneData->ViewProjectionMatrix);
-		std::dynamic_pointer_cast<OpenGLShader>(shader)->SetUniformMat4("u_Transform", transform);
+		//std::dynamic_pointer_cast<OpenGLShader>(shader)->SetUniformMat4("u_ViewProjection", m_SceneData->ViewProjectionMatrix);
+		//std::dynamic_pointer_cast<OpenGLShader>(shader)->SetUniformMat4("u_Transform", transform);
 		vertexArray->Bind();
 		RenderCommand::DrawIndexed(vertexArray);
 	}

@@ -16,7 +16,7 @@ namespace GT
 		static void EndScene();
 
 		static void Submit(const Ref<VertexArray>& vertexArray);
-		static void Submit(const Ref<Shader>& shader, 
+		static void Submit(const Shader&& shader, 
 			const Ref<VertexArray>& vertexArray, 
 			const glm::mat4& transform=glm::mat4(1.0f));
 

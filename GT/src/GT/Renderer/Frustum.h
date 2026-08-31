@@ -31,7 +31,7 @@ namespace GT
         Ref<StorageBuffer> GetAABBBuffer() { return m_AABBBuffer; }
 
     private:
-        Ref<Shader> m_ComputeShader;
+        Shader m_ComputeShader;
         Ref<StorageBuffer> m_FrustumBuffer;
         Ref<StorageBuffer> m_VisibleBuffer;
         Ref<StorageBuffer> m_AABBBuffer;

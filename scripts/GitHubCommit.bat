@@ -5,7 +5,7 @@ pause
 git add .
 pause
 
-git commit -m "fix: fix some issue about assetmanager."
+git commit -m "save files and to refactor asset system."
 
 pause
 

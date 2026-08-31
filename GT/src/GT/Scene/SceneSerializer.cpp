@@ -125,6 +125,8 @@ namespace YAML {
 }
 
 
+YAML::Node data;
+
 namespace GT
 {
 
@@ -188,24 +190,19 @@ namespace GT
 
 
 	static void SerializeEntity(YAML::Emitter& out, Entity entity);
-	SceneSerializer::SceneSerializer(const Ref<Scene>& scene)
-		:m_Scene(scene)
-	{
-	}
 
 
-
-	void SceneSerializer::Serialize(const std::filesystem::path& filepath)
+	void SceneSerializer::Serialize(Ref<Scene> scene, const std::filesystem::path& filepath)
 	{
 		YAML::Emitter out;
 
 		out << YAML::BeginMap;
-		out << YAML::Key << "Scene" << YAML::Value << m_Scene->name;
+		out << YAML::Key << "Scene" << YAML::Value << scene->Name;
 		out << YAML::Key << "Entities" << YAML::Value << YAML::BeginSeq;
-		auto view = m_Scene->m_Registry.view<TagComponent>();
+		auto view = scene->m_Registry.view<TagComponent>();
 		for (auto e : view)
 		{
-			Entity entity{ e,m_Scene.get() };
+			Entity entity{ e,scene.get() };
 			if (!entity)
 				return;
 			SerializeEntity(out, entity);
@@ -216,19 +213,11 @@ namespace GT
 		std::ofstream fout(filepath);
 		fout << out.c_str();
 	}
-	bool SceneSerializer::Deserialize(const std::filesystem::path& filepath)
+	Ref<Scene> SceneSerializer::Deserialize(const std::filesystem::path& filepath)
 	{
-		YAML::Node data;
-		try
-		{
-			data = YAML::LoadFile(filepath.string());
-		}
-		catch (YAML::ParserException e)
-		{
-			GT_CORE_ERROR("Failed to load .hazel file '{0}'\n     {1}", filepath.string(), e.what());
-			return false;
-		}
+		Ref<Scene> scene = CreateRef<Scene>();
 
+		LoadFile(filepath);
 
 		if (!data["Scene"])
 			return false;
@@ -237,8 +226,10 @@ namespace GT
 		std::string sceneName = filepath.stem().string();
 		GT_CORE_INFO("Deserializing scene '{0}'", sceneName);
 
-		m_Scene->SetFilePath(filepath);
-		m_Scene->SetName(sceneName);
+		scene->SetFilePath(filepath);
+		scene->SetName(sceneName);
+		scene->Name = data["Scene"].as<std::string>();
+
 
 		YAML::Node entities = data["Entities"];
 		if (entities)
@@ -258,7 +249,7 @@ namespace GT
 
 				GT_CORE_INFO("Deserialized [{2}] entity with ID = {0}, name = {1}", uuid, name,type);
 
-				Entity deserializedEntity = m_Scene->CreateEntityWithUUID(uuid, name);
+				Entity deserializedEntity = scene->CreateEntityWithUUID(uuid, name);
 				deserializedEntity.GetComponent<TagComponent>().Type = type;
 
 				auto transformComponent = entity["TransformComponent"];
@@ -304,7 +295,7 @@ namespace GT
 						//auto path = Project::GetAssetFileSystemPath(texturePath);
 						if(!std::filesystem::exists(texturePath))
 							GT_CORE_ERROR("Texture file '{0}' does not exist", texturePath.string());
-						else src.texture = CreateHandle<Texture2D>(texturePath);
+						else src.texture = Texture2D(texturePath);
 					}
 
 					if (spriteRendererComponent["TilingFactor"])
@@ -319,7 +310,7 @@ namespace GT
 
 						if (!std::filesystem::exists(modelPath))
 							GT_CORE_ERROR("Model file '{0}' does not exist", modelPath);
-						else src.model = CreateHandle<Model>(modelPath);
+						else src.model = Model(modelPath);
 				}
 
 				auto lightComponent = entity["LightComponent"];
@@ -332,7 +323,7 @@ namespace GT
 						//auto path = Project::GetAssetFileSystemPath(texturePath);
 						if (!std::filesystem::exists(texturePath))
 							GT_CORE_ERROR("Texture file '{0}' does not exist", texturePath.string());
-						else src.texture = CreateHandle<Texture2D>(texturePath);
+						else src.texture = Texture2D(texturePath);
 					}
 					auto& light = src.light;
 					light.type = (LightType)lightComponent["Type"].as<int>();
@@ -362,7 +353,7 @@ namespace GT
 						//auto path = Project::GetAssetFileSystemPath(texturePath);
 						if (!std::filesystem::exists(texturePath))
 							GT_CORE_ERROR("Texture file '{0}' does not exist", texturePath.string());
-						else crc.texture = CreateHandle<Texture2D>(texturePath);
+						else crc.texture = Texture2D(texturePath);
 					}
 				}
 
@@ -507,13 +498,89 @@ namespace GT
 				GT_CORE_INFO("Deserialized [{1}] entity {0} End!", name, type);
 			}
 		}
-		return true;
+		return scene;
 	}
 	bool SceneSerializer::DeserializeRuntime(const std::filesystem::path& filepath)
 	{
 		//not implemented
 		GT_CORE_ASSERT(false, "Not implemented");
 		return false;
+	}
+
+
+	Ref<AssetMetadata> SceneSerializer::GenerateMetadataFromFile(const std::filesystem::path& filepath)
+	{
+		Ref<AssetMetadata> meta = CreateRef<AssetMetadata>();
+		
+		LoadFile(filepath);
+
+		if (!data["Scene"])
+			return false;
+
+		meta->ID = data["ID"].as<uint64_t>();
+		meta->Name = data["Scene"].as<std::string>();
+
+		YAML::Node entities = data["Entities"];
+		if (entities)
+		{
+			for (auto entity : entities)
+			{
+			auto spriteRendererComponent = entity["SpriteRendererComponent"];
+			if (spriteRendererComponent)
+			{
+				if (spriteRendererComponent["Texture"])
+				{
+					UUID texid = spriteRendererComponent["Texture"].as<uint64_t>();
+					meta->directDependencies.push_back(texid);
+				}
+			}
+
+			auto modelComponent = entity["ModelComponent"];
+			if (modelComponent)
+			{
+				if (spriteRendererComponent["Model"])
+				{
+					UUID texid = spriteRendererComponent["Model"].as<uint64_t>();
+					meta->directDependencies.push_back(texid);
+				}
+			}
+
+			auto lightComponent = entity["LightComponent"];
+			if (lightComponent)
+			{
+				if (spriteRendererComponent["Texture"])
+				{
+					UUID texid = spriteRendererComponent["Texture"].as<uint64_t>();
+					meta->directDependencies.push_back(texid);
+				}
+			}
+
+			auto circleRendererComponent = entity["CircleRendererComponent"];
+			if (circleRendererComponent)
+			{
+				if (spriteRendererComponent["Texture"])
+				{
+					UUID texid = spriteRendererComponent["Texture"].as<uint64_t>();
+					meta->directDependencies.push_back(texid);
+				}
+			}
+
+			}
+		}
+		return meta;
+	}
+
+	void SceneSerializer::LoadFile(const std::filesystem::path& filepath)
+	{
+		try
+		{
+			data = YAML::LoadFile(filepath.string());
+		}
+		catch (YAML::ParserException e)
+		{
+			GT_CORE_ERROR("Failed to load .hazel file '{0}'\n     {1}", filepath.string(), e.what());
+			data = NULL;
+		}
 	}
 
 	void SceneSerializer::SerializeRuntime(const std::filesystem::path& filepath)
@@ -642,7 +709,7 @@ namespace GT
 			auto& spriteRendererComponent = entity.GetComponent<SpriteRendererComponent>();
 			out << YAML::Key << "Color" << YAML::Value << spriteRendererComponent.Color;
 			if (spriteRendererComponent.texture)
-				out << YAML::Key << "TexturePath" << YAML::Value << spriteRendererComponent.texture->Get()->GetPath().string();
+				out << YAML::Key << "TexturePath" << YAML::Value << spriteRendererComponent.texture->GetPath().string();
 
 			out << YAML::Key << "TilingFactor" << YAML::Value << spriteRendererComponent.TilingFactor;
 
@@ -656,7 +723,7 @@ namespace GT
 
 			auto& modelComponent = entity.GetComponent<ModelComponent>();
 			if(modelComponent.model)
-				out << YAML::Key << "ModelPath" << YAML::Value << modelComponent.model->Get()->filepath.string();
+				out << YAML::Key << "ModelPath" << YAML::Value << modelComponent.model.filepath.string();
 
 			out << YAML::EndMap; 
 		}
@@ -668,7 +735,7 @@ namespace GT
 
 			auto& lightComponent = entity.GetComponent<LightRendererComponent>();
 			if (lightComponent.texture)
-				out << YAML::Key << "TexturePath" << YAML::Value << lightComponent.texture->Get()->GetPath().string();
+				out << YAML::Key << "TexturePath" << YAML::Value << lightComponent.texture->GetPath().string();
 
 			auto& light = lightComponent.light;
 			out << YAML::Key << "Type" << YAML::Value << (int)light.type;
@@ -698,7 +765,7 @@ namespace GT
 			out << YAML::Key << "Fade" << YAML::Value << circleRendererComponent.Fade;
 
 			if (circleRendererComponent.texture)
-				out << YAML::Key << "TexturePath" << YAML::Value << circleRendererComponent.texture->Get()->GetPath().string();
+				out << YAML::Key << "TexturePath" << YAML::Value << circleRendererComponent.texture->GetPath().string();
 
 			out << YAML::EndMap; // CircleRendererComponent
 		}

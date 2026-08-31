@@ -1,5 +1,0 @@
-Project:
-  Name: Sandbox
-  StartScene: "scenes/cube.hazel"
-  AssetDirectory: "assets"
-  ScriptModulePath: "Scripts/Binaries/Sandbox.dll"

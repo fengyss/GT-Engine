@@ -1,131 +1,50 @@
 #pragma once
-#include "glm/glm.hpp"
 
-#include "GT/Core/Log.h"
-#include "GT/Core/Buffer.h"
-#include "GT/Core/Asset/Asset.h"
+#include "GT/Core/Asset/Handle.h"
+#include "GT/Core/Asset/TextureAsset.h"
+
 namespace GT
 {
-	struct TexCoords
-	{
-		glm::vec2 texcoord[4];
-	};
 
-	enum TextureType
+	class Texture2D
 	{
-		TextureTypeNone = 0,
-		Diffuse = 1u << 31,
-		Specular = 1u << 30,
-		Normal = 1u << 29,
-		Height = 1u << 28,
-		Emission = 1u << 27,
+	public:
+		Texture2D() = default;
+		Texture2D(const Texture2D& tex);
+		Texture2D(const std::filesystem::path& path);
+		~Texture2D();
 
-	};
-	struct Image
-	{
-		unsigned char* data;
-		int height, width, channels;
-	};
-	enum class ImageFormat
-	{
-		None = 0,
-		R8,
-		RGB8,
-		RGBA8,
-		RGBA32F
-	};
-	struct TextureSpecification
-	{
-		uint32_t Width = 1;
-		uint32_t Height = 1;
-		ImageFormat Format = ImageFormat::RGBA8;
-		bool GenerateMips = true;
-	};
-	static std::string GetStrOfType(TextureType type)
-	{
-		switch (type)
-		{
-		case GT::Diffuse:
-			return "texture_diffuse";
-			break;
-		case GT::Specular:
-			return "texture_specular";
-			break;
-		case GT::Normal:
-			return "texture_normal";
-			break;
-		case GT::Height:
-			return "texture_height";
-			break;
-		case GT::Emission:
-			return "texture_emission";
-			break;
-		default:
-			GT_CORE_ASSERT(false,"Unknown TextureType!");
-			break;
+
+
+		Ref<Texture2DAsset> Get() const;
+
+
+		Ref<Texture2DAsset> operator->() 
+		{ 
+			return Get();
 		}
-	}
-	class Texture : public Asset
-	{
-	public:
-		virtual ~Texture() = default;
-		virtual void Bind(unsigned int slot = 0) const = 0;
-		virtual void Unbind() const = 0;
-
-		virtual unsigned int GetWidth() const = 0;
-		virtual unsigned int GetHeight() const = 0;
-
-		virtual bool IsLoaded() const = 0;
-
-		virtual unsigned int GetRendererID() const = 0;	
-		virtual const std::filesystem::path& GetPath() const = 0;
-		virtual const std::string& GetName() const = 0;
-		virtual Image GetData() const = 0;
-
-
-		virtual void SetTextureType(TextureType type) = 0;
-
-		virtual TextureType GetTextureType() const = 0;
-
-		virtual void SetData(void* data, unsigned int size) = 0;
-
-		virtual bool operator==(const Texture& other) const = 0;
-
-
-	};
-	class Texture2D : public Texture 
-	{
-	public:
-		virtual ~Texture2D() = default;
-
-		static AssetType GetStaticType() { return AssetType::Texture2D; }
-		
-		virtual AssetType GetType() const { return GetStaticType(); }
-		virtual uint32_t GetMemorySize() const override { return GetWidth() * GetHeight() * 4; }
-
-		static Ref<Texture2D> Create(const std::filesystem::path& path);
-		static Ref<Texture2D> Create(const int width,const int height);
-		static Ref<Texture2D> Create(TextureSpecification& spec, Buffer& data);
-	};
-
-
-	class TextureLibrary
-	{
-	public:
-
-		Ref<Texture2D> Load(uint32_t ID, const std::filesystem::path& filepath);
-		Ref<Texture2D> Reload(uint32_t ID, const std::filesystem::path& filepath);
-		void Clear();
-		Ref<Texture2D> Get(uint32_t ID);
-
-		bool Exists(uint32_t ID) const
-		{
-			return m_Textures.find(ID) != m_Textures.end();
+		const Ref<Texture2DAsset> operator->() const
+		{ 
+			return Get();
 		}
+
+		Texture2D& operator=(const Texture2D& rhs);
+
+		explicit operator bool() const  noexcept {
+			return IsValid;
+		}
+
+		bool operator==(const Texture2D& rhs) const
+		{
+			return handle.ID == rhs.handle.ID;
+		}
+
 	private:
-		void Add(uint32_t ID, const Ref<Texture2D>& texture);
-		std::unordered_map<uint32_t, Ref<Texture2D>> m_Textures;
+		Handle handle;
+		bool IsValid = false;
 	};
+
+
 }
 
 

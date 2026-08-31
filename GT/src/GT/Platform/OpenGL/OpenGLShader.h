@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GT/Renderer/Shader.h"
+#include "GT/Core/Asset/ShaderAsset.h"
 
 struct ShaderProgramSource
 {
@@ -11,12 +11,11 @@ struct ShaderProgramSource
 typedef unsigned int GLenum;
 namespace GT
 {
-	class OpenGLShader : public Shader
+	class OpenGLShader : public ShaderAsset
 	{
 	private:
 		unsigned int m_RendererID = 0;
 		std::filesystem::path m_FilePath;
-		std::string m_Name;
 		std::unordered_map<std::string, int> m_UniformLocationCache;
 	public:
 		OpenGLShader(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc);
@@ -28,7 +27,7 @@ namespace GT
 
 
 		virtual uint32_t GetRendererID() const override { return m_RendererID; };
-		virtual const std::string& GetName() const override { return m_Name; }
+		virtual const std::string& GetName() const override { return Name; }
 		virtual const std::filesystem::path& GetPath() const override { return m_FilePath; }
 
 

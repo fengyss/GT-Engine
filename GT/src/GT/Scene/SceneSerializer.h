@@ -7,16 +7,20 @@ namespace GT
 	class SceneSerializer
 	{
 	public:
-		SceneSerializer(const Ref<Scene>& scene);
+		SceneSerializer() = default;
+		void LoadFile(const std::filesystem::path& filepath);
 
-		void Serialize(const std::filesystem::path& filepath);
+		void Serialize(Ref<Scene> scene, const std::filesystem::path& filepath);
 		void SerializeRuntime(const std::filesystem::path& filepath);
 
-		bool Deserialize(const std::filesystem::path& filepath);
+		Ref<Scene> Deserialize(const std::filesystem::path& filepath);
 		bool DeserializeRuntime(const std::filesystem::path& filepath);
 
-	private:
-		Ref<Scene> m_Scene;
+
+		// Based on scene file generate metadata
+		Ref<AssetMetadata> GenerateMetadataFromFile(const std::filesystem::path& filepath);
+
+
 	};
 }
 

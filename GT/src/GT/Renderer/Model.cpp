@@ -35,20 +35,20 @@ namespace GT
         return glm::dot(glm::vec3(plane), positive) + plane.w >= 0.0;
     }
     
+
     Model::~Model()
     {
         meshes.clear();
-		shader.reset();
     }
 
     void Model::Draw(const glm::mat4& transform)
     {
         for (unsigned int i = 0; i < meshes.size(); i++)
         {
-            meshes[i].Draw(transform, shader->Get());
+            meshes[i].Draw(transform, shader);
         }
     }
-    void Model::Draw(const glm::mat4& transform, const Ref<Shader> shader)
+    void Model::Draw(const glm::mat4& transform, const Shader& shader)
     {
         for (unsigned int i = 0; i < meshes.size(); i++)
         {
@@ -56,7 +56,7 @@ namespace GT
         }
     }
 
-    void Model::DrawForShadowMap(const glm::mat4& transform, const Ref<Shader> shader)
+    void Model::DrawForShadowMap(const glm::mat4& transform, const Shader& shader)
     {
         for (unsigned int i = 0; i < meshes.size(); i++)
         {
@@ -92,7 +92,7 @@ namespace GT
             if(visible)
             {
                 RenderCommand::SetLineWidth(0.3f);
-                meshes[i].Draw(transform, shader->Get());
+                meshes[i].Draw(transform, shader);
                 Renderer3D::GetStats().DrawCalls++;
                 Renderer3D::GetStats().Meshes++;
                 Renderer3D::GetStats().VerticiesCount += meshes[i].GetVertexCount();
@@ -225,7 +225,7 @@ namespace GT
             bool skip = false;
             for (unsigned int j = 0; j < textures.size(); j++)
             {
-                if (std::strcmp(textures[j]->Get()->GetPath().filename().string().c_str(), path.C_Str()) == 0)
+                if (std::strcmp(textures[j]->GetPath().filename().string().c_str(), path.C_Str()) == 0)
                 {
                     skip = true; 
                     break;
@@ -235,57 +235,15 @@ namespace GT
             {   
                 std::filesystem::path texturePath = filepath.parent_path() / std::filesystem::path(std::string(path.C_Str()));
 
-                RefHandle<Texture2D> handle = CreateHandle<Texture2D>(texturePath);
+               Texture2D handle = Texture2D(texturePath);
                 textures.push_back(handle);
 
-                auto tex = handle->Get();
-                tex->SetTextureType(GetTypeFromAssimpType(type));
+                auto tex = handle;
+                //tex->SetTextureType(GetTypeFromAssimpType(type));
             }
         }
     }
 
-    void ModelLibrary::Clear()
-    {
-        for(auto& [id, model] : m_Models)
-        {
-            model.reset();
-		}
-	}
-
-
-    void ModelLibrary::Add(uint32_t ID, const Ref<Model>& model)
-    {
-        m_Models[ID] = model;
-    }
-
-    Ref<Model> ModelLibrary::Load(uint32_t ID, const std::filesystem::path& filepath)
-    {
-        if (Exists(ID))
-        {
-            GT_CORE_INFO("Model {1} with ID {0} already loaded!", ID, filepath.filename().string());
-            return m_Models[ID];
-        }
-        else {
-            auto model = CreateRef<Model>(filepath);
-            Add(ID, model);
-            return model;
-        }
-    }
-    Ref<Model> ModelLibrary::Reload(uint32_t ID, const std::filesystem::path& filepath)
-    {
-        GT_CORE_WARN("Model {1} with ID {0} reloaded!", ID, filepath.filename().string());
-        m_Models[ID] = CreateRef<Model>(filepath);
-        return m_Models[ID];
-    }
-    Ref<Model> ModelLibrary::Get(uint32_t ID)
-    {
-        if (Exists(ID)) return m_Models[ID];
-        else
-        {
-            GT_CORE_ERROR("Model ID:{0} not found in library!", ID);
-            return nullptr;
-        }
-    }
 
     
 }

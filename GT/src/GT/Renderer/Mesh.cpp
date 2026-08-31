@@ -8,25 +8,25 @@ namespace GT
 {
 
     // constructor
-    Mesh::Mesh(std::vector<Vertex> _vertices, std::vector<unsigned int> _indices, std::vector<RefHandle<Texture2D>> _textures)
+    Mesh::Mesh(std::vector<Vertex> _vertices, std::vector<unsigned int> _indices, const std::vector<Texture2D>& _textures)
 		:vertices(_vertices), indices(_indices), textures(_textures)
     {
         setupMesh();
         ComputeAABB(_vertices);
     }
     // render the mesh
-    void Mesh::Draw(const glm::mat4& transform, Ref<Shader> shader)
+    void Mesh::Draw(const glm::mat4& transform,const Shader& shader)
     {
 
         unsigned int texslot = 0;
         shader->Bind();
         for (unsigned int i = 0; i < textures.size(); i++)
         {
-			auto tex = textures[i]->Get();
-			auto type = tex->GetTextureType();
+			auto tex = textures[i];
+			//auto type = tex->GetTextureType();
 
-            texslot |= type;
-            shader->SetUniform1i(GetStrOfType(type), i);
+            //texslot |= type;
+            //shader->SetUniform1i(GetStrOfType(type), i);
 
             tex->Bind(i);
         }
@@ -36,7 +36,7 @@ namespace GT
         RenderCommand::DrawIndexed(m_VertexArray, indices.size());
     }
 
-    void Mesh::DrawForShadowMap(const glm::mat4& transform, Ref<Shader> shader)
+    void Mesh::DrawForShadowMap(const glm::mat4& transform, const Shader& shader)
     {
         RenderCommand::DrawIndexed(m_VertexArray, indices.size());
     }

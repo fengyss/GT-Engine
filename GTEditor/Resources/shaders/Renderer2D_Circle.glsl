@@ -63,11 +63,14 @@ void main()
 
 	if (circle == 0.0)
 		discard;
-		 
+		
     // Set output color
-	vec2 uv = LocalPosition.xy / 2.0f + 1.0f;
+	vec2 uv = LocalPosition.xy / 2.0f + 0.5f;
+	 
     o_Color = Color;
+
 	o_Color.a *= circle;
+
 
 	o_Color = o_Color * texture(u_Textures[v_TexIndex], uv);
 

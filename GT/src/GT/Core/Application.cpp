@@ -17,7 +17,7 @@
 #include "GT/Scripting/ScriptEngine.h"
 
 
-//#define EnableImGui
+#define EnableImGui
 
 
 namespace GT
@@ -79,6 +79,7 @@ namespace GT
 
 	Application::~Application()
 	{
+		m_LayerStack.~LayerStack();
 
 		Renderer::ShutDown();
 		ScriptEngine::Shutdown();

@@ -1,11 +1,23 @@
 #include "gtpch.h"
 
 #include "spdlog/sinks/stdout_color_sinks.h"
+#include "Log.h"
 
 namespace GT {
 
 	Ref<spdlog::logger> Log::s_CoreLogger;
 	Ref<spdlog::logger> Log::s_ClientLogger;
+
+	void Log::ShutDown()
+	{
+		GT_CORE_WARN("LOG DECONSTRUCTED!");
+
+		s_CoreLogger.reset();
+		s_ClientLogger.reset();
+		s_CoreLogger = nullptr;
+		s_ClientLogger = nullptr;
+
+	}
 
 	void Log::Init()
 	{

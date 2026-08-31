@@ -13,6 +13,12 @@
 
 namespace GT
 {
+
+
+	SceneSerializer serializer;
+
+	glm::vec4 color = { 0.0f,0.0f,0.5f,0.0f };
+
 	EditorLayer::EditorLayer()
 		: Layer("EditorLayer"), m_CameraController(16.0f / 9.0f, true)
 	{
@@ -29,16 +35,16 @@ namespace GT
 		GT_CORE_INFO("EditorLayer Layer Attached!");
 
 
-		m_IconPlay = CreateHandle<Texture2D>("IconPlay");
-		m_IconStop = CreateHandle<Texture2D>("IconStop");
-		m_IconSimulate = CreateHandle<Texture2D>("IconSimulate");
+		m_IconPlay = Texture2D("PlayButton");
+		m_IconStop = Texture2D("StopButton");
+		m_IconSimulate = Texture2D("SimulateButton");
 
 		FramebufferSpecification fbSpec;
 		fbSpec.Attachments = { FramebufferTextureFormate::RGBA8,FramebufferTextureFormate::RED_INTEGER,FramebufferTextureFormate::Depth };
 		fbSpec.Width = 1280;
 		fbSpec.Height = 720;
 
-		m_Framebuffer = Framebuffer::Create(fbSpec);
+		//m_Framebuffer = Framebuffer::Create(fbSpec);
 
 		
 		m_EditorCamera = EditorCamera(45.0f,16.0f/9.0f, 0.1f, 1000.0f);
@@ -67,11 +73,12 @@ namespace GT
 		if (commandLineArgs.Count > 1)
 		{
 			auto sceneFilePath = commandLineArgs[1];
-			SceneSerializer serializer(m_ActiveScene);
-			serializer.Deserialize(std::filesystem::path(sceneFilePath));
+			m_ActiveScene = serializer.Deserialize(std::filesystem::path(sceneFilePath));
 		}
 
 		m_SpriteSheetPanel = CreateScope<SpriteSheetPanel>();
+
+
 	}
 
 	void EditorLayer::OnDetach()
@@ -79,9 +86,6 @@ namespace GT
 		if(m_ActiveScene->IsRunning())
 			OnSceneStop();
 
-		m_IconPlay.reset();
-		m_IconStop.reset();
-		m_IconSimulate.reset();
 
 		m_ContentBrowserPanel.reset();
 		m_AssetsPanel.reset();
@@ -91,13 +95,14 @@ namespace GT
 		m_ActiveScene.reset();
 		m_EditorScene.reset();
 		m_SceneHistory.clear();
+
+
 	}
 
 
 
 	bool synced = true;
 
-	glm::vec4 color = { 0.0f,0.0f,0.5f,0.0f };
 	bool dockspace = true;
 
 	bool IsEnableTransparentAndMousePassthrough = false;
@@ -114,11 +119,10 @@ namespace GT
 		//		scene->OnUpdateRuntime(ts);
 		//}
 
-		//m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
 		if (IsResized)
 		{
 			IsResized = false;
-			m_Framebuffer->Resize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
+			//m_Framebuffer->Resize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
 			m_CameraController.OnResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
 			m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
 			m_EditorCamera.SetViewportSize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
@@ -139,12 +143,10 @@ namespace GT
 			Renderer3D::ResetStats();
 
 
-			m_Framebuffer->Bind();
-
-
+			//m_ActiveScene->m_Framebuffer->Bind();
 			RenderCommand::SetClearColor(color);
-			RenderCommand::Clear();
-			m_Framebuffer->ClearAttachment(1, -1);
+			//RenderCommand::Clear();
+			//m_ActiveScene->m_Framebuffer->ClearAttachment(1, -1);
 
 			switch (m_SceneState)
 			{
@@ -171,6 +173,8 @@ namespace GT
 				}
 			}
 
+			m_ActiveScene->m_Framebuffer->Bind();
+
 			Renderer2D::BeginScene(m_EditorCamera);
 			switch (m_EditorCamera.GetProjectionType())
 			{
@@ -191,6 +195,8 @@ namespace GT
 			}
 			Renderer2D::EndScene();
 
+			//m_ActiveScene->m_Framebuffer->Unbind();
+
 			{
 				// read entity ID
 				auto [mx, my] = ImGui::GetMousePos();
@@ -206,13 +212,14 @@ namespace GT
 					int mouseY = (int)my;
 					if (mouseX >= 0 && mouseY >= 0 && mouseX < m_ViewportSize.x && mouseY < m_ViewportSize.y)
 					{
-						pixelData = m_Framebuffer->ReadPixel(1, mouseX, mouseY);
+						pixelData = m_ActiveScene->m_Framebuffer->ReadPixel(1, mouseX, mouseY);
 						m_HoveredEntity = pixelData == -1 ? Entity() : Entity((entt::entity)pixelData, m_ActiveScene.get());
 					}
 				}
 				OnOverlayRender();
-				m_Framebuffer->Unbind();
+
 			}
+			m_ActiveScene->m_Framebuffer->Unbind();
 		}
 	}
 
@@ -520,7 +527,7 @@ namespace GT
 
 		if (hasPlayButton)
 		{
-			Ref<Texture2D> icon = ((m_SceneState == SceneState::Edit || m_SceneState == SceneState::Simulate) ? m_IconPlay : m_IconStop)->Get();
+			Texture2D& icon = ((m_SceneState == SceneState::Edit || m_SceneState == SceneState::Simulate) ? m_IconPlay : m_IconStop);
 			if (ImGui::ImageButton("playbutton",(ImTextureID)(uint64_t)icon->GetRendererID(), ImVec2(size, size)))
 			{
 				if (m_SceneState == SceneState::Edit || m_SceneState == SceneState::Simulate)
@@ -537,7 +544,7 @@ namespace GT
 			if (hasPlayButton)
 				ImGui::SameLine();
 
-			Ref<Texture2D> icon = ((m_SceneState == SceneState::Edit || m_SceneState == SceneState::Play) ? m_IconSimulate : m_IconStop)->Get();
+			Texture2D& icon = ((m_SceneState == SceneState::Edit || m_SceneState == SceneState::Play) ? m_IconSimulate : m_IconStop);
 			if (ImGui::ImageButton("StimulateButton",(ImTextureID)(uint64_t)icon->GetRendererID(), 
 				ImVec2(size, size), ImVec2(0, 0), ImVec2(1, 1), ImVec4(0.0f, 0.0f, 0.0f, 0.0f), tintColor) && toolbarEnabled)
 			{
@@ -554,7 +561,7 @@ namespace GT
 		//	bool isPaused = m_ActiveScene->IsPaused();
 		//	ImGui::SameLine();
 		//	{
-		//		Ref<Texture2D> icon = m_IconPause;
+		//		Texture2D& icon = m_IconPause;
 		//		if (ImGui::ImageButton((ImTextureID)(uint64_t)icon->GetRendererID(), ImVec2(size, size), ImVec2(0, 0), ImVec2(1, 1), 0, ImVec4(0.0f, 0.0f, 0.0f, 0.0f), tintColor) && toolbarEnabled)
 		//		{
 		//			m_ActiveScene->SetPaused(!isPaused);
@@ -566,7 +573,7 @@ namespace GT
 		//	{
 		//		ImGui::SameLine();
 		//		{
-		//			Ref<Texture2D> icon = m_IconStep;
+		//			Texture2D& icon = m_IconStep;
 		//			bool isPaused = m_ActiveScene->IsPaused();
 		//			if (ImGui::ImageButton((ImTextureID)(uint64_t)icon->GetRendererID(), ImVec2(size, size), ImVec2(0, 0), ImVec2(1, 1), 0, ImVec4(0.0f, 0.0f, 0.0f, 0.0f), tintColor) && toolbarEnabled)
 		//			{
@@ -625,7 +632,7 @@ namespace GT
 		
 
 		// Target for drag and drop
-		ImGui::Image((void*)(uint64_t)m_Framebuffer->GetColorAttachmentRendererID(), ImVec2(m_ViewportSize.x, m_ViewportSize.y), ImVec2(0, 1), ImVec2(1, 0));
+		ImGui::Image((void*)(uint64_t)m_ActiveScene->m_Framebuffer->GetColorAttachmentRendererID(), ImVec2(m_ViewportSize.x, m_ViewportSize.y), ImVec2(0, 1), ImVec2(1, 0));
 		if (ImGui::BeginDragDropTarget())
 		{
 			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
@@ -822,9 +829,9 @@ namespace GT
 	{
 		m_ActiveScene = scene;
 		m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
+		//m_ActiveScene->SetFramebuffer(m_Framebuffer);
 		m_HoveredEntity = Entity();
 		m_SceneHierarchyPanel->SetContext(m_ActiveScene);
-		m_ActiveScene->SetFramebuffer(m_Framebuffer);
 	}
 
 	void EditorLayer::OnScenePlay()
@@ -835,7 +842,7 @@ namespace GT
 		m_SceneState = SceneState::Play;
 
 
-		SetActiveScene(Scene::Copy(m_EditorScene));
+		SetActiveScene(Scene::MakeCopy(m_EditorScene));
 
 		m_ActiveScene->OnRuntimeStart();
 	}
@@ -847,7 +854,7 @@ namespace GT
 
 		m_SceneState = SceneState::Simulate;
 
-		SetActiveScene(Scene::Copy(m_EditorScene));
+		SetActiveScene(Scene::MakeCopy(m_EditorScene));
 
 		m_ActiveScene->OnSimulationStart();
 	}
@@ -964,7 +971,6 @@ namespace GT
 	}
 
 
-
 	void EditorLayer::OpenScene()
 	{
 		std::filesystem::path filepath = FileDialogs::OpenFile("GT Scene (*.hazel)\0*.hazel\0");
@@ -984,8 +990,7 @@ namespace GT
 
 			SetActiveScene(m_EditorScene);
 
-			SceneSerializer serializer(m_ActiveScene);
-			serializer.Deserialize(filepath);
+			m_ActiveScene->Copy(serializer.Deserialize(filepath));
 		}
 		else GT_CORE_WARN("Filepath {0} is empty!",filepath.string());
 	}
@@ -1000,22 +1005,20 @@ namespace GT
 	}
 	void EditorLayer::SaveScene()
 	{
-		SceneSerializer serializer(m_ActiveScene);
 		std::filesystem::path path = m_ActiveScene->GetFilePath();
 		if (!std::filesystem::exists(path))
 		{
 			SaveSceneAs();
 		}
-		else serializer.Serialize(path);
+		else serializer.Serialize(m_ActiveScene, path);
 	}
 	void EditorLayer::SaveSceneAs()
 	{
 		std::filesystem::path filepath = FileDialogs::SaveFile("GT Scene (*.hazel)\0*.hazel\0");
 		if (!filepath.empty())
 		{
-			SceneSerializer serializer(m_ActiveScene);
 			m_ActiveScene->SetFilePath(filepath);
-			serializer.Serialize(filepath);
+			serializer.Serialize(m_ActiveScene, filepath);
 		}
 	}
 }

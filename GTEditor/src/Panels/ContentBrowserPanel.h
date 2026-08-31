@@ -16,8 +16,8 @@ namespace GT {
 		std::filesystem::path m_BaseDirectory;
 		std::filesystem::path m_CurrentDirectory;
 
-		RefHandle<Texture2D> m_DirectoryIcon;
-		RefHandle<Texture2D> m_FileIcon;
+		Texture2D m_DirectoryIcon;
+		Texture2D m_FileIcon;
 	};
 
 }

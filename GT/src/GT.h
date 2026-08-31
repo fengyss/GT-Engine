@@ -14,7 +14,7 @@
 #include "GT/Core/TextureSheet.h"
 
 
-#include "GT/Core/Asset/AssetImporter.h"
+#include "GT/Core/Asset/AssetImporter/AssetImporter.h"
 #include "GT/Core/Asset/AssetManager.h"
 
 #include "GT/ImGui/ImGuiLayer.h"

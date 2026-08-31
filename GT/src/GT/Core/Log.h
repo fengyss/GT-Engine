@@ -3,6 +3,7 @@
 
 #include "GT/Core/Base.h"
 
+
 #define GLM_ENABLE_EXPERIMENTAL
 #include "glm/gtx/string_cast.hpp"
 
@@ -12,15 +13,17 @@
 #include "spdlog/fmt/ostr.h"
 #pragma warning(pop)
 
-
 #include "spdlog/fmt/fmt.h"
+#include "spdlog/fmt/std.h"
 
 namespace GT {
 
 	class HAZEL_API Log
 	{
 	public:
+     
 		static void Init();
+        static void ShutDown();
 
 		inline static std::shared_ptr<spdlog::logger>& GetCoreLogger() { return s_CoreLogger;  }
 		inline static std::shared_ptr<spdlog::logger>& GetClientLogger() { return s_ClientLogger; }
@@ -29,6 +32,8 @@ namespace GT {
 	private:
 		static std::shared_ptr<spdlog::logger> s_CoreLogger;
 		static std::shared_ptr<spdlog::logger> s_ClientLogger;
+
+
 	};
 
 }
@@ -86,11 +91,6 @@ struct fmt::formatter<glm::qua<T, Q>> {
     }
 };
 
-//template<typename OStream>
-//inline OStream& operator<<(OStream& os, const std::filesystem::path& path)
-//{
-//    return os << path.string();
-//}
 
 // Core log macros		
 #define GT_CORE_TRACE(...)       ::GT::Log::GetCoreLogger()->trace(__VA_ARGS__)

@@ -20,9 +20,10 @@ namespace GT
 		return 0;
 	}
 	OpenGLShader::OpenGLShader(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc)
-		:m_Name(name)
+	
 	{
 		GT_PROFILE_FUNCTION();
+		Name = name;
 		std::unordered_map<GLenum, std::string> sources;
 		sources[GL_VERTEX_SHADER] = vertexSrc;
 		sources[GL_FRAGMENT_SHADER] = fragmentSrc;
@@ -82,7 +83,7 @@ namespace GT
 		};
 		
 
-		m_Name = filepath.stem().string();
+		Name = filepath.stem().string();
 	}
 	
 	std::string OpenGLShader::ReadFile(const std::filesystem::path& filepath)
@@ -137,7 +138,10 @@ namespace GT
 
 		int glShaderIDindex = 0;
 
+		GLLogCall("sdasd", "dsad", 1);
 		GLuint program = glCreateProgram();
+		GLLogCall("sdasd", "dsad", 1);
+
 		for (auto kv : shaderSources)
 		{
 			GLenum type = kv.first;

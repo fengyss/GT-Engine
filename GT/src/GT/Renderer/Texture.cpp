@@ -5,89 +5,68 @@
 #include "GT/Platform/OpenGL/OpenGLTexture.h"
 #include "GT/Math/Math.h"
 
+#include "GT/Core/Asset/Handle.h"
+#include "GT/Core/Asset/AssetMetadata.h"
+#include "GT/Core/Asset/AssetManager.h"
+
 namespace GT
 {
-
-	Ref<Texture2D> Texture2D::Create(const std::filesystem::path& path)
+	Texture2D::Texture2D(const Texture2D& tex)
 	{
-		GT_CORE_TRACE("Loading [Texture2D] from path: {0}", path.string());
-		switch (Renderer::GetAPI())
+		AssetManager::ReleaseHandle(handle);
+		handle = AssetManager::GetAssetHandle(tex.handle.ID);
+		IsValid = AssetManager::Existed(handle);
+
+		GT_CORE_TRACE("Texture2D(const Texture2D&): {0}.", handle);
+	}
+	Texture2D::Texture2D(const std::filesystem::path& path)
+	{
+		if (path.has_extension())
 		{
-		case RendererAPI::API::None:
-			GT_CORE_ASSERT(false, "RendererAPI::None is currently not supported!");
-			return nullptr;
-		case RendererAPI::API::OpenGL:
-			return CreateRef<OpenGLTexture2D>(path);
+			handle.ID = AssetManager::RegisterTexture2DAsset(path);
+			handle = AssetManager::GetAssetHandle(handle.ID);
 		}
+		else handle = AssetManager::GetAssetHandle(path.string());
 
-		GT_CORE_ASSERT(false, "Unknown RendererAPI!");
-		return nullptr;
+		IsValid = AssetManager::Existed(handle);
+
+
+		GT_CORE_TRACE("Texture2D({0}): {1}.",path, handle);
 	}
 
-	Ref<Texture2D> Texture2D::Create(const int width, const int height)
+	Texture2D::~Texture2D()
 	{
-		switch (Renderer::GetAPI())
+		if(IsValid)
 		{
-			case RendererAPI::API::None:
-				GT_CORE_ASSERT(false, "RendererAPI::None is currently not supported!");
-				return nullptr;
-			case RendererAPI::API::OpenGL:
-				return CreateRef<OpenGLTexture2D>(width, height);
-		}
-
-		GT_CORE_ASSERT(false, "Unknown RendererAPI!");
-		return nullptr;		
-	}
-
-	Ref<Texture2D> Texture2D::Create(TextureSpecification& spec, Buffer& data)
-	{
-		return Ref<Texture2D>();
-	}
-
-	void TextureLibrary::Clear()
-	{
-		for(auto& [id, texture] : m_Textures)
-		{
-			texture.reset();
+			GT_CORE_TRACE("~Texture2D: {0}.", handle);
+			AssetManager::ReleaseHandle(handle);
+			IsValid = false;
 		}
 	}
 
-	void TextureLibrary::Add(uint32_t ID, const Ref<Texture2D>& texture)
+	Ref<Texture2DAsset> Texture2D::Get() const
 	{
-		m_Textures.emplace(ID, texture);
-	}
-	Ref<Texture2D> TextureLibrary::Load(uint32_t ID, const std::filesystem::path& filepath)
-	{
-		if (Exists(ID))
+		auto texture = AssetManager::GetAsset(handle);
+
+		if (!texture)
 		{
-			GT_CORE_INFO("Texture {1} with ID {0} already loaded!", ID, filepath.filename().string());
-			return m_Textures[ID];
+			GT_CORE_ERROR("Texture is unknown : {0}", uint64_t(handle.ID));
+			texture = AssetManager::GetDefaultAsset(AssetType::Texture2D);
 		}
-		else 
-		{
-			auto tex = Texture2D::Create(filepath);
-			Add(ID, tex);
-			return tex;
-		}
+		return std::dynamic_pointer_cast<Texture2DAsset>(texture);
 	}
 
-	Ref<Texture2D> TextureLibrary::Reload(uint32_t ID, const std::filesystem::path& filepath)
+	Texture2D& Texture2D::operator=(const Texture2D& rhs)
 	{
-		GT_CORE_WARN("Texture {1} with ID {0} reloaded!", ID,filepath.filename().string());
-		auto type = m_Textures[ID]->GetTextureType();
-		m_Textures[ID] = Texture2D::Create(filepath);
-		m_Textures[ID]->SetTextureType(type);
-		return m_Textures[ID];
+
+		if (this != &rhs)
+		{
+			AssetManager::ReleaseHandle(handle);
+			handle = AssetManager::GetAssetHandle(rhs.handle.ID);
+			IsValid = AssetManager::Existed(handle);
+		}
+		return *this;
 	}
 
 
-	Ref<Texture2D> TextureLibrary::Get(uint32_t ID)
-	{
-		if(Exists(ID)) return m_Textures[ID];
-		else
-		{
-			GT_CORE_ERROR("Texture not found in library: {0}", ID);
-			return nullptr;
-		}
-	}
 }

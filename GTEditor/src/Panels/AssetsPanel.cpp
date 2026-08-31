@@ -1,61 +1,63 @@
 #include "AssetsPanel.h"
-#include "GT/Renderer/Texture.h"
 #include "ImGui/imgui.h"
-
+#include "GT/Core/Asset/AssetManager.h"
 namespace GT
 {
 	AssetsPanel::AssetsPanel()
 		: Panel("AssetsPanel")
 	{
-		m_ModelIcon = CreateHandle<Texture2D>("ModelIcon");
-		m_ShaderIcon = CreateHandle<Texture2D>("ShaderIcon");
+		m_ModelIcon = Texture2D("ModelIcon");
+		m_ShaderIcon = Texture2D("ShaderIcon");
 
-		m_SceneIcon = CreateHandle<Texture2D>("SceneIcon");
-		m_TextureIcon = CreateHandle<Texture2D>("TextureIcon");
+		m_SceneIcon = Texture2D("SceneIcon");
+		m_TextureIcon = Texture2D("TextureIcon");
 	}
 	void DisplayAssetSlot(const Ref<Asset> asset, const uint64_t& RendererID)
 	{
-		ImGui::Text("%s", asset->metadata.Name.c_str());
+		UUID id = asset->ID;
+		auto info = AssetManager::GetAssetInfoFromUUID(id);
+
+		ImGui::Text("%s  %d", info->metadata.Name.c_str(), info->Refcount);
 		ImGui::SameLine();
 		ImGui::Image((ImTextureID)RendererID, ImVec2(40, 40), { 0, 1 }, { 1, 0 });
 		if (ImGui::IsItemHovered())
 		{
 			ImGui::SameLine();
-			ImGui::Text("%s", asset->metadata.FilePath.string().c_str());
+			ImGui::Text("%s %d", info->metadata.FilePath.string().c_str(), info->Refcount);
 		}
 	}
 	void AssetsPanel::OnImGuiRender()
 	{
 		ImGui::Begin("Assets Panel");
-		auto assetslots = AssetManager::GetAssetSlots();
+		auto assetslots = AssetManager::GetAssets();
 		for(auto& slot : assetslots)
 		{
-			auto type = slot.second->GetType();
+			auto type = slot.asset->GetType();
 			switch (type)
 			{
 			case GT::AssetType::None:
 				break;
 			case GT::AssetType::Scene:
-				DisplayAssetSlot(slot.second, m_SceneIcon->Get()->GetRendererID());
+				DisplayAssetSlot(slot.asset, m_SceneIcon->GetRendererID());
 				break;
 			case GT::AssetType::Texture2D:
-				//DisplayAssetSlot(slot.second, m_TextureIcon->Get()->GetRendererID());
-				DisplayAssetSlot(slot.second, std::dynamic_pointer_cast<Texture2D>(slot.second)->GetRendererID());
+				//DisplayAssetSlot(slot.asset, m_TextureIcon->GetRendererID());
+				DisplayAssetSlot(slot.asset, std::dynamic_pointer_cast<Texture2DAsset>(slot.asset)->GetRendererID());
 				break;
 			case GT::AssetType::Texture3D:
-				DisplayAssetSlot(slot.second, m_TextureIcon->Get()->GetRendererID());
+				DisplayAssetSlot(slot.asset, m_TextureIcon->GetRendererID());
 				break;
 			case GT::AssetType::Shader:
-				DisplayAssetSlot(slot.second, m_ShaderIcon->Get()->GetRendererID());
+				DisplayAssetSlot(slot.asset, m_ShaderIcon->GetRendererID());
 				break;
 			case GT::AssetType::ComputeShader:
-				DisplayAssetSlot(slot.second, m_ShaderIcon->Get()->GetRendererID());
+				DisplayAssetSlot(slot.asset, m_ShaderIcon->GetRendererID());
 				break;
 			case GT::AssetType::GeometryShader:
-				DisplayAssetSlot(slot.second, m_ShaderIcon->Get()->GetRendererID());
+				DisplayAssetSlot(slot.asset, m_ShaderIcon->GetRendererID());
 				break;
 			case GT::AssetType::Model:
-				DisplayAssetSlot(slot.second, m_ModelIcon->Get()->GetRendererID());
+				DisplayAssetSlot(slot.asset, m_ModelIcon->GetRendererID());
 				break;
 			default:
 				break;

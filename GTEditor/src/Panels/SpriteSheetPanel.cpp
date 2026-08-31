@@ -15,7 +15,7 @@ namespace GT {
         if (ImGui::Button("Load Texture"))
         {
             std::filesystem::path filepath = FileDialogs::OpenTextureFile();
-            m_Texture = Texture2D::Create(filepath);
+            m_Texture = Texture2D(filepath);
         }
 
         if (m_Texture)

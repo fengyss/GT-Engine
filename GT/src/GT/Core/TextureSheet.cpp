@@ -2,14 +2,14 @@
 #include "TextureSheet.h"
 namespace GT
 {
-	GT::TextureSheet::TextureSheet(const Ref<Texture2D>& texture)
+	GT::TextureSheet::TextureSheet(const Texture2D& texture)
 		: m_Texture(texture)
 	{
 	}
 
 	GT::TextureSheet::TextureSheet(const std::string& path)
 	{
-		m_Texture = Texture2D::Create(path);
+		m_Texture = Texture2D(path);
 	}
 
 	void GT::TextureSheet::Bind(unsigned int slot) const
@@ -80,12 +80,12 @@ namespace GT
 		}
 	}
 
-	bool GT::TextureSheet::operator==(const Texture& other) const
+	bool GT::TextureSheet::operator==(const Texture2D& other)
 	{
-		return m_Texture->operator==(other);
+		return m_Texture == other;
 	}
 
-	bool GT::TextureSheet::operator==(const TextureSheet& other) const
+	bool GT::TextureSheet::operator==(const TextureSheet& other)
 	{
 		return m_Texture == other.m_Texture;
 	}

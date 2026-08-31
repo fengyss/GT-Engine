@@ -1,118 +1,73 @@
 #include "gtpch.h"
+
+
+#include "GT/Core/Asset/AssetMetadata.h"
+#include "GT/Core/Asset/ShaderAsset.h"
+
+#include "GT/Core/Asset/AssetManager.h"
+
 #include "Shader.h"
-#include "Renderer.h"
-#include "GT/Platform/OpenGL/OpenGLShader.h"
+
 
 namespace GT
 {
-	Ref<Shader> Shader::Create(const std::filesystem::path& filepath)
+	Shader::Shader(const Shader& shader)
 	{
+		AssetManager::ReleaseHandle(handle);
+		handle = AssetManager::GetAssetHandle(shader.handle.ID);
+		IsValid = AssetManager::Existed(handle);
 
-		GT_CORE_TRACE("Loading [Shader] from path: {0}", filepath.string());
-
-		switch (Renderer::GetAPI())
+		GT_CORE_TRACE("Shader(const Shader&): {0}.", handle);
+	}
+	Shader::Shader(const std::filesystem::path& path)
+	{
+		if (path.has_extension())
 		{
-		case RendererAPI::API::None:
-			GT_CORE_ASSERT(false, "RendererAPI::None is currently not supported!");
-			return nullptr;
-
-		case RendererAPI::API::OpenGL:
-			return  CreateRef<OpenGLShader>(filepath);
+			handle.ID = AssetManager::RegisterTexture2DAsset(path);
+			handle = AssetManager::GetAssetHandle(handle.ID);
 		}
-		GT_CORE_ASSERT(false, "Unknown RendererAPI!");
-		return nullptr;
+		else handle = AssetManager::GetAssetHandle(path.string());
+
+		IsValid = AssetManager::Existed(handle);
+
+
+		GT_CORE_TRACE("Shader({0}): {1}.", path, handle);
 	}
-	Ref<Shader> Shader::Create(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc)
+
+	Shader::~Shader()
 	{
-		switch (Renderer::GetAPI())
+		if (IsValid)
 		{
-		case RendererAPI::API::None:
-			GT_CORE_ASSERT(false, "RendererAPI::None is currently not supported!");
-			return nullptr;
-
-		case RendererAPI::API::OpenGL:
-			return CreateRef<OpenGLShader>(name, vertexSrc, fragmentSrc);
+			GT_CORE_TRACE("~Shader: {0}.", handle);
+			AssetManager::ReleaseHandle(handle);
+			IsValid = false;
 		}
-		GT_CORE_ASSERT(false, "Unknown RendererAPI!");
-		return nullptr;
 	}
 
-	Ref<Shader> Shader::CreateCompute(const std::filesystem::path& filepath)
+
+
+	Ref<ShaderAsset> Shader::Get() const
 	{
-		GT_CORE_TRACE("Loading [Compute Shader] from path: {0}", filepath.string());
-		switch (Renderer::GetAPI())
+		auto shader = AssetManager::GetAsset(handle);
+
+		if(!shader)
 		{
-		case RendererAPI::API::None:
-			GT_CORE_ASSERT(false, "RendererAPI::None is currently not supported!");
-			return nullptr;
-
-		case RendererAPI::API::OpenGL:
-			return CreateRef<OpenGLShader>(filepath, ShaderType::Compute);
+			GT_CORE_ERROR("Shader is unknown : {0}", handle);
+			shader = AssetManager::GetDefaultAsset(AssetType::Shader);
 		}
-		GT_CORE_ASSERT(false, "Unknown RendererAPI!");
-		return nullptr;
-		
+		return std::dynamic_pointer_cast<ShaderAsset>(shader);
 	}
 
-	Ref<Shader> Shader::CreateGeometry(const std::filesystem::path& filepath)
+	Shader& Shader::operator=(const Shader& rhs)
 	{
-		GT_CORE_TRACE("Loading [Geometry Shader] from path: {0}", filepath.string());
-		switch (Renderer::GetAPI())
+
+		if (this != &rhs)
 		{
-		case RendererAPI::API::None:
-			GT_CORE_ASSERT(false, "RendererAPI::None is currently not supported!");
-			return nullptr;
-
-		case RendererAPI::API::OpenGL:
-			return CreateRef<OpenGLShader>(filepath, ShaderType::Geometry);
+			AssetManager::ReleaseHandle(handle);
+			handle = AssetManager::GetAssetHandle(rhs.handle.ID);
+			IsValid = AssetManager::Existed(handle);
 		}
-		GT_CORE_ASSERT(false, "Unknown RendererAPI!");
-		return nullptr;
+		return *this;
 	}
 
-	void ShaderLibrary::Clear()
-	{
-		for (auto& [id, shader] : m_Shaders)
-		{
-			shader.reset();
-		}
-	}
-
-	void ShaderLibrary::Add(uint32_t ID, const Ref<Shader>& shader)
-	{
-		m_Shaders[ID] = shader;
-	}
-	Ref<Shader> ShaderLibrary::Load(uint32_t ID,const std::filesystem::path& filepath)
-	{
-		if (Exists(ID)) 
-		{
-			GT_CORE_INFO("Shader {1} with ID {0} already loaded!", ID, filepath.filename().string());
-			return m_Shaders[ID];
-		}
-		else {
-			auto shader = Shader::Create(filepath);
-			Add(ID, shader);
-			return shader;
-		}
-		
-	}
-	Ref<Shader> ShaderLibrary::Reload(uint32_t ID, const std::filesystem::path& filepath)
-	{
-		GT_CORE_WARN("Shader {1} with ID {0} reloaded!", ID, filepath.filename().string());
-		m_Shaders[ID] = Shader::Create(filepath);
-		int samplers[32];
-		for (int i = 0;i < 32;i++) samplers[i] = i;
-		m_Shaders[ID]->Bind();
-		m_Shaders[ID]->SetUniformiv("u_Textures", samplers, 32);
-		return m_Shaders[ID];
-	}
-	Ref<Shader> ShaderLibrary::Get(uint32_t ID)
-	{
-		if (Exists(ID)) return m_Shaders[ID];
-		else
-		{
-			GT_CORE_ERROR("Shader ID:{0} not found in library!", ID);
-			return nullptr;
-		}
-	}
 }

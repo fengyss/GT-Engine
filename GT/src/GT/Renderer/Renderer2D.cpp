@@ -8,6 +8,8 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
+#include "GT/Utils/PlatformUtils.h"
+
 namespace GT
 {
 	int Renderer2D::s_CurrentEntityID = -1;
@@ -21,25 +23,25 @@ namespace GT
 		const uint32_t MaxIndices = MaxQuads * 6;
 		static const uint32_t MaxTextureSlots = 32; // TODO: RenderCaps
 
-		RefHandle<Shader> QuadShader;
+		Shader QuadShader;
 		Ref<VertexArray> QuadVertexArray;
 		Ref<VertexBuffer> QuadVertexBuffer;
 
 		Ref<VertexArray> CircleVertexArray;
 		Ref<VertexBuffer> CircleVertexBuffer;
-		RefHandle<Shader> CircleShader;
+		Shader CircleShader;
 
-		RefHandle<Shader> LineShader;
+		Shader LineShader;
 		Ref<VertexArray> LineVertexArray;
 		Ref<VertexBuffer> LineVertexBuffer;
 
 
-		RefHandle<Shader> UIShader;
+		Shader UIShader;
 		Ref<VertexArray> UIVertexArray;
 		Ref<VertexBuffer> UIVertexBuffer;
 
 
-		RefHandle<Shader> TextShader;
+		Shader TextShader;
 		Ref<VertexArray> TextVertexArray;
 		Ref<VertexBuffer> TextVertexBuffer;
 
@@ -63,10 +65,10 @@ namespace GT
 
 		float LineWidth = 2.0f;
 
-		Ref<Texture2D> WhiteTexture;
+		Texture2D WhiteTexture;
 
 
-		std::array<Ref<Texture2D>, MaxTextureSlots> TextureSlots;
+		std::array<Texture2D, MaxTextureSlots> TextureSlots;
 		uint32_t TextureSlotIndex = 1; // 0 = white texture
 
 		// local position
@@ -181,18 +183,16 @@ namespace GT
 		s_Data.UIVertexArray->SetIndexBuffer(squareIB); // Use quad IB
 		s_Data.UIVertexBufferBase = new UIVertex[1000];
 
+
+	
 		
-		s_Data.WhiteTexture = Texture2D::Create(1, 1);
-		uint32_t whiteTextureData = 0xffffffff;
-		s_Data.WhiteTexture->SetData(&whiteTextureData, sizeof(uint32_t));
-
-
+		s_Data.WhiteTexture = Texture2D("Checkerboard");
 
 		
-		s_Data.QuadShader = CreateHandle<Shader>("Renderer2D_Quad");
-		s_Data.CircleShader = CreateHandle<Shader>("Renderer2D_Circle");
-		s_Data.LineShader = CreateHandle<Shader>("Renderer2D_Line");
-		s_Data.UIShader = CreateHandle<Shader>("Renderer2D_UI");
+		s_Data.QuadShader = Shader("Renderer2D_Quad");
+		s_Data.CircleShader = Shader("Renderer2D_Circle");
+		s_Data.LineShader = Shader("Renderer2D_Line");
+		s_Data.UIShader = Shader("Renderer2D_UI");
 
 
 
@@ -246,10 +246,11 @@ namespace GT
 		s_Data.QuadTexCoords[3] = { 0.0f, 1.0f };
 
 
-		s_Data.TextShader = CreateHandle<Shader>("Renderer2D_Text");
-		s_Data.TextShader->Get()->Bind();
-		s_Data.TextShader->Get()->SetUniform1i("u_Text", 0);
-		s_Data.TextShader->Get()->SetUniformMat4("projection", glm::ortho(
+		s_Data.TextShader = Shader("Renderer2D_Text");
+		
+		s_Data.TextShader->Bind();
+		s_Data.TextShader->SetUniform1i("u_Text", 0);
+		s_Data.TextShader->SetUniformMat4("projection", glm::ortho(
 			0.0f, 600.0f,
 			0.0f, 600.0f
 		));
@@ -341,36 +342,43 @@ namespace GT
         GT_PROFILE_FUNCTION();  
 		// Clean up opengl resources before opengl context is destroyed
 
-		s_Data.WhiteTexture.reset();
 
-		s_Data.QuadShader.reset();
+		s_Data.QuadShader.~Shader();
+		s_Data.CircleShader.~Shader();
+		s_Data.LineShader.~Shader();
+		s_Data.UIShader.~Shader();
+		s_Data.TextShader.~Shader();
+		s_Data.WhiteTexture.~Texture2D();
+
+		for (int i = 0;i < 32;i++) s_Data.TextureSlots[i].~Texture2D();
+
 		s_Data.QuadVertexArray.reset();
 		s_Data.QuadVertexBuffer.reset();
 		delete s_Data.QuadVertexBufferBase;
 		s_Data.QuadVertexBufferPtr = nullptr;
 
-		s_Data.CircleShader.reset();
+		
+
 		s_Data.CircleVertexArray.reset();
 		s_Data.CircleVertexBuffer.reset();
 		delete s_Data.CircleVertexBufferBase;
 		s_Data.CircleVertexBufferPtr = nullptr;
 
 
-		s_Data.LineShader.reset();
+
+
 		s_Data.LineVertexArray.reset();
 		s_Data.LineVertexBuffer.reset();
 		delete s_Data.LineVertexBufferBase;
 		s_Data.LineVertexBufferPtr = nullptr;
 
 
-		s_Data.UIShader.reset();
 		s_Data.UIVertexArray.reset();
 		s_Data.UIVertexBuffer.reset();
 		delete s_Data.UIVertexBufferBase;
 		s_Data.UIVertexBufferPtr = nullptr;
 
 
-		s_Data.TextShader.reset();
 		s_Data.TextVertexArray.reset();
 		s_Data.TextVertexBuffer.reset();
 
@@ -397,10 +405,9 @@ namespace GT
 		GT_CORE_ASSERT(state != RendererState::EndScene, "You Should Call BeginScene First!");
 		state = RendererState::EndScene;
 
-		if(s_Data.Stats.QuadCount == 0)
-			return;
 		
 		Flush();
+
 	}
 
 	void Renderer2D::Flush()
@@ -415,8 +422,8 @@ namespace GT
 		// For Quad
 		if(s_Data.QuadIndexCount)
 		{
-			s_Data.QuadShader->Get()->Bind();
-			s_Data.QuadShader->Get()->SetUniformMat4("u_ViewProjection", m_viewProjection);
+			s_Data.QuadShader->Bind();
+			s_Data.QuadShader->SetUniformMat4("u_ViewProjection", m_viewProjection);
 			uint32_t dataSize = (uint32_t)((uint8_t*)s_Data.QuadVertexBufferPtr - (uint8_t*)s_Data.QuadVertexBufferBase);
 			s_Data.QuadVertexBuffer->SetData(s_Data.QuadVertexBufferBase, dataSize);
 			RenderCommand::DrawIndexed(s_Data.QuadVertexArray, s_Data.QuadIndexCount);
@@ -426,8 +433,8 @@ namespace GT
 		// For Circle
 		if(s_Data.CircleIndexCount)
 		{
-			s_Data.CircleShader->Get()->Bind();
-			s_Data.CircleShader->Get()->SetUniformMat4("u_ViewProjection", m_viewProjection);
+			s_Data.CircleShader->Bind();
+			s_Data.CircleShader->SetUniformMat4("u_ViewProjection", m_viewProjection);
 			uint32_t dataSize = (uint32_t)((uint8_t*)s_Data.CircleVertexBufferPtr - (uint8_t*)s_Data.CircleVertexBufferBase);
 			s_Data.CircleVertexBuffer->SetData(s_Data.CircleVertexBufferBase, dataSize);
 			RenderCommand::DrawIndexed(s_Data.CircleVertexArray, s_Data.CircleIndexCount);
@@ -437,8 +444,8 @@ namespace GT
 		// For Line
 		if (s_Data.LineVertexCount)
 		{
-			s_Data.LineShader->Get()->Bind();
-			s_Data.LineShader->Get()->SetUniformMat4("u_ViewProjection", m_viewProjection);
+			s_Data.LineShader->Bind();
+			s_Data.LineShader->SetUniformMat4("u_ViewProjection", m_viewProjection);
 			uint32_t dataSize = (uint32_t)((uint8_t*)s_Data.LineVertexBufferPtr - (uint8_t*)s_Data.LineVertexBufferBase);
 			s_Data.LineVertexBuffer->SetData(s_Data.LineVertexBufferBase, dataSize);
 
@@ -449,7 +456,7 @@ namespace GT
 
 		if (s_Data.UIVertexCount)
 		{
-			s_Data.UIShader->Get()->Bind();
+			s_Data.UIShader->Bind();
 			uint32_t dataSize = (uint32_t)((uint8_t*)s_Data.UIVertexBufferPtr - (uint8_t*)s_Data.UIVertexBufferBase);
 			s_Data.UIVertexBuffer->SetData(s_Data.UIVertexBufferBase, dataSize);
 			RenderCommand::DrawIndexed(s_Data.UIVertexArray, s_Data.UIVertexCount);
@@ -463,8 +470,8 @@ namespace GT
 		cameraright = viewProjection[0];
 		cameraup = viewProjection[1];
 
-		//s_Data.TextShader->Get()->Bind();
-		//s_Data.TextShader->Get()->SetUniformMat4("projection", viewProjection);
+		//s_Data.TextShader->Bind();
+		//s_Data.TextShader->SetUniformMat4("projection", viewProjection);
 
 	}
 
@@ -539,7 +546,7 @@ namespace GT
 		s_CurrentEntityID = entityID;
 	}
 
-	void Renderer2D::UI(const Rect& rect, const glm::vec4& color, const Ref<Texture2D>& texture)
+	void Renderer2D::UI(const Rect& rect, const glm::vec4& color, const Texture2D& texture)
 	{
 		uiState.color = color;
 		if(texture)
@@ -563,8 +570,8 @@ namespace GT
 	void Renderer2D::Text(const std::string& text, glm::vec2 position, const glm::vec4& color)
 	{
 
-		s_Data.TextShader->Get()->Bind();
-		s_Data.TextShader->Get()->SetUniform4f("u_TextColor", color);
+		s_Data.TextShader->Bind();
+		s_Data.TextShader->SetUniform4f("u_TextColor", color);
 
 		s_Data.TextVertexArray->Bind();
 		scale = 1.0f;
@@ -616,8 +623,9 @@ namespace GT
 		Draw(quadState);
 	}
 
-	void Renderer2D::DrawQuad(const glm::mat4& transform, const glm::vec4& color, const Ref<Texture2D>& texture, int tilingfactor)
+	void Renderer2D::DrawQuad(const glm::mat4& transform, const glm::vec4& color, const Texture2D& texture, int tilingfactor)
 	{
+		
 		float scale = float(texture->GetHeight()) / float(texture->GetWidth());
 		for (size_t i = 0; i < 4; i++)
 		{
@@ -641,12 +649,12 @@ namespace GT
 		quadState.Color = sprite.Color;
 
 
-		if (sprite.texture && sprite.texture->IsValid())
+		if (sprite.texture)
 		{
 			SetTextureCoords(sprite.UVOffset, sprite.UVSize);
-			quadState.TextureIndex = GetTextureSlotIndex(sprite.texture->Get());
+			quadState.TextureIndex = GetTextureSlotIndex(sprite.texture);
 			quadState.TilingFactor = sprite.TilingFactor;
-			auto& texture = sprite.texture->Get();
+			auto& texture = sprite.texture;
 			scale = float(texture->GetHeight()) / float(texture->GetWidth());
 		}
 		else 
@@ -690,7 +698,7 @@ namespace GT
 		}
 
 	}
-	void Renderer2D::DrawCube(const glm::mat4& transform, const glm::vec4& color, const Ref<Texture2D>& texture)
+	void Renderer2D::DrawCube(const glm::mat4& transform, const glm::vec4& color, const Texture2D& texture)
 	{
 
 		quadState.TextureIndex = GetTextureSlotIndex(texture);
@@ -721,7 +729,6 @@ namespace GT
 	{
 		GT_PROFILE_FUNCTION();
 
-
 		for (size_t i = 0; i < 4; i++)
 		{
 			circleState.WorldPosition[i] = transform * s_Data.QuadVertexPositions[i];
@@ -735,10 +742,9 @@ namespace GT
 		Draw(circleState);
 	}
 
-	void Renderer2D::DrawCircle(const glm::mat4& transform, const glm::vec4& color, const Ref<Texture2D>& texture, float thickness, float fade)
+	void Renderer2D::DrawCircle(const glm::mat4& transform, const glm::vec4& color, const Texture2D& texture, float thickness, float fade)
 	{
 		GT_PROFILE_FUNCTION();
-
 
 		for (size_t i = 0; i < 4; i++)
 		{
@@ -826,12 +832,12 @@ namespace GT
 	}
 
 
-	float Renderer2D::GetTextureSlotIndex(const Ref<Texture2D>& texture)
+	float Renderer2D::GetTextureSlotIndex(const Texture2D& texture)
 	{
 		float textureIndex = 0.0f;
 		for (uint32_t i = 1; i < s_Data.TextureSlotIndex; i++)
 		{
-			if (*s_Data.TextureSlots[i].get() == *texture.get())
+			if (s_Data.TextureSlots[i] == texture)
 			{
 				textureIndex = (float)i;
 				break;
