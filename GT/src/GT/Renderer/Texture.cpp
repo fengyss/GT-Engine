@@ -13,11 +13,18 @@ namespace GT
 {
 	Texture2D::Texture2D(const Texture2D& tex)
 	{
-		AssetManager::ReleaseHandle(handle);
-		handle = AssetManager::GetAssetHandle(tex.handle.ID);
-		IsValid = AssetManager::Existed(handle);
+		if (tex.IsValid)
+		{
+			handle = AssetManager::GetAssetHandle(tex.handle.ID);
+			IsValid = AssetManager::Existed(handle);
 
-		GT_CORE_TRACE("Texture2D(const Texture2D&): {0}.", handle);
+			GT_CORE_TRACE("Texture2D(const Texture2D&): {0}.", handle);
+		}
+		else
+		{
+			handle = Handle();
+			IsValid = false;
+		}
 	}
 	Texture2D::Texture2D(const std::filesystem::path& path)
 	{
@@ -54,6 +61,13 @@ namespace GT
 			texture = AssetManager::GetDefaultAsset(AssetType::Texture2D);
 		}
 		return std::dynamic_pointer_cast<Texture2DAsset>(texture);
+	}
+
+
+	void Texture2D::Reset(const Handle& hdl)
+	{
+		handle = hdl;
+		IsValid = AssetManager::Existed(handle);
 	}
 
 	Texture2D& Texture2D::operator=(const Texture2D& rhs)

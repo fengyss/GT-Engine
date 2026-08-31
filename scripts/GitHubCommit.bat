@@ -5,7 +5,7 @@ pause
 git add .
 pause
 
-git commit -m "save files and to refactor asset system."
+git commit -m "feat: refactor assetmanager"
 
 pause
 

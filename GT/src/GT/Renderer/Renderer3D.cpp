@@ -1,7 +1,7 @@
 #include "gtpch.h"
 #include "Renderer3D.h"
 
-#include "GT/Core/Asset/Asset.h"
+#include "GT/Core/Asset/AssetManager.h"
 
 #include"GT/Renderer/Frustum.h"
 #include "ShadowMap.h"
@@ -30,8 +30,8 @@ namespace GT
 
 	void Renderer3D::Init()
 	{
-		s_ModelShader = Shader("Model");
-		m_ShadowShader = Shader("ShadowMap");
+		s_ModelShader.Reset(AssetManager::GetAssetHandle("Model"));
+		m_ShadowShader.Reset(AssetManager::GetAssetHandle("ShadowMap"));
 		shadowmap = ShadowMap(4096, 4096);
 	}
 

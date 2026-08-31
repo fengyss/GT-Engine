@@ -8,6 +8,12 @@
 namespace GT
 {
 	class Project;
+	class ShaderData;
+	class Texture2DData;
+	class Texture3DData;
+	class ModelData;
+	class SceneData;
+
 	// asset pointer and generation
 	struct AssetSlot
 	{
@@ -57,6 +63,11 @@ namespace GT
 		static UUID RegisterSceneAsset(const std::filesystem::path& path);
 
 
+		//static ShaderData& GetShaderAsset(const std::string& name);
+		//static Texture2DData& GetTexture2DAsset(const std::string& name);
+		//static Texture3DData& GetTexture3DAsset(const std::string& name);
+		//static ModelData& GetModelAsset(const std::string& name);
+		//static SceneData& GetSceneAsset(const std::string& name);
 		
 		// save asset metadata to file at FilePath
 		static void SaveMetadata(const Ref<AssetMetadata> Metadata);

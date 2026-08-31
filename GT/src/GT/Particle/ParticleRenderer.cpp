@@ -10,6 +10,7 @@
 #include <algorithm>
 
 #include "GT/Utils/PlatformUtils.h"
+#include "GT/Core/Asset/AssetManager.h"
 
 namespace GT {
 
@@ -26,7 +27,7 @@ namespace GT {
 
     void ParticleRenderer::Init()
     { 
-        ParticleShader = Shader("Particle");
+        ParticleShader.Reset(AssetManager::GetAssetHandle("Particle"));
 
         int32_t samplers[32];
         for (uint32_t i = 0;i < 32;i++)
@@ -45,14 +46,13 @@ namespace GT {
                 { ShaderDataType::Float, "a_TexIndex"  },
             });
         vertexArray->AddVertexBuffer(vbo);
-        TextureSlots[0] = Texture2D("Checkerboard");
+        TextureSlots[0].Reset(AssetManager::GetAssetHandle("Checkerboard"));
 
 
         Vertices.clear();
         Alp_Vertices.clear();
         Add_Vertices.clear();
         Mul_Vertices.clear();
-        for (int i = 0;i < 32;i++) TextureSlots[i].~Texture2D();
     }
 
     void ParticleRenderer::ShutDown()
@@ -60,6 +60,8 @@ namespace GT {
         vertexArray.reset();
 		vbo.reset();
         ParticleShader.~Shader();
+
+        for (int i = 0;i < 32;i++) TextureSlots[i].~Texture2D();
     }
     void ParticleRenderer::BeginScene(Camera& camera)
 	{

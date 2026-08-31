@@ -6,11 +6,11 @@ namespace GT
 	AssetsPanel::AssetsPanel()
 		: Panel("AssetsPanel")
 	{
-		m_ModelIcon = Texture2D("ModelIcon");
-		m_ShaderIcon = Texture2D("ShaderIcon");
+		m_ModelIcon.Reset(AssetManager::GetAssetHandle("ModelIcon"));
+		m_ShaderIcon.Reset(AssetManager::GetAssetHandle("ShaderIcon"));
 
-		m_SceneIcon = Texture2D("SceneIcon");
-		m_TextureIcon = Texture2D("TextureIcon");
+		m_SceneIcon.Reset(AssetManager::GetAssetHandle("SceneIcon"));
+		m_TextureIcon.Reset(AssetManager::GetAssetHandle("TextureIcon"));
 	}
 	void DisplayAssetSlot(const Ref<Asset> asset, const uint64_t& RendererID)
 	{

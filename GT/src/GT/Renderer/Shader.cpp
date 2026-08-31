@@ -13,11 +13,19 @@ namespace GT
 {
 	Shader::Shader(const Shader& shader)
 	{
-		AssetManager::ReleaseHandle(handle);
-		handle = AssetManager::GetAssetHandle(shader.handle.ID);
-		IsValid = AssetManager::Existed(handle);
+		if (shader.IsValid)
+		{
+			handle = AssetManager::GetAssetHandle(shader.handle.ID);
+			IsValid = AssetManager::Existed(handle);
 
-		GT_CORE_TRACE("Shader(const Shader&): {0}.", handle);
+			GT_CORE_TRACE("Shader(const Shader&): {0}.", handle);
+		}
+		else
+		{
+			handle = Handle();
+			IsValid = false;
+		}
+
 	}
 	Shader::Shader(const std::filesystem::path& path)
 	{
@@ -56,6 +64,12 @@ namespace GT
 			shader = AssetManager::GetDefaultAsset(AssetType::Shader);
 		}
 		return std::dynamic_pointer_cast<ShaderAsset>(shader);
+	}
+
+	void Shader::Reset(const Handle& hdl)
+	{
+		handle = hdl;
+		IsValid = AssetManager::Existed(handle);
 	}
 
 	Shader& Shader::operator=(const Shader& rhs)

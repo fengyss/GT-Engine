@@ -4,14 +4,15 @@
 #include "GT/Project/Project.h"
 
 #include <imgui/imgui.h>
+#include "GT/Core/Asset/AssetManager.h"
 
 namespace GT {
 
 	ContentBrowserPanel::ContentBrowserPanel()
 		: m_BaseDirectory(Project::GetAssetDirectory()), m_CurrentDirectory(m_BaseDirectory)
 	{
-		m_DirectoryIcon = Texture2D("DirectoryIcon");
-		m_FileIcon = Texture2D("FileIcon");
+		m_DirectoryIcon.Reset(AssetManager::GetAssetHandle("DirectoryIcon"));
+		m_FileIcon.Reset(AssetManager::GetAssetHandle("FileIcon"));
 			
 	}
 

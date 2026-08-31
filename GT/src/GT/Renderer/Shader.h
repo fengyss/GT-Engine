@@ -17,6 +17,7 @@ namespace GT
 
 		Ref<ShaderAsset> Get() const;
 
+		void Reset(const Handle& hdl);
 		Ref<ShaderAsset>operator->()
 		{
 			return Get();

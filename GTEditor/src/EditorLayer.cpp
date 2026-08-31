@@ -35,9 +35,9 @@ namespace GT
 		GT_CORE_INFO("EditorLayer Layer Attached!");
 
 
-		m_IconPlay = Texture2D("PlayButton");
-		m_IconStop = Texture2D("StopButton");
-		m_IconSimulate = Texture2D("SimulateButton");
+		m_IconPlay.Reset(AssetManager::GetAssetHandle("PlayButton"));
+		m_IconStop.Reset(AssetManager::GetAssetHandle("StopButton"));
+		m_IconSimulate.Reset(AssetManager::GetAssetHandle("SimulateButton"));
 
 		FramebufferSpecification fbSpec;
 		fbSpec.Attachments = { FramebufferTextureFormate::RGBA8,FramebufferTextureFormate::RED_INTEGER,FramebufferTextureFormate::Depth };

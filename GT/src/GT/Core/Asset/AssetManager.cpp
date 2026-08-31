@@ -6,8 +6,11 @@
 #include "GT/Math/Math.h"
 #include "Handle.h"
 
-
-#include "GT/Project/Project.h"
+#include "GT/Renderer/Texture.h"
+#include "GT/Renderer/Shader.h"
+#include "GT/Scene/Scene.h"
+#include "GT/Renderer/Model.h"
+#include "GT/Renderer/Mesh.h"
 
 namespace GT
 {
@@ -188,7 +191,8 @@ namespace GT
 			handle.generation = Assets[handle.index].generation;
 
 		}
-		else GT_CORE_WARN("AssetManager::GetAssetHandle Try to get asset from a not existed uuid->{0}.", uint64_t(id));
+		else 
+			GT_CORE_WARN("AssetManager::GetAssetHandle Try to get asset from a not existed uuid->{0}.", uint64_t(id));
 		
 		return handle;
 	}
@@ -383,6 +387,26 @@ namespace GT
 		auto asset = SceneImporter::ImportScene(path);
 		return RegisterAsset(asset);
 	}
+
+	//ShaderData& AssetManager::GetShaderAsset(const std::string& name)
+	//{
+	//	// TODO: insert return statement here
+	//}
+	//Texture2DData& AssetManager::GetTexture2DAsset(const std::string& name)
+	//{
+	//}
+	//Texture3DData& AssetManager::GetTexture3DAsset(const std::string& name)
+	//{
+	//	// TODO: insert return statement here
+	//}
+	//ModelData& AssetManager::GetModelAsset(const std::string& name)
+	//{
+	//	// TODO: insert return statement here
+	//}
+	//SceneData& AssetManager::GetSceneAsset(const std::string& name)
+	//{
+	//	// TODO: insert return statement here
+	//}
 
 
 

@@ -6,6 +6,7 @@
 #include "Shader.h"
 #include "Model.h"
 #include "Framebuffer.h"
+#include "Frustum.h"
 namespace GT
 {
 

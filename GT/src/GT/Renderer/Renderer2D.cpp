@@ -9,6 +9,7 @@
 #include FT_FREETYPE_H
 
 #include "GT/Utils/PlatformUtils.h"
+#include "GT/Core/Asset/AssetManager.h"
 
 namespace GT
 {
@@ -186,13 +187,13 @@ namespace GT
 
 	
 		
-		s_Data.WhiteTexture = Texture2D("Checkerboard");
+		s_Data.WhiteTexture.Reset(AssetManager::GetAssetHandle("Checkerboard"));
 
 		
-		s_Data.QuadShader = Shader("Renderer2D_Quad");
-		s_Data.CircleShader = Shader("Renderer2D_Circle");
-		s_Data.LineShader = Shader("Renderer2D_Line");
-		s_Data.UIShader = Shader("Renderer2D_UI");
+		s_Data.QuadShader.Reset(AssetManager::GetAssetHandle("Renderer2D_Quad"));
+		s_Data.CircleShader.Reset(AssetManager::GetAssetHandle("Renderer2D_Circle"));
+		s_Data.LineShader.Reset(AssetManager::GetAssetHandle("Renderer2D_Line"));
+		s_Data.UIShader.Reset(AssetManager::GetAssetHandle("Renderer2D_UI"));
 
 
 
@@ -246,7 +247,7 @@ namespace GT
 		s_Data.QuadTexCoords[3] = { 0.0f, 1.0f };
 
 
-		s_Data.TextShader = Shader("Renderer2D_Text");
+		s_Data.TextShader.Reset(AssetManager::GetAssetHandle("Renderer2D_Text"));
 		
 		s_Data.TextShader->Bind();
 		s_Data.TextShader->SetUniform1i("u_Text", 0);

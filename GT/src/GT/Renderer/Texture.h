@@ -18,6 +18,7 @@ namespace GT
 
 		Ref<Texture2DAsset> Get() const;
 
+		void Reset(const Handle& hdl);
 
 		Ref<Texture2DAsset> operator->() 
 		{ 

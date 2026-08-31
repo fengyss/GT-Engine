@@ -6,6 +6,8 @@
 #include "glm/gtx/quaternion.hpp"
 
 #include "GT/Renderer/Model.h"
+#include "GT/Renderer/Texture.h"
+#include "GT/Renderer/Shader.h"
 #include "SceneCamera.h"
 
 #include "box2d/id.h"
