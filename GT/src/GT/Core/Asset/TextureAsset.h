@@ -90,7 +90,9 @@ namespace GT
 
 		virtual bool operator==(const TextureAsset& other) const = 0;
 
-
+		TextureType GetTextureType() const { return m_TextureType; }
+		void SetTextureType(TextureType type) { m_TextureType = type; }
+		TextureType m_TextureType = TextureType::TextureTypeNone;
 	};
 
 	class Texture2DAsset : public TextureAsset

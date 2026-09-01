@@ -142,7 +142,7 @@ void main()
     if(((u_TexSlot >> 27u) & 1u) > 0)
         emissionColor = texture(texture_emission, v_TexCoord);
    
-    material.ambient = vec4(0.2f);
+    material.ambient = texture(texture_diffuse, v_TexCoord) * 0.05;
     material.diffuse = diffuseColor;
     material.specular = specularColor;
     material.shininess = 0.2f;
@@ -173,14 +173,12 @@ void main()
 
     vec4 result = emissionColor;
     
-    if((u_LightSlots & 1u)>0)
-        result += vec4(CalcPointLight(u_pointLight, worldNormal, v_FragPos, viewDir),0.0f);
-    if((u_LightSlots & 2u)>0)
-        result += vec4(CalcDirectionalLight(u_dirLight, worldNormal, viewDir),0.0f);
-    if((u_LightSlots & 4u)>0)
-        result += vec4(CalcSpotLight(u_spotLight, worldNormal, v_FragPos, viewDir),0.0f);
+    if((u_LightSlots & 1u)>0) result += vec4(CalcPointLight(u_pointLight, worldNormal, v_FragPos, viewDir),0.0f);
+    if((u_LightSlots & 2u)>0) result += vec4(CalcDirectionalLight(u_dirLight, worldNormal, viewDir),0.0f);
+    if((u_LightSlots & 4u)>0) result += vec4(CalcSpotLight(u_spotLight, worldNormal, v_FragPos, viewDir),0.0f);
 
     result = (1.0 - CalculateShadow(v_LightSpacePos, u_dirLight.direction)) * result + material.ambient;
+    
     result.a = diffuseColor.a;
     o_Color = result;
 

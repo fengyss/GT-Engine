@@ -723,7 +723,7 @@ namespace GT
 
 			auto& modelComponent = entity.GetComponent<ModelComponent>();
 			if(modelComponent.model)
-				out << YAML::Key << "ModelPath" << YAML::Value << modelComponent.model.filepath.string();
+				out << YAML::Key << "ModelPath" << YAML::Value << modelComponent.model->filepath.string();
 
 			out << YAML::EndMap; 
 		}

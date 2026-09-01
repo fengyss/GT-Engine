@@ -13,6 +13,8 @@ namespace GT
 	class Texture3DData;
 	class ModelData;
 	class SceneData;
+	class Texture2D;
+	struct Vertex;
 
 	// asset pointer and generation
 	struct AssetSlot
@@ -48,7 +50,7 @@ namespace GT
 		// return true and make sure handle is valid.
 		// else return false and handle will remain unchanged.
 
-		static bool Existed(const UUID& id, Ref<AssetInfo> info = nullptr);
+		static bool Existed(const UUID& id, Ref<AssetInfo>& info);
 		static bool Existed(const Handle& handle, Ref<AssetInfo> info = nullptr);
 
 		// load asset from the given path, and register them to AssetManager
@@ -61,6 +63,7 @@ namespace GT
 		static UUID RegisterTexture3DAsset(const std::filesystem::path& path);
 		static UUID RegisterModelAsset(const std::filesystem::path& path);
 		static UUID RegisterSceneAsset(const std::filesystem::path& path);
+		static UUID RegisterMeshAsset(const std::vector<Vertex>& _vertices, const std::vector<unsigned int>& _indices, const std::vector<Texture2D>& _textures);
 
 
 		//static ShaderData& GetShaderAsset(const std::string& name);

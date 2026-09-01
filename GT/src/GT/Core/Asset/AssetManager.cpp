@@ -116,6 +116,22 @@ namespace GT
 
 	void AssetManager::ShutDown()
 	{
+		for (auto& asset : Assets)
+		{
+			if (asset.asset->GetType() == AssetType::Model)
+			{
+				asset.asset.reset();
+				asset.asset = nullptr;
+			}
+		}
+		for (auto& asset : Assets)
+		{
+			if (asset.asset && asset.asset->GetType() == AssetType::Mesh)
+			{
+				asset.asset.reset();
+				asset.asset = nullptr;
+			}
+		}
 		Assets.clear();
 	}
 	Ref<AssetMetadata> AssetManager::LoadAssetMetadata(const std::filesystem::path& path)
@@ -235,7 +251,7 @@ namespace GT
 
 	const Ref<Asset> AssetManager::GetAsset(const Handle& handle)
 	{
-		if(Existed(handle.ID))
+		if(Existed(handle))
 		{
 			if (Assets[handle.index].asset->Info->NeedReload)
 			{
@@ -291,7 +307,7 @@ namespace GT
 	}
 
 
-	bool AssetManager::Existed(const UUID& id, Ref<AssetInfo> info)
+	bool AssetManager::Existed(const UUID& id, Ref<AssetInfo>& info)
 	{
 		auto it = m_UUIDToAssetsInfo.find(id);
 		if (it != m_UUIDToAssetsInfo.end())
@@ -305,7 +321,7 @@ namespace GT
 
 	bool AssetManager::Existed(const Handle& handle, Ref<AssetInfo> info)
 	{
-		return Existed(handle.ID);
+		return Existed(handle.ID,info);
 	}
 
 	UUID AssetManager::RegisterAsset(const Ref<Asset> asset)
@@ -374,7 +390,8 @@ namespace GT
 			GT_CORE_WARN("AssetManager::RegisterShaderAsset asset {0} already registered.", path.string());
 			return it->second;
 		}
-		return 0;
+		auto asset = ModelImporter::ImportModel(path);
+		return RegisterAsset(asset);
 	}
 	UUID AssetManager::RegisterSceneAsset(const std::filesystem::path& path)
 	{
@@ -385,6 +402,22 @@ namespace GT
 			return it->second;
 		}
 		auto asset = SceneImporter::ImportScene(path);
+		return RegisterAsset(asset);
+	}
+
+	UUID AssetManager::RegisterMeshAsset(const std::vector<Vertex>& _vertices, const std::vector<unsigned int>& _indices, const std::vector<Texture2D>& _textures)
+	{
+		Ref<MeshAsset> asset = CreateRef<MeshAsset>(_vertices, _indices, _textures);
+
+		Ref<AssetInfo> info = CreateRef<AssetInfo>();
+
+		AssetMetadata meta;
+		meta.ID = UUID();
+		meta.Name = "MeshAsset_" + std::to_string(uint64_t(meta.ID));
+		meta.Type = AssetType::Mesh;
+		info->metadata = meta;
+		m_UUIDToAssetsInfo.emplace(meta.ID, info);
+		asset->ID = meta.ID;
 		return RegisterAsset(asset);
 	}
 
@@ -436,7 +469,7 @@ namespace GT
 	}
 	bool AssetManager::ReleaseHandle(const Handle& handle)
 	{
-		if (Existed(handle.ID))
+		if (Existed(handle))
 		{
 			auto& count = Assets[handle.index].asset->Info->Refcount;
 

@@ -3,7 +3,6 @@
 #include "GT/Renderer/Texture.h"
 #include <filesystem>
 
-#include "GT/Core/Asset/AssetHandle.h"
 namespace GT {
 
 	class ContentBrowserPanel

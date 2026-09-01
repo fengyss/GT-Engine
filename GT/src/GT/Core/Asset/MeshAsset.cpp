@@ -8,7 +8,7 @@ namespace GT
 {
 
     // constructor
-    MeshAsset::MeshAsset(const std::vector<Vertex>& _vertices, const std::vector<unsigned int>& _indices, const std::vector<Ref<Texture2DAsset>>& _textures)
+    MeshAsset::MeshAsset(const std::vector<Vertex>& _vertices, const std::vector<unsigned int>& _indices, const std::vector<Texture2D>& _textures)
         :vertices(_vertices), indices(_indices), textures(_textures)
     {
         setupMesh();
@@ -22,11 +22,11 @@ namespace GT
         shader->Bind();
         for (unsigned int i = 0; i < textures.size(); i++)
         {
-            auto tex = textures[i];
-            //auto type = tex->GetTextureType();
+            auto& tex = textures[i];
+            auto type = tex->GetTextureType();
 
-            //texslot |= type;
-            //shader->SetUniform1i(GetStrOfType(type), i);
+            texslot |= type;
+            shader->SetUniform1i(GetStrOfType(type), i);
 
             tex->Bind(i);
         }
@@ -36,7 +36,7 @@ namespace GT
         RenderCommand::DrawIndexed(m_VertexArray, indices.size());
     }
 
-    void MeshAsset::DrawForShadowMap(const glm::mat4& transform, const Shader& shader)
+    void MeshAsset::DrawForShadowMap(const glm::mat4& transform)
     {
         RenderCommand::DrawIndexed(m_VertexArray, indices.size());
     }

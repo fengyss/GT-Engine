@@ -59,6 +59,9 @@ namespace GT
 			case GT::AssetType::Model:
 				DisplayAssetSlot(slot.asset, m_ModelIcon->GetRendererID());
 				break;
+			case GT::AssetType::Mesh:
+				DisplayAssetSlot(slot.asset, m_SceneIcon->GetRendererID());
+				break;
 			default:
 				break;
 			}

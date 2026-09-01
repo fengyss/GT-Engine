@@ -10,7 +10,6 @@
 
 namespace GT
 {
-#if 0
     TextureType GetTypeFromAssimpType(aiTextureType type)
     {
         switch (type)
@@ -39,7 +38,6 @@ namespace GT
 
     ModelAsset::~ModelAsset()
     {
-        meshes.clear();
     }
 
 
@@ -47,22 +45,22 @@ namespace GT
     {
         for (unsigned int i = 0; i < meshes.size(); i++)
         {
-            meshes[i].Draw(transform, shader);
+            meshes[i]->Draw(transform, shader);
         }
     }
     void ModelAsset::Draw(const glm::mat4& transform, const Shader& shader)
     {
         for (unsigned int i = 0; i < meshes.size(); i++)
         {
-            meshes[i].Draw(transform, shader);
+            meshes[i]->Draw(transform, shader);
         }
     }
 
-    void ModelAsset::DrawForShadowMap(const glm::mat4& transform, const Shader& shader)
+    void ModelAsset::DrawForShadowMap(const glm::mat4& transform)
     {
         for (unsigned int i = 0; i < meshes.size(); i++)
         {
-            meshes[i].DrawForShadowMap(transform, shader);
+            meshes[i]->DrawForShadowMap(transform);
         }
     }
     void ModelAsset::Draw(const glm::mat4& transform, const Frustum& frustum)
@@ -72,8 +70,8 @@ namespace GT
         for (unsigned int i = 0; i < meshes.size(); i++)
         {
             bool visible = true;
-            glm::vec3 min = meshes[i].GetMin();
-            glm::vec3 max = meshes[i].GetMax();
+            glm::vec3 min = meshes[i]->GetMin();
+            glm::vec3 max = meshes[i]->GetMax();
 
             min = transform * glm::vec4(min, 1.0f);
             max = transform * glm::vec4(max, 1.0f);
@@ -89,15 +87,13 @@ namespace GT
 
             }
 
-           
-
             if(visible)
             {
                 RenderCommand::SetLineWidth(0.3f);
-                meshes[i].Draw(transform, shader);
+                meshes[i]->Draw(transform, shader);
                 Renderer3D::GetStats().DrawCalls++;
                 Renderer3D::GetStats().Meshes++;
-                Renderer3D::GetStats().VerticiesCount += meshes[i].GetVertexCount();
+                Renderer3D::GetStats().VerticiesCount += meshes[i]->GetVertexCount();
             }
         }
     }
@@ -123,8 +119,8 @@ namespace GT
 
         for (auto& mesh : meshes)
         {
-            aabb.Min = min(aabb.Min, mesh.GetMin());
-            aabb.Max = max(aabb.Max, mesh.GetMax());
+            aabb.Min = min(aabb.Min, mesh->GetMin());
+            aabb.Max = max(aabb.Max, mesh->GetMax());
         }
 
     }
@@ -148,7 +144,7 @@ namespace GT
 
     }
 
-    MeshAsset ModelAsset::processMesh(aiMesh* mesh, const aiScene* scene)
+    Mesh ModelAsset::processMesh(aiMesh* mesh, const aiScene* scene)
     {
         // data to fill
         std::vector<Vertex> vertices;
@@ -213,8 +209,8 @@ namespace GT
         LoadMaterialTextures(material, aiTextureType_HEIGHT, "texture_normal");
         LoadMaterialTextures(material, aiTextureType_EMISSIVE, "texture_emission");
 
-        return MeshAsset();
-		//return MeshAsset(vertices, indices, textures);
+		
+		return Mesh(vertices, indices, textures);
     }
 
     void ModelAsset::LoadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName)
@@ -239,15 +235,14 @@ namespace GT
             {   
                 std::filesystem::path texturePath = filepath.parent_path() / std::filesystem::path(std::string(path.C_Str()));
 
-               Texture2D handle = Texture2D(texturePath);
+                Texture2D handle(texturePath);
                 textures.push_back(handle);
 
                 auto tex = handle;
-                //tex->SetTextureType(GetTypeFromAssimpType(type));
+                tex->SetTextureType(GetTypeFromAssimpType(type));
             }
         }
     }
 
 
-#endif
 }

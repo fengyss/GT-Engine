@@ -7,16 +7,14 @@
 
 #include "GT/Renderer/Frustum.h"
 
-#include "GT/Core/Asset/AssetHandle.h"
 #include "GT/Core/Asset/Asset.h"
 
-#include "TextureAsset.h"
-#include "MeshAsset.h"
-#include "ShaderAsset.h"
+#include "GT/Renderer/Texture.h"
+#include "GT/Renderer/Mesh.h"
+#include "GT/Renderer/Shader.h"
 
 namespace GT
 {
-#if 0
     class ModelAsset : public Asset
     {
     public:
@@ -34,18 +32,15 @@ namespace GT
 
         // model data 
         std::vector<Texture2D> textures;
+        std::vector<Mesh> meshes;
 		Shader shader;
 
-        //std::vector<AssetHandle> textures;
-        //AssetHandle shader;
-        
-        std::vector<MeshAsset>    meshes;
         std::filesystem::path filepath;
         bool gammaCorrection;
 		bool isLoaded = false;
 		bool hasShader = false;
 		uint32_t VertexCount = 0;
-        // constructor, expects a filepath to a 3D model.
+
 
         operator bool()
         {
@@ -66,7 +61,7 @@ namespace GT
         // draws the model, and thus all its meshes
         void Draw(const glm::mat4& transform);
         void Draw(const glm::mat4& transform, const Shader& shader);
-        void DrawForShadowMap(const glm::mat4& transform, const Shader& shader);
+        void DrawForShadowMap(const glm::mat4& transform);
         void Draw(const glm::mat4& transform,const Frustum& frustum);
         void SetShader(const Shader& shader) {
             this->shader = shader; 
@@ -76,8 +71,8 @@ namespace GT
             //this->shader = shader;
             //hasShader = true;
         //}
-        const std::vector<MeshAsset> GetMeshes() { return meshes; }
-        inline uint32_t Model::GetMeshCount()
+        const std::vector<Mesh> GetMeshes() { return meshes; }
+        inline uint32_t GetMeshCount()
         {
             return 0;
         }
@@ -86,7 +81,7 @@ namespace GT
         {
             VertexCount = 0;
             for (auto& mesh : meshes)
-                VertexCount += mesh.GetVertexCount();
+                VertexCount += mesh->GetVertexCount();
 		}
         uint32_t GetVertexCount() 
         {
@@ -101,7 +96,7 @@ namespace GT
         // processes a node in a recursive fashion. Processes each individual mesh located at the node and repeats this process on its children nodes (if any).
         void processNode(aiNode* node, const aiScene* scene);
 
-        MeshAsset processMesh(aiMesh* mesh, const aiScene* scene);
+        Mesh processMesh(aiMesh* mesh, const aiScene* scene);
 
         // checks all material textures of a given type and loads the textures if they're not loaded yet.
         // the required info is returned as a Texture struct.
@@ -109,5 +104,4 @@ namespace GT
         void LoadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName);
     };
 
-#endif
 }

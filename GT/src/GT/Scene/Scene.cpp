@@ -338,34 +338,30 @@ namespace GT
 
     void Scene::RenderScene(Camera& camera)
     {
-
         float time = Time::GetTime();
-
-        m_Framebuffer->Bind();
-
-        //RenderCommand::SetClearColor({ 0.2,0.5,0.7,1.0 });
-        RenderCommand::Clear();
-        m_Framebuffer->ClearAttachment(1,-1);
 
         Renderer2D::BeginScene(camera);
         Renderer3D::BeginScene(camera);
         ParticleRenderer::BeginScene(camera);
 
+
         RenderScene2D();
         RenderScene3D();
         ParticleSystem::OnRender(this);
 
-        //Renderer3D::RenderShadowMap(Renderer3D::GetShadowMap());
+
+        Renderer3D::RenderShadowMap(Renderer3D::GetShadowMap());
+
+
+
+        m_Framebuffer->Bind();
+        RenderCommand::Clear();
+        m_Framebuffer->ClearAttachment(1, -1);
 
 
         ParticleRenderer::EndScene();
-
         ParticleRenderer::Flush(BlendMode::Alpha);
-
-
         Renderer3D::EndScene();
-
-
         Renderer2D::EndScene();
 
 

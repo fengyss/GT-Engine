@@ -21,6 +21,9 @@ namespace GT
 		// This function should be called when meta file is not existed!
 		// generator a meta file based on model file
 		static Ref<Asset> ImportModel(const std::filesystem::path& path);
+
+
+		static Ref<Asset> ReloadModel(const std::filesystem::path& path);
 	};
 }
 

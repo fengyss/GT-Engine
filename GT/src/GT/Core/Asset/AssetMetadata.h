@@ -13,6 +13,7 @@ namespace GT
         Shader,
         ComputeShader,
         GeometryShader,
+        Mesh,
         Model
     };
 

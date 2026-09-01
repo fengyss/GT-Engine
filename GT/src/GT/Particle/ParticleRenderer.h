@@ -6,7 +6,7 @@
 #include "ParticleTypes.h"
 
 #include "GT/Core/Asset/Asset.h"
-#include "GT/Core/Asset/AssetHandle.h"
+
 namespace GT {
 
     struct ParticleGPUVertex {

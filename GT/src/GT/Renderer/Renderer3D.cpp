@@ -41,8 +41,10 @@ namespace GT
 
 		// Clean up opengl resources before opengl context is destroyed
 		models.clear();
+
 		m_ShadowShader.~Shader();
 		s_ModelShader.~Shader();
+
 	}
 
 	void Renderer3D::BeginScene(Camera& camera)
@@ -135,11 +137,11 @@ namespace GT
 			shader->SetUniform1i("u_EntityID", ID);
 			shader->SetUniformMat4("u_ViewProjection", s_ViewProjectionMatrix);
 
-			model.Draw(transform, ExtractFrustum(s_ViewProjectionMatrix));
+			model->Draw(transform, ExtractFrustum(s_ViewProjectionMatrix));
 
 			if (IsShowAABB)
 			{
-				GPUAABB aabb = model.GetAABB();
+				GPUAABB aabb = model->GetAABB();
 				DrawAABB(transform, aabb);
 			}
 		}
@@ -175,7 +177,7 @@ namespace GT
 	void Renderer3D::ShowAABB(bool show) { IsShowAABB = show; }
 	void Renderer3D::DrawModel(const glm::mat4& transform, Model& model)
 	{
-		if (!model.hasShader) model.SetShader(s_ModelShader);
+		if (!model->hasShader) model->SetShader(s_ModelShader);
 		models.push_back({ transform, model,s_CurrentEntityID });
 	}
 	void Renderer3D::SetCurrentEntityID(int entityID)
@@ -193,7 +195,7 @@ namespace GT
 		// 3. 清空深度缓冲
 		glClear(GL_DEPTH_BUFFER_BIT);
 
-		Shader shader = m_ShadowShader;
+		Shader& shader = m_ShadowShader;
 		// 4. 使用深度着色器
 		shader->Bind();
 
@@ -217,7 +219,7 @@ namespace GT
 		for (auto& [transform, model, ID] : models)
 		{
 			shader->SetUniformMat4("u_Model", transform);
-			model.DrawForShadowMap(transform,shader);
+			model->DrawForShadowMap(transform);
 		}
 
 		// 6. 恢复默认 FBO

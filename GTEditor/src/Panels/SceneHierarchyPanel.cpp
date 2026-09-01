@@ -645,7 +645,7 @@ namespace GT
 		DrawComponent<ModelComponent>("Model Renderer", e, [](auto& component)
 			{
 				if (!component.model) ImGui::Text("Model: %s", component.name);
-				else ImGui::Text("Model: %s", component.model.Name.c_str());
+				else ImGui::Text("Model: %s", component.model->Name.c_str());
 				ImGui::SameLine();
 				ImGui::Columns(1);
 				//ImGui::PushItemWidth(-1);
