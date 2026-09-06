@@ -1,8 +1,5 @@
 #pragma once
 
-#include <assimp/Importer.hpp>
-#include <assimp/scene.h>
-#include <assimp/postprocess.h>
 
 
 #include "GT/Renderer/Frustum.h"
@@ -12,9 +9,20 @@
 #include "GT/Renderer/Texture.h"
 #include "GT/Renderer/Mesh.h"
 #include "GT/Renderer/Shader.h"
+#include "animdata.h"
+
+struct aiMesh;
+struct aiNode;
+struct aiMaterial;
+struct aiScene;
+enum aiTextureType;
 
 namespace GT
 {
+
+
+
+
     class ModelAsset : public Asset
     {
     public:
@@ -30,10 +38,16 @@ namespace GT
 
         virtual uint32_t GetMemorySize() const override { return 0; }
 
+        auto& GetBoneInfoMap() { return m_BoneInfoMap; }
+        int& GetBoneCount() { return m_BoneCounter; }
+
         // model data 
         std::vector<Texture2D> textures;
         std::vector<Mesh> meshes;
 		Shader shader;
+
+        std::map<std::string, BoneInfo> m_BoneInfoMap;
+        int m_BoneCounter = 0;
 
         std::filesystem::path filepath;
         bool gammaCorrection;
@@ -97,11 +111,12 @@ namespace GT
         void processNode(aiNode* node, const aiScene* scene);
 
         Mesh processMesh(aiMesh* mesh, const aiScene* scene);
+        
+        void ExtractBoneWeightForVertices(std::vector<Vertex>& vertices, aiMesh* mesh, const aiScene* scene);
 
         // checks all material textures of a given type and loads the textures if they're not loaded yet.
         // the required info is returned as a Texture struct.
-        std::vector<Texture2D> loadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName);
-        void LoadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName);
+        std::vector<Texture2D> LoadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName);
     };
 
 }

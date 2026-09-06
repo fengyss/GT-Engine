@@ -118,7 +118,7 @@ namespace GT
 	{
 		for (auto& asset : Assets)
 		{
-			if (asset.asset->GetType() == AssetType::Model)
+			if (asset.asset && asset.asset->GetType() == AssetType::Model)
 			{
 				asset.asset.reset();
 				asset.asset = nullptr;
@@ -480,15 +480,15 @@ namespace GT
 			}
 
 			count--;
-			//if (count == 0)
-			//{
-			//	// Unload asset
-			//	Assets[handle.index].asset->Info->IsLoaded = false;
-			//	Assets[handle.index].asset.reset();
-			//	Assets[handle.index].asset = nullptr;
-			//	Assets[handle.index].generation++;
-			//	AvailIndices.push(handle.index);
-			//}
+			if (count == 0)
+			{
+				// Unload asset
+				Assets[handle.index].asset->Info->IsLoaded = false;
+				Assets[handle.index].asset.reset();
+				Assets[handle.index].asset = nullptr;
+				Assets[handle.index].generation++;
+				AvailIndices.push(handle.index);
+			}
 
 		}
 		return true;

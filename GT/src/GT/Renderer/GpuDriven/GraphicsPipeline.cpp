@@ -3,6 +3,7 @@
 #include "GraphicsPipeline.h"
 #include <fstream>
 #include <sstream>
+#include <glad/glad.h>
 
 namespace GT
 {

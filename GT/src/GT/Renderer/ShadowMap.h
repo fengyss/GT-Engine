@@ -1,7 +1,8 @@
 #pragma once
-#include <glm/glm.hpp>
 #include "GT/Renderer/Framebuffer.h"
-
+namespace glm {
+    typedef mat<4, 4, f32, defaultp>	fmat4;
+}
 namespace GT
 {
     class ShadowMap {

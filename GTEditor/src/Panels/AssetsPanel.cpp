@@ -32,6 +32,7 @@ namespace GT
 		auto assetslots = AssetManager::GetAssets();
 		for(auto& slot : assetslots)
 		{
+			if (slot.asset == nullptr) continue;
 			auto type = slot.asset->GetType();
 			switch (type)
 			{

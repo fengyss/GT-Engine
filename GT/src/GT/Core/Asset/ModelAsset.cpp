@@ -8,6 +8,13 @@
 
 #include "GT/Core/Asset/AssetManager.h"
 
+#include "assimp_glm_helpers.h"
+
+
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
+
 namespace GT
 {
     TextureType GetTypeFromAssimpType(aiTextureType type)
@@ -34,7 +41,8 @@ namespace GT
 
         return glm::dot(glm::vec3(plane), positive) + plane.w >= 0.0;
     }
-    
+
+
 
     ModelAsset::~ModelAsset()
     {
@@ -86,7 +94,6 @@ namespace GT
                 }
 
             }
-
             if(visible)
             {
                 RenderCommand::SetLineWidth(0.3f);
@@ -204,30 +211,100 @@ namespace GT
         // process materials
         aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
         
-        LoadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
-        LoadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
-        LoadMaterialTextures(material, aiTextureType_HEIGHT, "texture_normal");
-        LoadMaterialTextures(material, aiTextureType_EMISSIVE, "texture_emission");
 
+        std::vector<Texture2D> _textures;
+
+        {
+            std::vector<Texture2D>& texs = LoadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
+            _textures.insert(_textures.end(), texs.begin(), texs.end());
+        }
+        {
+            std::vector<Texture2D>& texs = LoadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
+            _textures.insert(_textures.end(), texs.begin(), texs.end());
+        }
+        {
+            std::vector<Texture2D>& texs = LoadMaterialTextures(material, aiTextureType_HEIGHT, "texture_normal");
+            _textures.insert(_textures.end(), texs.begin(), texs.end());
+        }
+        {
+            std::vector<Texture2D>& texs = LoadMaterialTextures(material, aiTextureType_EMISSIVE, "texture_emission");
+            _textures.insert(_textures.end(), texs.begin(), texs.end());
+        }
 		
-		return Mesh(vertices, indices, textures);
+
+        ExtractBoneWeightForVertices(vertices, mesh, scene);
+
+		return Mesh(vertices, indices, _textures);
     }
 
-    void ModelAsset::LoadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName)
+
+    void SetVertexBoneData(Vertex& vertex, int boneID, float weight)
+    {
+        for (int i = 0; i < MAX_BONE_INFLUENCE; ++i)
+        {
+            if (vertex.m_BoneIDs[i] < 0)
+            {
+                vertex.m_Weights[i] = weight;
+                vertex.m_BoneIDs[i] = boneID;
+                break;
+            }
+        }
+    }
+
+    void ModelAsset::ExtractBoneWeightForVertices(std::vector<Vertex>& vertices, aiMesh* mesh, const aiScene* scene)
+    {
+        auto& boneInfoMap = m_BoneInfoMap;
+        int& boneCount = m_BoneCounter;
+
+        for (int boneIndex = 0; boneIndex < mesh->mNumBones; ++boneIndex)
+        {
+            int boneID = -1;
+            std::string boneName = mesh->mBones[boneIndex]->mName.C_Str();
+            if (boneInfoMap.find(boneName) == boneInfoMap.end())
+            {
+                BoneInfo newBoneInfo;
+                newBoneInfo.id = boneCount;
+                newBoneInfo.offset = AssimpGLMHelpers::ConvertMatrixToGLMFormat(mesh->mBones[boneIndex]->mOffsetMatrix);
+                boneInfoMap[boneName] = newBoneInfo;
+                boneID = boneCount;
+                boneCount++;
+            }
+            else
+            {
+                boneID = boneInfoMap[boneName].id;
+            }
+            assert(boneID != -1);
+            auto weights = mesh->mBones[boneIndex]->mWeights;
+            int numWeights = mesh->mBones[boneIndex]->mNumWeights;
+
+            for (int weightIndex = 0; weightIndex < numWeights; ++weightIndex)
+            {
+                int vertexId = weights[weightIndex].mVertexId;
+                float weight = weights[weightIndex].mWeight;
+                assert(vertexId <= vertices.size());
+                SetVertexBoneData(vertices[vertexId], boneID, weight);
+            }
+        }
+    }
+
+    std::vector<Texture2D> ModelAsset::LoadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName)
     {
         if (mat->GetTextureCount(type))
             GT_CORE_TRACE("Loading [{0}] form material::{1}", typeName, mat->GetName().C_Str());
 
+		std::vector<Texture2D> _textures;
         for (unsigned int i = 0; i < mat->GetTextureCount(type); i++)
         {
             aiString path;
             mat->GetTexture(type, i, &path);
             bool skip = false;
+            int index = 0;
             for (unsigned int j = 0; j < textures.size(); j++)
             {
                 if (std::strcmp(textures[j]->GetPath().filename().string().c_str(), path.C_Str()) == 0)
                 {
                     skip = true; 
+                    index = j;
                     break;
                 }
             }
@@ -237,11 +314,13 @@ namespace GT
 
                 Texture2D handle(texturePath);
                 textures.push_back(handle);
-
+				index = textures.size() - 1;
                 auto tex = handle;
                 tex->SetTextureType(GetTypeFromAssimpType(type));
             }
+			_textures.push_back(textures[index]);
         }
+        return _textures;
     }
 
 

@@ -13,7 +13,7 @@
 #include "GT/Core/Application.h"
 
 //TEMPORARY
-#include "Glad/glad.h"
+//#include "Glad/glad.h"
 #include "GLFW/glfw3.h"
 
 namespace GT

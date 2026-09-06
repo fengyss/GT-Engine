@@ -1,11 +1,41 @@
 Scene: cube
 Entities:
+  - Entity: 15284730859623447630
+    TagComponent:
+      Tag: Empty Entity
+      Type: None
+    TransformComponent:
+      Translation: [-8.5170765, -26.525911, -4.7763157]
+      Rotation: [0, -0.9451531, 0]
+      Scale: [0.9999999, 1, 0.9999999]
+    ModelComponent:
+      ModelPath: projects\FirstProject\assets\obj\nanosuit\nanosuit.obj
+  - Entity: 399508285003723062
+    TagComponent:
+      Tag: Empty Entity
+      Type: None
+    TransformComponent:
+      Translation: [3.693013, 1.41602, 1.084276]
+      Rotation: [0, -0.99179935, 0]
+      Scale: [0.99999976, 1, 0.99999976]
+    ModelComponent:
+      ModelPath: projects\FirstProject\assets\obj\cyborg\cyborg.obj
+  - Entity: 15602904078069279348
+    TagComponent:
+      Tag: Empty Entity
+      Type: None
+    TransformComponent:
+      Translation: [-1.5982647, -6.2644043, 3.8975818]
+      Rotation: [-3.28328e-07, -1.5468178, 8.994085e-08]
+      Scale: [0.9999999, 1, 0.9999999]
+    ModelComponent:
+      ModelPath: projects\FirstProject\assets\obj\backpack\backpack.obj
   - Entity: 2757964208715234925
     TagComponent:
       Tag: Empty Entity
       Type: None
     TransformComponent:
-      Translation: [-12.787663, 2.4985394, -0.9932557]
+      Translation: [-3.8352165, 8.0256405, 6.616433]
       Rotation: [0, -0, 0]
       Scale: [1, 1, 1]
     ModelComponent:
@@ -15,19 +45,19 @@ Entities:
       Tag: Empty Entity
       Type: None
     TransformComponent:
-      Translation: [-14.967238, 1.4329969, -1.7525601]
+      Translation: [-19.603611, 39.714394, 26.88963]
       Rotation: [0, -0, 0]
       Scale: [1, 1, 1]
     LightComponent:
       Type: 2
-      Ambient: [0.05, 0.05, 0.05]
+      Ambient: [0.043137256, 0.043137256, 0.043137256]
       Constant: 1
       cutOff: 0.976296
       outerCutOff: 0.95371693
-      Diffuse: [0.8, 0.8, 0.8]
-      Direction: [-14.967238, 1.4329969, -1.7525601]
+      Diffuse: [1, 1, 1]
+      Direction: [-19.603611, 39.714394, 26.88963]
       Linear: 0.09
-      Position: [-14.967238, 1.4329969, -1.7525601]
+      Position: [-19.603611, 39.714394, 26.88963]
       Quadratic: 0.032
       Specular: [1, 1, 1]
   - Entity: 16564027514784249681
@@ -36,7 +66,7 @@ Entities:
       Type: None
     TransformComponent:
       Translation: [0, 0, 0]
-      Rotation: [0, 0, 0]
+      Rotation: [0, -0, 0.00048828122]
       Scale: [1, 1, 1]
     ModelComponent:
       ModelPath: projects\FirstProject\assets\obj\planet\planet.obj

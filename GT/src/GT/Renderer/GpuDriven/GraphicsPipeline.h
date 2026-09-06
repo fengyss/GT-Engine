@@ -1,7 +1,8 @@
 ﻿#pragma once
 #include <string>
 #include <unordered_map>
-#include <glad/glad.h>
+
+typedef unsigned int GLuint;
 
 namespace GT
 {

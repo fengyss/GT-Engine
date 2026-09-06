@@ -1,5 +1,5 @@
 #pragma once
-#include <glm/glm.hpp>
+
 namespace GT
 {
 	class OrthographicCamera

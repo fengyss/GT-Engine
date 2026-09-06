@@ -6,7 +6,13 @@
 #include "GT/Events/MouseEvent.h"
 #include "GT/Events/KeyEvent.h"
 
-#include <glm/glm.hpp>
+namespace glm {
+	typedef vec<2, float, defaultp>		vec2;
+	typedef vec<3, float, defaultp>		vec3;
+	typedef vec<4, float, defaultp>		vec4;
+	typedef mat<4, 4, f32, defaultp>	mat4;
+	typedef qua<float, defaultp>		quat;
+}
 
 namespace GT {
 

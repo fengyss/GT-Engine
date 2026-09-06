@@ -62,6 +62,14 @@ uniform vec3 u_LightColor = vec3(1.0, 1.0, 1.0);
 
 
 int MAX_TEXTURES = 1; // ����ʵ��ʹ�õ�������������
+
+uint diffuse = 1u<< 31u;
+uint specular = 1u<< 30u;
+uint normal = 1u<< 29u;
+uint height = 1u<< 28u;
+uint emission = 1u<< 27u;
+//uint diffuse = 1u<< 26u;
+
 uniform sampler2D texture_diffuse;       //32
 uniform sampler2D texture_specular;      //31
 uniform sampler2D texture_normal;        //30
@@ -75,9 +83,9 @@ uniform int u_EntityID;
 uniform vec3 u_ViewPos;
 
 struct Material {
-    vec4  ambient;
-    vec4  diffuse;
-    vec4  specular;
+    vec3  ambient;
+    vec3  diffuse;
+    vec3  specular;
     float shininess;
 };
 
@@ -135,16 +143,16 @@ void main()
 
 
      // 1. ������������
-    if(((u_TexSlot >> 31u) & 1u) > 0)
+    if((u_TexSlot & diffuse) > 0)
         diffuseColor = texture(texture_diffuse, v_TexCoord);
     if(((u_TexSlot >> 30u) & 1u) > 0)
         specularColor = texture(texture_specular, v_TexCoord);
     if(((u_TexSlot >> 27u) & 1u) > 0)
         emissionColor = texture(texture_emission, v_TexCoord);
    
-    material.ambient = texture(texture_diffuse, v_TexCoord) * 0.05;
-    material.diffuse = diffuseColor;
-    material.specular = specularColor;
+    material.ambient = texture(texture_diffuse, v_TexCoord).rgb * 0.05;
+    material.diffuse = diffuseColor.rgb;
+    material.specular = specularColor.rgb;
     material.shininess = 0.2f;
 
 
@@ -177,7 +185,8 @@ void main()
     if((u_LightSlots & 2u)>0) result += vec4(CalcDirectionalLight(u_dirLight, worldNormal, viewDir),0.0f);
     if((u_LightSlots & 4u)>0) result += vec4(CalcSpotLight(u_spotLight, worldNormal, v_FragPos, viewDir),0.0f);
 
-    result = (1.0 - CalculateShadow(v_LightSpacePos, u_dirLight.direction)) * result + material.ambient;
+    result = (1.0 - CalculateShadow(v_LightSpacePos, u_dirLight.direction)) * result + vec4(material.ambient,0.0);
+    //result = material.ambient*20;
     
     result.a = diffuseColor.a;
     o_Color = result;
@@ -195,9 +204,9 @@ vec3 CalcDirectionalLight(DirectionalLight light, vec3 normal, vec3 viewDir)
     vec3 reflectDir = reflect(-lightDir, normal);
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
 
-    vec3 ambient  = light.ambient  * material.ambient.rgb;
-    vec3 diffuse  = light.diffuse  * diff * material.diffuse.rgb;
-    vec3 specular = light.specular * spec * material.specular.rgb;
+    vec3 ambient  = light.ambient  * material.ambient;
+    vec3 diffuse  = light.diffuse  * diff * material.diffuse;
+    vec3 specular = light.specular * spec * material.specular;
 
     return (ambient + diffuse + specular);
 }
@@ -241,9 +250,9 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
         (light.constant + light.linear * distance +
          light.quadratic * (distance * distance));
 
-    vec3 ambient  = light.ambient  * material.ambient.rgb;
-    vec3 diffuse  = light.diffuse  * diff * material.diffuse.rgb;
-    vec3 specular = light.specular * spec * material.specular.rgb;
+    vec3 ambient  = light.ambient  * material.ambient;
+    vec3 diffuse  = light.diffuse  * diff * material.diffuse;
+    vec3 specular = light.specular * spec * material.specular;
 
     return (ambient + diffuse + specular) * attenuation;
 }
@@ -264,9 +273,9 @@ vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
     float intensity = smoothstep(light.outerCutOff, light.cutOff, theta);
 
 
-    vec3 ambient  = light.ambient  * material.ambient.rgb;
-    vec3 diffuse  = light.diffuse  * diff * material.diffuse.rgb;
-    vec3 specular = light.specular * spec * material.specular.rgb;
+    vec3 ambient  = light.ambient  * material.ambient;
+    vec3 diffuse  = light.diffuse  * diff * material.diffuse;
+    vec3 specular = light.specular * spec * material.specular;
 
 
     return (ambient + diffuse + specular) * intensity;
@@ -283,9 +292,9 @@ void save()
          // 1. ������������
     if(((u_TexSlot >> 31u) & 1u) > 0)
         diffuseColor = texture(texture_diffuse, v_TexCoord);
-    if(((u_TexSlot >> 30u) & 1u) > 0)
+    if((u_TexSlot & specular) > 0)
         specularColor = texture(texture_specular, v_TexCoord);
-    if(((u_TexSlot >> 27u) & 1u) > 0)
+    if((u_TexSlot & emission) > 0)
         emissionColor = texture(texture_emission, v_TexCoord);
 
 
@@ -300,7 +309,7 @@ void save()
     vec3 worldNormal = normalize(v_Normal);
     //worldNormal = v_Normal;
     
-    if(((u_TexSlot >> 29u) & 1u) > 0)
+    if((u_TexSlot & normal) > 0)
     {
         worldNormal = texture(texture_normal, v_TexCoord).rgb;
         worldNormal = worldNormal*2.0-1.0;

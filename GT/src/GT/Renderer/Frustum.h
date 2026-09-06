@@ -2,6 +2,13 @@
 #include"GT/Renderer/Buffer.h"
 #include "GT/Core/Asset/Asset.h"
 #include "GT/Renderer/Shader.h"
+
+namespace glm {
+    typedef vec<3, float, defaultp>		vec3;
+    typedef vec<4, float, defaultp>		vec4;
+    typedef mat<4, 4, f32, defaultp>	mat4;
+}
+
 namespace GT
 {
     struct Plane

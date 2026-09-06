@@ -32,7 +32,7 @@ namespace GT
 		IsValid = AssetManager::Existed(handle);
 
 
-		GT_CORE_TRACE("Mesh(): {1}.", handle);
+		GT_CORE_TRACE("Mesh(): {0}.", handle);
 	}
 
 	Mesh::~Mesh()

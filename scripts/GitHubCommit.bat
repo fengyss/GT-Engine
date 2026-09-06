@@ -5,7 +5,7 @@ pause
 git add .
 pause
 
-git commit -m "feat: refactor assetmanager"
+git commit -m "feat: render model"
 
 pause
 

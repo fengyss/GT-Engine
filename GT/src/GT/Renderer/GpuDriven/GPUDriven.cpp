@@ -47,10 +47,10 @@ namespace GT
         // 5. 加载并编译 Shader
         // 注意：这里你需要自己实现 Shader 加载逻辑
         m_CullingComputePipeline = CreateScope<GraphicsPipeline>(GraphicsPipeline::Type::Compute);
-        Shader& Cullingshader = Shader::CreateCompute("");
+        Shader Cullingshader("");
         m_CullingComputePipeline->AttachShader(Cullingshader->GetRendererID());
         m_GraphicsPipeline = CreateScope<GraphicsPipeline>(GraphicsPipeline::Type::Graphics);
-        Shader& Graphicsshader = Shader::CreateCompute("");
+        Shader Graphicsshader("");
         m_GraphicsPipeline->AttachShader(Graphicsshader->GetRendererID());
 
         return true;
