@@ -3,7 +3,7 @@
 #include "GT/Core/Base.h"
 
 #include "AssetMetadata.h"
-
+#include <string>
 
 namespace GT {
 

@@ -1,0 +1,22 @@
+CompileFlags:
+  Add:
+    - -I/home/wl/Documents/GT-Engine/GT/src
+    - -I/home/wl/Documents/GT-Engine/GT/vendor
+    - -I/home/wl/Documents/GT-Engine/GT/vendor/Box2D/include
+    - -I/home/wl/Documents/GT-Engine/GT/vendor/GLFW/include
+    - -I/home/wl/Documents/GT-Engine/GT/vendor/Glad/include
+    - -I/home/wl/Documents/GT-Engine/GT/vendor/ImGui
+    - -I/home/wl/Documents/GT-Engine/GT/vendor/ImGuizmo
+    - -I/home/wl/Documents/GT-Engine/GT/vendor/assimp/include
+    - -I/home/wl/Documents/GT-Engine/GT/vendor/efsw/include
+    - -I/home/wl/Documents/GT-Engine/GT/vendor/entt
+    - -I/home/wl/Documents/GT-Engine/GT/vendor/glm
+    - -I/home/wl/Documents/GT-Engine/GT/vendor/json/include
+    - -I/home/wl/Documents/GT-Engine/GT/vendor/mono/include
+    - -I/home/wl/Documents/GT-Engine/GT/vendor/spdlog/include
+    - -I/home/wl/Documents/GT-Engine/GT/vendor/stb_image
+    - -I/home/wl/Documents/GT-Engine/GT/vendor/yaml-cpp/include
+    - -I/home/wl/Documents/GT-Engine/GTEditor/src
+    - -I/home/wl/Documents/GT-Engine/Test
+    - -DGT_PLATFORM_WINDOWS
+    - -DGT_BUILD_DLL

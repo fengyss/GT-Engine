@@ -1,6 +1,7 @@
 #pragma once
 #include "GT/Core/UUID.h"
-#include "gtpch.h"
+#include <vector>
+#include <string>
 namespace GT
 { 
 
@@ -20,9 +21,9 @@ namespace GT
     std::string_view AssetTypeToString(AssetType type);
     AssetType AssetTypeFromString(std::string_view assetType);
 
-    // ==================== µ¼ÈëÉèÖÃ£¨°´ÀàÐÍÏ¸·Ö£© ====================
+    // ==================== ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½Ö£ï¿½ ====================
     struct TextureImportSettings {
-        std::string format = "BC7";       // Ñ¹Ëõ¸ñÊ½
+        std::string format = "BC7";       // Ñ¹ï¿½ï¿½ï¿½ï¿½Ê½
         bool generateMipmaps = true;
         bool sRGB = true;
         int maxSize = 2048;
@@ -48,32 +49,32 @@ namespace GT
     };
 
     struct MaterialImportSettings {
-        std::string shaderUUID;   // ÒÀÀµµÄ Shader UUID
-        std::vector<std::string> textureSlots; // ÎÆÀí²ÛÎ»Ãû
+        std::string shaderUUID;   // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Shader UUID
+        std::vector<std::string> textureSlots; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½
     };
 
-    // ==================== ÔªÊý¾Ý£¨Meta£© ====================
+    // ==================== Ôªï¿½ï¿½ï¿½Ý£ï¿½Metaï¿½ï¿½ ====================
     struct AssetMetadata {
-        UUID ID;                              // Î¨Ò»±êÊ¶£¬Ò»Éú²»±ä
+        UUID ID;                              // Î¨Ò»ï¿½ï¿½Ê¶ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
-        //std::string fileName;                   // Ô­Ê¼ÎÄ¼þÃû£¨º¬À©Õ¹Ãû£©
-        //std::string relativePath;               // ÏîÄ¿ÄÚÂß¼­Â·¾¶
-        //std::string friendlyName;               // ÓÃ»§¿ÉÐÞ¸ÄµÄÏÔÊ¾Ãû
+        //std::string fileName;                   // Ô­Ê¼ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ¹ï¿½ï¿½ï¿½ï¿½
+        //std::string relativePath;               // ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½ß¼ï¿½Â·ï¿½ï¿½
+        //std::string friendlyName;               // ï¿½Ã»ï¿½ï¿½ï¿½ï¿½Þ¸Äµï¿½ï¿½ï¿½Ê¾ï¿½ï¿½
 
-        //std::vector<std::string> tags;          // ±êÇ©£¬ÓÃÓÚ·ÖÀà¼ìË÷
-        std::vector<UUID> directDependencies;   // Ö±½ÓÒÀÀµµÄ UUID ÁÐ±í
-        //int version = 1;                        // ×ÊÔ´°æ±¾ºÅ
-        //std::string sourceHash;                 // Ô´ÎÄ¼þ MD5 ¹þÏ£
-        //std::string lastModifiedTime;           // ×îºóÐÞ¸ÄÊ±¼ä£¨ISO ¸ñÊ½£©
+        //std::vector<std::string> tags;          // ï¿½ï¿½Ç©ï¿½ï¿½ï¿½ï¿½ï¿½Ú·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        std::vector<UUID> directDependencies;   // Ö±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ UUID ï¿½Ð±ï¿½
+        //int version = 1;                        // ï¿½ï¿½Ô´ï¿½æ±¾ï¿½ï¿½
+        //std::string sourceHash;                 // Ô´ï¿½Ä¼ï¿½ MD5 ï¿½ï¿½Ï£
+        //std::string lastModifiedTime;           // ï¿½ï¿½ï¿½ï¿½Þ¸ï¿½Ê±ï¿½ä£¨ISO ï¿½ï¿½Ê½ï¿½ï¿½
 
-        // µ¼ÈëÉèÖÃ£¨°´ÀàÐÍÊ¹ÓÃ¶ÔÓ¦×Ö¶Î£©
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½Ã¶ï¿½Ó¦ï¿½Ö¶Î£ï¿½
         //std::optional<TextureImportSettings> textureSettings;
         //std::optional<ModelImportSettings> modelSettings;
         //std::optional<SoundImportSettings> soundSettings;
         //std::optional<ShaderImportSettings> shaderSettings;
         //std::optional<MaterialImportSettings> materialSettings;
 
-        // ±à¼­Æ÷±¸×¢
+        // ï¿½à¼­ï¿½ï¿½ï¿½ï¿½×¢
         std::string editorNote;
 
 

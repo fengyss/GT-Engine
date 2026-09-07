@@ -79,10 +79,10 @@ namespace GT
 
 	Application::~Application()
 	{
-		m_LayerStack.~LayerStack();
+		m_LayerStack.Shutdown();
 
 		Renderer::ShutDown();
-		ScriptEngine::Shutdown();
+		// ScriptEngine::Shutdown();
 		AssetManager::ShutDown();
 		m_Window.reset();
 	}
@@ -92,7 +92,7 @@ namespace GT
 	{
 		AssetManager::Init();
 		Renderer::Init();
-		ScriptEngine::Init();
+		// ScriptEngine::Init();
 		Random::Init();
 	}
 

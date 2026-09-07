@@ -11,9 +11,6 @@
 #include "assimp_glm_helpers.h"
 
 
-#include <assimp/Importer.hpp>
-#include <assimp/scene.h>
-#include <assimp/postprocess.h>
 
 namespace GT
 {
@@ -215,19 +212,19 @@ namespace GT
         std::vector<Texture2D> _textures;
 
         {
-            std::vector<Texture2D>& texs = LoadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
+            auto texs = LoadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
             _textures.insert(_textures.end(), texs.begin(), texs.end());
         }
         {
-            std::vector<Texture2D>& texs = LoadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
+            auto texs = LoadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
             _textures.insert(_textures.end(), texs.begin(), texs.end());
         }
         {
-            std::vector<Texture2D>& texs = LoadMaterialTextures(material, aiTextureType_HEIGHT, "texture_normal");
+            auto texs = LoadMaterialTextures(material, aiTextureType_HEIGHT, "texture_normal");
             _textures.insert(_textures.end(), texs.begin(), texs.end());
         }
         {
-            std::vector<Texture2D>& texs = LoadMaterialTextures(material, aiTextureType_EMISSIVE, "texture_emission");
+            auto texs = LoadMaterialTextures(material, aiTextureType_EMISSIVE, "texture_emission");
             _textures.insert(_textures.end(), texs.begin(), texs.end());
         }
 		

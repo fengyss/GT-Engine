@@ -21,6 +21,9 @@ project "Box2D"
     filter "system:windows"
         systemversion "10.0"
 
+    filter "system:linux"
+        defines { "_POSIX_C_SOURCE=200809L" }
+
 	filter "configurations:Debug"
 		symbols "On"
 		runtime "Debug"

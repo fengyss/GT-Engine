@@ -4,7 +4,10 @@ project "GTEditor"
 	language "C++"
 	cppdialect "C++17"
 	staticruntime "on"
-	buildoptions "/utf-8"
+
+	filter "system:windows"
+		buildoptions "/utf-8"
+	filter {}
 
 
 	targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
@@ -24,6 +27,8 @@ project "GTEditor"
 		"%{wks.location}/GT/vendor/spdlog/include",
 		"%{wks.location}/GT/src",
 		"%{wks.location}/GT/vendor",
+		"%{wks.location}/GT/vendor/ImGui",
+		"%{wks.location}/GT/vendor/GLFW/include",
 		"%{IncludeDir.entt}",
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.Box2D}",
@@ -37,20 +42,28 @@ project "GTEditor"
         "%{LibraryDir.assimp}",
 		"%{wks.location}/GT/vendor/vld",
         "%{LibraryDir.mono}",
+        "%{LibraryDir.freetype}",
+        "%{LibraryDir.gtest}",
     }
-	links 
-	{
-        "%{Library.assimp}",
-        "%{Library.mono}",
-    }
+	
+	defines { "GLFW_INCLUDE_NONE", "YAML_CPP_STATIC_DEFINE" }
 
-	defines
-	{
-		"GT_PLATFORM_WINDOWS",
-		"GT_BUILD_DLL",
-		"GLFW_INCLUDE_NONE",
-		"YAML_CPP_STATIC_DEFINE"
-	}
+
+	filter "system:linux"
+		defines { "GT_PLATFORM_LINUX", "GT_BUILD_DLL" }
+		linkoptions
+		{
+			"-LGT/vendor/assimp/lib/linux",
+			"-LGT/vendor/mono/lib/linux",
+			"-Wl,-l:libassimp.so",
+			"-Wl,-l:libmono-2.0.so.1"
+		}
+	filter {}
+
+	filter "system:windows"
+		defines { "GT_PLATFORM_WINDOWS", "GT_BUILD_DLL" }
+		links { "%{Library.assimp}", "%{Library.mono}" }
+	filter {}
 
 	links
 	{
@@ -63,14 +76,6 @@ project "GTEditor"
 		"yaml_cpp",
 		
 	}
-	
-	linkoptions 
-	{
-        --"/NODEFAULTLIB:MSVCRTD",  
-        --"/NODEFAULTLIB:libcmt",   
-        --"/NODEFAULTLIB:MSVCRT",  
-        --"/NODEFAULTLIB:libcm",   
-    }
 
 
 	filter "system:windows"

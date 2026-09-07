@@ -1,0 +1,29 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    
+    {
+      "name": "Debug GTEditor",
+      "type": "lldb",
+      "request": "launch",
+      "program": "${workspaceFolder}/bin/Debug-linux-x86_64/GTEditor/GTEditor",
+      "args": [],
+      "cwd": "${workspaceFolder}",
+      "preLaunchTask": "Build GTEditor (Debug)"
+    },
+    {
+      "name": "Debug Test",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}/bin/Debug-linux-x86_64/Test/Test",
+      "args": [],
+      "stopAtEntry": false,
+      "cwd": "${workspaceFolder}",
+      "environment": [],
+      "externalConsole": false,
+      "MIMode": "gdb",
+      "miDebuggerPath": "/usr/bin/gdb",
+      "preLaunchTask": "Build Test (Debug)"
+    }
+  ]
+}

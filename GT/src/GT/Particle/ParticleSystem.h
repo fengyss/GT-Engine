@@ -1,7 +1,7 @@
 #pragma once
 #include "ParticleEmitter.h"
 #include "ParticleRenderer.h"
-#include "GT/Core/TimeStep.h"
+#include "GT/Core/Timestep.h"
 #include "GT/Scene/Scene.h"
 namespace GT {
 
@@ -17,10 +17,10 @@ namespace GT {
         static void OnUpdate(Scene* scene,Timestep dt);
         static void OnRender(Scene* scene);
 
-        // È«¾ÖÉèÖÃ
+        // È«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         static void SetMaxParticles(uint32_t maxParticles);
 
-        // ÐÔÄÜÍ³¼Æ
+        // ï¿½ï¿½ï¿½ï¿½Í³ï¿½ï¿½
         static uint32_t GetTotalParticles();
         static uint32_t GetDrawCalls();
 

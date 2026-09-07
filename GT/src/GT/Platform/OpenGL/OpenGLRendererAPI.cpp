@@ -137,13 +137,12 @@ namespace GT
 	}
 	void OpenGLRendererAPI::GetMemoryUsage(uint64_t& totalMemory, uint64_t& usedMemory)
 	{
-		// NVIDIA À©Õ¹
 		GLint totalMemKB = 0, availMemKB = 0;
 
-	//#ifdef GL_GPU_MEMORY_INFO
+	#ifdef GL_GPU_MEMORY_INFO_TOTAL_AVAILABLE_MEMORY_NVX
 		glGetIntegerv(GL_GPU_MEMORY_INFO_TOTAL_AVAILABLE_MEMORY_NVX, &totalMemKB);
 		glGetIntegerv(GL_GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX, &availMemKB);
-	//#endif
+	#endif
 
 		totalMemory = static_cast<uint64_t>(totalMemKB) / 1024;
 		usedMemory = totalMemory - static_cast<uint64_t>(availMemKB) / 1024;

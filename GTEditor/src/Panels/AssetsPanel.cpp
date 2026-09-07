@@ -1,5 +1,5 @@
 #include "AssetsPanel.h"
-#include "ImGui/imgui.h"
+#include "imgui.h"
 #include "GT/Core/Asset/AssetManager.h"
 namespace GT
 {

@@ -1,5 +1,9 @@
 project "Premake"
-	kind "Utility"
+	if _ACTION ~= "ninja" then
+		kind "Utility"
+	else 
+		kind "none"
+	end
 
 	targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("%{wks.location}/bin-int/" .. outputdir .. "/%{prj.name}")

@@ -3,7 +3,7 @@
 
 #include "GT/Project/Project.h"
 
-#include <imgui/imgui.h>
+#include <imgui.h>
 #include "GT/Core/Asset/AssetManager.h"
 
 namespace GT {
@@ -55,8 +55,8 @@ namespace GT {
 			if (ImGui::BeginDragDropSource())
 			{
 				
-				const wchar_t* itemPath = path.c_str();
-				ImGui::SetDragDropPayload("CONTENT_BROWSER_ITEM", itemPath, (wcslen(itemPath) + 1) * sizeof(wchar_t));
+				const std::string itemPath = path.string();
+				ImGui::SetDragDropPayload("CONTENT_BROWSER_ITEM", itemPath.c_str(), itemPath.size() + 1);
 					
 
 				ImGui::EndDragDropSource();

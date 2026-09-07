@@ -147,7 +147,7 @@ namespace GT
 
 		meta->Name = json["Name"];
 		meta->ID = uint64_t(json["ID"]);
-		meta->Type = AssetTypeFromString(json["Type"]);
+		meta->Type = AssetTypeFromString(json["Type"].get<std::string>());
 		meta->FilePath = std::filesystem::path(std::string(json["FilePath"]));
 		meta->IsWatch = json["IsWatch"];
 
@@ -156,25 +156,29 @@ namespace GT
 
 	void AssetManager::LoadInternalAssets()
 	{
-		RegisterTexture2DAsset("Resources\\textures\\Checkerboard.png");
-		RegisterTexture2DAsset("Resources\\Icons\\PlayButton.png");
-		RegisterTexture2DAsset("Resources\\Icons\\StopButton.png");
-		RegisterTexture2DAsset("Resources\\Icons\\SimulateButton.png");
-		RegisterTexture2DAsset("Resources\\Icons\\DirectoryIcon.png");
-		RegisterTexture2DAsset("Resources\\Icons\\FileIcon.png");
-		RegisterTexture2DAsset("Resources\\Icons\\ModelIcon.png");
-		RegisterTexture2DAsset("Resources\\Icons\\ShaderIcon.png");
-		RegisterTexture2DAsset("Resources\\Icons\\TextureIcon.png");
-		RegisterTexture2DAsset("Resources\\Icons\\SceneIcon.png");
+		const std::filesystem::path resourceRoot = std::filesystem::exists("Resources")
+			? "Resources"
+			: "GTEditor/Resources";
 
-		RegisterShaderAsset("Resources\\shaders\\Renderer2D_Quad.glsl");
-		RegisterShaderAsset("Resources\\shaders\\Renderer2D_Circle.glsl");
-		RegisterShaderAsset("Resources\\shaders\\Renderer2D_Line.glsl");
-		RegisterShaderAsset("Resources\\shaders\\Model.glsl");
-		RegisterShaderAsset("Resources\\shaders\\Particle.geom");
-		RegisterShaderAsset("Resources\\shaders\\ShadowMap.glsl");
-		RegisterShaderAsset("Resources\\shaders\\Renderer2D_UI.glsl");
-		RegisterShaderAsset("Resources\\shaders\\Renderer2D_Text.glsl");
+		RegisterTexture2DAsset(resourceRoot / "textures/Checkerboard.png");
+		RegisterTexture2DAsset(resourceRoot / "Icons/PlayButton.png");
+		RegisterTexture2DAsset(resourceRoot / "Icons/StopButton.png");
+		RegisterTexture2DAsset(resourceRoot / "Icons/SimulateButton.png");
+		RegisterTexture2DAsset(resourceRoot / "Icons/DirectoryIcon.png");
+		RegisterTexture2DAsset(resourceRoot / "Icons/FileIcon.png");
+		RegisterTexture2DAsset(resourceRoot / "Icons/ModelIcon.png");
+		RegisterTexture2DAsset(resourceRoot / "Icons/ShaderIcon.png");
+		RegisterTexture2DAsset(resourceRoot / "Icons/TextureIcon.png");
+		RegisterTexture2DAsset(resourceRoot / "Icons/SceneIcon.png");
+
+		RegisterShaderAsset(resourceRoot / "shaders/Renderer2D_Quad.glsl");
+		RegisterShaderAsset(resourceRoot / "shaders/Renderer2D_Circle.glsl");
+		RegisterShaderAsset(resourceRoot / "shaders/Renderer2D_Line.glsl");
+		RegisterShaderAsset(resourceRoot / "shaders/Model.glsl");
+		RegisterShaderAsset(resourceRoot / "shaders/Particle.geom");
+		RegisterShaderAsset(resourceRoot / "shaders/ShadowMap.glsl");
+		RegisterShaderAsset(resourceRoot / "shaders/Renderer2D_UI.glsl");
+		RegisterShaderAsset(resourceRoot / "shaders/Renderer2D_Text.glsl");
 
 	}
 

@@ -4,6 +4,7 @@
 
 #include "glm/glm.hpp"
 #include "glm/gtc/type_ptr.hpp"
+#include <alloca.h>
 
 
 namespace GT
@@ -306,7 +307,7 @@ namespace GT
 		{
 			int length;
 			glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length);
-			char* message = (char*)_alloca(length * sizeof(char));
+			char* message = (char*)alloca(length * sizeof(char));
 			glGetShaderInfoLog(id, length, &length, message);
 			std::cout << "Failed to compile " <<
 				(type == GL_VERTEX_SHADER ? "vertex" : "fragment")
@@ -336,7 +337,7 @@ namespace GT
 		{
 			GLint length = 0;
 			glGetProgramiv(program, GL_INFO_LOG_LENGTH, &length);
-			char* message = (char*)_alloca(length * sizeof(char));
+			char* message = (char*)alloca(length * sizeof(char));
 			glGetProgramInfoLog(program, length, &length, message);
 			glDeleteProgram(program);
 			glDeleteShader(vs);

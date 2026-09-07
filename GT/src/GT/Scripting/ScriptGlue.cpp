@@ -18,10 +18,10 @@ namespace GT {
 	
 static std::unordered_map<MonoType*, std::function<bool(Entity)>> s_EntityHasComponentFuncs;
 
-// InternalCallsÊÇMonoÌá¹©µÄÒ»ÖÖ»úÖÆ£¬ÔÊÐíC#´úÂëµ÷ÓÃC++´úÂë¡£
-// Í¨¹ýÔÚC#ÖÐÉùÃ÷Ò»¸ö·½·¨£¬²¢Ê¹ÓÃ[MethodImpl(MethodImplOptions.InternalCall)]ÌØÐÔ±ê¼ÇËü¡£
-// mono_add_internal_call»á½«C#ÖÐµÄ·½·¨ÃûºÍC++ÖÐµÄº¯ÊýÖ¸Õë½øÐÐ°ó¶¨£¬Ê¹µÃC#¿ÉÒÔÖ±½Óµ÷ÓÃC++µÄÊµÏÖ¡£
-#define GT_ADD_INTERNAL_CALL(Name) mono_add_internal_call("GT.InternalCalls::" #Name, Name)
+// InternalCallsï¿½ï¿½Monoï¿½á¹©ï¿½ï¿½Ò»ï¿½Ö»ï¿½ï¿½Æ£ï¿½ï¿½ï¿½ï¿½ï¿½C#ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½C++ï¿½ï¿½ï¿½ë¡£
+// Í¨ï¿½ï¿½ï¿½ï¿½C#ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½[MethodImpl(MethodImplOptions.InternalCall)]ï¿½ï¿½ï¿½Ô±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+// mono_add_internal_callï¿½á½«C#ï¿½ÐµÄ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½C++ï¿½ÐµÄºï¿½ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½Ð°ó¶¨£ï¿½Ê¹ï¿½ï¿½C#ï¿½ï¿½ï¿½ï¿½Ö±ï¿½Óµï¿½ï¿½ï¿½C++ï¿½ï¿½Êµï¿½Ö¡ï¿½
+#define GT_ADD_INTERNAL_CALL(Name) mono_add_internal_call("GT.InternalCalls::" #Name, reinterpret_cast<const void*>(Name))
 
 	static void NativeLog(MonoString* string, int parameter)
 	{

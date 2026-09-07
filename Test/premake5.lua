@@ -5,7 +5,9 @@ project "Test"
 	cppdialect "C++17"
 	staticruntime "on"
 
-	buildoptions "/utf-8"
+	filter "system:windows"
+		buildoptions "/utf-8"
+	filter {}
 	buildoptions "/NODEFAULTLIB:msvcrtd.lib"
 
 	targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")

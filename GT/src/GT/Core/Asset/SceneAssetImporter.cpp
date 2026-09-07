@@ -5,10 +5,8 @@ namespace GT
 {
 	Ref<Asset> SceneAssetImporter::ImportScene(const AssetMetadata& metadata)
 	{
-		Ref<Scene> scene = CreateRef<Scene>();
-		SceneSerializer serializer(scene);
-		serializer.Deserialize(metadata.FilePath);
-		return scene;
+		SceneSerializer serializer;
+		return serializer.Deserialize(metadata.FilePath);
 	}
 	Ref<Asset> SceneAssetImporter::LoadScene(const std::filesystem::path& path)
 	{

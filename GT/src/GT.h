@@ -10,7 +10,7 @@
 #include "GT/Core/Input.h"
 #include "GT/Core/Buffer.h"
 #include "GT/Core/KeyCodes.h"
-#include "GT/Core/MouseButtoncodes.h"
+#include "GT/Core/MouseButtonCodes.h"
 #include "GT/Core/TextureSheet.h"
 
 

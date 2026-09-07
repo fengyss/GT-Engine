@@ -7,10 +7,12 @@
 
 #include "GT/Platform/OpenGL/OpenGLContext.h"
 #include <GLFW/glfw3.h>
+#ifdef GT_PLATFORM_WINDOWS
 #define GLFW_EXPOSE_NATIVE_WIN32
 #include <GLFW/glfw3native.h>
 
 #include <windows.h>
+#endif
 
 namespace GT
 {
@@ -71,8 +73,8 @@ namespace GT
 			//glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 			//glfwWindowHint(GLFW_FLOATING, GLFW_TRUE);
 
-			//glfwWindowHint(GLFW_FOCUS_ON_SHOW, GLFW_FALSE);  // ±ÜÃâ´°¿Ú»ñµÃ½¹µã
-			//glfwWindowHint(GLFW_MOUSE_PASSTHROUGH, GLFW_TRUE);  // Ö÷·½°¸
+			//glfwWindowHint(GLFW_FOCUS_ON_SHOW, GLFW_FALSE);  // ï¿½ï¿½ï¿½â´°ï¿½Ú»ï¿½Ã½ï¿½ï¿½ï¿½
+			//glfwWindowHint(GLFW_MOUSE_PASSTHROUGH, GLFW_TRUE);  // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
 		}
 
@@ -251,11 +253,12 @@ namespace GT
 
 	void WindowsWindow::SetCursorClip(int type) const
 	{
+	#ifdef GT_PLATFORM_WINDOWS
 		HWND hwnd = glfwGetWin32Window(m_Window);
 
 		RECT clipRect;
-		GetClientRect(hwnd, &clipRect); // »ñÈ¡´°¿Ú¿Í»§Çø£¨²»°üº¬±ß¿òºÍ±êÌâÀ¸£©
-		MapWindowPoints(hwnd, nullptr, (LPPOINT)&clipRect, 2); // ×ª»»ÎªÆÁÄ»×ø±ê
+		GetClientRect(hwnd, &clipRect); // ï¿½ï¿½È¡ï¿½ï¿½ï¿½Ú¿Í»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß¿ï¿½Í±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		MapWindowPoints(hwnd, nullptr, (LPPOINT)&clipRect, 2); // ×ªï¿½ï¿½Îªï¿½ï¿½Ä»ï¿½ï¿½ï¿½ï¿½
 
 		switch (type)
 		{
@@ -266,6 +269,9 @@ namespace GT
 			glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 			break;
 		};
+	#else
+		glfwSetInputMode(m_Window, GLFW_CURSOR, type == 1 ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL);
+	#endif
 		
 	}
 

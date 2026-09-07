@@ -424,7 +424,8 @@ namespace GT
                     Renderer2D::DrawLine(glm::vec3(0.0f), transform.Translation,glm::vec4(1.0f));
                     break;
                 case LightType::Spot:
-                    Renderer2D::DrawLine(transform.Translation, transform.Translation+light.light.direction, glm::vec4(1.0f));
+                    glm::vec3 lightEnd = transform.Translation + light.light.direction;
+                    Renderer2D::DrawLine(transform.Translation, lightEnd, glm::vec4(1.0f));
                     break;
                 }
             }
@@ -528,7 +529,7 @@ namespace GT
             auto view = m_Registry.view<TransformComponent, LightRendererComponent>();
             for (auto entity : view)
             {
-                auto& [transform, light] = view.get<TransformComponent, LightRendererComponent>(entity);
+                auto [transform, light] = view.get<TransformComponent, LightRendererComponent>(entity);
 
                 light.light.pos = transform.Translation;
                 if (light.light.type == LightType::Directional)

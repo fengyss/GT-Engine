@@ -3,32 +3,32 @@
 #include <thread>
 #include "Job.h"
 #include "GT/Core/Memory/LinearAllocator.h"
-// ÒýÈëµÚÈý·½¿â
+// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 #include "GT/Core/Concurrency/concurrentqueue.h"
 
 namespace GT {
 
     class JobSystem {
     public:
-        // ³õÊ¼»¯Ïß³Ì³Ø£¨numThreads = 0 ±íÊ¾Ê¹ÓÃÓ²¼þ×î´óºËÐÄÊý£©
+        // ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ß³Ì³Ø£ï¿½numThreads = 0 ï¿½ï¿½Ê¾Ê¹ï¿½ï¿½Ó²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         static void Init(uint32_t numThreads = 0);
         static void Shutdown();
 
-        // ÐÂÔö£º»ñÈ¡µ±Ç°Ö¡µÄ·ÖÅäÆ÷
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¡ï¿½ï¿½Ç°Ö¡ï¿½Ä·ï¿½ï¿½ï¿½ï¿½ï¿½
         static LinearAllocator& GetAllocator();
-        // ´´½¨ Job µÄ¹¤³§·½·¨
+        // ï¿½ï¿½ï¿½ï¿½ Job ï¿½Ä¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         template<typename F>
         static Job* CreateJob(F&& func, Job* parent = nullptr) {
-            // 1. ´Ó·ÖÅäÆ÷ÄÃÄÚ´æ
+            // 1. ï¿½Ó·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú´ï¿½
             void* mem = GetAllocator().Allocate(sizeof(Job));
-            // 2. ÔÚÄÚ´æÉÏ¹¹Ôì¶ÔÏó£¨Placement New£©
+            // 2. ï¿½ï¿½ï¿½Ú´ï¿½ï¿½Ï¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Placement Newï¿½ï¿½
             return new (mem) Job(std::forward<F>(func), parent);
         }
 
-        // Ìá½»Ò»¸öÈÎÎñ
+        // ï¿½á½»Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         static void Submit(Job* job);
 
-        // µÈ´ýÈÎÎñÍê³É£¨×èÈûµ±Ç°Ïß³Ì£¬Ö±µ½ job->unfinishedJobs == 0£©
+        // ï¿½È´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ß³Ì£ï¿½Ö±ï¿½ï¿½ job->unfinishedJobs == 0ï¿½ï¿½
         static void Wait(const Job* job);
 
     private:
@@ -38,11 +38,11 @@ namespace GT {
         static inline bool s_IsRunning = false;
         static inline std::vector<std::thread> s_WorkerThreads;
 
-        // ¹Ø¼ü£ºÎÞËø¶ÓÁÐ
-        static inline moodycamel::ConcurrentQueue<Job*> s_JobQueue;
+        // ï¿½Ø¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        static inline moodycamel::ConcurrentQueue<Job*> s_JobQueue{ 1024, 8, 8 };
 
-        // ÓÃÓÚ»½ÐÑÐÝÃßÏß³ÌµÄÐÅºÅÁ¿£¨C++20 ÓÐ std::counting_semaphore£©
-        // Èç¹ûÃ»ÓÐ C++20£¬¿ÉÒÔÓÃ condition_variable Ä£Äâ
+        // ï¿½ï¿½ï¿½Ú»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß³Ìµï¿½ï¿½Åºï¿½ï¿½ï¿½ï¿½ï¿½C++20 ï¿½ï¿½ std::counting_semaphoreï¿½ï¿½
+        // ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ C++20ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ condition_variable Ä£ï¿½ï¿½
         static inline std::condition_variable s_WakeCondition;
         static inline std::mutex s_WakeMutex;
 

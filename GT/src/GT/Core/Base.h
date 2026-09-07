@@ -1,6 +1,8 @@
 #pragma once
 
+
 #include <memory>
+#include <cassert>
 
 #ifdef GT_PLATFORM_WINDOWS
 	#if GT_DYNAMIC_LINK
@@ -13,17 +15,21 @@
 		#define HAZEL_API 
 	#endif // GT_DYNAMIC_LINK
 #else
-	#error GT Only support Windows!
+	#define HAZEL_API
 #endif // GT_PLATFORM_WINDOWS
 
 #ifdef GT_DEBUG
 	#define GT_ENABLE_ASSERTS
 #endif // GT_DEBUG
 
-
 #ifdef GT_ENABLE_ASSERTS
-	#define GT_ASSERT(x, ...) { if(!(x)) { GT_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak(); } }
-	#define GT_CORE_ASSERT(x, ...) { if(!(x)) { GT_CORE_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak(); } }
+	#ifdef GT_PLATFORM_WINDOWS
+		#define GT_DEBUGBREAK() __debugbreak()
+	#else
+		#define GT_DEBUGBREAK() __builtin_trap()
+	#endif
+	#define GT_ASSERT(x, ...) { if(!(x)) { GT_ERROR("Assertion Failed: {0}", __VA_ARGS__); GT_DEBUGBREAK(); } }
+	#define GT_CORE_ASSERT(x, ...) { if(!(x)) { GT_CORE_ERROR("Assertion Failed: {0}", __VA_ARGS__); GT_DEBUGBREAK(); } }
 #else
 	#define GT_ASSERT(x, ...)
 	#define GT_CORE_ASSERT(x, ...)
@@ -33,7 +39,7 @@
 
 #define GT_BIND_EVENT_FN(fn) std::bind(&fn, this, std::placeholders::_1)
 
-#define ASSERT(x) if(!(x)) __debugbreak();
+#define ASSERT(x) assert(x)
 
 #define GLCall(x) GLClearError();\
 	x;\

@@ -11,11 +11,14 @@
 #include "GT/Renderer/Shader.h"
 #include "animdata.h"
 
-struct aiMesh;
-struct aiNode;
-struct aiMaterial;
-struct aiScene;
-enum aiTextureType;
+#include <map>
+#include <string>
+#include <vector>
+#include <filesystem>
+
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
 
 namespace GT
 {

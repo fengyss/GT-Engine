@@ -62,7 +62,7 @@ namespace GT
 
 		m_SceneHierarchyPanel->SetContexts(m_SceneHistory);
 
-		OpenProject("projects\\FirstProject\\FirstProject.hproj");
+		OpenProject("GTEditor/projects/FirstProject/FirstProject.hproj");
 
 
 		m_ContentBrowserPanel = CreateScope<ContentBrowserPanel>();
@@ -335,7 +335,7 @@ namespace GT
 
 			if (ImGui::BeginMenu("Tools"))
 			{
-				// µã»÷²Ëµ¥ÏîÇÐ»»ÏÔÊ¾×´Ì¬
+				// ï¿½ï¿½ï¿½ï¿½Ëµï¿½ï¿½ï¿½ï¿½Ð»ï¿½ï¿½ï¿½Ê¾×´Ì¬
 				if (ImGui::MenuItem("Sprite Sheet Cropper", "..."))
 				{
 					m_SpriteSheetPanel->Open();
@@ -344,7 +344,7 @@ namespace GT
 			}
 			if (ImGui::BeginMenu("Setting"))
 			{
-				// µã»÷²Ëµ¥ÏîÇÐ»»ÏÔÊ¾×´Ì¬
+				// ï¿½ï¿½ï¿½ï¿½Ëµï¿½ï¿½ï¿½ï¿½Ð»ï¿½ï¿½ï¿½Ê¾×´Ì¬
 				if (ImGui::MenuItem("Unreal Theme", ""))
 				{
 					Application::Get().GetImGuiLayer()->SetTheme(ImGuiTheme::Unreal);

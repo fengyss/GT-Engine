@@ -15,7 +15,7 @@ namespace GT
 	Shader Renderer3D::m_ShadowShader;
 	glm::mat4 Renderer3D::s_ViewProjectionMatrix = glm::mat4(1.0f);
 	bool Renderer3D::IsShowAABB=false;
-	glm::vec3& Renderer3D::s_viewPos = glm::vec3(0.0f);
+	glm::vec3 Renderer3D::s_viewPos = glm::vec3(0.0f);
 	std::vector<Light_Matrix> Renderer3D::s_Lights;
 	static Renderer3D::Statistics s_stats;
 	ShadowMap Renderer3D::shadowmap;
@@ -44,6 +44,7 @@ namespace GT
 
 		m_ShadowShader.~Shader();
 		s_ModelShader.~Shader();
+		shadowmap.~ShadowMap();
 
 	}
 
@@ -111,23 +112,29 @@ namespace GT
 			case LightType::Ambient:
 				break;
 			case LightType::Point:
+			{
 				lightslots |= 1u;
 				PointLight plight = light.GetPointLight();
 				shader->SetUniformPointLight("u_pointLight", plight);
 				shader->SetUniformMat4("u_LightSpaceMatrix", spacematrix);
 				break;
+			}
 			case LightType::Directional:
+			{
 				lightslots |= 2u;
 				DirectionalLight dlight = light.GetDirectionalLight();
 				shader->SetUniformDirectionalLight("u_dirLight", dlight);
 				shader->SetUniformMat4("u_LightSpaceMatrix", spacematrix);
 				break;
+			}
 			case LightType::Spot:
+			{
 				lightslots |= 4u;
 				SpotLight slight = light.GetSpotLight();
 				shader->SetUniformSpotLight("u_spotLight", slight);
 				shader->SetUniformMat4("u_LightSpaceMatrix", spacematrix);
 				break;
+			}
 			}
 		}
 
@@ -164,13 +171,13 @@ namespace GT
 		  transform* glm::vec4(min.x, max.y, max.z, 1.0f),
 		};
 
-		// ºó·½Ãæ
+		// ï¿½ï¿½ï¿½ï¿½
 		for (int j = 0; j < 4; ++j)
 			Renderer2D::DrawLine(corners[j], corners[(j + 1) % 4], color);
-		// Ç°·½Ãæ
+		// Ç°ï¿½ï¿½ï¿½ï¿½
 		for (int j = 4; j < 8; ++j)
 			Renderer2D::DrawLine(corners[j], corners[4 + ((j - 4 + 1) % 4)], color);
-		// Á¬½ÓÇ°ºó
+		// ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½
 		for (int j = 0; j < 4; ++j)
 			Renderer2D::DrawLine(corners[j], corners[j + 4], color);
 	}
@@ -187,16 +194,16 @@ namespace GT
 
 	void Renderer3D::RenderShadowMap(ShadowMap& shadowMap)
 	{
-		// 1. °ó¶¨ÒõÓ° FBO
+		// 1. ï¿½ï¿½ï¿½ï¿½Ó° FBO
 		shadowMap.Bind();
 
-		// 2. ÉèÖÃÊÓ¿Ú£¨±ØÐëÊÇÒõÓ°ÌùÍ¼µÄ´óÐ¡£©
+		// 2. ï¿½ï¿½ï¿½ï¿½ï¿½Ó¿Ú£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó°ï¿½ï¿½Í¼ï¿½Ä´ï¿½Ð¡ï¿½ï¿½
 
-		// 3. Çå¿ÕÉî¶È»º³å
+		// 3. ï¿½ï¿½ï¿½ï¿½ï¿½È»ï¿½ï¿½ï¿½
 		glClear(GL_DEPTH_BUFFER_BIT);
 
 		Shader& shader = m_ShadowShader;
-		// 4. Ê¹ÓÃÉî¶È×ÅÉ«Æ÷
+		// 4. Ê¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É«ï¿½ï¿½
 		shader->Bind();
 
 		for (auto& [light, spacematrix] : s_Lights)
@@ -215,14 +222,14 @@ namespace GT
 			}
 		}
 
-		// 5. äÖÈ¾³¡¾°ÖÐµÄËùÓÐÎïÌå
+		// 5. ï¿½ï¿½È¾ï¿½ï¿½ï¿½ï¿½ï¿½Ðµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		for (auto& [transform, model, ID] : models)
 		{
 			shader->SetUniformMat4("u_Model", transform);
 			model->DrawForShadowMap(transform);
 		}
 
-		// 6. »Ö¸´Ä¬ÈÏ FBO
+		// 6. ï¿½Ö¸ï¿½Ä¬ï¿½ï¿½ FBO
 		shadowMap.Unbind();
 	}
 

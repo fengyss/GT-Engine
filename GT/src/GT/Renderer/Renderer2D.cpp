@@ -5,8 +5,10 @@
 
 #include "glad/glad.h"
 
+#if defined(GT_HAS_FREETYPE)
 #include <ft2build.h>
 #include FT_FREETYPE_H
+#endif
 
 #include "GT/Utils/PlatformUtils.h"
 #include "GT/Core/Asset/AssetManager.h"
@@ -255,6 +257,7 @@ namespace GT
 			0.0f, 600.0f,
 			0.0f, 600.0f
 		));
+		#if defined(GT_HAS_FREETYPE)
 		// FreeType
 		// --------
 		FT_Library ft;
@@ -325,6 +328,7 @@ namespace GT
 		// destroy FreeType once we're finished
 		FT_Done_Face(face);
 		FT_Done_FreeType(ft);
+		#endif
 
 
 		// configure VAO/VBO for texture quads
@@ -476,7 +480,7 @@ namespace GT
 
 	}
 
-	void Renderer2D::DrawLine(const glm::vec3& p0, glm::vec3& p1, const glm::vec4& color)
+	void Renderer2D::DrawLine(const glm::vec3& p0, const glm::vec3& p1, const glm::vec4& color)
 	{
 		s_Data.LineVertexBufferPtr->Position = p0;
 		s_Data.LineVertexBufferPtr->Color = color;

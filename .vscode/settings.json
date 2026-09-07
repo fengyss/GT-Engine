@@ -1,0 +1,9 @@
+{
+  "C_Cpp.default.configurationProvider": "ms-vscode.cpptools",
+  "C_Cpp.default.cppStandard": "c++17",
+  "files.associations": {
+    "*.inl": "cpp",
+    "*.hpp": "cpp"
+  },
+  "dotnet.preferCSharpExtension": true
+}

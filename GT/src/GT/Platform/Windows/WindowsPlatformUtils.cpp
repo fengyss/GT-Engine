@@ -2,15 +2,30 @@
 #include "gtpch.h"
 #include "GT/Utils/PlatformUtils.h"
 
+#ifdef GT_PLATFORM_WINDOWS
 #include <commdlg.h>
+#else
+#include <chrono>
+#endif
 #include <GLFW/glfw3.h>
+#ifdef GT_PLATFORM_WINDOWS
 #define GLFW_EXPOSE_NATIVE_WIN32
 #include <GLFW/glfw3native.h>
+#endif
 
 #include "GT/Core/Application.h"
 
 namespace GT
 {
+	#ifndef GT_PLATFORM_WINDOWS
+	std::filesystem::path FileDialogs::OpenFile(const char*) { return {}; }
+	std::filesystem::path FileDialogs::SaveFile(const char*) { return {}; }
+	float Time::GetTime()
+	{
+		static const auto start = std::chrono::steady_clock::now();
+		return std::chrono::duration<float>(std::chrono::steady_clock::now() - start).count();
+	}
+	#else
 	std::filesystem::path FileDialogs::OpenFile(const char* filter)
 	{
 		OPENFILENAMEA ofn;
@@ -63,4 +78,5 @@ namespace GT
 	{
 		return glfwGetTime();
 	}
+	#endif
 }

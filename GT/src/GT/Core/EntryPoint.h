@@ -1,6 +1,6 @@
 #pragma once
 
-#ifdef GT_PLATFORM_WINDOWS
+#if defined(GT_PLATFORM_WINDOWS) || defined(__linux__)
 
 extern GT::Application* GT::CreateApplication(GT::ApplicationCommandLineArgs args);
 

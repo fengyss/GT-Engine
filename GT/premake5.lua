@@ -5,13 +5,20 @@ project "GT"
 	cppdialect "C++17"
 	staticruntime "on"
 
-	buildoptions "/utf-8"
+	filter "system:windows"
+		buildoptions "/utf-8"
+	filter {}
 
 	targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("%{wks.location}/bin-int/" .. outputdir .. "/%{prj.name}")
 
 	pchheader "gtpch.h"
 	pchsource "src/gtpch.cpp"
+
+	filter "action:ninja"
+		enablepch "Off"
+
+	filter {}
 
 	files
 	{
@@ -37,11 +44,21 @@ project "GT"
 		"vendor/ft2build.h",
 	}
 
+	filter "system:linux"
+		removefiles
+		{
+			"src/GT/Platform/Windows/WindowsFileWatcher.cpp",
+			"src/GT/Platform/Windows/WindowsFileWatcher.h",
+			"src/GT/Renderer/Font/Font.cpp",
+		}
+	filter {}
+
 	includedirs
 	{
 		"src",
 		"vendor",
 		"vendor/spdlog/include",
+		"vendor/freetype",
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.ImGuizmo}",
 		"%{IncludeDir.mono}",
@@ -60,13 +77,11 @@ project "GT"
 	libdirs {
         "%{LibraryDir.freetype}",
         "%{LibraryDir.mono}",
+		"%{LibraryDir.assimp}",
+
     }
-	links
-	{
-		"freetype.lib",
-	}
-	filter "files:vendor/ImGuizmo/**.cpp"
-		flags { "NoPCH" }
+
+
 
 	links
 	{
@@ -76,13 +91,13 @@ project "GT"
 		"GLFW",
 		"Glad",
 		"Box2D",
-		"ENTT",
-		"json",
 		"yaml_cpp",
 		"ImGui",
 		"freetype",
 		"opengl32.lib",
-		"%{Library.mono}"
+		"%{Library.mono}",
+		"%{Library.assimp}",
+		"%{Library.freetype}",
 	}
 
 	filter "system:windows"
@@ -90,24 +105,28 @@ project "GT"
 		defines
 		{
 			"_CRT_SECURE_NO_WARNINGS",
-			"GLFW_INCLUDE_NONE"
-		}
-
-		defines
-		{
+			"GLFW_INCLUDE_NONE",
 			"GT_PLATFORM_WINDOWS",
 			"GT_BUILD_DLL",
 			"GLFW_INCLUDE_NONE",
 			"YAML_CPP_STATIC_DEFINE"
 		}
 
-		links
-		{
-			"%{Library.WinSock}",
-			"%{Library.WinMM}",
-			"%{Library.WinVersion}",
-			"%{Library.BCrypt}",
+	filter "system:linux"
+		defines 
+		{ 
+			"GT_PLATFORM_LINUX",
+			"GLFW_INCLUDE_NONE",
+			"YAML_CPP_STATIC_DEFINE" 
 		}
+
+		-- links
+		-- {
+		-- 	"%{Library.WinSock}",
+		-- 	"%{Library.WinMM}",
+		-- 	"%{Library.WinVersion}",
+		-- 	"%{Library.BCrypt}",
+		-- }
 
 --	doesn't need to copy dlls anymore since we are using static lib
 --	postbuildcommands

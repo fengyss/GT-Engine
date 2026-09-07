@@ -1,24 +1,24 @@
 #pragma once
 
 
-#include "GT/Core/Base.h"
+#include "Base.h"
 
-
+#include "glm/glm.hpp"
 #define GLM_ENABLE_EXPERIMENTAL
 #include "glm/gtx/string_cast.hpp"
 
 // This ignore warnings in external code
-#pragma warning(push, 0)
+// #pragma warning(push, 0)
 #include "spdlog/spdlog.h"
 #include "spdlog/fmt/ostr.h"
-#pragma warning(pop)
+// #pragma warning(pop)
 
 #include "spdlog/fmt/fmt.h"
 #include "spdlog/fmt/std.h"
 
 namespace GT {
 
-	class HAZEL_API Log
+	class Log
 	{
 	public:
      

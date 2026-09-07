@@ -21,7 +21,7 @@ namespace GT {
 			project->m_ProjectDirectory = path.parent_path();
 			s_ActiveProject = project;
 
-			ScriptEngine::LoadAppAssembly(GetAssetFileSystemPath(project->GetConfig().ScriptModulePath));
+			//ScriptEngine::LoadAppAssembly(GetAssetFileSystemPath(project->GetConfig().ScriptModulePath));
 			//AssetsManager::WatchFiles(GetAssetDirectory());
 
 			return s_ActiveProject;

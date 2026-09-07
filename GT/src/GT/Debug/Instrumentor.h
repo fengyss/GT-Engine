@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GT/Core/Log.h"
+#include "../Core/Log.h"
 
 #include <algorithm>
 #include <chrono>

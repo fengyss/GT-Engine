@@ -55,7 +55,7 @@ namespace GT
 		static float GetTextureSlotIndex(const Texture2D& texture);
 		static void SetTextureCoords(glm::vec2 offset = {0.0f,0.0f}, glm::vec2 size = {1.0f,1.0f});
 
-		static void DrawLine(const glm::vec3& p0, glm::vec3& p1, const glm::vec4& color);
+		static void DrawLine(const glm::vec3& p0, const glm::vec3& p1, const glm::vec4& color);
 
 		static void DrawRect(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color);
 		static void DrawRect(const glm::vec3& position0, const glm::vec3& position1, const glm::vec3& position2, const glm::vec3& position3, const glm::vec4& color);

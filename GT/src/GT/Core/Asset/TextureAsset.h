@@ -63,7 +63,7 @@ namespace GT
 			break;
 		default:
 			GT_CORE_ASSERT(false,"Unknown TextureType!");
-			break;
+			return {};
 		}
 	}
 	class TextureAsset : public Asset

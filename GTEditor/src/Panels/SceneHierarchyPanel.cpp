@@ -1,7 +1,7 @@
 #include "SceneHierarchyPanel.h"
-#include <imgui/imgui.h>
+#include <imgui.h>
 #include <glm/glm/gtc/type_ptr.hpp>
-#include <imgui/imgui_internal.h>
+#include <imgui_internal.h>
 #include "GT/Utils/PlatformUtils.h"
 #include "GT/Scripting/ScriptEngine.h"
 #include "GT/Core/Asset/AssetManager.h"
@@ -161,7 +161,7 @@ namespace GT
 	{
 
 		ImGuiIO& io = ImGui::GetIO();
-		auto boldFont = io.Fonts->Fonts[1];
+		auto boldFont = io.Fonts->Fonts[0];
 
 
 		ImGui::PushID(label);
@@ -655,7 +655,7 @@ namespace GT
 				{
 					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
 					{
-						const wchar_t* path = (const wchar_t*)payload->Data;
+						const char* path = (const char*)payload->Data;
 						std::filesystem::path filepath(path);
 						Model model = Model(filepath);
 						if(model)
@@ -778,8 +778,12 @@ namespace GT
 					ImGui::PushID(0);
 					static ParticleBurst burst;
 					ImGui::DragFloat("Start Time", &burst.time, 1.0f, 0.0f, 100.0f);
-					ImGui::DragInt("Count", &(int)burst.count, 5, 20, 100);
-					ImGui::DragInt("Cycles", &(int)burst.cycles, 1, 0, 30);
+					int burstCount = static_cast<int>(burst.count);
+					int burstCycles = static_cast<int>(burst.cycles);
+					ImGui::DragInt("Count", &burstCount, 5, 20, 100);
+					ImGui::DragInt("Cycles", &burstCycles, 1, 0, 30);
+					burst.count = static_cast<uint32_t>(burstCount);
+					burst.cycles = static_cast<uint32_t>(burstCycles);
 					ImGui::DragFloat("Interval", &burst.interval, 1.0f, 1.0f, 10.0f);
 					if (ImGui::Button("Add burst"))
 					{
@@ -802,8 +806,12 @@ namespace GT
 					}
 					auto& burst = *it;
 					ImGui::DragFloat("Start Time", &burst.time, 1.0f, 0.0f, 100.0f);
-					ImGui::DragInt("Count", &(int)burst.count, 5, 20, 100);
-					ImGui::DragInt("Cycles", &(int)burst.cycles, 1, 0, 30);
+					int burstCount = static_cast<int>(burst.count);
+					int burstCycles = static_cast<int>(burst.cycles);
+					ImGui::DragInt("Count", &burstCount, 5, 20, 100);
+					ImGui::DragInt("Cycles", &burstCycles, 1, 0, 30);
+					burst.count = static_cast<uint32_t>(burstCount);
+					burst.cycles = static_cast<uint32_t>(burstCycles);
 					ImGui::DragFloat("Interval", &burst.interval, 0.1f, 0.1f, 5.0f);
 					ImGui::Separator();
 					ImGui::PopID();

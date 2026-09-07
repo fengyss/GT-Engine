@@ -16,10 +16,6 @@ workspace "GT"
 		".editorconfig"
 	}
 
-	flags
-	{
-		"MultiProcessorCompile"
-	}
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
@@ -36,12 +32,14 @@ group "Dependencies"
 	include "GT/vendor/efsw"
 	include "GT/vendor/json"
 	include "GT/vendor/googletest"
-	include "GT/vendor/freetype"
+	-- include "GT/vendor/freetype"
 group ""
 
 group "Core"
 	include "GT"
-	include "GTScriptCore"
+	if _ACTION ~= "ninja" then
+		include "GTScriptCore"
+	end
 group ""
 
 group "Tools"
@@ -50,5 +48,5 @@ group "Tools"
 group ""
 
 group "Misc"
-	include "RippleOfWater"
+	-- include "RippleOfWater"
 group ""

@@ -129,9 +129,11 @@
 #include <GLFW/glfw3native.h>   // for glfwGetCocoaWindow()
 #elif !defined(__EMSCRIPTEN__)
 // Freedesktop (Linux, BSD, etc)
+#if !defined(GLFW_EXPOSE_NATIVE_WAYLAND)
 #ifndef GLFW_EXPOSE_NATIVE_X11
 #define GLFW_EXPOSE_NATIVE_X11
 #include <X11/Xatom.h>
+#endif
 #endif
 #ifndef GLFW_EXPOSE_NATIVE_WAYLAND
 #define GLFW_EXPOSE_NATIVE_WAYLAND

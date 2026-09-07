@@ -9,7 +9,7 @@ namespace GT {
 		auto view = scene->Reg().view<TransformComponent, ParticleComponent>();
 		for (auto e : view)
 		{
-			auto& [trans, p] = view.get<TransformComponent, ParticleComponent>(e);
+			auto [trans, p] = view.get<TransformComponent, ParticleComponent>(e);
 
 			if (p.IsEmitting == false) continue;
 
@@ -39,7 +39,7 @@ namespace GT {
 	void ParticleSystem::SetMaxParticles(uint32_t maxParticles) {
 	}
 	void ParticleSystem::ParallelUpdate(float deltaTime) {
-		// ¶àÏß³Ì¸üÐÂÁ£×ÓÂß¼­
+		// ï¿½ï¿½ï¿½ß³Ì¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß¼ï¿½
 	}
 	void ParticleSystem::SortParticlesByDistance(const glm::vec3& cameraPos) 
 	{

@@ -5,8 +5,8 @@
 #include "Panels/AssetsPanel.h"
 #include "GT/Project/Project.h"
 #include "GT/Renderer/Model.h"
-#include "imgui/imgui.h"
-#include "imguizmo/ImGuizmo.h"
+#include "imgui.h"
+#include "ImGuizmo.h"
 
 
 namespace GT

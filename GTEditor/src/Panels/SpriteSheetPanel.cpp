@@ -1,6 +1,6 @@
 #include "SpriteSheetPanel.h"
-#include "imgui/imgui.h"
-#include <imgui/misc/cpp/imgui_stdlib.h>
+#include "imgui.h"
+#include <misc/cpp/imgui_stdlib.h>
 #include "GT/Renderer/Texture.h"
 #include "GT/Utils/PlatformUtils.h"
 
@@ -11,7 +11,7 @@ namespace GT {
     {
         ImGui::Begin("Sprite Sheet Cropper");
 
-        // 1. ÍÏ×§¼ÓÔØÎÆÀí
+        // 1. ï¿½ï¿½×§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         if (ImGui::Button("Load Texture"))
         {
             std::filesystem::path filepath = FileDialogs::OpenTextureFile();
@@ -41,7 +41,7 @@ namespace GT {
             ImGui::Separator();
             ImGui::Text("Results: %zu Sprites found", m_Regions.size());
 
-            // 2. ÏÔÊ¾ÇÐÆ¬ÁÐ±í
+            // 2. ï¿½ï¿½Ê¾ï¿½ï¿½Æ¬ï¿½Ð±ï¿½
             ImGui::BeginChild("SpriteList");
             for (size_t i = 0; i < m_Regions.size(); ++i)
             {
@@ -54,20 +54,20 @@ namespace GT {
             }
             ImGui::EndChild();
 
-            // 3. Ô¤ÀÀÑ¡ÖÐµÄ Sprite
+            // 3. Ô¤ï¿½ï¿½Ñ¡ï¿½Ðµï¿½ Sprite
             if (m_SelectedIndex >= 0 && m_SelectedIndex < (int)m_Regions.size())
             {
                 ImGui::Separator();
                 ImGui::Text("Preview:");
                 const SpriteRegion& selected = m_Regions[m_SelectedIndex];
 
-                // ¼ÆËãÔ¤ÀÀ UV (ÐèÒª·­×ª Y ÖáÒÔ·ûºÏ ImGui µÄÎÆÀí×ø±êÏµ)
+                // ï¿½ï¿½ï¿½ï¿½Ô¤ï¿½ï¿½ UV (ï¿½ï¿½Òªï¿½ï¿½×ª Y ï¿½ï¿½ï¿½Ô·ï¿½ï¿½ï¿½ ImGui ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ïµ)
                 ImVec2 uv0(selected.UVOffset.x, selected.UVOffset.y);
                 ImVec2 uv1(uv0.x + selected.UVSize.x, uv0.y + selected.UVSize.y);
                 ImGui::Image((void*)(intptr_t)m_Texture->GetRendererID(), ImVec2(64, 64), uv1, uv0);
             }
 
-            // 4. µ¼³ö JSON
+            // 4. ï¿½ï¿½ï¿½ï¿½ JSON
             if (ImGui::Button("Export to JSON"))
             {
                 SpriteSheetCropper::ExportToJSON(m_Regions, m_Texture->GetPath(), m_Texture->GetName());

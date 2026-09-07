@@ -1,13 +1,11 @@
 #pragma once
 #include"GT/Renderer/Buffer.h"
+
 #include "GT/Core/Asset/Asset.h"
+
 #include "GT/Renderer/Shader.h"
 
-namespace glm {
-    typedef vec<3, float, defaultp>		vec3;
-    typedef vec<4, float, defaultp>		vec4;
-    typedef mat<4, 4, f32, defaultp>	mat4;
-}
+#include "glm/glm.hpp"
 
 namespace GT
 {
@@ -50,31 +48,31 @@ namespace GT
     {
         Frustum f;
 
-        // вС
+        // О©╫О©╫
         f.Planes[0].Normal.x = vp[0][3] + vp[0][0];
         f.Planes[0].Normal.y = vp[1][3] + vp[1][0];
         f.Planes[0].Normal.z = vp[2][3] + vp[2][0];
         f.Planes[0].Distance = vp[3][3] + vp[3][0];
 
-        // ср
+        // О©╫О©╫
         f.Planes[1].Normal.x = vp[0][3] - vp[0][0];
         f.Planes[1].Normal.y = vp[1][3] - vp[1][0];
         f.Planes[1].Normal.z = vp[2][3] - vp[2][0];
         f.Planes[1].Distance = vp[3][3] - vp[3][0];
 
-        // об
+        // О©╫О©╫
         f.Planes[2].Normal.x = vp[0][3] + vp[0][1];
         f.Planes[2].Normal.y = vp[1][3] + vp[1][1];
         f.Planes[2].Normal.z = vp[2][3] + vp[2][1];
         f.Planes[2].Distance = vp[3][3] + vp[3][1];
 
-        // ио
+        // О©╫О©╫
         f.Planes[3].Normal.x = vp[0][3] - vp[0][1];
         f.Planes[3].Normal.y = vp[1][3] - vp[1][1];
         f.Planes[3].Normal.z = vp[2][3] - vp[2][1];
         f.Planes[3].Distance = vp[3][3] - vp[3][1];
 
-        // ╫Э
+        // О©╫О©╫
         f.Planes[4].Normal.x = vp[0][2];
         f.Planes[4].Normal.y = vp[1][2];
         f.Planes[4].Normal.z = vp[2][2];

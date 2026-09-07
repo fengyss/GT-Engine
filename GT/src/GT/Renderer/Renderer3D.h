@@ -85,7 +85,7 @@ namespace GT
 		static int s_CurrentEntityID;
 		static std::vector<Light_Matrix> s_Lights;
 		static glm::mat4 s_ViewProjectionMatrix;
-		static glm::vec3& s_viewPos;
+		static glm::vec3 s_viewPos;
 		static Shader s_ModelShader;
 		static Shader m_ShadowShader;
 	};

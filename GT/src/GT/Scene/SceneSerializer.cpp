@@ -220,7 +220,7 @@ namespace GT
 		LoadFile(filepath);
 
 		if (!data["Scene"])
-			return false;
+			return nullptr;
 
 
 		std::string sceneName = filepath.stem().string();
@@ -267,7 +267,7 @@ namespace GT
 				{
 					auto& cc = deserializedEntity.AddComponent<CameraComponent>();
 
-					auto& cameraProps = cameraComponent["Camera"];
+					auto cameraProps = cameraComponent["Camera"];
 					cc.Camera.SetProjectionType((SceneCamera::ProjectionType)cameraProps["ProjectionType"].as<int>());
 
 					cc.Camera.SetPerspectiveVerticalFov(cameraProps["PerspectiveFOV"].as<float>());
@@ -418,7 +418,7 @@ namespace GT
 
 					YAML::Node burstsNode = particleComponent["Bursts"];
 					
-					for (auto& burst : burstsNode)
+					for (auto burst : burstsNode)
 					{
 						ParticleBurst b;
 						b.time = burst["Time"].as<float>();
@@ -515,7 +515,7 @@ namespace GT
 		LoadFile(filepath);
 
 		if (!data["Scene"])
-			return false;
+			return nullptr;
 
 		meta->ID = data["ID"].as<uint64_t>();
 		meta->Name = data["Scene"].as<std::string>();

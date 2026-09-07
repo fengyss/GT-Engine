@@ -16,7 +16,7 @@ namespace GT {
 		uint64_t m_UUID;
 
 
-	// ¸ñÊ½»¯Âß¼­
+	// ï¿½ï¿½Ê½ï¿½ï¿½ï¿½ß¼ï¿½
 	//auto format(const UUID& id, fmt::format_context& ctx) const {
 
 	//	return fmt::format_to(ctx.out(), "{}", id);
@@ -38,7 +38,7 @@ struct fmt::formatter<GT::UUID> {
 namespace std {
 
 	template<>
-	struct std::hash<GT::UUID>
+	struct hash<GT::UUID>
 	{
 		std::size_t operator()(const GT::UUID& uuid) const
 		{

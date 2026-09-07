@@ -7,10 +7,15 @@ extern "C"
 #include "mono/jit/jit.h"
 #include "mono/metadata/assembly.h"
 #include "mono/metadata/object.h"
-#include "mono/metadata/tabledefs.h"
+#include "mono/metadata/attrdefs.h"
+#include "mono/metadata/row-indexes.h"
 #include "mono/metadata/mono-debug.h"
 #include "mono/metadata/threads.h"
 }
+
+#ifndef FIELD_ATTRIBUTE_PUBLIC
+#define FIELD_ATTRIBUTE_PUBLIC 0x0006
+#endif
 
 namespace GT
 {

@@ -1,7 +1,7 @@
 #pragma once
 #include "ParticleTypes.h"
 #include "ParticlePool.h"
-#include "GT/Core/TimeStep.h"
+#include "GT/Core/Timestep.h"
 
 namespace GT {
 
@@ -13,11 +13,11 @@ namespace GT {
 
         void Init();
 
-        // ºËÐÄ¹¦ÄÜ
+        // ï¿½ï¿½ï¿½Ä¹ï¿½ï¿½ï¿½
         void Emit(uint32_t count = 1);
         void Update(float deltaTime);
 
-        // ÅäÖÃ½Ó¿Ú
+        // ï¿½ï¿½ï¿½Ã½Ó¿ï¿½
         void SetConfig(const ParticleEmitterConfig& config) { m_Config = config; Init(); }
         const ParticleEmitterConfig& GetConfig() const { return m_Config; }
 		std::vector<Ref<Particle>>& GetParticles() const { return m_ParticlePool->GetParticles(); }
@@ -27,14 +27,14 @@ namespace GT {
         // you shouled set it to  ParticleEmitterConfig.init_func
         void SetInitParticleFunc(std::function<void(Ref<Particle>)>& func) { m_InitParticleFunc = func; }
 
-        // ECS¼¯³É
+        // ECSï¿½ï¿½ï¿½ï¿½
         void OnUpdate(Timestep dt) ;
         void OnRender() ;
         void SetPostion(const glm::vec3& postion) { m_Postion = postion; }
         void SetRotation(const glm::vec3& roattion);
         void SetSaclar(const glm::vec2& scalar) { m_Scalar = scalar; }
 
-        // ±à¼­Æ÷Ö§³Ö
+        // ï¿½à¼­ï¿½ï¿½Ö§ï¿½ï¿½
 #ifdef GT_DEBUG
         void OnImGuiRender();
 #endif
@@ -55,7 +55,7 @@ namespace GT {
         // default function only decide pos and vel based on shape
         std::function<void(Ref<Particle>)> m_InitParticleFunc;
 
-        // Ëæ»ú·Ö²¼Éú³É
+        // ï¿½ï¿½ï¿½ï¿½Ö²ï¿½ï¿½ï¿½ï¿½ï¿½
         glm::vec3 GenerateRandomPosition();
         glm::vec3 GenerateRandomVelocity();
         glm::vec3 GenerateRandomRotationVelocity();
@@ -65,7 +65,7 @@ namespace GT {
         glm::vec3 GenerateSphereRandomVec3(float radius);
         glm::vec2 GenerateCircleRandomVec2(float radius);
 
-        // Á£×Ó³õÊ¼»¯
+        // ï¿½ï¿½ï¿½Ó³ï¿½Ê¼ï¿½ï¿½
         void InitializeParticle(Ref<Particle> particle);
         void InitPointParticle(Ref<Particle> particle);
         void InitBoxParticle(Ref<Particle> particle);

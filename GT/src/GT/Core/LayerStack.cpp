@@ -9,8 +9,16 @@ namespace GT
 
 	LayerStack::~LayerStack()
 	{
+	}
+
+	void LayerStack::Shutdown()
+	{
 		for (Layer* layer : m_Layers)
+		{
 			delete layer;
+			layer = nullptr;
+		}
+		m_Layers.clear();
 	}
 
 	void LayerStack::PushLayer(Layer* layer)

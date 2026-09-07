@@ -1,77 +1,52 @@
 project "GLFW"
 	kind "StaticLib"
 	language "C"
-	staticruntime "On"
+	staticruntime "On" 
 
-	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
-	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
+objdir ("%{wks.location}/bin-int/" .. outputdir .. "/%{prj.name}")
 
-	files
-	{
-		"include/GLFW/glfw3.h",
-		"include/GLFW/glfw3native.h",
-		"src/glfw_config.h",
-		"src/context.c",
-		"src/init.c",
-		"src/input.c",
-		"src/monitor.c",
-		"src/vulkan.c",
-		"src/window.c",
+files { "./src/**.c","./src/**.h", "./include/**.h"} 
 
-		--solve 
-		--unresolved external symbol _glfwPlatformFreeModule referenced in function _glfwTerminateVulkan
-		--unresolved external symbol _glfwPlatformGetModuleSymbol referenced in function _glfwInitVulkan
-		--unresolved external symbol _glfwPlatformLoadModule referenced in function _glfwInitVulkan
-		--unresolved external symbol _glfwSelectPlatform referenced in function glfwInit
-		"src/glfw_config.h",
-		"src/internal.h",
-		"src/platform.h",
-		"src/mappings.h",
 
-		"src/platform.c",
-		"src/egl_context.c",
-		"src/null_platform.h",
-		"src/null_joystick.h",
-		"src/null_init.c",
-		"src/null_monitor.c",
-		"src/null_window.c",
-		"src/null_joystick.c",
-
-	
-	}
-
-	filter "system:windows"
-	systemversion "10.0"
-
-	files
-	{
-		"src/win32_init.c",
-		"src/win32_joystick.c",
-		"src/win32_monitor.c",
-		"src/win32_time.c",
-		"src/win32_thread.c",
-		"src/win32_window.c",
-		"src/wgl_context.c",
-		"src/egl_context.c",
-		"src/osmesa_context.c",
-
-		--same
-		"src/win32_module.c",
-		"src/win32_time.h",
-		"src/win32_thread.h",  --解决Vulkan.obj问题
-
-	}
 
 	defines
 	{
-		"_GLFW_WIN32",
 		"_CRT_SECURE_NO_WARNINGS"
 	}
 
-	filter "configurations:Debug"
-		symbols "On"
-		runtime "Debug"
+	filter "system:linux"
+		defines { "_GLFW_WAYLAND" }
+		-- removefiles
+		-- {
+		-- 	"src/cocoa_*.c",
+		-- 	"src/macos_*.c",
+		-- 	"src/win32_*.c",
+		-- 	"src/wgl_context.c",
+		-- 	"src/x11_*.c",
+		-- 	"src/xkb_unicode.c",
+		-- }
+		-- links { "wayland-client", "xkbcommon" }
+	
+	filter "system:windows"
+		defines { "_GLFW_WIN32" }
+		-- removefiles
+		-- {
+		-- 	"src/cocoa_*.c",
+		-- 	"src/macos_*.c",
+		-- 	"src/win32_*.c",
+		-- 	"src/wgl_context.c",
+		-- 	"src/x11_*.c",
+		-- 	"src/xkb_unicode.c",
+		-- 	"src/glx_context.c",
+		-- 	"src/egl_context.c",
+		-- 	"src/osmesa_context.c",
+		-- }
+		
+filter "configurations:Debug"
+defines { "DEBUG" }  
+symbols "On" 
 
-	filter "configurations:Release"
-		 optimize "On"
-		 runtime "Release"
+filter "configurations:Release"  
+defines { "NDEBUG" }    
+optimize "On" 

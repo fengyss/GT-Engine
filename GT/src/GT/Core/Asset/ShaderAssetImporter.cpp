@@ -1,15 +1,15 @@
 #include "gtpch.h"
 #include "ShaderAssetImporter.h"
-#include "GT/Renderer/Shader.h"
+#include "ShaderAsset.h"
 namespace GT
 {
     Ref<Asset> ShaderAssetImporter::ImportShader(const AssetMetadata& metadata)
     {
-        Ref<Shader> shader;
+		Ref<ShaderAsset> shader;
         switch (metadata.Type)
         {
         case AssetType::Shader:
-            shader = Shader::Create(metadata.FilePath);
+            shader = ShaderAsset::Create(metadata.FilePath);
 
 
             int32_t samplers[32];
@@ -23,18 +23,22 @@ namespace GT
 
             break;
         case AssetType::ComputeShader:
-            shader = Shader::CreateCompute(metadata.FilePath);
+            shader = ShaderAsset::CreateCompute(metadata.FilePath);
             break;
         case AssetType::GeometryShader:
-            shader = Shader::CreateGeometry(metadata.FilePath);
+            shader = ShaderAsset::CreateGeometry(metadata.FilePath);
             break;
         }
-        shader->metadata = metadata;
+        if (shader)
+        {
+            shader->ID = metadata.ID;
+            shader->Name = metadata.Name;
+        }
         return shader;
     }
 
     Ref<Asset> LoadShader(const std::filesystem::path& path)
     {
-        return Ref<Shader>();
+		return Ref<ShaderAsset>();
     }
 }

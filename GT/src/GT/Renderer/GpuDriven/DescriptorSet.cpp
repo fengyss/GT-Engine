@@ -1,6 +1,6 @@
 ﻿#include "gtpch.h"
 #include "DescriptorSet.h"
-#include "GPUBuffer.h"
+#include "GpuBuffer.h"
 #include <glad/glad.h>
 
 namespace GT
