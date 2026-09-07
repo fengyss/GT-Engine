@@ -4,3 +4,9 @@ C:\Dev\GT\GTEditor\Resources\Scripts\Intermediates\Debug\GTScriptCore.dll
 C:\Dev\GT\GTEditor\Resources\Scripts\Intermediates\Debug\GTScriptCore.pdb
 C:\Dev\GT\GTEditor\Resources\Scripts\GTScriptCore.dll
 C:\Dev\GT\GTEditor\Resources\Scripts\GTScriptCore.pdb
+C:\Users\16941\Documents\GitHub\GT-Engine\GTEditor\Resources\Scripts\Intermediates\Debug\GTScriptCore.csproj.AssemblyReference.cache
+C:\Users\16941\Documents\GitHub\GT-Engine\GTEditor\Resources\Scripts\Intermediates\Debug\GTScriptCore.csproj.CoreCompileInputs.cache
+C:\Users\16941\Documents\GitHub\GT-Engine\GTEditor\Resources\Scripts\Intermediates\Debug\GTScriptCore.dll
+C:\Users\16941\Documents\GitHub\GT-Engine\GTEditor\Resources\Scripts\Intermediates\Debug\GTScriptCore.pdb
+C:\Users\16941\Documents\GitHub\GT-Engine\GTEditor\Resources\Scripts\GTScriptCore.dll
+C:\Users\16941\Documents\GitHub\GT-Engine\GTEditor\Resources\Scripts\GTScriptCore.pdb

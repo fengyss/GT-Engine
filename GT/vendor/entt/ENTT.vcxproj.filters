@@ -1,0 +1,265 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="config">
+      <UniqueIdentifier>{7B6CE4F6-670E-0FCD-50C9-22213C0A961D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="container">
+      <UniqueIdentifier>{88CDFA97-F437-AF0E-3D76-60B4A91F8D63}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core">
+      <UniqueIdentifier>{4E40957C-3A77-960D-E363-7C10CF79120F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="entity">
+      <UniqueIdentifier>{C2FD7FFB-AE9F-AAD1-975A-BE25839B3122}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="graph">
+      <UniqueIdentifier>{B70A870F-231F-AFC0-ECA0-52205874ABF1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="locator">
+      <UniqueIdentifier>{79837487-E562-F322-EE7A-7EF95AD95984}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="meta">
+      <UniqueIdentifier>{CC919A7C-B8C8-9B0D-61B5-81104DCB170F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="poly">
+      <UniqueIdentifier>{89609C7C-7597-9D0D-1E84-83100A9A190F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="process">
+      <UniqueIdentifier>{E4EF36C3-50CF-B55E-59E7-4035C5451CC0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="resource">
+      <UniqueIdentifier>{0D091A24-F9D5-742F-22EF-62D70E1BAABD}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="signal">
+      <UniqueIdentifier>{E3ADC61B-CF4F-F1F1-B80A-0546A44B7842}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tools">
+      <UniqueIdentifier>{36DF7010-A2F3-98C1-6B75-3C21D74895F2}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="entt\config\config.h">
+      <Filter>config</Filter>
+    </ClInclude>
+    <ClInclude Include="entt\config\macro.h">
+      <Filter>config</Filter>
+    </ClInclude>
+    <ClInclude Include="entt\config\version.h">
+      <Filter>config</Filter>
+    </ClInclude>
+    <ClInclude Include="entt\container\dense_map.hpp">
+      <Filter>container</Filter>
+    </ClInclude>
+    <ClInclude Include="entt\container\dense_set.hpp">
+      <Filter>container</Filter>
+    </ClInclude>
+    <ClInclude Include="entt\container\fwd.hpp">
+      <Filter>container</Filter>
+    </ClInclude>
+    <ClInclude Include="entt\container\table.hpp">
+      <Filter>container</Filter>
+    </ClInclude>
+    <ClInclude Include="entt\core\algorithm.hpp">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="entt\core\any.hpp">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="entt\core\bit.hpp">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="entt\core\compressed_pair.hpp">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="entt\core\enum.hpp">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="entt\core\family.hpp">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="entt\core\fwd.hpp">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="entt\core\hashed_string.hpp">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="entt\core\ident.hpp">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="entt\core\iterator.hpp">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="entt\core\memory.hpp">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="entt\core\monostate.hpp">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="entt\core\ranges.hpp">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="entt\core\tuple.hpp">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="entt\core\type_info.hpp">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="entt\core\type_traits.hpp">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="entt\core\utility.hpp">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="entt\entity\component.hpp">
+      <Filter>entity</Filter>
+    </ClInclude>
+    <ClInclude Include="entt\entity\entity.hpp">
+      <Filter>entity</Filter>
+    </ClInclude>
+    <ClInclude Include="entt\entity\fwd.hpp">
+      <Filter>entity</Filter>
+    </ClInclude>
+    <ClInclude Include="entt\entity\group.hpp">
+      <Filter>entity</Filter>
+    </ClInclude>
+    <ClInclude Include="entt\entity\handle.hpp">
+      <Filter>entity</Filter>
+    </ClInclude>
+    <ClInclude Include="entt\entity\helper.hpp">
+      <Filter>entity</Filter>
+    </ClInclude>
+    <ClInclude Include="entt\entity\mixin.hpp">
+      <Filter>entity</Filter>
+    </ClInclude>
+    <ClInclude Include="entt\entity\organizer.hpp">
+      <Filter>entity</Filter>
+    </ClInclude>
+    <ClInclude Include="entt\entity\ranges.hpp">
+      <Filter>entity</Filter>
+    </ClInclude>
+    <ClInclude Include="entt\entity\registry.hpp">
+      <Filter>entity</Filter>
+    </ClInclude>
+    <ClInclude Include="entt\entity\runtime_view.hpp">
+      <Filter>entity</Filter>
+    </ClInclude>
+    <ClInclude Include="entt\entity\snapshot.hpp">
+      <Filter>entity</Filter>
+    </ClInclude>
+    <ClInclude Include="entt\entity\sparse_set.hpp">
+      <Filter>entity</Filter>
+    </ClInclude>
+    <ClInclude Include="entt\entity\storage.hpp">
+      <Filter>entity</Filter>
+    </ClInclude>
+    <ClInclude Include="entt\entity\view.hpp">
+      <Filter>entity</Filter>
+    </ClInclude>
+    <ClInclude Include="entt\entt.hpp" />
+    <ClInclude Include="entt\fwd.hpp" />
+    <ClInclude Include="entt\graph\adjacency_matrix.hpp">
+      <Filter>graph</Filter>
+    </ClInclude>
+    <ClInclude Include="entt\graph\dot.hpp">
+      <Filter>graph</Filter>
+    </ClInclude>
+    <ClInclude Include="entt\graph\flow.hpp">
+      <Filter>graph</Filter>
+    </ClInclude>
+    <ClInclude Include="entt\graph\fwd.hpp">
+      <Filter>graph</Filter>
+    </ClInclude>
+    <ClInclude Include="entt\locator\locator.hpp">
+      <Filter>locator</Filter>
+    </ClInclude>
+    <ClInclude Include="entt\meta\adl_pointer.hpp">
+      <Filter>meta</Filter>
+    </ClInclude>
+    <ClInclude Include="entt\meta\container.hpp">
+      <Filter>meta</Filter>
+    </ClInclude>
+    <ClInclude Include="entt\meta\context.hpp">
+      <Filter>meta</Filter>
+    </ClInclude>
+    <ClInclude Include="entt\meta\factory.hpp">
+      <Filter>meta</Filter>
+    </ClInclude>
+    <ClInclude Include="entt\meta\fwd.hpp">
+      <Filter>meta</Filter>
+    </ClInclude>
+    <ClInclude Include="entt\meta\meta.hpp">
+      <Filter>meta</Filter>
+    </ClInclude>
+    <ClInclude Include="entt\meta\node.hpp">
+      <Filter>meta</Filter>
+    </ClInclude>
+    <ClInclude Include="entt\meta\pointer.hpp">
+      <Filter>meta</Filter>
+    </ClInclude>
+    <ClInclude Include="entt\meta\policy.hpp">
+      <Filter>meta</Filter>
+    </ClInclude>
+    <ClInclude Include="entt\meta\range.hpp">
+      <Filter>meta</Filter>
+    </ClInclude>
+    <ClInclude Include="entt\meta\resolve.hpp">
+      <Filter>meta</Filter>
+    </ClInclude>
+    <ClInclude Include="entt\meta\template.hpp">
+      <Filter>meta</Filter>
+    </ClInclude>
+    <ClInclude Include="entt\meta\type_traits.hpp">
+      <Filter>meta</Filter>
+    </ClInclude>
+    <ClInclude Include="entt\meta\utility.hpp">
+      <Filter>meta</Filter>
+    </ClInclude>
+    <ClInclude Include="entt\poly\fwd.hpp">
+      <Filter>poly</Filter>
+    </ClInclude>
+    <ClInclude Include="entt\poly\poly.hpp">
+      <Filter>poly</Filter>
+    </ClInclude>
+    <ClInclude Include="entt\process\fwd.hpp">
+      <Filter>process</Filter>
+    </ClInclude>
+    <ClInclude Include="entt\process\process.hpp">
+      <Filter>process</Filter>
+    </ClInclude>
+    <ClInclude Include="entt\process\scheduler.hpp">
+      <Filter>process</Filter>
+    </ClInclude>
+    <ClInclude Include="entt\resource\cache.hpp">
+      <Filter>resource</Filter>
+    </ClInclude>
+    <ClInclude Include="entt\resource\fwd.hpp">
+      <Filter>resource</Filter>
+    </ClInclude>
+    <ClInclude Include="entt\resource\loader.hpp">
+      <Filter>resource</Filter>
+    </ClInclude>
+    <ClInclude Include="entt\resource\resource.hpp">
+      <Filter>resource</Filter>
+    </ClInclude>
+    <ClInclude Include="entt\signal\delegate.hpp">
+      <Filter>signal</Filter>
+    </ClInclude>
+    <ClInclude Include="entt\signal\dispatcher.hpp">
+      <Filter>signal</Filter>
+    </ClInclude>
+    <ClInclude Include="entt\signal\emitter.hpp">
+      <Filter>signal</Filter>
+    </ClInclude>
+    <ClInclude Include="entt\signal\fwd.hpp">
+      <Filter>signal</Filter>
+    </ClInclude>
+    <ClInclude Include="entt\signal\sigh.hpp">
+      <Filter>signal</Filter>
+    </ClInclude>
+    <ClInclude Include="entt\tools.hpp" />
+    <ClInclude Include="entt\tools\davey.hpp">
+      <Filter>tools</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

@@ -49,23 +49,23 @@ namespace GT
     };
 
     struct MaterialImportSettings {
-        std::string shaderUUID;   // ������ Shader UUID
-        std::vector<std::string> textureSlots; // ������λ��
+        std::string shaderUUID;   
+        std::vector<std::string> textureSlots; 
     };
 
-    // ==================== Ԫ���ݣ�Meta�� ====================
+    
     struct AssetMetadata {
-        UUID ID;                              // Ψһ��ʶ��һ������
+        UUID ID;                              
 
-        //std::string fileName;                   // ԭʼ�ļ���������չ����
-        //std::string relativePath;               // ��Ŀ���߼�·��
-        //std::string friendlyName;               // �û����޸ĵ���ʾ��
+        //std::string fileName;                   
+        //std::string relativePath;               
+        //std::string friendlyName;               
 
-        //std::vector<std::string> tags;          // ��ǩ�����ڷ������
-        std::vector<UUID> directDependencies;   // ֱ�������� UUID �б�
-        //int version = 1;                        // ��Դ�汾��
-        //std::string sourceHash;                 // Դ�ļ� MD5 ��ϣ
-        //std::string lastModifiedTime;           // ����޸�ʱ�䣨ISO ��ʽ��
+        //std::vector<std::string> tags;          
+        std::vector<UUID> directDependencies;  
+        //int version = 1;                        
+        //std::string sourceHash;                 
+        //std::string lastModifiedTime;           
 
         // �������ã�������ʹ�ö�Ӧ�ֶΣ�
         //std::optional<TextureImportSettings> textureSettings;

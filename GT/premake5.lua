@@ -15,10 +15,6 @@ project "GT"
 	pchheader "gtpch.h"
 	pchsource "src/gtpch.cpp"
 
-	filter "action:ninja"
-		enablepch "Off"
-
-	filter {}
 
 	files
 	{
@@ -43,6 +39,10 @@ project "GT"
 		"vendor/mono/include/**.h",
 		"vendor/ft2build.h",
 	}
+
+	
+	filter "files:vendor/ImGuizmo/**.cpp"
+		enablepch "Off"
 
 	filter "system:linux"
 		removefiles
@@ -93,11 +93,9 @@ project "GT"
 		"Box2D",
 		"yaml_cpp",
 		"ImGui",
-		"freetype",
 		"opengl32.lib",
 		"%{Library.mono}",
 		"%{Library.assimp}",
-		"%{Library.freetype}",
 	}
 
 	filter "system:windows"
@@ -120,20 +118,12 @@ project "GT"
 			"YAML_CPP_STATIC_DEFINE" 
 		}
 
-		-- links
-		-- {
-		-- 	"%{Library.WinSock}",
-		-- 	"%{Library.WinMM}",
-		-- 	"%{Library.WinVersion}",
-		-- 	"%{Library.BCrypt}",
-		-- }
 
 --	doesn't need to copy dlls anymore since we are using static lib
 --	postbuildcommands
 --	{
 --		("{COPYFILE} %{cfg.buildtarget.relpath} \"../bin/" .. outputdir .. "/Sandbox/\"")
 --	}
-	
 
 	filter "configurations:Debug"
 		defines "GT_DEBUG"
@@ -150,6 +140,4 @@ project "GT"
 		 optimize "On"
 		 runtime "Release"
 
-    --filter {"system:windows", "configurations:Release" }
-		--buildoptions "/MT"
 		

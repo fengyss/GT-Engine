@@ -32,7 +32,7 @@ group "Dependencies"
 	include "GT/vendor/efsw"
 	include "GT/vendor/json"
 	include "GT/vendor/googletest"
-	-- include "GT/vendor/freetype"
+	include "GT/vendor/freetype"
 group ""
 
 group "Core"

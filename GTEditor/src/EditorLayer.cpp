@@ -62,7 +62,7 @@ namespace GT
 
 		m_SceneHierarchyPanel->SetContexts(m_SceneHistory);
 
-		OpenProject("GTEditor/projects/FirstProject/FirstProject.hproj");
+		OpenProject("projects/FirstProject/FirstProject.hproj");
 
 
 		m_ContentBrowserPanel = CreateScope<ContentBrowserPanel>();

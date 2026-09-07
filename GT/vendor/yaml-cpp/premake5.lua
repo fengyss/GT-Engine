@@ -1,9 +1,9 @@
 project "yaml_cpp"
 	kind "StaticLib"
 	language "C++"
-
-	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
-	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+	
+	targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
+	objdir ("%{wks.location}/bin-int/" .. outputdir .. "/%{prj.name}")
 
 	defines { "YAML_CPP_STATIC_DEFINE" }
 	

@@ -42,7 +42,6 @@ project "GTEditor"
         "%{LibraryDir.assimp}",
 		"%{wks.location}/GT/vendor/vld",
         "%{LibraryDir.mono}",
-        "%{LibraryDir.freetype}",
         "%{LibraryDir.gtest}",
     }
 	
@@ -65,16 +64,19 @@ project "GTEditor"
 		links { "%{Library.assimp}", "%{Library.mono}" }
 	filter {}
 
+	
+    filter {"system:windows", "configurations:Debug" }
+		links
+		{
+			"LIBCMTD.lib"
+		}
+	filter {}
+
 	links
 	{
 		"GT",
-		"efsw",
-		"GLFW",
-		"Glad",
-		"Box2D",
 		"ImGui",
-		"yaml_cpp",
-		
+
 	}
 
 

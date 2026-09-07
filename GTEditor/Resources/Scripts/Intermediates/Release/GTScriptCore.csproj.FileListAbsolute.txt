@@ -1,0 +1,6 @@
+C:\Users\16941\Documents\GitHub\GT-Engine\GTEditor\Resources\Scripts\Intermediates\Release\GTScriptCore.csproj.AssemblyReference.cache
+C:\Users\16941\Documents\GitHub\GT-Engine\GTEditor\Resources\Scripts\Intermediates\Release\GTScriptCore.csproj.CoreCompileInputs.cache
+C:\Users\16941\Documents\GitHub\GT-Engine\GTEditor\Resources\Scripts\Intermediates\Release\GTScriptCore.dll
+C:\Users\16941\Documents\GitHub\GT-Engine\GTEditor\Resources\Scripts\Intermediates\Release\GTScriptCore.pdb
+C:\Users\16941\Documents\GitHub\GT-Engine\GTEditor\Resources\Scripts\GTScriptCore.dll
+C:\Users\16941\Documents\GitHub\GT-Engine\GTEditor\Resources\Scripts\GTScriptCore.pdb

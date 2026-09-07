@@ -31,7 +31,6 @@ LibraryDir = {}
 -- LibraryDir["VulkanSDK"] = "%{VULKAN_SDK}/Lib"
 LibraryDir["mono"] = "%{wks.location}/GT/vendor/mono/lib/%{cfg.system}"
 LibraryDir["assimp"] = "%{wks.location}/GT/vendor/assimp/lib/%{cfg.system}"
-LibraryDir["freetype"] = "%{wks.location}/GT/vendor/freetype/lib/%{cfg.system}"
 
 LibraryDir["gtest"] = "%{wks.location}/bin/" .. outputdir .. "/gtest"
 
@@ -41,13 +40,11 @@ Library = {}
 if os.target() == "linux" then
     Library["mono"] = "mono"
     Library["assimp"] = "assimp"
-    Library["freetype"] = "freetype"
     Library["gtest"] = "gtest"
 elseif os.target() == "windows" then
-    Library["assimp"] = "%{LibraryDir.assimp}/assimp-vc143-mt.lib"
-    Library["mono"] = "%{LibraryDir.mono}/mono-2.0-sgen.lib"
-    Library["freetype"] = "%{LibraryDir.freetype}/freetype.lib"
-    Library["gtest"] = "%{LibraryDir.gtest}/gtest.lib"
+    Library["assimp"] = "assimp-vc143-mt.lib"
+    Library["mono"] = "mono-2.0-sgen.lib"
+    Library["gtest"] = "gtest.lib"
 end
 
 -- Library["Vulkan"] = "%{LibraryDir.VulkanSDK}/vulkan-1.lib"
@@ -61,9 +58,3 @@ end
 -- Library["ShaderC_Release"] = "%{LibraryDir.VulkanSDK}/shaderc_shared.lib"
 -- Library["SPIRV_Cross_Release"] = "%{LibraryDir.VulkanSDK}/spirv-cross-core.lib"
 -- Library["SPIRV_Cross_GLSL_Release"] = "%{LibraryDir.VulkanSDK}/spirv-cross-glsl.lib"
-
---Windows
--- Library["WinSock"] = "Ws2_32.lib"
--- Library["WinMM"] = "Winmm.lib"
--- Library["WinVersion"] = "Version.lib"
--- Library["BCrypt"] = "Bcrypt.lib"

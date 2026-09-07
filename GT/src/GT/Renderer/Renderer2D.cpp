@@ -5,10 +5,10 @@
 
 #include "glad/glad.h"
 
-#if defined(GT_HAS_FREETYPE)
+
 #include <ft2build.h>
 #include FT_FREETYPE_H
-#endif
+
 
 #include "GT/Utils/PlatformUtils.h"
 #include "GT/Core/Asset/AssetManager.h"

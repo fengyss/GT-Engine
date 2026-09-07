@@ -1,0 +1,209 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="..">
+      <UniqueIdentifier>{61705900-4DFC-870B-B6AA-880BA255880B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\GT">
+      <UniqueIdentifier>{2B72590B-9786-81BC-6008-251CCCDB7DED}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\GT\vendor">
+      <UniqueIdentifier>{288AA7E9-14ED-368E-BD72-6F44A9B40211}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\GT\vendor\Box2D">
+      <UniqueIdentifier>{36324CA9-2216-0DFF-8B76-07527779F780}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\GT\vendor\GLFW">
+      <UniqueIdentifier>{67DEB652-D3F4-B4E8-1C6C-400A88C18570}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\GT\vendor\Glad">
+      <UniqueIdentifier>{0F6AB752-7B80-B5E8-C4F7-400A304D8670}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\GT\vendor\ImGui">
+      <UniqueIdentifier>{52FDC8A9-3EE1-89FF-A741-845293447481}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\GT\vendor\efsw">
+      <UniqueIdentifier>{4CC6C752-B8DC-C5E8-0154-510A6DA99670}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\GT\vendor\entt">
+      <UniqueIdentifier>{72E8C752-DEFE-C5E8-2776-510A93CB9670}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\GT\vendor\freetype">
+      <UniqueIdentifier>{DB75EAC8-47E2-A5C3-10D6-3D217C01C82B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\GT\vendor\googletest">
+      <UniqueIdentifier>{B4726A14-20AA-B2AB-29B4-16CF956AD9A4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\GT\vendor\json">
+      <UniqueIdentifier>{F1BACA52-5DD1-C8E8-A648-540A129E9970}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\GT\vendor\yaml-cpp">
+      <UniqueIdentifier>{DADD2F48-464A-EB42-0F3E-83A07B690DAB}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\GTEditor">
+      <UniqueIdentifier>{323C706F-9EF1-E864-27E6-E23B939ADF68}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\GTEditor\projects">
+      <UniqueIdentifier>{0BDE3C23-F76C-C6EC-A08B-DAE78CF9D692}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\GTEditor\projects\FirstProject">
+      <UniqueIdentifier>{D91F20B9-458E-7538-8E77-3038FA246BD4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\GTEditor\projects\FirstProject\assets">
+      <UniqueIdentifier>{BB0C4C7E-A789-3FC1-D006-40D5BCE2DB54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\GTEditor\projects\FirstProject\assets\scripts">
+      <UniqueIdentifier>{121737DA-FEBF-9E09-2756-BA88135EB94A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\GTScriptCore">
+      <UniqueIdentifier>{E961FEAE-55ED-6B73-5EFE-EE67CA08C873}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\Test">
+      <UniqueIdentifier>{70218647-DC00-05E3-E518-90B951776B44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\backup">
+      <UniqueIdentifier>{6637EB61-D2A1-9FD8-1BE0-507E87897D2D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\backup\GT">
+      <UniqueIdentifier>{10976CBC-FCF9-FB60-A57F-341791C1C7E3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\backup\GT\vendor">
+      <UniqueIdentifier>{6D9B2DE0-D9FC-0AEE-626A-51A0CECA41AD}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\backup\GT\vendor\Box2D">
+      <UniqueIdentifier>{3B63CD49-A725-01D4-F0D5-8F605CD7D9B1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\backup\GT\vendor\efsw">
+      <UniqueIdentifier>{B16AB495-9D8F-0316-C6DA-E8A5B25E0234}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\backup\GT\vendor\entt">
+      <UniqueIdentifier>{D78CB495-C3B1-0316-ECFC-E8A5D8800234}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\backup\GTEditor">
+      <UniqueIdentifier>{D7B8266F-C39C-E7C4-2CFD-E1171800D246}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\backup\GTEditor\projects">
+      <UniqueIdentifier>{5064CEE8-BC71-FCCE-4558-F8B9B164C885}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\backup\GTEditor\projects\FirstProject">
+      <UniqueIdentifier>{3EEECAD8-2A6B-BE1B-53E8-BE2F3FC45AAF}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\backup\GTEditor\projects\FirstProject\assets">
+      <UniqueIdentifier>{8017FC49-EC52-5C0D-F547-D99C6102E13D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\backup\GTEditor\projects\FirstProject\assets\scripts">
+      <UniqueIdentifier>{D71614D6-43FE-FECB-4CEC-0048B852A28E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\backup\GTScriptCore">
+      <UniqueIdentifier>{0EA93C69-FAA2-65BB-E30F-FCCBCFA8CB27}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\backup\Test">
+      <UniqueIdentifier>{9513F689-81E1-E98F-6A75-5AB656E2C5F4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\backup\vendor">
+      <UniqueIdentifier>{03BF152F-EFB7-3481-18EA-19060442148D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\backup\vendor\premake">
+      <UniqueIdentifier>{77EEB7C8-6313-0749-8C5E-ECD878E20567}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\backup\vendor\premake\premake_customization">
+      <UniqueIdentifier>{A35A5886-8FD8-A81F-78D0-66B764EDEA47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="premake_customization">
+      <UniqueIdentifier>{8217B8A9-EE83-73A4-B777-0B0223A3950C}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Dependencies.lua">
+      <Filter>..</Filter>
+    </None>
+    <None Include="..\..\GT\premake5.lua">
+      <Filter>..\GT</Filter>
+    </None>
+    <None Include="..\..\GT\vendor\Box2D\premake5.lua">
+      <Filter>..\GT\vendor\Box2D</Filter>
+    </None>
+    <None Include="..\..\GT\vendor\GLFW\premake5.lua">
+      <Filter>..\GT\vendor\GLFW</Filter>
+    </None>
+    <None Include="..\..\GT\vendor\Glad\premake5.lua">
+      <Filter>..\GT\vendor\Glad</Filter>
+    </None>
+    <None Include="..\..\GT\vendor\ImGui\premake5.lua">
+      <Filter>..\GT\vendor\ImGui</Filter>
+    </None>
+    <None Include="..\..\GT\vendor\efsw\premake5.lua">
+      <Filter>..\GT\vendor\efsw</Filter>
+    </None>
+    <None Include="..\..\GT\vendor\entt\premake5.lua">
+      <Filter>..\GT\vendor\entt</Filter>
+    </None>
+    <None Include="..\..\GT\vendor\freetype\premake5.lua">
+      <Filter>..\GT\vendor\freetype</Filter>
+    </None>
+    <None Include="..\..\GT\vendor\googletest\premake5.lua">
+      <Filter>..\GT\vendor\googletest</Filter>
+    </None>
+    <None Include="..\..\GT\vendor\json\premake5.lua">
+      <Filter>..\GT\vendor\json</Filter>
+    </None>
+    <None Include="..\..\GT\vendor\yaml-cpp\premake5.lua">
+      <Filter>..\GT\vendor\yaml-cpp</Filter>
+    </None>
+    <None Include="..\..\GTEditor\premake5.lua">
+      <Filter>..\GTEditor</Filter>
+    </None>
+    <None Include="..\..\GTEditor\projects\FirstProject\assets\scripts\premake5.lua">
+      <Filter>..\GTEditor\projects\FirstProject\assets\scripts</Filter>
+    </None>
+    <None Include="..\..\GTScriptCore\premake5.lua">
+      <Filter>..\GTScriptCore</Filter>
+    </None>
+    <None Include="..\..\Test\premake5.lua">
+      <Filter>..\Test</Filter>
+    </None>
+    <None Include="..\..\backup\Dependencies.lua">
+      <Filter>..\backup</Filter>
+    </None>
+    <None Include="..\..\backup\GT\premake5.lua">
+      <Filter>..\backup\GT</Filter>
+    </None>
+    <None Include="..\..\backup\GT\vendor\Box2D\premake5.lua">
+      <Filter>..\backup\GT\vendor\Box2D</Filter>
+    </None>
+    <None Include="..\..\backup\GT\vendor\efsw\premake5.lua">
+      <Filter>..\backup\GT\vendor\efsw</Filter>
+    </None>
+    <None Include="..\..\backup\GT\vendor\entt\premake5.lua">
+      <Filter>..\backup\GT\vendor\entt</Filter>
+    </None>
+    <None Include="..\..\backup\GTEditor\premake5.lua">
+      <Filter>..\backup\GTEditor</Filter>
+    </None>
+    <None Include="..\..\backup\GTEditor\projects\FirstProject\assets\scripts\premake5.lua">
+      <Filter>..\backup\GTEditor\projects\FirstProject\assets\scripts</Filter>
+    </None>
+    <None Include="..\..\backup\GTScriptCore\premake5.lua">
+      <Filter>..\backup\GTScriptCore</Filter>
+    </None>
+    <None Include="..\..\backup\Test\premake5.lua">
+      <Filter>..\backup\Test</Filter>
+    </None>
+    <None Include="..\..\backup\premake5.lua">
+      <Filter>..\backup</Filter>
+    </None>
+    <None Include="..\..\backup\vendor\premake\premake5.lua">
+      <Filter>..\backup\vendor\premake</Filter>
+    </None>
+    <None Include="..\..\backup\vendor\premake\premake_customization\solution_items.lua">
+      <Filter>..\backup\vendor\premake\premake_customization</Filter>
+    </None>
+    <None Include="..\..\premake5.lua">
+      <Filter>..</Filter>
+    </None>
+    <None Include="premake5.lua" />
+    <None Include="premake_customization\solution_items.lua">
+      <Filter>premake_customization</Filter>
+    </None>
+  </ItemGroup>
+</Project>
