@@ -5,6 +5,7 @@
 #include "Panels/AssetsPanel.h"
 #include "GT/Project/Project.h"
 #include "GT/Renderer/Model.h"
+
 #include "imgui.h"
 #include "ImGuizmo.h"
 
@@ -88,6 +89,8 @@ namespace GT
 		Entity squareentity;
 		Entity m_CameraEntity;
 		Entity m_HoveredEntity;
+
+		int m_SelectMeshIndex = -1;
 
 		bool IsResized = false;
 

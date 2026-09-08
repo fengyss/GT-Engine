@@ -20,9 +20,8 @@ namespace GT
         std::vector<Vertex>       vertices;
         std::vector<unsigned int> indices;
 
-        std::vector<Texture2D> textures;
-        unsigned int VAO;
 
+        glm::mat4 transform = glm::mat4(1.0f);
 
         virtual AssetType GetType() const override { return AssetType::Mesh; };
         virtual uint32_t GetMemorySize() const override { return 0; };
@@ -31,15 +30,17 @@ namespace GT
 
         // constructor
         MeshAsset() {};
-        MeshAsset(const std::vector<Vertex>& _vertices, const std::vector<unsigned int>& _indices, const std::vector<Texture2D>& _textures);
+        MeshAsset(const std::vector<Vertex>& _vertices, const std::vector<unsigned int>& _indices);
         ~MeshAsset()
         {
             m_VertexArray.reset();
+            m_VertexArray = nullptr;
             VBuffer.reset();
+			VBuffer = nullptr;
         }
         // render the mesh
         void Draw(const Shader& shader);
-        void Draw(const glm::mat4& transform, const Shader& shader);
+        void Draw(const glm::mat4& ptransform, const Shader& shader);
         void DrawForShadowMap(const glm::mat4& transform);
         uint32_t GetVertexCount() { return vertices.size(); }
 

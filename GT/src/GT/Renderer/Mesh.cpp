@@ -25,9 +25,9 @@ namespace GT
 		}
 
 	}
-	Mesh::Mesh(const std::vector<Vertex>& _vertices, const std::vector<unsigned int>& _indices, const std::vector<Texture2D>& _textures)
+	Mesh::Mesh(const std::vector<Vertex>& _vertices, const std::vector<unsigned int>& _indices)
 	{
-		handle.ID = AssetManager::RegisterMeshAsset(_vertices, _indices, _textures);
+		handle.ID = AssetManager::RegisterMeshAsset(_vertices, _indices);
 		handle = AssetManager::GetAssetHandle(handle.ID);
 		IsValid = AssetManager::Existed(handle);
 

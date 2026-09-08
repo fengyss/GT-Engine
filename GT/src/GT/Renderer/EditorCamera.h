@@ -37,6 +37,8 @@ namespace GT {
 		glm::vec3 GetForwardDirection() const;
 
 		virtual void SetProjectionType(ProjectionType type);
+
+		// draging is used to move when scene is 2D
 		void CancelDraging() { IsDraging = false; }
 
 		virtual const glm::vec3& GetPosition() const;

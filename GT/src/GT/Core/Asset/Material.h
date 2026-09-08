@@ -1,12 +1,15 @@
 #pragma once
 #include <glm/glm.hpp>
+
+
 #include "GT/Renderer/Texture.h"
 #include "GT/Renderer/Shader.h"
+
 namespace GT
 {
-    /*
-        material structure to contain lighting values for different materials
-    */
+    class Shader;
+    class Texture2D;
+
     struct Material {
         // lighting values
         glm::vec3 ambient = glm::vec3(0.1);
@@ -16,10 +19,11 @@ namespace GT
 
         Shader shader;
         std::vector<Texture2D> textures;
-        /*
-            static instances of common materials
-        */
+
+		// use material shader to bind the material properties and textures to the shader
         void bind();
+		// use the given shader to bind the material properties and textures to the shader
+        void bind(const Shader& shader);
 
         static Material emerald;
         static Material jade;

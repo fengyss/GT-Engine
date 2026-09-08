@@ -11,7 +11,7 @@ namespace GT
 	public:
 		Mesh() = default;
 		Mesh(const Mesh& tex);
-		Mesh(const std::vector<Vertex>& _vertices, const std::vector<unsigned int>& _indices, const std::vector<Texture2D>& _textures);
+		Mesh(const std::vector<Vertex>& _vertices, const std::vector<unsigned int>& _indices);
 		~Mesh();
 
 

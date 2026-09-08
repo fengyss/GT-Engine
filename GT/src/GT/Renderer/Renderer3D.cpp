@@ -139,12 +139,14 @@ namespace GT
 		}
 
 		shader->SetUniform1ui("u_LightSlots", lightslots);
+
+		Frustum frustum = ExtractFrustum(s_ViewProjectionMatrix);
+
 		for (auto& [transform, model,ID] : models)
 		{
 			shader->SetUniform1i("u_EntityID", ID);
-			shader->SetUniformMat4("u_ViewProjection", s_ViewProjectionMatrix);
 
-			model->Draw(transform, ExtractFrustum(s_ViewProjectionMatrix));
+			model->Draw(transform, frustum);
 
 			if (IsShowAABB)
 			{

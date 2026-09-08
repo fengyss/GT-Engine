@@ -42,7 +42,7 @@ namespace GT
 
 
 
-
+		static Shader GetShader() { return s_ModelShader; }
 
 
 

@@ -406,9 +406,9 @@ namespace GT
 		return RegisterAsset(asset);
 	}
 
-	UUID AssetManager::RegisterMeshAsset(const std::vector<Vertex>& _vertices, const std::vector<unsigned int>& _indices, const std::vector<Texture2D>& _textures)
+	UUID AssetManager::RegisterMeshAsset(const std::vector<Vertex>& _vertices, const std::vector<unsigned int>& _indices)
 	{
-		Ref<MeshAsset> asset = CreateRef<MeshAsset>(_vertices, _indices, _textures);
+		Ref<MeshAsset> asset = CreateRef<MeshAsset>(_vertices, _indices);
 
 		Ref<AssetInfo> info = CreateRef<AssetInfo>();
 

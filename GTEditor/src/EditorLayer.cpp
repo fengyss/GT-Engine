@@ -286,6 +286,13 @@ namespace GT
 		m_ContentBrowserPanel->OnImGuiRender();
 		m_AssetsPanel->OnImGuiRender();
 
+
+		m_SelectMeshIndex = m_AssetsPanel->GetSelectMeshIndex();
+		if (m_SelectMeshIndex != -1)
+		{
+			m_SceneHierarchyPanel->SetSelectedEntity({});
+		}
+
 		OnStatusBarRender();
 
 		OnSpriteSheetPanelRender();
@@ -678,18 +685,9 @@ namespace GT
 			ImGuizmo::SetOrthographic(false);
 			ImGuizmo::SetDrawlist();
 
-			//ImGuizmo::SetRect(m_ViewportBounds[0].x, m_ViewportBounds[0].y, m_ViewportBounds[1].x - m_ViewportBounds[0].x, m_ViewportBounds[1].y - m_ViewportBounds[0].y);
 			ImGuizmo::SetRect(m_ViewportPosWithoutBar.x, m_ViewportPosWithoutBar.y, m_ViewportSize.x, m_ViewportSize.y);
 
 
-			// camera
-				// Runtime camera 
-				/*auto cameraEntity = m_ActiveScene->GetPrimaryCameraEntity();
-				const auto& camera = cameraEntity.GetComponent<CameraComponent>().Camera;
-				const glm::mat4& cameraProjection = camera.GetProjection();
-				glm::mat4 cameraView = glm::inverse(cameraEntity.GetComponent<TransformComponent>().GetTransform());*/
-
-				// Editor camera
 			const glm::mat4& cameraProjection = m_EditorCamera.GetProjection();
 			glm::mat4 cameraView = m_EditorCamera.GetViewMatrix();
 
@@ -720,6 +718,42 @@ namespace GT
 				tc.Rotation = rotation;
 			}
 
+		}
+
+		if (m_SelectMeshIndex != -1)
+		{
+			ImGuizmo::SetOrthographic(false);
+			ImGuizmo::SetDrawlist();
+
+			ImGuizmo::SetRect(m_ViewportPosWithoutBar.x, m_ViewportPosWithoutBar.y, m_ViewportSize.x, m_ViewportSize.y);
+
+
+			const glm::mat4& cameraProjection = m_EditorCamera.GetProjection();
+			glm::mat4 cameraView = m_EditorCamera.GetViewMatrix();
+
+			// entity transform
+			auto asset = AssetManager::GetAssets()[m_SelectMeshIndex].asset;
+			auto mesh = std::dynamic_pointer_cast<MeshAsset>(asset);
+			glm::mat4 transform = mesh->transform;
+
+			// snapping
+			bool snap = Input::IsKeyPressed(Key::LeftControl);
+			float snapValue = 0.5f;
+
+			if (m_GizmoType == ImGuizmo::OPERATION::ROTATE)
+				snapValue = 45.0f;
+
+			float snapValues[3] = { snapValue,snapValue,snapValue };
+
+			ImGuizmo::Manipulate(glm::value_ptr(cameraView), glm::value_ptr(cameraProjection),
+				(ImGuizmo::OPERATION)m_GizmoType, ImGuizmo::LOCAL, glm::value_ptr(transform),
+				nullptr, snap ? snapValues : nullptr);
+
+			if (ImGuizmo::IsUsing())
+			{
+				m_EditorCamera.CancelDraging();
+				mesh->transform = transform;
+			}
 		}
 	}
 
@@ -942,8 +976,12 @@ namespace GT
 				
 				if (Input::IsKeyPressed(Key::LeftControl))
 				{
-					if (!m_HoveredEntity) m_SceneHierarchyPanel->SetSelectedEntity(Entity());
-					else m_SceneHierarchyPanel->SetSelectedEntity(m_HoveredEntity);
+					if (!m_HoveredEntity) m_SceneHierarchyPanel->SetSelectedEntity({});
+					else 
+					{
+						m_SceneHierarchyPanel->SetSelectedEntity(m_HoveredEntity);
+					}
+					m_AssetsPanel->ResetMeshIndex();
 				}
 				//GT_CORE_INFO("Mouse Button Left Pressed");
 				break;

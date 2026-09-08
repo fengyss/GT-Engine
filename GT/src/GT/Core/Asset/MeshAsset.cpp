@@ -2,38 +2,30 @@
 #include "MeshAsset.h"
 
 #include "GT/Renderer/RenderCommand.h"
-
+#include "GT/Math/Random.h"
 
 namespace GT
 {
 
     // constructor
-    MeshAsset::MeshAsset(const std::vector<Vertex>& _vertices, const std::vector<unsigned int>& _indices, const std::vector<Texture2D>& _textures)
-        :vertices(_vertices), indices(_indices), textures(_textures)
+    MeshAsset::MeshAsset(const std::vector<Vertex>& _vertices, const std::vector<unsigned int>& _indices)
+        :vertices(_vertices), indices(_indices)
     {
         setupMesh();
         ComputeAABB(_vertices);
     }
     // render the mesh
-    void MeshAsset::Draw(const glm::mat4& transform, const Shader& shader)
+    void MeshAsset::Draw(const glm::mat4& ptransform, const Shader& shader)
     {
 
-        unsigned int texslot = 0;
         shader->Bind();
-        for (unsigned int i = 0; i < textures.size(); i++)
-        {
-            auto& tex = textures[i];
-            auto type = tex->GetTextureType();
 
-            texslot |= type;
-            shader->SetUniform1i(GetStrOfType(type), i);
+        shader->SetUniformMat4("u_Transform", transform * ptransform);
 
-            tex->Bind(i);
-        }
-
-        shader->SetUniform1ui("u_TexSlot", texslot);
-        shader->SetUniformMat4("u_Transform", transform);
         RenderCommand::DrawIndexed(m_VertexArray, indices.size());
+
+		//glm::vec3 trs = Random::RangeVec3(-0.01f, 0.01f);
+  //      transform = glm::translate(transform, trs);
     }
 
     void MeshAsset::DrawForShadowMap(const glm::mat4& transform)

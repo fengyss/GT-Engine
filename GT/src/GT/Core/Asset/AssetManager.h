@@ -63,7 +63,7 @@ namespace GT
 		static UUID RegisterTexture3DAsset(const std::filesystem::path& path);
 		static UUID RegisterModelAsset(const std::filesystem::path& path);
 		static UUID RegisterSceneAsset(const std::filesystem::path& path);
-		static UUID RegisterMeshAsset(const std::vector<Vertex>& _vertices, const std::vector<unsigned int>& _indices, const std::vector<Texture2D>& _textures);
+		static UUID RegisterMeshAsset(const std::vector<Vertex>& _vertices, const std::vector<unsigned int>& _indices);
 
 
 		//static ShaderData& GetShaderAsset(const std::string& name);

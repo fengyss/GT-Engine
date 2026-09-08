@@ -40,5 +40,9 @@ namespace GT
 
         RenderCommand::SetMemoryBarrier(MemoryBarrierType::ShaderStorage);
 	}
+    Frustum::Frustum(const glm::mat4& vp)
+    {
+		*this = ExtractFrustum(vp);
+    }
 }
 

@@ -9,6 +9,7 @@
 #include "GT/Renderer/Texture.h"
 #include "GT/Renderer/Mesh.h"
 #include "GT/Renderer/Shader.h"
+
 #include "animdata.h"
 
 #include <map>
@@ -16,15 +17,18 @@
 #include <vector>
 #include <filesystem>
 
-#include <assimp/Importer.hpp>
-#include <assimp/scene.h>
-#include <assimp/postprocess.h>
+
+#include "Material.h"
+
+
+struct aiNode;
+struct aiScene;
+struct aiMesh;
+struct aiMaterial;
+enum aiTextureType;
 
 namespace GT
 {
-
-
-
 
     class ModelAsset : public Asset
     {
@@ -46,8 +50,11 @@ namespace GT
 
         // model data 
         std::vector<Texture2D> textures;
+        Shader shader;
+
+
         std::vector<Mesh> meshes;
-		Shader shader;
+		std::vector<Material> materials;
 
         std::map<std::string, BoneInfo> m_BoneInfoMap;
         int m_BoneCounter = 0;
@@ -78,8 +85,10 @@ namespace GT
         // draws the model, and thus all its meshes
         void Draw(const glm::mat4& transform);
         void Draw(const glm::mat4& transform, const Shader& shader);
+        void Draw(const glm::mat4& transform, const Frustum& frustum);
+
         void DrawForShadowMap(const glm::mat4& transform);
-        void Draw(const glm::mat4& transform,const Frustum& frustum);
+
         void SetShader(const Shader& shader) {
             this->shader = shader; 
             hasShader = true;
@@ -114,7 +123,7 @@ namespace GT
         void processNode(aiNode* node, const aiScene* scene);
 
         Mesh processMesh(aiMesh* mesh, const aiScene* scene);
-        
+
         void ExtractBoneWeightForVertices(std::vector<Vertex>& vertices, aiMesh* mesh, const aiScene* scene);
 
         // checks all material textures of a given type and loads the textures if they're not loaded yet.

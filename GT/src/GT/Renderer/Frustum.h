@@ -17,6 +17,8 @@ namespace GT
 
     struct Frustum
     {
+        Frustum() = default;
+        Frustum(const glm::mat4& vp);
         Plane Planes[6]; // Left, Right, Bottom, Top, Near, Far
     };
 

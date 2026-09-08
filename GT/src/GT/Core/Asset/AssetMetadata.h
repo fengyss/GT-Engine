@@ -15,7 +15,9 @@ namespace GT
         ComputeShader,
         GeometryShader,
         Mesh,
-        Model
+        Model,
+        Material,
+		Sound,
     };
 
     std::string_view AssetTypeToString(AssetType type);

@@ -3,6 +3,47 @@
 
 namespace GT
 {
+    void Material::bind()
+    {
+        bind(shader);
+    }
+
+    void Material::bind(const Shader& shader)
+    {
+        unsigned int texslot = 0;
+        shader->Bind();
+        for (unsigned int i = 0; i < textures.size(); i++)
+        {
+            auto& tex = textures[i];
+            auto type = tex->GetTextureType();
+
+            texslot |= type;
+            shader->SetUniform1i(GetStrOfType(type), i);
+
+            tex->Bind(i);
+        }
+
+        shader->SetUniform3f("u_material.ambient", ambient);
+        shader->SetUniform3f("u_material.diffuse", diffuse);
+        shader->SetUniform3f("u_material.specular", specular);
+        shader->SetUniform1f("u_material.shininess", shininess);
+        shader->SetUniform1ui("u_TexSlot", texslot);
+    }
+
+    // function to mix two materials with a proportion
+    Material Material::mix(Material m1, Material m2, float mix) {
+        mix = std::min(std::max(mix, 0.0f), 1.0f);
+        return {
+            // set lighting values based on proportion
+            m1.ambient * mix + m2.ambient * (1 - mix),
+            m1.diffuse * mix + m2.diffuse * (1 - mix),
+            m1.specular * mix + m2.specular * (1 - mix),
+            m1.shininess * mix + m2.shininess * (1 - mix)
+        };
+    }
+
+
+
     // data obtained from http://devernay.free.fr/cours/opengl/materials.html
 
     /*
@@ -33,39 +74,5 @@ namespace GT
     Material Material::red_rubber = { glm::vec3(0.05, 0.0, 0.0), glm::vec3(0.5, 0.4, 0.4), glm::vec3(0.7, 0.04, 0.04), .078125 };
     Material Material::white_rubber = { glm::vec3(0.05, 0.05, 0.05), glm::vec3(0.5, 0.5, 0.5), glm::vec3(0.7, 0.7, 0.7), .078125 };
     Material Material::yellow_rubber = { glm::vec3(0.05, 0.05, 0.0), glm::vec3(0.5, 0.5, 0.4), glm::vec3(0.7, 0.7, 0.04), .078125 };
-
-    void Material::bind()
-    {
-
-        unsigned int texslot = 0;
-        shader->Bind();
-        for (unsigned int i = 0; i < textures.size(); i++)
-        {
-            auto& tex = textures[i];
-            auto type = tex->GetTextureType();
-
-            texslot |= type;
-            shader->SetUniform1i(GetStrOfType(type), i);
-
-            tex->Bind(i);
-        }
-
-        shader->SetUniform3f("u_material.ambient", ambient);
-        shader->SetUniform3f("u_material.diffuse", diffuse);
-        shader->SetUniform3f("u_material.specular", specular);
-        shader->SetUniform1f("u_material.shininess", shininess);
-        shader->SetUniform1ui("u_TexSlot", texslot);
-    }
-
-    // function to mix two materials with a proportion
-    Material Material::mix(Material m1, Material m2, float mix) {
-        return {
-            // set lighting values based on proportion
-            m1.ambient * mix + m2.ambient * (1 - mix),
-            m1.diffuse * mix + m2.diffuse * (1 - mix),
-            m1.specular * mix + m2.specular * (1 - mix),
-            m1.shininess * mix + m2.shininess * (1 - mix)
-        };
-    }
 
 }

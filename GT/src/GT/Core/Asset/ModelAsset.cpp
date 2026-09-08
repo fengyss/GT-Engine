@@ -11,6 +11,10 @@
 #include "assimp_glm_helpers.h"
 
 
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
+
 
 namespace GT
 {
@@ -50,13 +54,15 @@ namespace GT
     {
         for (unsigned int i = 0; i < meshes.size(); i++)
         {
-            meshes[i]->Draw(transform, shader);
+			materials[i].bind();
+            meshes[i]->Draw(transform, materials[i].shader);
         }
     }
     void ModelAsset::Draw(const glm::mat4& transform, const Shader& shader)
     {
         for (unsigned int i = 0; i < meshes.size(); i++)
         {
+			materials[i].bind(shader);
             meshes[i]->Draw(transform, shader);
         }
     }
@@ -70,8 +76,6 @@ namespace GT
     }
     void ModelAsset::Draw(const glm::mat4& transform, const Frustum& frustum)
     {
-        
-        
         for (unsigned int i = 0; i < meshes.size(); i++)
         {
             bool visible = true;
@@ -93,8 +97,9 @@ namespace GT
             }
             if(visible)
             {
-                RenderCommand::SetLineWidth(0.3f);
-                meshes[i]->Draw(transform, shader);
+				materials[i].bind();
+                meshes[i]->Draw(transform, materials[i].shader);
+
                 Renderer3D::GetStats().DrawCalls++;
                 Renderer3D::GetStats().Meshes++;
                 Renderer3D::GetStats().VerticiesCount += meshes[i]->GetVertexCount();
@@ -231,7 +236,13 @@ namespace GT
 
         ExtractBoneWeightForVertices(vertices, mesh, scene);
 
-		return Mesh(vertices, indices, _textures);
+        Material mat;
+		mat.textures = _textures;
+        mat.shader = Renderer3D::GetShader();;
+        
+		materials.push_back(mat);
+
+		return Mesh(vertices, indices);
     }
 
 
