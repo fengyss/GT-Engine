@@ -1,0 +1,33 @@
+{
+  "configurations": [
+    {
+      "name": "Linux",
+      "includePath": [
+        "${workspaceFolder}/GT/src",
+        "${workspaceFolder}/GT/vendor",
+        "${workspaceFolder}/GT/vendor/Box2D/include",
+        "${workspaceFolder}/GT/vendor/GLFW/include",
+        "${workspaceFolder}/GT/vendor/Glad/include",
+        "${workspaceFolder}/GT/vendor/ImGui",
+        "${workspaceFolder}/GT/vendor/ImGuizmo",
+        "${workspaceFolder}/GT/vendor/assimp/include",
+        "${workspaceFolder}/GT/vendor/efsw/include",
+        "${workspaceFolder}/GT/vendor/entt",
+        "${workspaceFolder}/GT/vendor/glm",
+        "${workspaceFolder}/GT/vendor/json/include",
+        "${workspaceFolder}/GT/vendor/mono/include",
+        "${workspaceFolder}/GT/vendor/spdlog/include",
+        "${workspaceFolder}/GT/vendor/stb_image",
+        "${workspaceFolder}/GT/vendor/yaml-cpp/include",
+        "${workspaceFolder}/GTEditor/src",
+        "${workspaceFolder}/Test"
+      ],
+      "defines": [],
+      "compilerPath": "/usr/lib64/ccache/clang++",
+      "cStandard": "c11",
+      "cppStandard": "c++17",
+      "intelliSenseMode": "linux-clang-x64"
+    }
+  ],
+  "version": 4
+}

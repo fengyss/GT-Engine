@@ -6,7 +6,7 @@ pause
 git add .
 pause
 
-git commit -m "feat: add mesh transform modify"
+git commit -m "fix: add .vscode which accidentally deleted"
 
 pause
 

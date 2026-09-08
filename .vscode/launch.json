@@ -1,0 +1,16 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    
+    {
+      "name": "Debug GTEditor",
+      "type": "lldb",
+      "request": "launch",
+      "program": "${workspaceFolder}/bin/Debug-linux-x86_64/GTEditor/GTEditor",
+      "args": [],
+      "cwd": "${workspaceFolder}/GTEditor",
+      "preLaunchTask": "Build GTEditor (Debug)"
+    }
+    
+  ]
+}

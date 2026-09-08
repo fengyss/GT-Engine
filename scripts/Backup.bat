@@ -11,7 +11,7 @@ xcopy "docs" "backup/docs" /e /y
 
 xcopy "scripts" "backup/scripts" /e /y
 xcopy "vendor" "backup/vendor" /e /y
-xcopy ".vscode" "back/.vscode" /e /y
+xcopy ".vscode" "backup/.vscode" /e /y
 
 
 
