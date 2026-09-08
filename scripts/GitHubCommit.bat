@@ -1,11 +1,12 @@
 cd ..\backup
+
 git status
 pause
 
 git add .
 pause
 
-git commit -m "feat: render model"
+git commit -m "feat: add mesh transform modify"
 
 pause
 

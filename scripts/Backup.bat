@@ -2,19 +2,16 @@
 cd ..
 
 xcopy "GT" "backup/GT" /e /y
-xcopy "Test" "backup/Test" /e /y
-
-
-
 xcopy "GTEditor" "backup/GTEditor" /e /y
 xcopy "GTScriptCore" "backup/GTScriptCore" /e /y
 
-
+xcopy "Test" "backup/Test" /e /y
 
 xcopy "docs" "backup/docs" /e /y
 
 xcopy "scripts" "backup/scripts" /e /y
-
+xcopy "vendor" "backup/vendor" /e /y
+xcopy ".vscode" "back/.vscode" /e /y
 
 
 
