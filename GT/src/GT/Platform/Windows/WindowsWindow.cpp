@@ -8,9 +8,10 @@
 #include "GT/Platform/OpenGL/OpenGLContext.h"
 #include <GLFW/glfw3.h>
 
-#define GLFW_EXPOSE_NATIVE_WIN32
-#include <GLFW/glfw3native.h>
-
+#ifdef GT_PLATFORM_WINDOWS
+	#define GLFW_EXPOSE_NATIVE_WIN32
+	#include <GLFW/glfw3native.h>
+#endif
 
 namespace GT
 {

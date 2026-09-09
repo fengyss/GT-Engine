@@ -11,9 +11,6 @@
 #include "assimp_glm_helpers.h"
 
 
-#include <assimp/Importer.hpp>
-#include <assimp/scene.h>
-#include <assimp/postprocess.h>
 
 
 namespace GT
@@ -67,11 +64,11 @@ namespace GT
         }
     }
 
-    void ModelAsset::DrawForShadowMap(const glm::mat4& transform)
+    void ModelAsset::DrawForShadowMap(const Shader& shader)
     {
         for (unsigned int i = 0; i < meshes.size(); i++)
         {
-            meshes[i]->DrawForShadowMap(transform);
+            meshes[i]->DrawForShadowMap(shader);
         }
     }
     void ModelAsset::Draw(const glm::mat4& transform, const Frustum& frustum)

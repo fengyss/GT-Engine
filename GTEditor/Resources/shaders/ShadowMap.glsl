@@ -5,10 +5,11 @@ layout (location = 0) in vec3 a_Position;
 
 uniform mat4 u_LightSpaceMatrix; // 光源的 VP 矩阵
 uniform mat4 u_Model;            // 物体的模型矩阵
+uniform mat4 u_Mesh;            // 物体的模型矩阵
 
 void main()
 {
-    gl_Position = u_LightSpaceMatrix * u_Model * vec4(a_Position, 1.0);
+    gl_Position = u_LightSpaceMatrix * u_Model * u_Mesh * vec4(a_Position, 1.0);
 }
 
 

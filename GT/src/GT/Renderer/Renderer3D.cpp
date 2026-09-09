@@ -196,16 +196,14 @@ namespace GT
 
 	void Renderer3D::RenderShadowMap(ShadowMap& shadowMap)
 	{
-		// 1. ����Ӱ FBO
+		
 		shadowMap.Bind();
 
-		// 2. �����ӿڣ���������Ӱ��ͼ�Ĵ�С��
-
-		// 3. �����Ȼ���
+		
 		glClear(GL_DEPTH_BUFFER_BIT);
 
 		Shader& shader = m_ShadowShader;
-		// 4. ʹ�������ɫ��
+		
 		shader->Bind();
 
 		for (auto& [light, spacematrix] : s_Lights)
@@ -224,14 +222,14 @@ namespace GT
 			}
 		}
 
-		// 5. ��Ⱦ�����е���������
+		
 		for (auto& [transform, model, ID] : models)
 		{
 			shader->SetUniformMat4("u_Model", transform);
-			model->DrawForShadowMap(transform);
+			model->DrawForShadowMap(shader);
 		}
 
-		// 6. �ָ�Ĭ�� FBO
+		
 		shadowMap.Unbind();
 	}
 

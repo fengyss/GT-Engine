@@ -28,8 +28,10 @@ namespace GT
   //      transform = glm::translate(transform, trs);
     }
 
-    void MeshAsset::DrawForShadowMap(const glm::mat4& transform)
+    void MeshAsset::DrawForShadowMap(const Shader& shader)
     {
+
+		shader->SetUniformMat4("u_Mesh", transform);
         RenderCommand::DrawIndexed(m_VertexArray, indices.size());
     }
 

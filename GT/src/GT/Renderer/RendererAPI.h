@@ -1,9 +1,6 @@
 #pragma once
 #include "VertexArray.h"	
-
-namespace glm {
-	typedef vec<4, float, defaultp>		vec4;
-}
+#include "glm/glm.hpp"
 
 namespace GT
 {

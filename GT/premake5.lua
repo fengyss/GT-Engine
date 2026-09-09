@@ -12,9 +12,13 @@ project "GT"
 	targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("%{wks.location}/bin-int/" .. outputdir .. "/%{prj.name}")
 
-	pchheader "gtpch.h"
+	pchheader "src/gtpch.h"
 	pchsource "src/gtpch.cpp"
+	enablepch "On"
 
+	filter "system:linux"
+		enablepch "Off"
+	filter {}
 
 	files
 	{
@@ -43,15 +47,8 @@ project "GT"
 	
 	filter "files:vendor/ImGuizmo/**.cpp"
 		enablepch "Off"
-
-	filter "system:linux"
-		removefiles
-		{
-			"src/GT/Platform/Windows/WindowsFileWatcher.cpp",
-			"src/GT/Platform/Windows/WindowsFileWatcher.h",
-			"src/GT/Renderer/Font/Font.cpp",
-		}
 	filter {}
+
 
 	includedirs
 	{

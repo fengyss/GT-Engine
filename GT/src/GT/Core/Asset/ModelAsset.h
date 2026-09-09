@@ -21,11 +21,9 @@
 #include "Material.h"
 
 
-struct aiNode;
-struct aiScene;
-struct aiMesh;
-struct aiMaterial;
-enum aiTextureType;
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
 
 namespace GT
 {
@@ -87,7 +85,7 @@ namespace GT
         void Draw(const glm::mat4& transform, const Shader& shader);
         void Draw(const glm::mat4& transform, const Frustum& frustum);
 
-        void DrawForShadowMap(const glm::mat4& transform);
+        void DrawForShadowMap(const Shader& shader);
 
         void SetShader(const Shader& shader) {
             this->shader = shader; 

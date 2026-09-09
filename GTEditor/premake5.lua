@@ -75,8 +75,12 @@ project "GTEditor"
 	links
 	{
 		"GT",
+		"efsw",
+		"GLFW",
+		"Glad",
+		"Box2D",
 		"ImGui",
-
+		"yaml_cpp",
 	}
 
 

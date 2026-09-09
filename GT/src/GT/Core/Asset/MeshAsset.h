@@ -41,7 +41,7 @@ namespace GT
         // render the mesh
         void Draw(const Shader& shader);
         void Draw(const glm::mat4& ptransform, const Shader& shader);
-        void DrawForShadowMap(const glm::mat4& transform);
+        void DrawForShadowMap(const Shader& shader);
         uint32_t GetVertexCount() { return vertices.size(); }
 
         const glm::vec3& GetMin() const { return m_Min; }

@@ -9,7 +9,7 @@ Entities:
       Rotation: [0, -0.9451531, 0]
       Scale: [0.9999999, 1, 0.9999999]
     ModelComponent:
-      ModelPath: projects\FirstProject\assets\obj\nanosuit\nanosuit.obj
+      ModelPath: projects/FirstProject/assets/obj/nanosuit/nanosuit.obj
   - Entity: 399508285003723062
     TagComponent:
       Tag: Empty Entity
@@ -19,7 +19,7 @@ Entities:
       Rotation: [0, -0.99179935, 0]
       Scale: [0.99999976, 1, 0.99999976]
     ModelComponent:
-      ModelPath: projects\FirstProject\assets\obj\cyborg\cyborg.obj
+      ModelPath: projects/FirstProject/assets/obj/cyborg/cyborg.obj
   - Entity: 15602904078069279348
     TagComponent:
       Tag: Empty Entity
@@ -29,7 +29,7 @@ Entities:
       Rotation: [-3.28328e-07, -1.5468178, 8.994085e-08]
       Scale: [0.9999999, 1, 0.9999999]
     ModelComponent:
-      ModelPath: projects\FirstProject\assets\obj\backpack\backpack.obj
+      ModelPath: projects/FirstProject/assets/obj/backpack/backpack.obj
   - Entity: 2757964208715234925
     TagComponent:
       Tag: Empty Entity
@@ -39,7 +39,7 @@ Entities:
       Rotation: [0, -0, 0]
       Scale: [1, 1, 1]
     ModelComponent:
-      ModelPath: projects\FirstProject\assets\obj\rock\rock.obj
+      ModelPath: projects/FirstProject/assets/obj/rock/rock.obj
   - Entity: 12093913665275711913
     TagComponent:
       Tag: Empty Entity
@@ -69,7 +69,7 @@ Entities:
       Rotation: [0, -0, 0.00048828122]
       Scale: [1, 1, 1]
     ModelComponent:
-      ModelPath: projects\FirstProject\assets\obj\planet\planet.obj
+      ModelPath: projects/FirstProject/assets/obj/planet/planet.obj
   - Entity: 1273981380894433849
     TagComponent:
       Tag: Empty Entity
@@ -80,5 +80,5 @@ Entities:
       Scale: [1, 1, 1]
     SpriteRendererComponent:
       Color: [1, 1, 1, 1]
-      TexturePath: projects\FirstProject\assets\textures\Ship.png
+      TexturePath: projects/FirstProject/assets/textures/Ship.png
       TilingFactor: 1

@@ -709,7 +709,7 @@ namespace GT
 			auto& spriteRendererComponent = entity.GetComponent<SpriteRendererComponent>();
 			out << YAML::Key << "Color" << YAML::Value << spriteRendererComponent.Color;
 			if (spriteRendererComponent.texture)
-				out << YAML::Key << "TexturePath" << YAML::Value << spriteRendererComponent.texture->GetPath().string();
+				out << YAML::Key << "TexturePath" << YAML::Value << spriteRendererComponent.texture->GetPath().generic_string();
 
 			out << YAML::Key << "TilingFactor" << YAML::Value << spriteRendererComponent.TilingFactor;
 
@@ -735,7 +735,7 @@ namespace GT
 
 			auto& lightComponent = entity.GetComponent<LightRendererComponent>();
 			if (lightComponent.texture)
-				out << YAML::Key << "TexturePath" << YAML::Value << lightComponent.texture->GetPath().string();
+				out << YAML::Key << "TexturePath" << YAML::Value << lightComponent.texture->GetPath().generic_string();
 
 			auto& light = lightComponent.light;
 			out << YAML::Key << "Type" << YAML::Value << (int)light.type;
@@ -765,7 +765,7 @@ namespace GT
 			out << YAML::Key << "Fade" << YAML::Value << circleRendererComponent.Fade;
 
 			if (circleRendererComponent.texture)
-				out << YAML::Key << "TexturePath" << YAML::Value << circleRendererComponent.texture->GetPath().string();
+				out << YAML::Key << "TexturePath" << YAML::Value << circleRendererComponent.texture->GetPath().generic_string();
 
 			out << YAML::EndMap; // CircleRendererComponent
 		}
