@@ -39,5 +39,6 @@ scripts       存放方案生成脚本
 Windows：
     使用 "GT\scripts\Win-GenerateProject.bat" 生成 vs solution 文件，自行编译即可。
     在 "GT\GT\vendor" 中找 assimp-vc143-mt.dll，mono-2.0-sgen.dll 复制到 "bin"文件夹下程序实际运行位置。
+    
 Linux:
     使用vscode编译，暂时只支持wayland，需要安装ninja
