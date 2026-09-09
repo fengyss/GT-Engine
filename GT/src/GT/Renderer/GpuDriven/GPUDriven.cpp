@@ -1,5 +1,4 @@
-﻿// #pragma once
-// #include "gtpch.h"
+﻿#include "gtpch.h"
 // #include "GT/Core/Base.h"
 // #include "GPUDriven.h"
 // #include "GpuBuffer.h"

@@ -1,5 +1,4 @@
-// #pragma once
-// #include "gtpch.h"
+#include "gtpch.h"
 // #include "GraphicsPipeline.h"
 // #include <fstream>
 // #include <sstream>

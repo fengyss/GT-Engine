@@ -12,7 +12,7 @@ project "GT"
 	targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("%{wks.location}/bin-int/" .. outputdir .. "/%{prj.name}")
 
-	pchheader "src/gtpch.h"
+	pchheader "gtpch.h"
 	pchsource "src/gtpch.cpp"
 	enablepch "On"
 

@@ -73,11 +73,32 @@
     <Filter Include="..\backup\GT\vendor\Box2D">
       <UniqueIdentifier>{3B63CD49-A725-01D4-F0D5-8F605CD7D9B1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="..\backup\GT\vendor\GLFW">
+      <UniqueIdentifier>{CC82A395-B8A7-F215-E1F2-D7A5CD76F133}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\backup\GT\vendor\Glad">
+      <UniqueIdentifier>{740EA495-6033-F315-897E-D8A57502F233}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\backup\GT\vendor\ImGui">
+      <UniqueIdentifier>{572E4A4A-C3F0-7DD4-0CA1-0C6178A256B2}</UniqueIdentifier>
+    </Filter>
     <Filter Include="..\backup\GT\vendor\efsw">
       <UniqueIdentifier>{B16AB495-9D8F-0316-C6DA-E8A5B25E0234}</UniqueIdentifier>
     </Filter>
     <Filter Include="..\backup\GT\vendor\entt">
       <UniqueIdentifier>{D78CB495-C3B1-0316-ECFC-E8A5D8800234}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\backup\GT\vendor\freetype">
+      <UniqueIdentifier>{C0C4AC40-AC7F-9CEC-5537-153741D1E67C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\backup\GT\vendor\googletest">
+      <UniqueIdentifier>{D90EFC85-C534-C6EC-AE7A-4BB89A3FEBB8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\backup\GT\vendor\json">
+      <UniqueIdentifier>{565FB795-4284-0616-6BCF-EBA557530534}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="..\backup\GT\vendor\yaml-cpp">
+      <UniqueIdentifier>{BF2CF2BF-ABE7-E16B-549F-5AB640392CFC}</UniqueIdentifier>
     </Filter>
     <Filter Include="..\backup\GTEditor">
       <UniqueIdentifier>{D7B8266F-C39C-E7C4-2CFD-E1171800D246}</UniqueIdentifier>
@@ -171,11 +192,32 @@
     <None Include="..\..\backup\GT\vendor\Box2D\premake5.lua">
       <Filter>..\backup\GT\vendor\Box2D</Filter>
     </None>
+    <None Include="..\..\backup\GT\vendor\GLFW\premake5.lua">
+      <Filter>..\backup\GT\vendor\GLFW</Filter>
+    </None>
+    <None Include="..\..\backup\GT\vendor\Glad\premake5.lua">
+      <Filter>..\backup\GT\vendor\Glad</Filter>
+    </None>
+    <None Include="..\..\backup\GT\vendor\ImGui\premake5.lua">
+      <Filter>..\backup\GT\vendor\ImGui</Filter>
+    </None>
     <None Include="..\..\backup\GT\vendor\efsw\premake5.lua">
       <Filter>..\backup\GT\vendor\efsw</Filter>
     </None>
     <None Include="..\..\backup\GT\vendor\entt\premake5.lua">
       <Filter>..\backup\GT\vendor\entt</Filter>
+    </None>
+    <None Include="..\..\backup\GT\vendor\freetype\premake5.lua">
+      <Filter>..\backup\GT\vendor\freetype</Filter>
+    </None>
+    <None Include="..\..\backup\GT\vendor\googletest\premake5.lua">
+      <Filter>..\backup\GT\vendor\googletest</Filter>
+    </None>
+    <None Include="..\..\backup\GT\vendor\json\premake5.lua">
+      <Filter>..\backup\GT\vendor\json</Filter>
+    </None>
+    <None Include="..\..\backup\GT\vendor\yaml-cpp\premake5.lua">
+      <Filter>..\backup\GT\vendor\yaml-cpp</Filter>
     </None>
     <None Include="..\..\backup\GTEditor\premake5.lua">
       <Filter>..\backup\GTEditor</Filter>

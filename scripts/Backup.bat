@@ -22,6 +22,9 @@ copy "Dependencies.lua" "backup"
 copy "LICENSE" "backup"
 copy "GT.sln" "backup"
 copy "imgui.ini" "backup"
+copy "build.ninja" "backup"
+copy ".ninja_deps" "backup"
+copy ".ninja_log" "backup"
 
 
 pause

@@ -164,7 +164,6 @@
     <ClInclude Include="src\GT\Core\Application.h" />
     <ClInclude Include="src\GT\Core\Asset\Asset.h" />
     <ClInclude Include="src\GT\Core\Asset\AssetHandle.h" />
-    <ClInclude Include="src\GT\Core\Asset\AssetImporter.h" />
     <ClInclude Include="src\GT\Core\Asset\AssetImporter\AssetImporter.h" />
     <ClInclude Include="src\GT\Core\Asset\AssetImporter\ModelImporter.h" />
     <ClInclude Include="src\GT\Core\Asset\AssetImporter\SceneImporter.h" />
@@ -176,12 +175,8 @@
     <ClInclude Include="src\GT\Core\Asset\Material.h" />
     <ClInclude Include="src\GT\Core\Asset\MeshAsset.h" />
     <ClInclude Include="src\GT\Core\Asset\ModelAsset.h" />
-    <ClInclude Include="src\GT\Core\Asset\ModelAssetImporter.h" />
-    <ClInclude Include="src\GT\Core\Asset\SceneAssetImporter.h" />
     <ClInclude Include="src\GT\Core\Asset\ShaderAsset.h" />
-    <ClInclude Include="src\GT\Core\Asset\ShaderAssetImporter.h" />
     <ClInclude Include="src\GT\Core\Asset\TextureAsset.h" />
-    <ClInclude Include="src\GT\Core\Asset\TextureAssetImporter.h" />
     <ClInclude Include="src\GT\Core\Asset\animation.h" />
     <ClInclude Include="src\GT\Core\Asset\animator.h" />
     <ClInclude Include="src\GT\Core\Asset\animdata.h" />
@@ -829,10 +824,7 @@
     <ClCompile Include="src\GT\Core\Application.cpp" />
     <ClCompile Include="src\GT\Core\Asset\Asset.cpp" />
     <ClCompile Include="src\GT\Core\Asset\AssetHandle.cpp" />
-    <ClCompile Include="src\GT\Core\Asset\AssetImporter.cpp" />
-    <ClCompile Include="src\GT\Core\Asset\AssetImporter\AssetImporter.cpp">
-      <ObjectFileName>$(IntDir)\AssetImporter1.obj</ObjectFileName>
-    </ClCompile>
+    <ClCompile Include="src\GT\Core\Asset\AssetImporter\AssetImporter.cpp" />
     <ClCompile Include="src\GT\Core\Asset\AssetImporter\ModelImporter.cpp" />
     <ClCompile Include="src\GT\Core\Asset\AssetImporter\SceneImporter.cpp" />
     <ClCompile Include="src\GT\Core\Asset\AssetImporter\ShaderImporter.cpp" />
@@ -843,12 +835,8 @@
     <ClCompile Include="src\GT\Core\Asset\Material.cpp" />
     <ClCompile Include="src\GT\Core\Asset\MeshAsset.cpp" />
     <ClCompile Include="src\GT\Core\Asset\ModelAsset.cpp" />
-    <ClCompile Include="src\GT\Core\Asset\ModelAssetImporter.cpp" />
-    <ClCompile Include="src\GT\Core\Asset\SceneAssetImporter.cpp" />
     <ClCompile Include="src\GT\Core\Asset\ShaderAsset.cpp" />
-    <ClCompile Include="src\GT\Core\Asset\ShaderAssetImporter.cpp" />
     <ClCompile Include="src\GT\Core\Asset\TextureAsset.cpp" />
-    <ClCompile Include="src\GT\Core\Asset\TextureAssetImporter.cpp" />
     <ClCompile Include="src\GT\Core\Asset\assimp_glm_helpers.cpp" />
     <ClCompile Include="src\GT\Core\Asset\bone.cpp" />
     <ClCompile Include="src\GT\Core\Base.cpp" />
@@ -883,7 +871,6 @@
     <ClCompile Include="src\GT\Platform\OpenGL\OpenGLVertexArray.cpp" />
     <ClCompile Include="src\GT\Platform\OpenGL\OpenGlFramebuffer.cpp" />
     <ClCompile Include="src\GT\Platform\Windows\WindowInput.cpp" />
-    <ClCompile Include="src\GT\Platform\Windows\WindowsFileWatcher.cpp" />
     <ClCompile Include="src\GT\Platform\Windows\WindowsPlatformUtils.cpp" />
     <ClCompile Include="src\GT\Platform\Windows\WindowsWindow.cpp" />
     <ClCompile Include="src\GT\Project\Project.cpp" />

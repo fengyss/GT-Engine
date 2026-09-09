@@ -171,8 +171,23 @@
     <ProjectReference Include="..\GT\GT.vcxproj">
       <Project>{C0735900-ACFF-870B-15AE-880B0159880B}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\GT\vendor\efsw\efsw.vcxproj">
+      <Project>{FA32967C-E669-970D-8F56-7D107B6C130F}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\GT\vendor\GLFW\GLFW.vcxproj">
+      <Project>{154B857C-0182-860D-AA6E-6C109684020F}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\GT\vendor\Glad\Glad.vcxproj">
+      <Project>{BDD6857C-A90D-870D-52FA-6C103E10030F}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\GT\vendor\Box2D\Box2D.vcxproj">
+      <Project>{A434E80C-1049-10BE-D9CA-B31D459E0CEF}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\GT\vendor\ImGui\ImGui.vcxproj">
       <Project>{C0FF640D-2C14-8DBE-F595-301E616989EF}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\GT\vendor\yaml-cpp\yaml_cpp.vcxproj">
+      <Project>{7A5CBC57-6629-1763-8F42-050B7B6E4CF1}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

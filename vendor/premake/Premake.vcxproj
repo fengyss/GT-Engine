@@ -96,8 +96,15 @@
     <None Include="..\..\backup\Dependencies.lua" />
     <None Include="..\..\backup\GT\premake5.lua" />
     <None Include="..\..\backup\GT\vendor\Box2D\premake5.lua" />
+    <None Include="..\..\backup\GT\vendor\GLFW\premake5.lua" />
+    <None Include="..\..\backup\GT\vendor\Glad\premake5.lua" />
+    <None Include="..\..\backup\GT\vendor\ImGui\premake5.lua" />
     <None Include="..\..\backup\GT\vendor\efsw\premake5.lua" />
     <None Include="..\..\backup\GT\vendor\entt\premake5.lua" />
+    <None Include="..\..\backup\GT\vendor\freetype\premake5.lua" />
+    <None Include="..\..\backup\GT\vendor\googletest\premake5.lua" />
+    <None Include="..\..\backup\GT\vendor\json\premake5.lua" />
+    <None Include="..\..\backup\GT\vendor\yaml-cpp\premake5.lua" />
     <None Include="..\..\backup\GTEditor\premake5.lua" />
     <None Include="..\..\backup\GTEditor\projects\FirstProject\assets\scripts\premake5.lua" />
     <None Include="..\..\backup\GTScriptCore\premake5.lua" />
