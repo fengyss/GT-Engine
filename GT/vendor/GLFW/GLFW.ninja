@@ -48,8 +48,8 @@ rule custom
 
 # Configuration: GLFW_Debug
 
-cflags_GLFW_Debug = -m64 -g -D"_CRT_SECURE_NO_WARNINGS" -D"_GLFW_WAYLAND" -D"DEBUG"
-cxxflags_GLFW_Debug = -m64 -g -D"_CRT_SECURE_NO_WARNINGS" -D"_GLFW_WAYLAND" -D"DEBUG"
+cflags_GLFW_Debug = -m64 -g -D"_CRT_SECURE_NO_WARNINGS" -D"_GLFW_WAYLAND" -D"_GLFW_X11" -D"DEBUG"
+cxxflags_GLFW_Debug = -m64 -g -D"_CRT_SECURE_NO_WARNINGS" -D"_GLFW_WAYLAND" -D"_GLFW_X11" -D"DEBUG"
 ldflags_GLFW_Debug = -m64 -L/usr/lib64
 objdir_GLFW_Debug = ../../../bin-int/Debug-linux-x86_64/GLFW
 targetdir_GLFW_Debug = ../../../bin/Debug-linux-x86_64/GLFW
@@ -129,8 +129,8 @@ build bin/Debug-linux-x86_64/GLFW/libGLFW.a: ar_gcc bin-int/Debug-linux-x86_64/G
 
 # Configuration: GLFW_Release
 
-cflags_GLFW_Release = -m64 -O2 -D"_CRT_SECURE_NO_WARNINGS" -D"_GLFW_WAYLAND" -D"NDEBUG"
-cxxflags_GLFW_Release = -m64 -O2 -D"_CRT_SECURE_NO_WARNINGS" -D"_GLFW_WAYLAND" -D"NDEBUG"
+cflags_GLFW_Release = -m64 -O2 -D"_CRT_SECURE_NO_WARNINGS" -D"_GLFW_WAYLAND" -D"_GLFW_X11" -D"NDEBUG"
+cxxflags_GLFW_Release = -m64 -O2 -D"_CRT_SECURE_NO_WARNINGS" -D"_GLFW_WAYLAND" -D"_GLFW_X11" -D"NDEBUG"
 ldflags_GLFW_Release = -m64 -s -L/usr/lib64
 objdir_GLFW_Release = ../../../bin-int/Release-linux-x86_64/GLFW
 targetdir_GLFW_Release = ../../../bin/Release-linux-x86_64/GLFW
@@ -210,8 +210,8 @@ build bin/Release-linux-x86_64/GLFW/libGLFW.a: ar_gcc bin-int/Release-linux-x86_
 
 # Configuration: GLFW_Dist
 
-cflags_GLFW_Dist = -m64 -D"_CRT_SECURE_NO_WARNINGS" -D"_GLFW_WAYLAND"
-cxxflags_GLFW_Dist = -m64 -D"_CRT_SECURE_NO_WARNINGS" -D"_GLFW_WAYLAND"
+cflags_GLFW_Dist = -m64 -D"_CRT_SECURE_NO_WARNINGS" -D"_GLFW_WAYLAND" -D"_GLFW_X11"
+cxxflags_GLFW_Dist = -m64 -D"_CRT_SECURE_NO_WARNINGS" -D"_GLFW_WAYLAND" -D"_GLFW_X11"
 ldflags_GLFW_Dist = -m64 -s -L/usr/lib64
 objdir_GLFW_Dist = ../../../bin-int/Dist-linux-x86_64/GLFW
 targetdir_GLFW_Dist = ../../../bin/Dist-linux-x86_64/GLFW

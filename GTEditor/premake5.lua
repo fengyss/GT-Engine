@@ -81,6 +81,7 @@ project "GTEditor"
 		"Box2D",
 		"ImGui",
 		"yaml_cpp",
+		"X11"
 	}
 
 

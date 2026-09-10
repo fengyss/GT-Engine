@@ -16,7 +16,7 @@ files { "src/**.c","src/**.h", "include/**.h"}
 	}
 
 	filter "system:linux"
-		defines { "_GLFW_WAYLAND" } --,"_GLFW_X11" }
+		defines { "_GLFW_WAYLAND", "_GLFW_X11" }
 	
 	filter "system:windows"
 		defines { "_GLFW_WIN32" }
