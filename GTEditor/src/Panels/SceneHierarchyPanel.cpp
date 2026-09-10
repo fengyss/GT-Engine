@@ -31,7 +31,7 @@ namespace GT
 
 
 		const ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_Framed
-			| ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_AllowItemOverlap;
+			| ImGuiTreeNodeFlags_SpanAvailWidth ;
 
 		ImGui::Begin("Scene Hierarchy");
 
@@ -235,7 +235,7 @@ namespace GT
 	static void DrawComponent(const char* name, Entity e, UIFunction func)
 	{
 		const ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_Framed 
-								| ImGuiTreeNodeFlags_SpanAvailWidth | ImGuiTreeNodeFlags_AllowItemOverlap;
+								| ImGuiTreeNodeFlags_SpanAvailWidth ;
 		if(e.HasComponent<T>())
 		{
 
