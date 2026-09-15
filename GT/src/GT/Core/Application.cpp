@@ -6,7 +6,6 @@
 
 #include "Input.h"
 
-#include "imgui.h"
 
 #include "GT/Utils/PlatformUtils.h"
 #include "GT/Math/Random.h"
@@ -16,6 +15,7 @@
 #include "GT/Renderer/Renderer.h"
 #include "GT/Scripting/ScriptEngine.h"
 
+// #include "tracy/Tracy.hpp"
 
 #define EnableImGui
 
@@ -135,6 +135,9 @@ namespace GT
 
 		GT_PROFILE_FUNCTION();
 
+		
+		// FrameMarkStart("GT");
+
 		while (m_Running) {
 			GT_PROFILE_SCOPE("Run Loop");
 			float time = Time::GetTime();
@@ -173,6 +176,7 @@ namespace GT
 			layer->OnDetach();
 
 
+		// FrameMarkEnd("GT");
 
 	}
 

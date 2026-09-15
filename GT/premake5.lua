@@ -70,6 +70,7 @@ project "GT"
 		"%{IncludeDir.assimp}",
 		"%{IncludeDir.efsw}",
 		"%{IncludeDir.json}",
+		"%{IncludeDir.tracy}",
 	}
 	libdirs {
         "%{LibraryDir.freetype}",
@@ -89,6 +90,7 @@ project "GT"
 		"Glad",
 		"Box2D",
 		"yaml_cpp",
+		"tracy",
 		"ImGui",
 		"opengl32.lib",
 		"%{Library.mono}",

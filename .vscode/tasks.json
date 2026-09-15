@@ -16,36 +16,7 @@
     },
     {
       "type": "shell",
-      "label": "Build glfw (Debug)",
-      "command": "ninja",
-      "args": [
-        "GLFW"
-      ],
-      "options": {
-        "cwd": "${workspaceFolder}"
-      },
-      "dependsOn": "Generate ninja files",
-      "dependsOrder": "sequence",
-      "problemMatcher": {
-        "owner": "cpp",
-        "fileLocation": "absolute",
-        "pattern": {
-          "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning|error):\\s+(.*)$",
-          "file": 1,
-          "line": 2,
-          "column": 3,
-          "severity": 4,
-          "message": 5
-        }
-      },
-      "group": {
-        "kind": "build",
-        "isDefault": true
-      }
-    },
-    {
-      "type": "shell",
-      "label": "Build GTEditor (Debug)",
+      "label": "Build GTEditor (ninja)",
       "command": "ninja",
       "args": [
       ],
@@ -71,9 +42,10 @@
         "isDefault": true
       }
     },
+
     {
       "type": "shell",
-      "label": "Build Test (Debug)",
+      "label": "Build Test (ninja)",
       "command": "ninja",
       "args": [
         "config=debug",

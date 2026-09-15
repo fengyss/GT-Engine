@@ -19,6 +19,7 @@
         "${workspaceFolder}/GT/vendor/spdlog/include",
         "${workspaceFolder}/GT/vendor/stb_image",
         "${workspaceFolder}/GT/vendor/yaml-cpp/include",
+        "${workspaceFolder}/GT/vendor/tracy/public",
         "${workspaceFolder}/GTEditor/src",
         "${workspaceFolder}/Test"
       ],

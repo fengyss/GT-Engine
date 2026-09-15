@@ -9,7 +9,7 @@
       "program": "${workspaceFolder}/bin/Debug-linux-x86_64/GTEditor/GTEditor",
       "args": [],
       "cwd": "${workspaceFolder}/GTEditor",
-      "preLaunchTask": "Build GTEditor (Debug)"
+      "preLaunchTask": "Build GTEditor (ninja)"
     }
     
   ]

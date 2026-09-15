@@ -2,6 +2,9 @@
 
 #if defined(GT_PLATFORM_WINDOWS) || defined(__linux__)
 
+#include "GT/Debug/Instrumentor.h"
+#include "GT/Core/Application.h"
+
 extern GT::Application* GT::CreateApplication(GT::ApplicationCommandLineArgs args);
 
 int main(int argc, char** argv)
