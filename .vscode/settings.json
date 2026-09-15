@@ -5,5 +5,7 @@
     "*.inl": "cpp",
     "*.hpp": "cpp"
   },
+
+  "lldb.library": "/usr/lib64/liblldb.so",
   "dotnet.preferCSharpExtension": true
 }

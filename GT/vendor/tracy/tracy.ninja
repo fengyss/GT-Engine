@@ -48,8 +48,8 @@ rule custom
 
 # Configuration: tracy_Debug
 
-cflags_tracy_Debug = -m64 -fPIC -g -IGT/vendor/tracy/public/tracy
-cxxflags_tracy_Debug = -m64 -fPIC -g -std=c++17 -IGT/vendor/tracy/public/tracy
+cflags_tracy_Debug = -m64 -fPIC -g -D"TRACY_ENABLE" -IGT/vendor/tracy/public/tracy
+cxxflags_tracy_Debug = -m64 -fPIC -g -std=c++17 -D"TRACY_ENABLE" -IGT/vendor/tracy/public/tracy
 ldflags_tracy_Debug = -m64 -L/usr/lib64
 objdir_tracy_Debug = ../../../bin-int/Debug-linux-x86_64/tracy
 targetdir_tracy_Debug = ../../../bin/Debug-linux-x86_64/tracy
@@ -61,8 +61,8 @@ build bin/Debug-linux-x86_64/tracy/libtracy.a: ar_gcc bin-int/Debug-linux-x86_64
 
 # Configuration: tracy_Release
 
-cflags_tracy_Release = -m64 -O2 -fPIC -IGT/vendor/tracy/public/tracy
-cxxflags_tracy_Release = -m64 -O2 -fPIC -std=c++17 -IGT/vendor/tracy/public/tracy
+cflags_tracy_Release = -m64 -O2 -fPIC -D"TRACY_ENABLE" -IGT/vendor/tracy/public/tracy
+cxxflags_tracy_Release = -m64 -O2 -fPIC -std=c++17 -D"TRACY_ENABLE" -IGT/vendor/tracy/public/tracy
 ldflags_tracy_Release = -m64 -s -L/usr/lib64
 objdir_tracy_Release = ../../../bin-int/Release-linux-x86_64/tracy
 targetdir_tracy_Release = ../../../bin/Release-linux-x86_64/tracy
@@ -74,8 +74,8 @@ build bin/Release-linux-x86_64/tracy/libtracy.a: ar_gcc bin-int/Release-linux-x8
 
 # Configuration: tracy_Dist
 
-cflags_tracy_Dist = -m64 -fPIC -IGT/vendor/tracy/public/tracy
-cxxflags_tracy_Dist = -m64 -fPIC -std=c++17 -IGT/vendor/tracy/public/tracy
+cflags_tracy_Dist = -m64 -fPIC -D"TRACY_ENABLE" -IGT/vendor/tracy/public/tracy
+cxxflags_tracy_Dist = -m64 -fPIC -std=c++17 -D"TRACY_ENABLE" -IGT/vendor/tracy/public/tracy
 ldflags_tracy_Dist = -m64 -s -L/usr/lib64
 objdir_tracy_Dist = ../../../bin-int/Dist-linux-x86_64/tracy
 targetdir_tracy_Dist = ../../../bin/Dist-linux-x86_64/tracy

@@ -15,7 +15,11 @@
 #include "GT/Renderer/Renderer.h"
 #include "GT/Scripting/ScriptEngine.h"
 
-// #include "tracy/Tracy.hpp"
+#include "tracy/Tracy.hpp"
+
+#ifndef TRACY_ENABLE
+#error "TRACY_ENABLE not defined - Tracy is a no-op in this build"
+#endif
 
 #define EnableImGui
 
@@ -136,9 +140,10 @@ namespace GT
 		GT_PROFILE_FUNCTION();
 
 		
-		// FrameMarkStart("GT");
 
 		while (m_Running) {
+
+			ZoneScoped("GT");
 			GT_PROFILE_SCOPE("Run Loop");
 			float time = Time::GetTime();
 			Timestep timestep = time - m_LastFrameTime;
@@ -151,6 +156,7 @@ namespace GT
 
 			if (!m_Minimized)
 			{
+				ZoneScopedN("Layers Update");
 				GT_PROFILE_SCOPE("Layerstack OnUpdate");
 				for (Layer* layer : m_LayerStack)
 					layer->OnUpdate(timestep);
@@ -170,13 +176,13 @@ namespace GT
 
 
 			m_Window->OnRender();
+
 		}
 
 		for (auto layer : m_LayerStack)
 			layer->OnDetach();
 
 
-		// FrameMarkEnd("GT");
 
 	}
 

@@ -35,6 +35,7 @@ project "GTEditor"
 		"%{IncludeDir.ImGuizmo}",
 		"%{IncludeDir.assimp}",
 		"%{IncludeDir.efsw}",
+		"%{IncludeDir.tracy}",
 	}
 
 	libdirs 
@@ -45,7 +46,7 @@ project "GTEditor"
         "%{LibraryDir.gtest}",
     }
 	
-	defines { "GLFW_INCLUDE_NONE", "YAML_CPP_STATIC_DEFINE" }
+	defines { "GLFW_INCLUDE_NONE", "YAML_CPP_STATIC_DEFINE","TRACY_ENABLE" }
 
 
 	filter "system:linux"
@@ -81,7 +82,8 @@ project "GTEditor"
 		"Box2D",
 		"ImGui",
 		"yaml_cpp",
-		"X11"
+		"X11",
+		"tracy"
 	}
 
 

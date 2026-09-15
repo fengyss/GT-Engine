@@ -17,6 +17,8 @@ includedirs
     "public/tracy"
 }
 
+defines { "TRACY_ENABLE" } 
+
 filter "system:windows"
 systemversion "latest"
 cppdialect "C++17"

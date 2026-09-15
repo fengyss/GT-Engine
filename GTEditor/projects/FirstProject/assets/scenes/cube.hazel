@@ -1,15 +1,5 @@
 Scene: cube
 Entities:
-  - Entity: 15284730859623447630
-    TagComponent:
-      Tag: Empty Entity
-      Type: None
-    TransformComponent:
-      Translation: [-8.5170765, -26.525911, -4.7763157]
-      Rotation: [0, -0.9451531, 0]
-      Scale: [0.9999999, 1, 0.9999999]
-    ModelComponent:
-      ModelPath: projects/FirstProject/assets/obj/nanosuit/nanosuit.obj
   - Entity: 399508285003723062
     TagComponent:
       Tag: Empty Entity
@@ -20,16 +10,6 @@ Entities:
       Scale: [0.99999976, 1, 0.99999976]
     ModelComponent:
       ModelPath: projects/FirstProject/assets/obj/cyborg/cyborg.obj
-  - Entity: 15602904078069279348
-    TagComponent:
-      Tag: Empty Entity
-      Type: None
-    TransformComponent:
-      Translation: [-1.5982647, -6.2644043, 3.8975818]
-      Rotation: [-3.28328e-07, -1.5468178, 8.994085e-08]
-      Scale: [0.9999999, 1, 0.9999999]
-    ModelComponent:
-      ModelPath: projects/FirstProject/assets/obj/backpack/backpack.obj
   - Entity: 2757964208715234925
     TagComponent:
       Tag: Empty Entity

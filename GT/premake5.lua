@@ -96,25 +96,26 @@ project "GT"
 		"%{Library.mono}",
 		"%{Library.assimp}",
 	}
+	defines
+	{
+		"GLFW_INCLUDE_NONE",
+		"YAML_CPP_STATIC_DEFINE",
+		"TRACY_ENABLE"
 
+	}
 	filter "system:windows"
 		systemversion "10.0"
 		defines
 		{
 			"_CRT_SECURE_NO_WARNINGS",
-			"GLFW_INCLUDE_NONE",
 			"GT_PLATFORM_WINDOWS",
-			"GT_BUILD_DLL",
-			"GLFW_INCLUDE_NONE",
-			"YAML_CPP_STATIC_DEFINE"
+			"TRACY_ENABLE",
 		}
 
 	filter "system:linux"
 		defines 
 		{ 
 			"GT_PLATFORM_LINUX",
-			"GLFW_INCLUDE_NONE",
-			"YAML_CPP_STATIC_DEFINE" 
 		}
 
 
