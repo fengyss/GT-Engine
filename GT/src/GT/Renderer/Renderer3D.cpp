@@ -141,10 +141,12 @@ namespace GT
 		shader->SetUniform1ui("u_LightSlots", lightslots);
 
 		Frustum frustum = ExtractFrustum(s_ViewProjectionMatrix);
-
+		glm::mat3 normalmatrix;
 		for (auto& [transform, model,ID] : models)
 		{
 			shader->SetUniform1i("u_EntityID", ID);
+			normalmatrix =  glm::transpose(glm::inverse(glm::mat3(transform)));
+			shader->SetUniformMat3("u_NormalMatrix", normalmatrix);
 
 			model->Draw(transform, frustum);
 

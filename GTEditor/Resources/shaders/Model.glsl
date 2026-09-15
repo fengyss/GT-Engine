@@ -12,6 +12,7 @@ layout(location = 6) in vec4 a_Weights;
 
 uniform mat4 u_ViewProjection;
 uniform mat4 u_Transform;
+uniform mat3 u_NormalMatrix;
 uniform mat4 u_LightSpaceMatrix;
 
 out vec2 v_TexCoord;
@@ -33,9 +34,11 @@ void main()
     v_m_BoneIDs = a_m_BoneIDs;
     v_Weights = a_Weights;
 
-    v_Normal = (u_Transform * vec4(a_Normal,0.0)).rgb;
-    v_Tangent = (u_Transform * vec4(a_Tangent,0.0)).rgb;
-    v_Bitangent = (u_Transform * vec4(a_Bitangent,0.0)).rgb;
+    
+    v_Normal = u_NormalMatrix * a_Normal;
+
+    v_Tangent = u_NormalMatrix * a_Tangent;
+    v_Bitangent = u_NormalMatrix * a_Bitangent;
 
     v_LightSpacePos  = u_LightSpaceMatrix * vec4(v_FragPos,1.0);
 }
@@ -61,7 +64,7 @@ uniform vec3 u_LightPos = vec3(10.0, 10.0, 10.0);
 uniform vec3 u_LightColor = vec3(1.0, 1.0, 1.0);
 
 
-int MAX_TEXTURES = 1; // ����ʵ��ʹ�õ�������������
+int MAX_TEXTURES = 1; 
 
 uint diffuse = 1u<< 31u;
 uint specular = 1u<< 30u;
@@ -89,7 +92,6 @@ struct Material {
     float shininess;
 };
 
-/* ---------- ��Դ ---------- */
 struct DirectionalLight {
     vec3 direction;
     vec3 ambient;
@@ -115,8 +117,8 @@ struct SpotLight {
     vec3 diffuse;
     vec3 specular;
 
-    float cutOff;       // ��׶��
-    float outerCutOff;  // ��׶��
+    float cutOff;       
+    float outerCutOff;  
 };
 
 /* ---------- Uniforms ---------- */
@@ -125,6 +127,9 @@ uniform DirectionalLight u_dirLight;
 uniform PointLight u_pointLight;
 uniform SpotLight u_spotLight;
 uniform uint u_LightSlots = 0;
+uint pointlight = 1u;
+uint directionallight = 2u;
+uint spotlight = 4u;
 
 Material material;
 
@@ -141,13 +146,11 @@ void main()
     vec4 specularColor = vec4(0.0f);
     vec4 emissionColor = vec4(0.0f);
 
-
-     // 1. ������������
     if((u_TexSlot & diffuse) > 0)
         diffuseColor = texture(texture_diffuse, v_TexCoord);
-    if(((u_TexSlot >> 30u) & 1u) > 0)
+    if((u_TexSlot & specular) > 0)
         specularColor = texture(texture_specular, v_TexCoord);
-    if(((u_TexSlot >> 27u) & 1u) > 0)
+    if((u_TexSlot & emission) > 0)
         emissionColor = texture(texture_emission, v_TexCoord);
    
     material.ambient = texture(texture_diffuse, v_TexCoord).rgb * 0.05;
@@ -155,17 +158,12 @@ void main()
     material.specular = specularColor.rgb;
     material.shininess = 0.2f;
 
-
-    // 3. �򵥹��ռ��㣨Blinn-Phong��
     vec3 viewDir = normalize(u_ViewPos - v_FragPos);
 
-
-
-     // 2. ����������ͼ���ؼ����֣�
     vec3 worldNormal = normalize(v_Normal);
-    //worldNormal = v_Normal;
     
-    if(((u_TexSlot >> 29u) & 1u) > 0)
+    
+    if((u_TexSlot & normal) > 0)
     {
         worldNormal = texture(texture_normal, v_TexCoord).rgb;
         worldNormal = worldNormal*2.0-1.0;
@@ -181,9 +179,9 @@ void main()
 
     vec4 result = emissionColor;
     
-    if((u_LightSlots & 1u)>0) result += vec4(CalcPointLight(u_pointLight, worldNormal, v_FragPos, viewDir),0.0f);
-    if((u_LightSlots & 2u)>0) result += vec4(CalcDirectionalLight(u_dirLight, worldNormal, viewDir),0.0f);
-    if((u_LightSlots & 4u)>0) result += vec4(CalcSpotLight(u_spotLight, worldNormal, v_FragPos, viewDir),0.0f);
+    if((u_LightSlots & pointlight)>0) result += vec4(CalcPointLight(u_pointLight, worldNormal, v_FragPos, viewDir),0.0f);
+    if((u_LightSlots & directionallight)>0) result += vec4(CalcDirectionalLight(u_dirLight, worldNormal, viewDir),0.0f);
+    if((u_LightSlots & spotlight)>0) result += vec4(CalcSpotLight(u_spotLight, worldNormal, v_FragPos, viewDir),0.0f);
 
     result = (1.0 - CalculateShadow(v_LightSpacePos, u_dirLight.direction)) * result + vec4(material.ambient,0.0);
     //result = material.ambient*20;
@@ -194,7 +192,6 @@ void main()
 
 }
 
-/* ---------- ����� ---------- */
 vec3 CalcDirectionalLight(DirectionalLight light, vec3 normal, vec3 viewDir)
 {
     vec3 lightDir = normalize(light.direction);
@@ -214,28 +211,21 @@ vec3 CalcDirectionalLight(DirectionalLight light, vec3 normal, vec3 viewDir)
 float CalculateShadow(vec4 fragPosLightSpace, vec3 lightDir)
 {
     lightDir = normalize(lightDir);
-    // 1. ͸�ӳ���
     vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
 
-    // 2. NDC �� UV
     projCoords = projCoords * 0.5 + 0.5;
 
-    // 3. ����Զƽ�� �� ����Ӱ
-    //if (projCoords.z > 1.0)
-        //return 0.0;
 
-    // 4. ����������
+
     float closestDepth = texture(u_ShadowMap, projCoords.xy).r;
     float currentDepth = projCoords.z;
 
-    // 5. ���� Bias����ֹ acne��
     float bias = max(0.05 * (1.0 - dot(v_Normal, lightDir)), 0.05);
 
-    // 6. ��Ӱ�ж�
     return currentDepth - bias > closestDepth ? 1.0 : 0.0;
 }
 
-/* ---------- ���Դ ---------- */
+
 vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
 {
     vec3 lightDir = normalize(light.position - fragPos);
@@ -257,12 +247,12 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
     return (ambient + diffuse + specular) * attenuation;
 }
 
-/* ---------- �۹�� ---------- */
+
 vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
 {
     vec3 lightDir = normalize(light.position - fragPos);
 
-    // ������
+
     float diff = max(dot(normal, lightDir), 0.0);
 
     vec3 halfwayDir = normalize(lightDir + viewDir);
@@ -289,7 +279,7 @@ void save()
     vec4 specularColor = vec4(0.0f);
     vec4 emissionColor = vec4(0.0f);
 
-         // 1. ������������
+
     if(((u_TexSlot >> 31u) & 1u) > 0)
         diffuseColor = texture(texture_diffuse, v_TexCoord);
     if((u_TexSlot & specular) > 0)
@@ -298,14 +288,11 @@ void save()
         emissionColor = texture(texture_emission, v_TexCoord);
 
 
-     // 3. �򵥹��ռ��㣨Blinn-Phong��
     vec3 viewDir = normalize(u_ViewPos - v_FragPos);
     vec3 lightDir = normalize(u_LightPos - v_FragPos);
     vec3 halfwayDir = normalize(lightDir + viewDir);
 
 
-
-     // 2. ����������ͼ���ؼ����֣�
     vec3 worldNormal = normalize(v_Normal);
     //worldNormal = v_Normal;
     
@@ -322,23 +309,23 @@ void save()
         worldNormal = normalize(TBN * worldNormal);
     }
 
-    // ������
+
     float ambientStrength = 0.2;
     vec3 ambient = ambientStrength * u_LightColor;
     
-    // ������
+    
     float diff = max(dot(worldNormal, lightDir), 0.0);
     vec3 diffuse = diff * u_LightColor;
     
-    // ���淴��
+    
     float spec = pow(max(dot(worldNormal, halfwayDir), 0.0), 32.0);
     vec3 specular = spec * specularColor.rgb * u_LightColor;
     
-    // 4. ��Ͻ��
+    
     vec3 result = (ambient + diffuse + specular + emissionColor.rgb) * diffuseColor.rgb;
-    // ȷ�� Alpha ������ĳ����ֵ
+    
     float alpha = diffuseColor.a;
-    //if (alpha < 0.1) alpha = 1.0;  // ���� 0.1 ����Ϊ��͸��
+    //if (alpha < 0.1) alpha = 1.0;  
 
 
     o_Color = vec4(result, alpha);
