@@ -100,8 +100,9 @@ project "GT"
 	{
 		"GLFW_INCLUDE_NONE",
 		"YAML_CPP_STATIC_DEFINE",
-		"TRACY_ENABLE"
-
+		"TRACY_ENABLE",
+		"TRACT_ON_DEMAND", 
+		--"TRACY_STATIC"
 	}
 	filter "system:windows"
 		systemversion "10.0"
@@ -109,7 +110,6 @@ project "GT"
 		{
 			"_CRT_SECURE_NO_WARNINGS",
 			"GT_PLATFORM_WINDOWS",
-			"TRACY_ENABLE",
 		}
 
 	filter "system:linux"
@@ -118,6 +118,13 @@ project "GT"
 			"GT_PLATFORM_LINUX",
 		}
 
+	
+	filter "system:windows"
+		systemversion "10.0"
+		
+		disablewarnings { "4828" }
+		disablewarnings { "4305" }
+		disablewarnings { "4267" }
 
 --	doesn't need to copy dlls anymore since we are using static lib
 --	postbuildcommands

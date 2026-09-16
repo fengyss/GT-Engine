@@ -25,7 +25,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\EditorLayer.cpp" />
-    <ClCompile Include="src\HazelEditorApp.cpp" />
+    <ClCompile Include="src\GTEditorApp.cpp" />
     <ClCompile Include="src\Panels\AssetsPanel.cpp">
       <Filter>Panels</Filter>
     </ClCompile>

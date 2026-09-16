@@ -46,7 +46,14 @@ project "GTEditor"
         "%{LibraryDir.gtest}",
     }
 	
-	defines { "GLFW_INCLUDE_NONE", "YAML_CPP_STATIC_DEFINE","TRACY_ENABLE" }
+	defines 
+	{ 
+		"GLFW_INCLUDE_NONE", 
+		"YAML_CPP_STATIC_DEFINE",
+		"TRACY_ENABLE",
+		"TRACT_ON_DEMAND",
+		--"TRACY_STATIC"
+	}
 
 
 	filter "system:linux"
@@ -57,6 +64,10 @@ project "GTEditor"
 			"-LGT/vendor/mono/lib/linux",
 			"-Wl,-l:libassimp.so",
 			"-Wl,-l:libmono-2.0.so.1"
+		}
+		links
+		{	
+			"X11",
 		}
 	filter {}
 
@@ -76,23 +87,22 @@ project "GTEditor"
 	links
 	{
 		"GT",
-		"efsw",
-		"GLFW",
-		"Glad",
-		"Box2D",
-		"ImGui",
-		"yaml_cpp",
-		"X11",
-		"tracy"
+		--"efsw",
+		--"GLFW",
+		--"Glad",
+		--"Box2D",
+		--"ImGui",
+		--"yaml_cpp",
+		--"tracy"
 	}
 
 
 	filter "system:windows"
 		systemversion "10.0"
 		
-		linkoptions { "/ignore:4099" }
-		linkoptions { "/ignore:4006" }
-		linkoptions { "/ignore:4286" }
+		disablewarnings { "4828" }
+		disablewarnings { "4305" }
+		disablewarnings { "4267" }
 
 	filter "configurations:Debug"
 		defines "GT_DEBUG"

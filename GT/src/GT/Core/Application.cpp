@@ -18,8 +18,9 @@
 #include "tracy/Tracy.hpp"
 
 #ifndef TRACY_ENABLE
-#error "TRACY_ENABLE not defined - Tracy is a no-op in this build"
-#endif
+#error lllll
+#endif // !TRACY_ENABLE
+
 
 #define EnableImGui
 
@@ -176,6 +177,8 @@ namespace GT
 
 
 			m_Window->OnRender();
+
+			FrameMark;
 
 		}
 

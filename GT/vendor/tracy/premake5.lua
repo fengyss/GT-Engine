@@ -17,7 +17,18 @@ includedirs
     "public/tracy"
 }
 
-defines { "TRACY_ENABLE" } 
+defines 
+{ 
+    "TRACY_ENABLE", 
+    --"TRACY_STATIC",
+    --"TRACY_ON_DEMAND" 
+}
+
+
+    filter { "system:windows", "configurations:Debug" }
+        symbols "On"
+        editandcontinue "Off"   -- 生成 /Zi 而不是 /ZI
+    filter {}
 
 filter "system:windows"
 systemversion "latest"

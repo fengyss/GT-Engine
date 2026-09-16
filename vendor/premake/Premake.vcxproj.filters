@@ -37,6 +37,9 @@
     <Filter Include="..\GT\vendor\json">
       <UniqueIdentifier>{F1BACA52-5DD1-C8E8-A648-540A129E9970}</UniqueIdentifier>
     </Filter>
+    <Filter Include="..\GT\vendor\tracy">
+      <UniqueIdentifier>{3A45D6AC-2629-9702-8F89-91557B8C8184}</UniqueIdentifier>
+    </Filter>
     <Filter Include="..\GT\vendor\yaml-cpp">
       <UniqueIdentifier>{DADD2F48-464A-EB42-0F3E-83A07B690DAB}</UniqueIdentifier>
     </Filter>
@@ -61,74 +64,26 @@
     <Filter Include="..\Test">
       <UniqueIdentifier>{70218647-DC00-05E3-E518-90B951776B44}</UniqueIdentifier>
     </Filter>
-    <Filter Include="..\backup">
-      <UniqueIdentifier>{6637EB61-D2A1-9FD8-1BE0-507E87897D2D}</UniqueIdentifier>
+    <Filter Include="..\bin">
+      <UniqueIdentifier>{892D8876-75CF-B24C-5E8A-C6A04ACB399D}</UniqueIdentifier>
     </Filter>
-    <Filter Include="..\backup\GT">
-      <UniqueIdentifier>{10976CBC-FCF9-FB60-A57F-341791C1C7E3}</UniqueIdentifier>
+    <Filter Include="..\bin\Debug-windows-x86_64">
+      <UniqueIdentifier>{D3C76729-3FD5-950F-C8BB-91FA34C861C6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="..\backup\GT\vendor">
-      <UniqueIdentifier>{6D9B2DE0-D9FC-0AEE-626A-51A0CECA41AD}</UniqueIdentifier>
+    <Filter Include="..\bin\Debug-windows-x86_64\GTEditor">
+      <UniqueIdentifier>{E413450C-D0FA-0604-794B-6D216511806A}</UniqueIdentifier>
     </Filter>
-    <Filter Include="..\backup\GT\vendor\Box2D">
-      <UniqueIdentifier>{3B63CD49-A725-01D4-F0D5-8F605CD7D9B1}</UniqueIdentifier>
+    <Filter Include="..\bin\Debug-windows-x86_64\GTEditor\projects">
+      <UniqueIdentifier>{FD7DCC1D-69EE-CE96-320D-491F9E3C0798}</UniqueIdentifier>
     </Filter>
-    <Filter Include="..\backup\GT\vendor\GLFW">
-      <UniqueIdentifier>{CC82A395-B8A7-F215-E1F2-D7A5CD76F133}</UniqueIdentifier>
+    <Filter Include="..\bin\Debug-windows-x86_64\GTEditor\projects\FirstProject">
+      <UniqueIdentifier>{0B99900A-F758-21AF-6076-09BA4C5534C1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="..\backup\GT\vendor\Glad">
-      <UniqueIdentifier>{740EA495-6033-F315-897E-D8A57502F233}</UniqueIdentifier>
+    <Filter Include="..\bin\Debug-windows-x86_64\GTEditor\projects\FirstProject\assets">
+      <UniqueIdentifier>{ADF93514-1918-4AE1-62E5-4FF3CE4285EA}</UniqueIdentifier>
     </Filter>
-    <Filter Include="..\backup\GT\vendor\ImGui">
-      <UniqueIdentifier>{572E4A4A-C3F0-7DD4-0CA1-0C6178A256B2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="..\backup\GT\vendor\efsw">
-      <UniqueIdentifier>{B16AB495-9D8F-0316-C6DA-E8A5B25E0234}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="..\backup\GT\vendor\entt">
-      <UniqueIdentifier>{D78CB495-C3B1-0316-ECFC-E8A5D8800234}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="..\backup\GT\vendor\freetype">
-      <UniqueIdentifier>{C0C4AC40-AC7F-9CEC-5537-153741D1E67C}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="..\backup\GT\vendor\googletest">
-      <UniqueIdentifier>{D90EFC85-C534-C6EC-AE7A-4BB89A3FEBB8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="..\backup\GT\vendor\json">
-      <UniqueIdentifier>{565FB795-4284-0616-6BCF-EBA557530534}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="..\backup\GT\vendor\yaml-cpp">
-      <UniqueIdentifier>{BF2CF2BF-ABE7-E16B-549F-5AB640392CFC}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="..\backup\GTEditor">
-      <UniqueIdentifier>{D7B8266F-C39C-E7C4-2CFD-E1171800D246}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="..\backup\GTEditor\projects">
-      <UniqueIdentifier>{5064CEE8-BC71-FCCE-4558-F8B9B164C885}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="..\backup\GTEditor\projects\FirstProject">
-      <UniqueIdentifier>{3EEECAD8-2A6B-BE1B-53E8-BE2F3FC45AAF}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="..\backup\GTEditor\projects\FirstProject\assets">
-      <UniqueIdentifier>{8017FC49-EC52-5C0D-F547-D99C6102E13D}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="..\backup\GTEditor\projects\FirstProject\assets\scripts">
-      <UniqueIdentifier>{D71614D6-43FE-FECB-4CEC-0048B852A28E}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="..\backup\GTScriptCore">
-      <UniqueIdentifier>{0EA93C69-FAA2-65BB-E30F-FCCBCFA8CB27}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="..\backup\Test">
-      <UniqueIdentifier>{9513F689-81E1-E98F-6A75-5AB656E2C5F4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="..\backup\vendor">
-      <UniqueIdentifier>{03BF152F-EFB7-3481-18EA-19060442148D}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="..\backup\vendor\premake">
-      <UniqueIdentifier>{77EEB7C8-6313-0749-8C5E-ECD878E20567}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="..\backup\vendor\premake\premake_customization">
-      <UniqueIdentifier>{A35A5886-8FD8-A81F-78D0-66B764EDEA47}</UniqueIdentifier>
+    <Filter Include="..\bin\Debug-windows-x86_64\GTEditor\projects\FirstProject\assets\scripts">
+      <UniqueIdentifier>{04D6EF1E-70A0-C179-B9A6-C09E25B08254}</UniqueIdentifier>
     </Filter>
     <Filter Include="premake_customization">
       <UniqueIdentifier>{8217B8A9-EE83-73A4-B777-0B0223A3950C}</UniqueIdentifier>
@@ -168,6 +123,9 @@
     <None Include="..\..\GT\vendor\json\premake5.lua">
       <Filter>..\GT\vendor\json</Filter>
     </None>
+    <None Include="..\..\GT\vendor\tracy\premake5.lua">
+      <Filter>..\GT\vendor\tracy</Filter>
+    </None>
     <None Include="..\..\GT\vendor\yaml-cpp\premake5.lua">
       <Filter>..\GT\vendor\yaml-cpp</Filter>
     </None>
@@ -183,62 +141,8 @@
     <None Include="..\..\Test\premake5.lua">
       <Filter>..\Test</Filter>
     </None>
-    <None Include="..\..\backup\Dependencies.lua">
-      <Filter>..\backup</Filter>
-    </None>
-    <None Include="..\..\backup\GT\premake5.lua">
-      <Filter>..\backup\GT</Filter>
-    </None>
-    <None Include="..\..\backup\GT\vendor\Box2D\premake5.lua">
-      <Filter>..\backup\GT\vendor\Box2D</Filter>
-    </None>
-    <None Include="..\..\backup\GT\vendor\GLFW\premake5.lua">
-      <Filter>..\backup\GT\vendor\GLFW</Filter>
-    </None>
-    <None Include="..\..\backup\GT\vendor\Glad\premake5.lua">
-      <Filter>..\backup\GT\vendor\Glad</Filter>
-    </None>
-    <None Include="..\..\backup\GT\vendor\ImGui\premake5.lua">
-      <Filter>..\backup\GT\vendor\ImGui</Filter>
-    </None>
-    <None Include="..\..\backup\GT\vendor\efsw\premake5.lua">
-      <Filter>..\backup\GT\vendor\efsw</Filter>
-    </None>
-    <None Include="..\..\backup\GT\vendor\entt\premake5.lua">
-      <Filter>..\backup\GT\vendor\entt</Filter>
-    </None>
-    <None Include="..\..\backup\GT\vendor\freetype\premake5.lua">
-      <Filter>..\backup\GT\vendor\freetype</Filter>
-    </None>
-    <None Include="..\..\backup\GT\vendor\googletest\premake5.lua">
-      <Filter>..\backup\GT\vendor\googletest</Filter>
-    </None>
-    <None Include="..\..\backup\GT\vendor\json\premake5.lua">
-      <Filter>..\backup\GT\vendor\json</Filter>
-    </None>
-    <None Include="..\..\backup\GT\vendor\yaml-cpp\premake5.lua">
-      <Filter>..\backup\GT\vendor\yaml-cpp</Filter>
-    </None>
-    <None Include="..\..\backup\GTEditor\premake5.lua">
-      <Filter>..\backup\GTEditor</Filter>
-    </None>
-    <None Include="..\..\backup\GTEditor\projects\FirstProject\assets\scripts\premake5.lua">
-      <Filter>..\backup\GTEditor\projects\FirstProject\assets\scripts</Filter>
-    </None>
-    <None Include="..\..\backup\GTScriptCore\premake5.lua">
-      <Filter>..\backup\GTScriptCore</Filter>
-    </None>
-    <None Include="..\..\backup\Test\premake5.lua">
-      <Filter>..\backup\Test</Filter>
-    </None>
-    <None Include="..\..\backup\premake5.lua">
-      <Filter>..\backup</Filter>
-    </None>
-    <None Include="..\..\backup\vendor\premake\premake5.lua">
-      <Filter>..\backup\vendor\premake</Filter>
-    </None>
-    <None Include="..\..\backup\vendor\premake\premake_customization\solution_items.lua">
-      <Filter>..\backup\vendor\premake\premake_customization</Filter>
+    <None Include="..\..\bin\Debug-windows-x86_64\GTEditor\projects\FirstProject\assets\scripts\premake5.lua">
+      <Filter>..\bin\Debug-windows-x86_64\GTEditor\projects\FirstProject\assets\scripts</Filter>
     </None>
     <None Include="..\..\premake5.lua">
       <Filter>..</Filter>
