@@ -46,7 +46,6 @@ namespace GT
 		fbSpec.Width = 1280;
 		fbSpec.Height = 720;
 
-		//m_Framebuffer = Framebuffer::Create(fbSpec);
 
 		
 		m_EditorCamera = EditorCamera(45.0f,16.0f/9.0f, 0.1f, 1000.0f);
@@ -145,10 +144,7 @@ namespace GT
 			Renderer3D::ResetStats();
 
 
-			//m_ActiveScene->m_Framebuffer->Bind();
 			RenderCommand::SetClearColor(color);
-			//RenderCommand::Clear();
-			//m_ActiveScene->m_Framebuffer->ClearAttachment(1, -1);
 
 			switch (m_SceneState)
 			{
@@ -197,7 +193,6 @@ namespace GT
 			}
 			Renderer2D::EndScene();
 
-			//m_ActiveScene->m_Framebuffer->Unbind();
 
 			{
 				// read entity ID
@@ -680,6 +675,7 @@ namespace GT
 		//m_GizmoType = ImGuizmo::OPERATION::ROTATE;
 			// Gizmo
 		Entity selectedEntity = m_SceneHierarchyPanel->GetSelectedEntity();
+		m_ActiveScene->SetSelectedEntity(selectedEntity);
 		if (selectedEntity)
 		{
 			ImGuizmo::SetOrthographic(false);

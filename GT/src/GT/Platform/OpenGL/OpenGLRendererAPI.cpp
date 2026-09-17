@@ -50,7 +50,7 @@ namespace GT
 
 	void OpenGLRendererAPI::Clear()
 	{
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 	}
 
 	void OpenGLRendererAPI::SetViewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height)
@@ -146,6 +146,20 @@ namespace GT
 
 		totalMemory = static_cast<uint64_t>(totalMemKB) / 1024;
 		usedMemory = totalMemory - static_cast<uint64_t>(availMemKB) / 1024;
+	}
+	void OpenGLRendererAPI::EnableDepthTest(bool enable)
+	{
+		if (enable)
+			glEnable(GL_DEPTH_TEST);
+		else
+			glDisable(GL_DEPTH_TEST);
+	}
+	void OpenGLRendererAPI::EnableStencilTest(bool enable)
+	{
+		if (enable)
+			glEnable(GL_STENCIL_TEST);
+		else
+			glDisable(GL_STENCIL_TEST);
 	}
 }
 

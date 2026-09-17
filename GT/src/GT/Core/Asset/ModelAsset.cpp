@@ -104,6 +104,39 @@ namespace GT
         }
     }
 
+    void ModelAsset::Draw(const glm::mat4& transform, const Frustum& frustum, const Shader& shader)
+    {
+        for (unsigned int i = 0; i < meshes.size(); i++)
+        {
+            bool visible = true;
+            glm::vec3 min = meshes[i]->GetMin();
+            glm::vec3 max = meshes[i]->GetMax();
+
+            min = transform * glm::vec4(min, 1.0f);
+            max = transform * glm::vec4(max, 1.0f);
+            GPUAABB aabb = { min ,max };
+            for (int p = 0;p < 6;p++)
+            {
+                glm::vec4 plane = { frustum.Planes[p].Normal, frustum.Planes[p].Distance };
+                if (!IsAABBInsidePlane(plane, aabb))
+                {
+                    visible = false;
+                    break;
+                }
+
+            }
+            if (visible)
+            {
+                materials[i].bind();
+                meshes[i]->Draw(transform, shader);
+
+                Renderer3D::GetStats().DrawCalls++;
+                Renderer3D::GetStats().Meshes++;
+                Renderer3D::GetStats().VerticiesCount += meshes[i]->GetVertexCount();
+            }
+        }
+    }
+
     // loads a ModelAsset with supported ASSIMP extensions from file and stores the resulting meshes in the meshes vector.
     void ModelAsset::loadModel(const std::filesystem::path& path)
     {
@@ -221,6 +254,11 @@ namespace GT
             auto texs = LoadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
             _textures.insert(_textures.end(), texs.begin(), texs.end());
         }
+        {
+            auto texs = LoadMaterialTextures(material, aiTextureType_NORMALS, "texture_normal");
+            _textures.insert(_textures.end(), texs.begin(), texs.end());
+        }
+
         {
             auto texs = LoadMaterialTextures(material, aiTextureType_HEIGHT, "texture_normal");
             _textures.insert(_textures.end(), texs.begin(), texs.end());

@@ -83,6 +83,7 @@ namespace GT
 		void SetName(const std::string& newName) { Name = newName; }
 		void SetFilePath(const std::filesystem::path& path) { filepath = path; }
 
+		void SetSelectedEntity(uint32_t entity) { SelectedEntity = entity; }
 
 		virtual const std::string& GetName() const override { return Name; }
 		const std::filesystem::path& GetFilePath() { return filepath; }
@@ -110,6 +111,7 @@ namespace GT
 
 		b2WorldId m_WorldID = b2_nullWorldId;
 		
+		uint32_t SelectedEntity;
 
 		friend class Entity;
 		friend class SceneSerializer;

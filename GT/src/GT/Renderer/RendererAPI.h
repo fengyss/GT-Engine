@@ -39,6 +39,9 @@ namespace GT
 		virtual void SetMemoryBarrier(MemoryBarrierType barrier) = 0;
 
 		virtual void GetMemoryUsage(uint64_t& totalMemory, uint64_t& usedMemory) = 0;
+
+		virtual void EnableDepthTest(bool enable) = 0;
+		virtual void EnableStencilTest(bool enable) = 0;
 		
 		inline static API GetAPI() { return s_API; }
 

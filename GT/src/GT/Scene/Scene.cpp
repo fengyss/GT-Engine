@@ -450,9 +450,14 @@ namespace GT
                 auto [transform, model] = view.get<TransformComponent, ModelComponent>(entity);
                 if (!model.model) continue;
 
+                bool IsDrawOutline = false;
+                if (SelectedEntity == (uint32_t)entity)
+                    IsDrawOutline = true;
+
                 Renderer3D::SetCurrentEntityID(int(entity));
-				Renderer3D::DrawModel(transform.GetTransform(), model.model);
+				Renderer3D::DrawModel(transform.GetTransform(), model.model, IsDrawOutline);
                 Renderer3D::SetCurrentEntityID(-1);
+
 
             }
         }

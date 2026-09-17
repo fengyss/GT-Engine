@@ -35,7 +35,7 @@ void main()
     v_Weights = a_Weights;
 
     
-    v_Normal = u_NormalMatrix * a_Normal;
+    v_Normal = normalize(u_NormalMatrix * a_Normal);
 
     v_Tangent = u_NormalMatrix * a_Tangent;
     v_Bitangent = u_NormalMatrix * a_Bitangent;
@@ -142,42 +142,28 @@ void main()
 {
     o_EntityID = u_EntityID;
 
-    vec4 diffuseColor = vec4(1.0f);
-    vec4 specularColor = vec4(0.0f);
-    vec4 emissionColor = vec4(0.0f);
+    material = u_material;
+
+    float alpha = 1.0f;
 
     if((u_TexSlot & diffuse) > 0)
-        diffuseColor = texture(texture_diffuse, v_TexCoord);
+    {
+        material.diffuse = texture(texture_diffuse, v_TexCoord).rgb;
+        alpha = texture(texture_diffuse, v_TexCoord).a;
+    }
     if((u_TexSlot & specular) > 0)
-        specularColor = texture(texture_specular, v_TexCoord);
-    if((u_TexSlot & emission) > 0)
-        emissionColor = texture(texture_emission, v_TexCoord);
+        material.specular = texture(texture_specular, v_TexCoord).rgb;
+    //if((u_TexSlot & emission) > 0)
+    //    emissionColor = texture(texture_emission, v_TexCoord).rgb;
    
-    material.ambient = texture(texture_diffuse, v_TexCoord).rgb * 0.05;
-    material.diffuse = diffuseColor.rgb;
-    material.specular = specularColor.rgb;
-    material.shininess = 0.2f;
+    material.ambient = material.diffuse * 0.8;
 
     vec3 viewDir = normalize(u_ViewPos - v_FragPos);
-
-    vec3 worldNormal = normalize(v_Normal);
+    vec3 worldNormal = v_Normal;
     
     
-    if((u_TexSlot & normal) > 0)
-    {
-        worldNormal = texture(texture_normal, v_TexCoord).rgb;
-        worldNormal = worldNormal*2.0-1.0;
 
-        mat3 TBN = mat3(
-        normalize(v_Tangent),
-        normalize(v_Bitangent),
-        normalize(v_Normal));
-
-        worldNormal = normalize(TBN * worldNormal);
-    }
-   
-
-    vec4 result = emissionColor;
+    vec4 result = vec4(0.0f);
     
     if((u_LightSlots & pointlight)>0) result += vec4(CalcPointLight(u_pointLight, worldNormal, v_FragPos, viewDir),0.0f);
     if((u_LightSlots & directionallight)>0) result += vec4(CalcDirectionalLight(u_dirLight, worldNormal, viewDir),0.0f);
@@ -186,7 +172,7 @@ void main()
     result = (1.0 - CalculateShadow(v_LightSpacePos, u_dirLight.direction)) * result + vec4(material.ambient,0.0);
     //result = material.ambient*20;
     
-    result.a = diffuseColor.a;
+    result.a = 1.0f;
     o_Color = result;
 
 
@@ -296,18 +282,6 @@ void save()
     vec3 worldNormal = normalize(v_Normal);
     //worldNormal = v_Normal;
     
-    if((u_TexSlot & normal) > 0)
-    {
-        worldNormal = texture(texture_normal, v_TexCoord).rgb;
-        worldNormal = worldNormal*2.0-1.0;
-
-        mat3 TBN = mat3(
-        normalize(v_Tangent),
-        normalize(v_Bitangent),
-        normalize(v_Normal));
-
-        worldNormal = normalize(TBN * worldNormal);
-    }
 
 
     float ambientStrength = 0.2;

@@ -664,6 +664,11 @@ namespace GT
 					}
 					ImGui::EndDragDropTarget();
 				}
+				if (component.model)
+				{
+					auto& meshes = component.model->GetMeshes();
+					auto& materials = component.model->GetMaterials();
+				}
 			});
 
 		DrawComponent<Animator2DComponent>("Animator 2D", e, [](auto& component)

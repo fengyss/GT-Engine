@@ -84,6 +84,7 @@ namespace GT
         void Draw(const glm::mat4& transform);
         void Draw(const glm::mat4& transform, const Shader& shader);
         void Draw(const glm::mat4& transform, const Frustum& frustum);
+        void Draw(const glm::mat4& transform, const Frustum& frustum, const Shader& shader);
 
         void DrawForShadowMap(const Shader& shader);
 
@@ -91,15 +92,10 @@ namespace GT
             this->shader = shader; 
             hasShader = true;
         }
-        //void SetShader(AssetHandle shader) {
-            //this->shader = shader;
-            //hasShader = true;
-        //}
-        const std::vector<Mesh> GetMeshes() { return meshes; }
-        inline uint32_t GetMeshCount()
-        {
-            return 0;
-        }
+
+        const std::vector<Mesh>& GetMeshes() { return meshes; }
+        const std::vector<Material>& GetMaterials() { return materials; }
+
 		uint32_t GetMeshCount() const { return meshes.size(); }
         void CalculateVertexCount() 
         {

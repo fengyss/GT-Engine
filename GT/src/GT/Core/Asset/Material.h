@@ -15,7 +15,7 @@ namespace GT
         glm::vec3 ambient = glm::vec3(0.1);
         glm::vec3 diffuse = glm::vec3(0.1);
         glm::vec3 specular = glm::vec3(0.1);
-        float shininess = 0.1;
+        float shininess = 64.0;
 
         Shader shader;
         std::vector<Texture2D> textures;

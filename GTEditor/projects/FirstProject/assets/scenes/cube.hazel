@@ -1,5 +1,15 @@
 Scene: cube
 Entities:
+  - Entity: 10946472088810433389
+    TagComponent:
+      Tag: Empty Entity
+      Type: None
+    TransformComponent:
+      Translation: [7.427123, -1.1823568, 3.2404766]
+      Rotation: [1.911687e-07, -0.5152722, -1.2377079e-07]
+      Scale: [1, 1, 1]
+    ModelComponent:
+      ModelPath: projects/FirstProject\assets\obj\nanosuit\nanosuit.obj
   - Entity: 399508285003723062
     TagComponent:
       Tag: Empty Entity
@@ -30,7 +40,7 @@ Entities:
       Scale: [1, 1, 1]
     LightComponent:
       Type: 2
-      Ambient: [0.043137256, 0.043137256, 0.043137256]
+      Ambient: [0.17254902, 0.17254902, 0.17254902]
       Constant: 1
       cutOff: 0.976296
       outerCutOff: 0.95371693
@@ -39,7 +49,7 @@ Entities:
       Linear: 0.09
       Position: [-19.603611, 39.714394, 26.88963]
       Quadratic: 0.032
-      Specular: [1, 1, 1]
+      Specular: [0.9882353, 0.9882353, 1]
   - Entity: 16564027514784249681
     TagComponent:
       Tag: Empty Entity

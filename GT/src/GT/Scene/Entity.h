@@ -80,7 +80,6 @@ namespace GT
 			return !(*this == other);
 		}
 
-		
 
 	private:
 		entt::entity m_EntityHandle{ entt::null };

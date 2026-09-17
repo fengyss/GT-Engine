@@ -172,6 +172,7 @@ namespace GT
 		RegisterShaderAsset("Resources/shaders/Renderer2D_Circle.glsl");
 		RegisterShaderAsset("Resources/shaders/Renderer2D_Line.glsl");
 		RegisterShaderAsset("Resources/shaders/Model.glsl");
+		RegisterShaderAsset("Resources/shaders/Outline.glsl");
 		RegisterShaderAsset("Resources/shaders/Particle.geom");
 		RegisterShaderAsset("Resources/shaders/ShadowMap.glsl");
 		RegisterShaderAsset("Resources/shaders/Renderer2D_UI.glsl");

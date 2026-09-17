@@ -60,6 +60,15 @@ namespace GT
 		{
 			return s_RendererAPI->GetMemoryUsage(totalMemory, usedMemory);
 		}
+
+		inline static void EnableDepthTest(bool enable)
+		{
+			return s_RendererAPI->EnableDepthTest(enable);
+		}
+		inline static void EnableStencilTest(bool enable)
+		{
+			return s_RendererAPI->EnableStencilTest(enable);
+		}
 	private:
 		static RendererAPI* s_RendererAPI;
 	};

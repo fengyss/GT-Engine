@@ -24,6 +24,11 @@ namespace GT
 		virtual void SetMemoryBarrier(MemoryBarrierType barrier) override;
 
 		virtual void GetMemoryUsage(uint64_t& totalMemory, uint64_t& usedMemory) override;
+	
+
+		virtual void EnableDepthTest(bool enable) override;
+		virtual void EnableStencilTest(bool enable) override;
+	
 	private:
 	};
 }
