@@ -283,7 +283,11 @@ namespace GT
 			shader->SetUniformMat4("u_Model", transform);
 			model->DrawForShadowMap(shader);
 		}
-
+		for (auto& [transform, model, ID] : OutlineModels)
+		{
+			shader->SetUniformMat4("u_Model", transform);
+			model->DrawForShadowMap(shader);
+		}
 		
 		shadowMap.Unbind();
 	}

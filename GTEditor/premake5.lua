@@ -87,13 +87,13 @@ project "GTEditor"
 	links
 	{
 		"GT",
-		--"efsw",
-		--"GLFW",
-		--"Glad",
-		--"Box2D",
-		--"ImGui",
-		--"yaml_cpp",
-		--"tracy"
+		"efsw",
+		"GLFW",
+		"Glad",
+		"Box2D",
+		"ImGui",
+		"yaml_cpp",
+		"tracy"
 	}
 
 
