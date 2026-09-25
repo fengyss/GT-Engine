@@ -19,6 +19,10 @@
 
 #include "GT/ImGui/ImGuiLayer.h"
 
+#include "GT/Utils/PlatformUtils.h"
+#include "GT/Utils/JsonUtils.h"
+
+
 
 // -------Renderer------------
 
@@ -51,3 +55,5 @@
 #include "GT/Scene/Components.h"
 #include "GT/Scene/Entity.h"
 #include "GT/Scene/ScriptableEntity.h"
+
+

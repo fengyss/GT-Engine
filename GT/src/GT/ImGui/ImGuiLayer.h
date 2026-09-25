@@ -6,6 +6,8 @@
 #include "GT/Events/KeyEvent.h"
 #include "GT/Events/MouseEvent.h"
 
+#include "GT/Core/Window.h"
+
 namespace GT
 {
 	enum  ImGuiTheme

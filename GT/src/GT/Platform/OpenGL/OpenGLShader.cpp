@@ -165,7 +165,7 @@ namespace GT
 				glDeleteShader(shader);
 				GT_CORE_ERROR("{0}", infoLog.data());
 				GT_CORE_ASSERT(false, "Shader compilation failure!");
-				break;
+				return;
 			}
 			glAttachShader(program, shader);
 			shaderIDs.emplace_back(shader);

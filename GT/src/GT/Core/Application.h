@@ -39,7 +39,8 @@ namespace GT {
 	{
 	public:
 
-		Application();
+		Application() = default;
+		Application(const std::string title);
 		Application(const ApplicationSpecification& specification);
 		virtual ~Application();
 

@@ -31,7 +31,11 @@ namespace GT
 			return nullptr;
 
 		case RendererAPI::API::OpenGL:
-			return CreateRef<OpenGLShader>(name, vertexSrc, fragmentSrc);
+			auto shader = CreateRef<OpenGLShader>(name, vertexSrc, fragmentSrc);
+
+			if (shader->GetRendererID() == 0)
+				return nullptr;
+			return shader;
 		}
 		GT_CORE_ASSERT(false, "Unknown RendererAPI!");
 		return nullptr;

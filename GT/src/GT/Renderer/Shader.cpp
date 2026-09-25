@@ -31,7 +31,7 @@ namespace GT
 	{
 		if (path.has_extension())
 		{
-			handle.ID = AssetManager::RegisterTexture2DAsset(path);
+			handle.ID = AssetManager::RegisterShaderAsset(path);
 			handle = AssetManager::GetAssetHandle(handle.ID);
 		}
 		else handle = AssetManager::GetAssetHandle(path.string());

@@ -45,6 +45,7 @@ group ""
 
 group "Tools"
 	include "GTEditor"
+	include "ShaderLab"
 	include "Test"
 group ""
 

@@ -17,9 +17,6 @@
 
 #include "tracy/Tracy.hpp"
 
-#ifndef TRACY_ENABLE
-#error lllll
-#endif // !TRACY_ENABLE
 
 
 #define EnableImGui
@@ -35,24 +32,15 @@ namespace GT
 
 	Application* Application::s_Instance = nullptr;
 
-	Application::Application()
+	Application::Application(const std::string title)
 	{
 		GT_PROFILE_FUNCTION();
 
 		GT_ASSERT(!s_Instance, "Application already exists!");
 		s_Instance = this;
 
-		m_Window = std::unique_ptr<Window>(Window::Create());
+		m_Window = std::unique_ptr<Window>(Window::Create(WindowProps(title)));
 		
-
-#ifdef EnableImGui 
-		m_ImGuiLayer = new ImGuiLayer();
-		PushOverlay(m_ImGuiLayer);
-#endif
-		m_Window->SetEventCallback(BIND_EVENT_FN(Application::OnEvent));
-
-		Init();
-
 		GT_CORE_INFO("Application Created!");
 	}
 

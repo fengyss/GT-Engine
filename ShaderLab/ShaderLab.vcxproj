@@ -15,10 +15,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{875952EC-7326-ADF7-9C3F-9B9F886BE285}</ProjectGuid>
+    <ProjectGuid>{AB0BACCC-1776-6043-60B4-11E9CC5D3E98}</ProjectGuid>
     <IgnoreWarnCompileDuplicatedFilename>true</IgnoreWarnCompileDuplicatedFilename>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>GTEditor</RootNamespace>
+    <RootNamespace>ShaderLab</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -55,23 +55,23 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>$(ProjectDir)..\bin\Debug-windows-x86_64\GTEditor\</OutDir>
-    <IntDir>$(ProjectDir)..\bin-int\Debug-windows-x86_64\GTEditor\</IntDir>
-    <TargetName>GTEditor</TargetName>
+    <OutDir>$(ProjectDir)..\bin\Debug-windows-x86_64\ShaderLab\</OutDir>
+    <IntDir>$(ProjectDir)..\bin-int\Debug-windows-x86_64\ShaderLab\</IntDir>
+    <TargetName>ShaderLab</TargetName>
     <TargetExt>.exe</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>$(ProjectDir)..\bin\Release-windows-x86_64\GTEditor\</OutDir>
-    <IntDir>$(ProjectDir)..\bin-int\Release-windows-x86_64\GTEditor\</IntDir>
-    <TargetName>GTEditor</TargetName>
+    <OutDir>$(ProjectDir)..\bin\Release-windows-x86_64\ShaderLab\</OutDir>
+    <IntDir>$(ProjectDir)..\bin-int\Release-windows-x86_64\ShaderLab\</IntDir>
+    <TargetName>ShaderLab</TargetName>
     <TargetExt>.exe</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>$(ProjectDir)..\bin\Dist-windows-x86_64\GTEditor\</OutDir>
-    <IntDir>$(ProjectDir)..\bin-int\Dist-windows-x86_64\GTEditor\</IntDir>
-    <TargetName>GTEditor</TargetName>
+    <OutDir>$(ProjectDir)..\bin\Dist-windows-x86_64\ShaderLab\</OutDir>
+    <IntDir>$(ProjectDir)..\bin-int\Dist-windows-x86_64\ShaderLab\</IntDir>
+    <TargetName>ShaderLab</TargetName>
     <TargetExt>.exe</TargetExt>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -80,7 +80,7 @@
       <WarningLevel>Level3</WarningLevel>
       <DisableSpecificWarnings>4828;4305;4267;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <PreprocessorDefinitions>GLFW_INCLUDE_NONE;YAML_CPP_STATIC_DEFINE;TRACY_ENABLE;TRACT_ON_DEMAND;GT_PLATFORM_WINDOWS;GT_BUILD_DLL;GT_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\GT\vendor\spdlog\include;..\GT\src;..\GT\vendor;..\GT\vendor\ImGui;..\GT\vendor\GLFW\include;..\GT\vendor\entt;..\GT\vendor\glm;..\GT\vendor\Box2D\include;..\GT\vendor\ImGuizmo;..\GT\vendor\assimp\include;..\GT\vendor\efsw\include;..\GT\vendor\tracy\public;..\GT\vendor\json\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\GTEditor\src;..\GT\vendor\spdlog\include;..\GT\src;..\GT\vendor;..\GT\vendor\ImGui;..\GT\vendor\GLFW\include;..\GT\vendor\entt;..\GT\vendor\glm;..\GT\vendor\Box2D\include;..\GT\vendor\ImGuizmo;..\GT\vendor\assimp\include;..\GT\vendor\efsw\include;..\GT\vendor\tracy\public;..\GT\vendor\json\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -103,7 +103,7 @@
       <WarningLevel>Level3</WarningLevel>
       <DisableSpecificWarnings>4828;4305;4267;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <PreprocessorDefinitions>GLFW_INCLUDE_NONE;YAML_CPP_STATIC_DEFINE;TRACY_ENABLE;TRACT_ON_DEMAND;GT_PLATFORM_WINDOWS;GT_BUILD_DLL;GT_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\GT\vendor\spdlog\include;..\GT\src;..\GT\vendor;..\GT\vendor\ImGui;..\GT\vendor\GLFW\include;..\GT\vendor\entt;..\GT\vendor\glm;..\GT\vendor\Box2D\include;..\GT\vendor\ImGuizmo;..\GT\vendor\assimp\include;..\GT\vendor\efsw\include;..\GT\vendor\tracy\public;..\GT\vendor\json\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\GTEditor\src;..\GT\vendor\spdlog\include;..\GT\src;..\GT\vendor;..\GT\vendor\ImGui;..\GT\vendor\GLFW\include;..\GT\vendor\entt;..\GT\vendor\glm;..\GT\vendor\Box2D\include;..\GT\vendor\ImGuizmo;..\GT\vendor\assimp\include;..\GT\vendor\efsw\include;..\GT\vendor\tracy\public;..\GT\vendor\json\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -130,7 +130,7 @@
       <WarningLevel>Level3</WarningLevel>
       <DisableSpecificWarnings>4828;4305;4267;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <PreprocessorDefinitions>GLFW_INCLUDE_NONE;YAML_CPP_STATIC_DEFINE;TRACY_ENABLE;TRACT_ON_DEMAND;GT_PLATFORM_WINDOWS;GT_BUILD_DLL;GT_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\GT\vendor\spdlog\include;..\GT\src;..\GT\vendor;..\GT\vendor\ImGui;..\GT\vendor\GLFW\include;..\GT\vendor\entt;..\GT\vendor\glm;..\GT\vendor\Box2D\include;..\GT\vendor\ImGuizmo;..\GT\vendor\assimp\include;..\GT\vendor\efsw\include;..\GT\vendor\tracy\public;..\GT\vendor\json\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\GTEditor\src;..\GT\vendor\spdlog\include;..\GT\src;..\GT\vendor;..\GT\vendor\ImGui;..\GT\vendor\GLFW\include;..\GT\vendor\entt;..\GT\vendor\glm;..\GT\vendor\Box2D\include;..\GT\vendor\ImGuizmo;..\GT\vendor\assimp\include;..\GT\vendor\efsw\include;..\GT\vendor\tracy\public;..\GT\vendor\json\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -152,45 +152,11 @@
     </ProjectReference>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\EditorLayer.h" />
-    <ClInclude Include="src\Panels\AssetsPanel.h" />
-    <ClInclude Include="src\Panels\ContentBrowserPanel.h" />
-    <ClInclude Include="src\Panels\Panel.h" />
-    <ClInclude Include="src\Panels\SceneHierarchyPanel.h" />
-    <ClInclude Include="src\Panels\SpriteSheetPanel.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="src\EditorLayer.cpp" />
-    <ClCompile Include="src\GTEditorApp.cpp" />
-    <ClCompile Include="src\Panels\AssetsPanel.cpp" />
-    <ClCompile Include="src\Panels\ContentBrowserPanel.cpp" />
-    <ClCompile Include="src\Panels\SceneHierarchyPanel.cpp" />
-    <ClCompile Include="src\Panels\SpriteSheetPanel.cpp" />
+    <ClCompile Include="src\ShaderLabApp.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GT\GT.vcxproj">
       <Project>{C0735900-ACFF-870B-15AE-880B0159880B}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\GT\vendor\efsw\efsw.vcxproj">
-      <Project>{FA32967C-E669-970D-8F56-7D107B6C130F}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\GT\vendor\GLFW\GLFW.vcxproj">
-      <Project>{154B857C-0182-860D-AA6E-6C109684020F}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\GT\vendor\Glad\Glad.vcxproj">
-      <Project>{BDD6857C-A90D-870D-52FA-6C103E10030F}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\GT\vendor\Box2D\Box2D.vcxproj">
-      <Project>{A434E80C-1049-10BE-D9CA-B31D459E0CEF}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\GT\vendor\ImGui\ImGui.vcxproj">
-      <Project>{C0FF640D-2C14-8DBE-F595-301E616989EF}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\GT\vendor\yaml-cpp\yaml_cpp.vcxproj">
-      <Project>{7A5CBC57-6629-1763-8F42-050B7B6E4CF1}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\GT\vendor\tracy\tracy.vcxproj">
-      <Project>{A8477210-145C-9AC1-DDDD-3D2149B196F2}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

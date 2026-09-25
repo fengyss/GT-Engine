@@ -93,6 +93,7 @@
     <None Include="..\..\GTEditor\premake5.lua" />
     <None Include="..\..\GTEditor\projects\FirstProject\assets\scripts\premake5.lua" />
     <None Include="..\..\GTScriptCore\premake5.lua" />
+    <None Include="..\..\ShaderLab\premake5.lua" />
     <None Include="..\..\Test\premake5.lua" />
     <None Include="..\..\bin\Debug-windows-x86_64\GTEditor\projects\FirstProject\assets\scripts\premake5.lua" />
     <None Include="..\..\premake5.lua" />

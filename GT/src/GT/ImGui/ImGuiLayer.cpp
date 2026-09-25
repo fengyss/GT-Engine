@@ -18,10 +18,10 @@
 
 namespace GT
 {
-	ImGuiLayer::ImGuiLayer()
-		: Layer("ImGuiLayer")
-	{
-	}
+    ImGuiLayer::ImGuiLayer()
+        : Layer("ImGuiLayer")
+    {
+    }
 
 	ImGuiLayer::~ImGuiLayer()
 	{
@@ -60,10 +60,9 @@ namespace GT
 
         ApplyUnrealTheme();
 
-	    //Fix: Correctly cast the window object to GLFWwindow*
-		auto& app = Application::Get();
-		GLFWwindow* window = static_cast<GLFWwindow*>(app.GetWindow().GetNativeWindow());
+        GLFWwindow* window = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());
         
+
 		//set up Platform/Renderer bindings
 		ImGui_ImplGlfw_InitForOpenGL(window, true);
         ImGui_ImplOpenGL3_Init("#version 460");
@@ -93,9 +92,9 @@ namespace GT
         GT_PROFILE_FUNCTION();
         ImGuiIO& io = ImGui::GetIO();
 
-        Application& app = Application::Get();
-
-        io.DisplaySize = ImVec2((float)app.GetWindow().GetWidth(), (float)app.GetWindow().GetHeight());
+        auto& app = Application::Get();
+        io.DisplaySize = ImVec2((float)app.GetWindow().GetWidth(), 
+            (float)app.GetWindow().GetHeight());
 
         // Rendering
         ImGui::Render();

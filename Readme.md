@@ -15,11 +15,10 @@
 
 ## 项目规划
 
-1. 添加内置文本编辑器，以实现shader与script实时编辑
-2. 和并renderer2D/3D 为 renderer3D， 添加真正的renderer2D
-3. 添加vulken 作为渲染后端
-4. 多线程支持，分离 渲染，物理，等。
-5. 添加详细的日志记录（以及日志分析，筛选 器）
+1. 和并renderer2D/3D 为 renderer3D， 添加真正的renderer2D
+2. 添加vulken 作为渲染后端
+3. 多线程支持，分离 渲染，物理，等。
+4. 添加详细的日志记录（以及日志分析，筛选 器）
 
 ## 项目架构
 
@@ -29,7 +28,9 @@ GT/vendor     GT引擎第三方依赖库
 
 GTEditor      GT编辑器位置
 
-GTScriptCore  GT脚本位置
+GTScriptCore  GT脚本引擎位置
+
+ShaderLab     类似gleditor，shadertoy，实时编译shader
 
 scripts       存放方案生成脚本
 
@@ -41,4 +42,4 @@ Windows：
     在 "GT\GT\vendor" 中找 assimp-vc143-mt.dll，mono-2.0-sgen.dll 复制到 "bin"文件夹下程序实际运行位置。
     
 Linux:
-    使用vscode编译，暂时只支持wayland，需要安装ninja
+    使用vscode编译，暂时只支持wayland，X11还未测试，需要安装ninja
