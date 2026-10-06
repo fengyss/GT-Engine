@@ -8,7 +8,6 @@ project "Test"
 	filter "system:windows"
 		buildoptions "/utf-8"
 	filter {}
-	buildoptions "/NODEFAULTLIB:msvcrtd.lib"
 
 	targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("%{wks.location}/bin-int/" .. outputdir .. "/%{prj.name}")
@@ -49,6 +48,36 @@ project "Test"
 		"gtest",
 	}
 
+
+	filter "system:linux"
+		defines { "GT_PLATFORM_LINUX", "GT_BUILD_DLL" }
+		linkoptions
+		{
+			"-LGT/vendor/assimp/lib/linux",
+			"-LGT/vendor/mono/lib/linux",
+			"-Wl,-l:libassimp.so",
+			"-Wl,-l:libmono-2.0.so.1"
+		}
+		links
+		{	
+			"X11",
+		}
+	filter {}
+
+	filter "system:windows"
+		defines { "GT_PLATFORM_WINDOWS", "GT_BUILD_DLL" }
+		links { "%{Library.assimp}", "%{Library.mono}" }
+	filter {}
+
+	
+    filter {"system:windows", "configurations:Debug" }
+		links
+		{
+			"LIBCMTD.lib"
+		}
+	filter {}
+
+
 	libdirs {
         "%{LibraryDir.gtest}"
     }
@@ -56,22 +85,6 @@ project "Test"
         "%{Library.gtest}"
     }
 
-	filter "system:windows"
-		systemversion "10.0"
-
-		defines
-		{
-		}
-
-		defines
-		{
-			"GT_PLATFORM_WINDOWS"
-		}
-		links
-		{
-		}
-
-	
 
 	filter "configurations:Debug"
 		defines "GT_DEBUG"

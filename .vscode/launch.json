@@ -10,6 +10,28 @@
       "args": [],
       "cwd": "${workspaceFolder}/GTEditor",
       "preLaunchTask": "Build GTEditor (ninja)"
+    },
+
+
+    {
+      "name": "Debug Test",
+      "type": "lldb",
+      "request": "launch",
+      "program": "${workspaceFolder}/bin/Debug-linux-x86_64/Test/Test",
+      "args": [],
+      "cwd": "${workspaceFolder}/Test",
+      "preLaunchTask": "Build Test (ninja)"
+    },
+
+
+    {
+      "name": "Debug ShaderLab",
+      "type": "lldb",
+      "request": "launch",
+      "program": "${workspaceFolder}/bin/Debug-linux-x86_64/ShaderLab/ShaderLab",
+      "args": [],
+      "cwd": "${workspaceFolder}/ShaderLab",
+      "preLaunchTask": "Build ShaderLab (ninja)"
     }
     
   ]
