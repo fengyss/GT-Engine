@@ -40,7 +40,7 @@ namespace GT {
 	public:
 
 		Application() = default;
-		Application(const std::string title);
+		Application(const WindowProps props);
 		Application(const ApplicationSpecification& specification);
 		virtual ~Application();
 

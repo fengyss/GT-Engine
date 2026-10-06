@@ -32,14 +32,14 @@ namespace GT
 
 	Application* Application::s_Instance = nullptr;
 
-	Application::Application(const std::string title)
+	Application::Application(const WindowProps props)
 	{
 		GT_PROFILE_FUNCTION();
 
 		GT_ASSERT(!s_Instance, "Application already exists!");
 		s_Instance = this;
 
-		m_Window = std::unique_ptr<Window>(Window::Create(WindowProps(title)));
+		m_Window = std::unique_ptr<Window>(Window::Create(props));
 		
 		GT_CORE_INFO("Application Created!");
 	}

@@ -4,12 +4,69 @@
 #include <GT.h>
 
 #include "imgui.h"
+#include <imgui_internal.h>
 
 #define BIND_EVENT_FN(x) std::bind(&ShaderLab::x, this, std::placeholders::_1)
 
 static char shader[1024 * 30];
 glm::vec4 color = { 0.0f,0.0f,0.0f,0.0f };
 bool Enable[32];
+
+
+static void DrawVec2Control(const char* label, glm::vec2& values, float resetValue = 0.0f, float columnWidth = 100.0f)
+{
+
+	ImGuiIO& io = ImGui::GetIO();
+	auto boldFont = io.Fonts->Fonts[0];
+
+
+	ImGui::PushID(label);
+
+	ImGui::Text(label);
+
+	ImGui::PushMultiItemsWidths(2, ImGui::CalcItemWidth());
+	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{ 0,0 });
+
+
+	float lineHeight = GImGui->FontSize + GImGui->Style.FramePadding.y * 2.0f;
+	ImVec2 buttonSize = { lineHeight + 3.0f, lineHeight };
+	//X
+	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.8f,0.1f,0.15f,1.0f });
+	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 1.0f,1.0f,1.0f,0.3f });
+	ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.8f,0.1f,0.15f,1.0f });
+
+	ImGui::PushFont(boldFont);
+	if (ImGui::Button("X", buttonSize))
+		values.x = resetValue;
+	ImGui::PopFont();
+
+	ImGui::PopStyleColor(3);
+	ImGui::SameLine();
+	ImGui::DragFloat("##X", &values.x, 1.0f, 0.0f, 0.0f, "%.f");
+	ImGui::PopItemWidth();
+	ImGui::SameLine();
+
+	//Y
+	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.2f,0.7f,0.2f,1.0f });
+	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 1.0f,1.0f,1.0f,0.3f });
+	ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.2f,0.7f,0.2f,1.0f });
+
+
+	ImGui::PushFont(boldFont);
+	if (ImGui::Button("Y", buttonSize))
+		values.y = resetValue;
+	ImGui::PopFont();
+
+	ImGui::PopStyleColor(3);
+	ImGui::SameLine();
+	ImGui::DragFloat("##Y", &values.y, 1.0f, 0.0f, 0.0f, "%.f");
+	ImGui::PopItemWidth();
+
+
+	ImGui::PopStyleVar();
+	ImGui::PopID();
+}
+
 class ShaderLab
 {
 public:
@@ -42,7 +99,23 @@ void main()								\n\
 	int i = int(floor(st.x)+floor(st.y));					\n\
 	o_Color	= texture(u_Textures[i],fract(st));	\n\
 }";
+		if (std::filesystem::exists(m_configPath))
+		{
+			std::ifstream file(m_configPath);
 
+			std::stringstream buffer;
+			buffer << file.rdbuf();  // 一次性读取
+
+			FragmentShader = buffer.str();
+
+			file.close();
+		}
+		else
+		{
+			std::ofstream file(m_configPath);
+			file << FragmentShader;
+			file.close();
+		}
 		memset(shader, 0, sizeof(shader));
 		strncpy(shader, FragmentShader.c_str(), sizeof(shader));
 
@@ -87,10 +160,9 @@ void main()								\n\
 	}
 	void Init()
 	{
-		App = new GT::Application("ShaderLab");
-		m_Resolution = { 1600,900 };
+		GT::WindowProps props = { "ShaderLab" ,uint32_t(m_Resolution.x),uint32_t(m_Resolution.y) };
+		App = new GT::Application(props);
 		App->GetWindow().SetEventCallback(GT_BIND_EVENT_FN(ShaderLab::OnEvent));
-
 
 		m_ImGuiLayer = new GT::ImGuiLayer();
 		m_ImGuiLayer->OnAttach();
@@ -145,12 +217,18 @@ void main()								\n\
 
 		GT::Ref<GT::ShaderAsset> newshader = GT::ShaderAsset::Create("ShaderLab", VertexShader, FragmentShader);
 
-		if (newshader)
+		if (newshader == nullptr) return;
+		
+
 		{
-			m_Shader.reset();
-			m_Shader = newshader;
+			std::ofstream file(m_configPath);
+			file << FragmentShader;
+			file.close();
 		}
 
+		m_Shader.reset();
+		m_Shader = newshader;
+		
 		int32_t samplers[32];
 		for (uint32_t i = 0;i < 32;i++)
 		{
@@ -163,7 +241,7 @@ void main()								\n\
 	void OnUpdate(GT::Timestep ts)
 	{
 		App->GetWindow().OnUpdate();
-
+		App->GetWindow().SetWindowSize(m_Resolution.x, m_Resolution.y);
 		m_Time += ts;
 
 		auto mouse = GT::Input::GetMousePosition();
@@ -178,7 +256,7 @@ void main()								\n\
 
 		GT::RenderCommand::Clear();
 		m_Shader->Bind();
-		m_Shader->SetUniform2f("u_Mouse", glm::vec2(m_Mouse.x, m_Mouse.y));
+		m_Shader->SetUniform2f("u_Mouse", m_Mouse);
 		m_Shader->SetUniform1f("u_Time", m_Time);
 		m_Shader->SetUniform2f("u_Resolution", m_Resolution);
 		GT::RenderCommand::DrawIndexed(m_VertexArray, 6);
@@ -222,11 +300,13 @@ void main()								\n\
 
 		ImGui::Begin("Property");
 		ImGui::Text("%s : %.f %.f", "Mouse", m_Mouse.x, m_Mouse.y);
-		ImGui::Text("%s : %.f %.f", "Resolution", m_Resolution.x, m_Resolution.y);
+		//ImGui::Text("%s : %.f %.f", "Resolution", m_Resolution.x, m_Resolution.y);
+		DrawVec2Control("Resolution", m_Resolution, 900);
 		if (ImGui::ColorEdit4("Background Color", (float*)&color))
 		{
 			GT::RenderCommand::SetClearColor(color);
 		}
+		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 		bool open = ImGui::TreeNode("Textures");
 		if(open)
 		{
@@ -348,8 +428,8 @@ private:
 	GT::Ref<GT::TextureAsset> m_Textures[32];
 	float m_Time = 0.0f;
 
-	glm::vec2 m_Mouse = { 0,0 }, m_Resolution = { 1600,900 };
-
+	glm::vec2 m_Mouse = { 0,0 }, m_Resolution = { 900,900 };
+	std::filesystem::path m_configPath = "./shader.ini";
 	bool m_Running = true;
 	bool EnableMenuBar = false;
 };
@@ -366,7 +446,7 @@ int main(int argc, char** argv)
 		float time = GT::Time::GetTime();
 		GT::Timestep timestep = time - m_LastFrameTime;
 		m_LastFrameTime = time;
-
+		//if (1.0 / 60.0 > timestep) Sleep(1.0 / 60.0 - timestep);
 		lab.OnUpdate(timestep);
 
 		lab.OnRender();

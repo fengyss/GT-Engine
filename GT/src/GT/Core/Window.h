@@ -44,7 +44,7 @@ namespace GT {
 		virtual bool IsVSync() const = 0;
 		virtual void SetWindowTransparentAndMousePassthrough(bool open) = 0;
 
-
+		virtual void SetWindowSize(int width, int height) = 0;
 		virtual void SetCursorClip(int type) const = 0;
 
 		virtual void* GetNativeWindow() const = 0; 

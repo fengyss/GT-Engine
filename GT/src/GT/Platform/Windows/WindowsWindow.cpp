@@ -250,6 +250,11 @@ namespace GT
 		return m_Data.VSync;
 	}
 
+	void WindowsWindow::SetWindowSize(int width, int height)
+	{
+		glfwSetWindowSize(m_Window, width, height);
+	}
+
 	void WindowsWindow::SetCursorClip(int type) const
 	{
 	#ifdef GT_PLATFORM_WINDOWS

@@ -27,6 +27,8 @@ namespace GT {
 		virtual void SetVSync(bool enabled) override;
 		virtual bool IsVSync() const override;
 
+
+		virtual void SetWindowSize(int width, int height) override;
 		virtual void SetCursorClip(int type) const override;
 
 		virtual void SetWindowTransparentAndMousePassthrough(bool open) override;
